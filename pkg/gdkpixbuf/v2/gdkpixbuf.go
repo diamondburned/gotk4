@@ -2013,11 +2013,10 @@ func (pixbuf *Pixbuf) ReadPixelBytes() *glib.Bytes {
 	var _bytes *glib.Bytes // out
 
 	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_bytes_unref((*C.GBytes)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_bytes_unref((*C.GBytes)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _bytes
@@ -4304,11 +4303,10 @@ func (format *PixbufFormat) Copy() *PixbufFormat {
 
 	if _cret != nil {
 		_pixbufFormat = (*PixbufFormat)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_pixbufFormat)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gdk_pixbuf_format_free((*C.GdkPixbufFormat)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gdk_pixbuf_format_free((*C.GdkPixbufFormat)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 

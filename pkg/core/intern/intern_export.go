@@ -39,15 +39,25 @@ func goToggleNotify(_ C.gpointer, obj *C.GObject, isLastInt C.gboolean) {
 
 	if toggleRefs {
 		slog.Debug(
-			"goToggleNotify: finished",
+			"goToggleNotify: toggled notify for object",
 			"is_last", isLast,
-			"finalize", box.finalize,
+			"finalizing", box.finalizing.Load(),
 			objInfo(unsafe.Pointer(obj)))
 	}
 
-	if box.finalize {
-		box.finalize = false
-		return
+	if box.finalizing.Load() {
+		if !isLast {
+			panic("goToggleNotify: object is already finalizing but is not last")
+		}
+
+		delete(shared.weak, gobject)
+
+		if toggleRefs {
+			slog.Debug(
+				"goToggleNotify: object is already finalizing so we removed it",
+				"is_last", isLast, // should be true
+				objInfo(unsafe.Pointer(obj)))
+		}
 	}
 }
 
@@ -56,54 +66,56 @@ func goToggleNotify(_ C.gpointer, obj *C.GObject, isLastInt C.gboolean) {
 //
 //export goFinishRemovingToggleRef
 func goFinishRemovingToggleRef(gobject unsafe.Pointer) {
-	shared.mu.Lock()
-	defer shared.mu.Unlock()
+	/*
+		shared.mu.Lock()
+		defer shared.mu.Unlock()
 
-	box, strong := gets(gobject)
-	if box == nil {
+		box, strong := gets(gobject)
+		if box == nil {
+			if toggleRefs {
+				slog.Debug(
+					"goFinishRemovingToggleRef: object not found in weak map",
+					"box", false,
+					objInfo(gobject))
+			}
+			return
+		}
+
 		if toggleRefs {
 			slog.Debug(
-				"goFinishRemovingToggleRef: object not found in weak map",
-				"box", false,
+				"goFinishRemovingToggleRef: object found in weak map",
+				"box", true,
 				objInfo(gobject))
 		}
-		return
-	}
 
-	if toggleRefs {
-		slog.Debug(
-			"goFinishRemovingToggleRef: object found in weak map",
-			"box", true,
-			objInfo(gobject))
-	}
+		if strong {
+			if toggleRefs {
+				slog.Debug(
+					"goFinishRemovingToggleRef: object still strong",
+					objInfo(gobject))
+			}
+			return
+		}
 
-	if strong {
+		if !box.finalize {
+			if toggleRefs {
+				slog.Debug(
+					"goFinishRemovingToggleRef: object resurrected",
+					objInfo(gobject))
+			}
+			return
+		}
+
+		delete(shared.weak, gobject)
+
 		if toggleRefs {
 			slog.Debug(
-				"goFinishRemovingToggleRef: object still strong",
+				"goFinishRemovingToggleRef: removed from weak ref",
 				objInfo(gobject))
 		}
-		return
-	}
 
-	if !box.finalize {
-		if toggleRefs {
-			slog.Debug(
-				"goFinishRemovingToggleRef: object resurrected",
-				objInfo(gobject))
+		if objectProfile != nil {
+			objectProfile.Remove(gobject)
 		}
-		return
-	}
-
-	shared.weak.Delete(gobject)
-
-	if toggleRefs {
-		slog.Debug(
-			"goFinishRemovingToggleRef: removed from weak ref",
-			objInfo(gobject))
-	}
-
-	if objectProfile != nil {
-		objectProfile.Remove(gobject)
-	}
+	*/
 }

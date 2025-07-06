@@ -1936,11 +1936,10 @@ func ScriptGetSampleLanguage(script Script) *Language {
 
 	if _cret != nil {
 		_language = (*Language)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_language)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
-			},
+			func(ptr unsafe.Pointer) { C.free(ptr) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -2655,11 +2654,10 @@ func NewAttrAllowBreaks(allowBreaks bool) *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -2687,11 +2685,10 @@ func NewAttrBackgroundAlpha(alpha uint16) *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -2727,11 +2724,10 @@ func NewAttrBackground(red, green, blue uint16) *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -2768,11 +2764,10 @@ func NewAttrBaselineShift(shift int) *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -2850,11 +2845,10 @@ func NewAttrFallback(enableFallback bool) *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -2883,11 +2877,10 @@ func NewAttrFamily(family string) *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -2919,11 +2912,10 @@ func NewAttrFontScale(scale FontScale) *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -2951,11 +2943,10 @@ func NewAttrForegroundAlpha(alpha uint16) *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -2991,11 +2982,10 @@ func NewAttrForeground(red, green, blue uint16) *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -3023,11 +3013,10 @@ func NewAttrGravityHint(hint GravityHint) *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -3055,11 +3044,10 @@ func NewAttrGravity(gravity Gravity) *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -3092,11 +3080,10 @@ func NewAttrInsertHyphens(insertHyphens bool) *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -3125,11 +3112,10 @@ func NewAttrLetterSpacing(letterSpacing int) *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -3155,11 +3141,10 @@ func NewAttrLineHeight(factor float64) *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -3186,11 +3171,10 @@ func AttrLineHeightNewAbsolute(height int) *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -3229,11 +3213,10 @@ func NewAttrOverlineColor(red, green, blue uint16) *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -3261,11 +3244,10 @@ func NewAttrOverline(overline Overline) *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -3294,11 +3276,10 @@ func NewAttrRise(rise int) *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -3329,11 +3310,10 @@ func NewAttrScale(scaleFactor float64) *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -3356,11 +3336,10 @@ func NewAttrSentence() *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -3389,11 +3368,10 @@ func NewAttrShow(flags ShowFlags) *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -3421,11 +3399,10 @@ func NewAttrStretch(stretch Stretch) *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -3464,11 +3441,10 @@ func NewAttrStrikethroughColor(red, green, blue uint16) *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -3498,11 +3474,10 @@ func NewAttrStrikethrough(strikethrough bool) *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -3530,11 +3505,10 @@ func NewAttrStyle(style Style) *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -3563,11 +3537,10 @@ func NewAttrTextTransform(transform TextTransform) *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -3606,11 +3579,10 @@ func NewAttrUnderlineColor(red, green, blue uint16) *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -3638,11 +3610,10 @@ func NewAttrUnderline(underline Underline) *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -3670,11 +3641,10 @@ func NewAttrVariant(variant Variant) *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -3702,11 +3672,10 @@ func NewAttrWeight(weight Weight) *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -3729,11 +3698,10 @@ func NewAttrWord() *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -4111,11 +4079,10 @@ func Itemize(context *Context, text string, startIndex, length int, attrs *AttrL
 		src := (*C.PangoItem)(v)
 		var dst *Item // out
 		dst = (*Item)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(dst)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_item_free((*C.PangoItem)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_item_free((*C.PangoItem)(ptr)) },
+			unsafe.Pointer(src),
 		)
 		_list = append(_list, dst)
 	})
@@ -4182,11 +4149,10 @@ func ItemizeWithBaseDir(context *Context, baseDir Direction, text string, startI
 		src := (*C.PangoItem)(v)
 		var dst *Item // out
 		dst = (*Item)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(dst)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_item_free((*C.PangoItem)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_item_free((*C.PangoItem)(ptr)) },
+			unsafe.Pointer(src),
 		)
 		_list = append(_list, dst)
 	})
@@ -4270,11 +4236,10 @@ func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, ui
 
 	if _arg2 != nil {
 		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_attrList)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_attr_list_unref((*C.PangoAttrList)(ptr)) },
+			unsafe.Pointer(_arg2),
 		)
 	}
 	if _arg3 != nil {
@@ -4333,11 +4298,10 @@ func NewMarkupParser(accelMarker uint32) *glib.MarkupParseContext {
 
 	_markupParseContext = (*glib.MarkupParseContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.g_markup_parse_context_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_markupParseContext)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_markup_parse_context_unref((*C.GMarkupParseContext)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_markup_parse_context_unref((*C.GMarkupParseContext)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _markupParseContext
@@ -4460,11 +4424,10 @@ func ParseMarkup(markupText string, accelMarker uint32) (*AttrList, string, uint
 
 	if _arg4 != nil {
 		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_arg4)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_attrList)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_attr_list_unref((*C.PangoAttrList)(ptr)) },
+			unsafe.Pointer(_arg4),
 		)
 	}
 	if _arg5 != nil {
@@ -4684,11 +4647,10 @@ func ReorderItems(items []*Item) []*Item {
 		src := (*C.PangoItem)(v)
 		var dst *Item // out
 		dst = (*Item)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(dst)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_item_free((*C.PangoItem)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_item_free((*C.PangoItem)(ptr)) },
+			unsafe.Pointer(src),
 		)
 		_list = append(_list, dst)
 	})
@@ -5532,11 +5494,10 @@ func (context *Context) Metrics(desc *FontDescription, language *Language) *Font
 	var _fontMetrics *FontMetrics // out
 
 	_fontMetrics = (*FontMetrics)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_fontMetrics)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_font_metrics_unref((*C.PangoFontMetrics)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_font_metrics_unref((*C.PangoFontMetrics)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _fontMetrics
@@ -6306,11 +6267,10 @@ func (font *Font) Describe() *FontDescription {
 	var _fontDescription *FontDescription // out
 
 	_fontDescription = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_fontDescription)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_font_description_free((*C.PangoFontDescription)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_font_description_free((*C.PangoFontDescription)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _fontDescription
@@ -6336,11 +6296,10 @@ func (font *Font) DescribeWithAbsoluteSize() *FontDescription {
 	var _fontDescription *FontDescription // out
 
 	_fontDescription = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_fontDescription)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_font_description_free((*C.PangoFontDescription)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_font_description_free((*C.PangoFontDescription)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _fontDescription
@@ -6583,11 +6542,10 @@ func (font *Font) Metrics(language *Language) *FontMetrics {
 	var _fontMetrics *FontMetrics // out
 
 	_fontMetrics = (*FontMetrics)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_fontMetrics)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_font_metrics_unref((*C.PangoFontMetrics)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_font_metrics_unref((*C.PangoFontMetrics)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _fontMetrics
@@ -6648,11 +6606,10 @@ func (font *Font) Serialize() *glib.Bytes {
 	var _bytes *glib.Bytes // out
 
 	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_bytes_unref((*C.GBytes)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_bytes_unref((*C.GBytes)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _bytes
@@ -6681,11 +6638,10 @@ func (font *Font) describe() *FontDescription {
 	var _fontDescription *FontDescription // out
 
 	_fontDescription = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_fontDescription)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_font_description_free((*C.PangoFontDescription)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_font_description_free((*C.PangoFontDescription)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _fontDescription
@@ -6706,11 +6662,10 @@ func (font *Font) describeAbsolute() *FontDescription {
 	var _fontDescription *FontDescription // out
 
 	_fontDescription = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_fontDescription)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_font_description_free((*C.PangoFontDescription)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_font_description_free((*C.PangoFontDescription)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _fontDescription
@@ -6886,11 +6841,10 @@ func (font *Font) metrics(language *Language) *FontMetrics {
 	var _fontMetrics *FontMetrics // out
 
 	_fontMetrics = (*FontMetrics)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_fontMetrics)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_font_metrics_unref((*C.PangoFontMetrics)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_font_metrics_unref((*C.PangoFontMetrics)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _fontMetrics
@@ -7115,11 +7069,10 @@ func (face *FontFace) Describe() *FontDescription {
 	var _fontDescription *FontDescription // out
 
 	_fontDescription = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_fontDescription)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_font_description_free((*C.PangoFontDescription)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_font_description_free((*C.PangoFontDescription)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _fontDescription
@@ -7275,11 +7228,10 @@ func (face *FontFace) describe() *FontDescription {
 	var _fontDescription *FontDescription // out
 
 	_fontDescription = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_fontDescription)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_font_description_free((*C.PangoFontDescription)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_font_description_free((*C.PangoFontDescription)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _fontDescription
@@ -8962,11 +8914,10 @@ func (fontset *Fontset) Metrics() *FontMetrics {
 	var _fontMetrics *FontMetrics // out
 
 	_fontMetrics = (*FontMetrics)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_fontMetrics)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_font_metrics_unref((*C.PangoFontMetrics)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_font_metrics_unref((*C.PangoFontMetrics)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _fontMetrics
@@ -9062,11 +9013,10 @@ func (fontset *Fontset) language() *Language {
 	var _language *Language // out
 
 	_language = (*Language)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_language)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
+		func(ptr unsafe.Pointer) { C.free(ptr) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _language
@@ -9092,11 +9042,10 @@ func (fontset *Fontset) metrics() *FontMetrics {
 	var _fontMetrics *FontMetrics // out
 
 	_fontMetrics = (*FontMetrics)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_fontMetrics)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_font_metrics_unref((*C.PangoFontMetrics)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_font_metrics_unref((*C.PangoFontMetrics)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _fontMetrics
@@ -9349,11 +9298,10 @@ func (layout *Layout) Attributes() *AttrList {
 	if _cret != nil {
 		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.pango_attr_list_ref(_cret)
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_attrList)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_attr_list_unref((*C.PangoAttrList)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -9724,11 +9672,10 @@ func (layout *Layout) Iter() *LayoutIter {
 	var _layoutIter *LayoutIter // out
 
 	_layoutIter = (*LayoutIter)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_layoutIter)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_layout_iter_free((*C.PangoLayoutIter)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_layout_iter_free((*C.PangoLayoutIter)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _layoutIter
@@ -9814,11 +9761,10 @@ func (layout *Layout) Line(line int) *LayoutLine {
 	if _cret != nil {
 		_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.pango_layout_line_ref(_cret)
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_layoutLine)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_layout_line_unref((*C.PangoLayoutLine)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_layout_line_unref((*C.PangoLayoutLine)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -9879,11 +9825,10 @@ func (layout *Layout) LineReadonly(line int) *LayoutLine {
 	if _cret != nil {
 		_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.pango_layout_line_ref(_cret)
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_layoutLine)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_layout_line_unref((*C.PangoLayoutLine)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_layout_line_unref((*C.PangoLayoutLine)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -9936,11 +9881,10 @@ func (layout *Layout) Lines() []*LayoutLine {
 		var dst *LayoutLine // out
 		dst = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(src)))
 		C.pango_layout_line_ref(src)
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(dst)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_layout_line_unref((*C.PangoLayoutLine)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_layout_line_unref((*C.PangoLayoutLine)(ptr)) },
+			unsafe.Pointer(src),
 		)
 		_sList = append(_sList, dst)
 	})
@@ -9976,11 +9920,10 @@ func (layout *Layout) LinesReadonly() []*LayoutLine {
 		var dst *LayoutLine // out
 		dst = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(src)))
 		C.pango_layout_line_ref(src)
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(dst)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_layout_line_unref((*C.PangoLayoutLine)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_layout_line_unref((*C.PangoLayoutLine)(ptr)) },
+			unsafe.Pointer(src),
 		)
 		_sList = append(_sList, dst)
 	})
@@ -10246,11 +10189,10 @@ func (layout *Layout) Tabs() *TabArray {
 
 	if _cret != nil {
 		_tabArray = (*TabArray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_tabArray)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_tab_array_free((*C.PangoTabArray)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_tab_array_free((*C.PangoTabArray)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -10585,11 +10527,10 @@ func (layout *Layout) Serialize(flags LayoutSerializeFlags) *glib.Bytes {
 	var _bytes *glib.Bytes // out
 
 	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_bytes_unref((*C.GBytes)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_bytes_unref((*C.GBytes)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _bytes
@@ -11941,11 +11882,10 @@ func (renderer *Renderer) LayoutLine() *LayoutLine {
 	if _cret != nil {
 		_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.pango_layout_line_ref(_cret)
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_layoutLine)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_layout_line_unref((*C.PangoLayoutLine)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_layout_line_unref((*C.PangoLayoutLine)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -12687,11 +12627,10 @@ func NewAttrFontDesc(desc *FontDescription) *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -12754,11 +12693,10 @@ func NewAttrFontFeatures(features string) *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -12839,11 +12777,10 @@ func (iterator *AttrIterator) Copy() *AttrIterator {
 	var _attrIterator *AttrIterator // out
 
 	_attrIterator = (*AttrIterator)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attrIterator)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attr_iterator_destroy((*C.PangoAttrIterator)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attr_iterator_destroy((*C.PangoAttrIterator)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attrIterator
@@ -12917,11 +12854,10 @@ func (iterator *AttrIterator) Attrs() []*Attribute {
 		src := (*C.PangoAttribute)(v)
 		var dst *Attribute // out
 		dst = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(dst)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+			unsafe.Pointer(src),
 		)
 		_sList = append(_sList, dst)
 	})
@@ -12966,11 +12902,10 @@ func (iterator *AttrIterator) Font(desc *FontDescription) (*Language, []*Attribu
 
 	if _arg2 != nil {
 		_language = (*Language)(gextras.NewStructNative(unsafe.Pointer(_arg2)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_language)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.free(intern.C)
-			},
+			func(ptr unsafe.Pointer) { C.free(ptr) },
+			unsafe.Pointer(_arg2),
 		)
 	}
 	if _arg3 != nil {
@@ -13089,11 +13024,10 @@ func NewAttrLanguage(language *Language) *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -13135,11 +13069,10 @@ func NewAttrList() *AttrList {
 	var _attrList *AttrList // out
 
 	_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attrList)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attr_list_unref((*C.PangoAttrList)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attrList
@@ -13164,7 +13097,6 @@ func (list *AttrList) Change(attr *Attribute) {
 
 	_arg0 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(list)))
 	_arg1 = (*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(attr)))
-	runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(attr)), nil)
 
 	C.pango_attr_list_change(_arg0, _arg1)
 	runtime.KeepAlive(list)
@@ -13193,11 +13125,10 @@ func (list *AttrList) Copy() *AttrList {
 
 	if _cret != nil {
 		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_attrList)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_attr_list_unref((*C.PangoAttrList)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -13268,11 +13199,10 @@ func (list *AttrList) Filter(fn AttrFilterFunc) *AttrList {
 
 	if _cret != nil {
 		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_attrList)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_attr_list_unref((*C.PangoAttrList)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -13301,11 +13231,10 @@ func (list *AttrList) Attributes() []*Attribute {
 		src := (*C.PangoAttribute)(v)
 		var dst *Attribute // out
 		dst = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(dst)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+			unsafe.Pointer(src),
 		)
 		_sList = append(_sList, dst)
 	})
@@ -13333,11 +13262,10 @@ func (list *AttrList) Iterator() *AttrIterator {
 	var _attrIterator *AttrIterator // out
 
 	_attrIterator = (*AttrIterator)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attrIterator)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attr_iterator_destroy((*C.PangoAttrIterator)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attr_iterator_destroy((*C.PangoAttrIterator)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attrIterator
@@ -13356,7 +13284,6 @@ func (list *AttrList) Insert(attr *Attribute) {
 
 	_arg0 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(list)))
 	_arg1 = (*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(attr)))
-	runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(attr)), nil)
 
 	C.pango_attr_list_insert(_arg0, _arg1)
 	runtime.KeepAlive(list)
@@ -13376,7 +13303,6 @@ func (list *AttrList) InsertBefore(attr *Attribute) {
 
 	_arg0 = (*C.PangoAttrList)(gextras.StructNative(unsafe.Pointer(list)))
 	_arg1 = (*C.PangoAttribute)(gextras.StructNative(unsafe.Pointer(attr)))
-	runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(attr)), nil)
 
 	C.pango_attr_list_insert_before(_arg0, _arg1)
 	runtime.KeepAlive(list)
@@ -13549,11 +13475,10 @@ func AttrListFromString(text string) *AttrList {
 
 	if _cret != nil {
 		_attrList = (*AttrList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_attrList)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_attr_list_unref((*C.PangoAttrList)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_attr_list_unref((*C.PangoAttrList)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -13603,11 +13528,10 @@ func NewAttrShape(inkRect, logicalRect *Rectangle) *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -13672,11 +13596,10 @@ func NewAttrSize(size int) *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -13704,11 +13627,10 @@ func NewAttrSizeAbsolute(size int) *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -14057,11 +13979,10 @@ func (attr *Attribute) Copy() *Attribute {
 	var _attribute *Attribute // out
 
 	_attribute = (*Attribute)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_attribute)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_attribute_destroy((*C.PangoAttribute)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_attribute_destroy((*C.PangoAttribute)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _attribute
@@ -14235,11 +14156,10 @@ func (src *Color) Copy() *Color {
 
 	if _cret != nil {
 		_color = (*Color)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_color)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_color_free((*C.PangoColor)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_color_free((*C.PangoColor)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -14401,11 +14321,10 @@ func NewFontDescription() *FontDescription {
 	var _fontDescription *FontDescription // out
 
 	_fontDescription = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_fontDescription)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_font_description_free((*C.PangoFontDescription)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_font_description_free((*C.PangoFontDescription)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _fontDescription
@@ -14479,11 +14398,10 @@ func (desc *FontDescription) Copy() *FontDescription {
 
 	if _cret != nil {
 		_fontDescription = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_fontDescription)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_font_description_free((*C.PangoFontDescription)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_font_description_free((*C.PangoFontDescription)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -14518,11 +14436,10 @@ func (desc *FontDescription) CopyStatic() *FontDescription {
 
 	if _cret != nil {
 		_fontDescription = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_fontDescription)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_font_description_free((*C.PangoFontDescription)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_font_description_free((*C.PangoFontDescription)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -15307,11 +15224,10 @@ func FontDescriptionFromString(str string) *FontDescription {
 	var _fontDescription *FontDescription // out
 
 	_fontDescription = (*FontDescription)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_fontDescription)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_font_description_free((*C.PangoFontDescription)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_font_description_free((*C.PangoFontDescription)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _fontDescription
@@ -15844,11 +15760,10 @@ func (glyphItem *GlyphItem) ApplyAttrs(text string, list *AttrList) []*GlyphItem
 		src := (*C.PangoGlyphItem)(v)
 		var dst *GlyphItem // out
 		dst = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(src)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(dst)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_glyph_item_free((*C.PangoGlyphItem)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_glyph_item_free((*C.PangoGlyphItem)(ptr)) },
+			unsafe.Pointer(src),
 		)
 		_sList = append(_sList, dst)
 	})
@@ -15876,11 +15791,10 @@ func (orig *GlyphItem) Copy() *GlyphItem {
 
 	if _cret != nil {
 		_glyphItem = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_glyphItem)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_glyph_item_free((*C.PangoGlyphItem)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_glyph_item_free((*C.PangoGlyphItem)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -15928,11 +15842,10 @@ func (orig *GlyphItem) Split(text string, splitIndex int) *GlyphItem {
 
 	if _cret != nil {
 		_glyphItem = (*GlyphItem)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_glyphItem)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_glyph_item_free((*C.PangoGlyphItem)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_glyph_item_free((*C.PangoGlyphItem)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -16097,11 +16010,10 @@ func (orig *GlyphItemIter) Copy() *GlyphItemIter {
 
 	if _cret != nil {
 		_glyphItemIter = (*GlyphItemIter)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_glyphItemIter)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_glyph_item_iter_free((*C.PangoGlyphItemIter)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_glyph_item_iter_free((*C.PangoGlyphItemIter)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -16265,11 +16177,10 @@ func NewGlyphString() *GlyphString {
 	var _glyphString *GlyphString // out
 
 	_glyphString = (*GlyphString)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_glyphString)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_glyph_string_free((*C.PangoGlyphString)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_glyph_string_free((*C.PangoGlyphString)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _glyphString
@@ -16295,11 +16206,10 @@ func (str *GlyphString) Copy() *GlyphString {
 
 	if _cret != nil {
 		_glyphString = (*GlyphString)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_glyphString)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_glyph_string_free((*C.PangoGlyphString)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_glyph_string_free((*C.PangoGlyphString)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -16648,11 +16558,10 @@ func NewItem() *Item {
 	var _item *Item // out
 
 	_item = (*Item)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_item)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_item_free((*C.PangoItem)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_item_free((*C.PangoItem)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _item
@@ -16754,11 +16663,10 @@ func (item *Item) Copy() *Item {
 
 	if _cret != nil {
 		_ret = (*Item)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_ret)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_item_free((*C.PangoItem)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_item_free((*C.PangoItem)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -16804,11 +16712,10 @@ func (orig *Item) Split(splitIndex int, splitOffset int) *Item {
 	var _item *Item // out
 
 	_item = (*Item)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_item)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_item_free((*C.PangoItem)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_item_free((*C.PangoItem)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _item
@@ -17214,11 +17121,10 @@ func (iter *LayoutIter) Copy() *LayoutIter {
 
 	if _cret != nil {
 		_layoutIter = (*LayoutIter)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_layoutIter)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_layout_iter_free((*C.PangoLayoutIter)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_layout_iter_free((*C.PangoLayoutIter)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -17399,11 +17305,10 @@ func (iter *LayoutIter) Line() *LayoutLine {
 	if _cret != nil {
 		_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.pango_layout_line_ref(_cret)
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_layoutLine)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_layout_line_unref((*C.PangoLayoutLine)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_layout_line_unref((*C.PangoLayoutLine)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -17462,11 +17367,10 @@ func (iter *LayoutIter) LineReadonly() *LayoutLine {
 	if _cret != nil {
 		_layoutLine = (*LayoutLine)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.pango_layout_line_ref(_cret)
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_layoutLine)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_layout_line_unref((*C.PangoLayoutLine)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_layout_line_unref((*C.PangoLayoutLine)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -18260,11 +18164,10 @@ func (matrix *Matrix) Copy() *Matrix {
 
 	if _cret != nil {
 		_ret = (*Matrix)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_ret)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_matrix_free((*C.PangoMatrix)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_matrix_free((*C.PangoMatrix)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -18591,11 +18494,10 @@ func NewScriptIter(text string) *ScriptIter {
 	var _scriptIter *ScriptIter // out
 
 	_scriptIter = (*ScriptIter)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_scriptIter)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_script_iter_free((*C.PangoScriptIter)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_script_iter_free((*C.PangoScriptIter)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _scriptIter
@@ -18707,11 +18609,10 @@ func NewTabArray(initialSize int, positionsInPixels bool) *TabArray {
 	var _tabArray *TabArray // out
 
 	_tabArray = (*TabArray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_tabArray)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_tab_array_free((*C.PangoTabArray)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_tab_array_free((*C.PangoTabArray)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _tabArray
@@ -18735,11 +18636,10 @@ func (src *TabArray) Copy() *TabArray {
 	var _tabArray *TabArray // out
 
 	_tabArray = (*TabArray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_tabArray)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.pango_tab_array_free((*C.PangoTabArray)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.pango_tab_array_free((*C.PangoTabArray)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _tabArray
@@ -19007,11 +18907,10 @@ func TabArrayFromString(text string) *TabArray {
 
 	if _cret != nil {
 		_tabArray = (*TabArray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_tabArray)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.pango_tab_array_free((*C.PangoTabArray)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.pango_tab_array_free((*C.PangoTabArray)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 

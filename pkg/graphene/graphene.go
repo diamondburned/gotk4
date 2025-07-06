@@ -332,11 +332,10 @@ func NewBoxAlloc() *Box {
 	var _box *Box // out
 
 	_box = (*Box)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_box)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.graphene_box_free((*C.graphene_box_t)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.graphene_box_free((*C.graphene_box_t)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _box
@@ -1112,11 +1111,10 @@ func NewEulerAlloc() *Euler {
 	var _euler *Euler // out
 
 	_euler = (*Euler)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_euler)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.graphene_euler_free((*C.graphene_euler_t)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.graphene_euler_free((*C.graphene_euler_t)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _euler
@@ -1718,11 +1716,10 @@ func NewFrustumAlloc() *Frustum {
 	var _frustum *Frustum // out
 
 	_frustum = (*Frustum)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_frustum)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.graphene_frustum_free((*C.graphene_frustum_t)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.graphene_frustum_free((*C.graphene_frustum_t)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _frustum
@@ -2012,11 +2009,10 @@ func NewMatrixAlloc() *Matrix {
 	var _matrix *Matrix // out
 
 	_matrix = (*Matrix)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_matrix)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.graphene_matrix_free((*C.graphene_matrix_t)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.graphene_matrix_free((*C.graphene_matrix_t)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _matrix
@@ -3985,11 +3981,10 @@ func NewPlaneAlloc() *Plane {
 	var _plane *Plane // out
 
 	_plane = (*Plane)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_plane)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.graphene_plane_free((*C.graphene_plane_t)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.graphene_plane_free((*C.graphene_plane_t)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _plane
@@ -4376,11 +4371,10 @@ func NewPointAlloc() *Point {
 	var _point *Point // out
 
 	_point = (*Point)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_point)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.graphene_point_free((*C.graphene_point_t)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.graphene_point_free((*C.graphene_point_t)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _point
@@ -4708,11 +4702,10 @@ func NewPoint3DAlloc() *Point3D {
 	var _point3D *Point3D // out
 
 	_point3D = (*Point3D)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_point3D)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.graphene_point3d_free((*C.graphene_point3d_t)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.graphene_point3d_free((*C.graphene_point3d_t)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _point3D
@@ -5224,11 +5217,10 @@ func NewQuadAlloc() *Quad {
 	var _quad *Quad // out
 
 	_quad = (*Quad)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_quad)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.graphene_quad_free((*C.graphene_quad_t)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.graphene_quad_free((*C.graphene_quad_t)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _quad
@@ -5446,11 +5438,10 @@ func NewQuaternionAlloc() *Quaternion {
 	var _quaternion *Quaternion // out
 
 	_quaternion = (*Quaternion)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_quaternion)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.graphene_quaternion_free((*C.graphene_quaternion_t)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.graphene_quaternion_free((*C.graphene_quaternion_t)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _quaternion
@@ -6128,11 +6119,10 @@ func NewRayAlloc() *Ray {
 	var _ray *Ray // out
 
 	_ray = (*Ray)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_ray)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.graphene_ray_free((*C.graphene_ray_t)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.graphene_ray_free((*C.graphene_ray_t)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _ray
@@ -7559,11 +7549,10 @@ func RectAlloc() *Rect {
 	var _rect *Rect // out
 
 	_rect = (*Rect)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_rect)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.graphene_rect_free((*C.graphene_rect_t)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.graphene_rect_free((*C.graphene_rect_t)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _rect
@@ -7633,11 +7622,10 @@ func NewSizeAlloc() *Size {
 	var _size *Size // out
 
 	_size = (*Size)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_size)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.graphene_size_free((*C.graphene_size_t)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.graphene_size_free((*C.graphene_size_t)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _size
@@ -7867,11 +7855,10 @@ func NewSphereAlloc() *Sphere {
 	var _sphere *Sphere // out
 
 	_sphere = (*Sphere)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_sphere)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.graphene_sphere_free((*C.graphene_sphere_t)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.graphene_sphere_free((*C.graphene_sphere_t)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _sphere
@@ -8235,11 +8222,10 @@ func NewTriangleAlloc() *Triangle {
 	var _triangle *Triangle // out
 
 	_triangle = (*Triangle)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_triangle)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.graphene_triangle_free((*C.graphene_triangle_t)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.graphene_triangle_free((*C.graphene_triangle_t)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _triangle
@@ -8739,11 +8725,10 @@ func NewVec2Alloc() *Vec2 {
 	var _vec2 *Vec2 // out
 
 	_vec2 = (*Vec2)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_vec2)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.graphene_vec2_free((*C.graphene_vec2_t)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.graphene_vec2_free((*C.graphene_vec2_t)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _vec2
@@ -9394,11 +9379,10 @@ func NewVec3Alloc() *Vec3 {
 	var _vec3 *Vec3 // out
 
 	_vec3 = (*Vec3)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_vec3)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.graphene_vec3_free((*C.graphene_vec3_t)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.graphene_vec3_free((*C.graphene_vec3_t)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _vec3
@@ -10239,11 +10223,10 @@ func NewVec4Alloc() *Vec4 {
 	var _vec4 *Vec4 // out
 
 	_vec4 = (*Vec4)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_vec4)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.graphene_vec4_free((*C.graphene_vec4_t)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.graphene_vec4_free((*C.graphene_vec4_t)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _vec4

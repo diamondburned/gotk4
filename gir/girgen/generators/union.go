@@ -187,11 +187,12 @@ func (ug *UnionGenerator) Use(union *gir.Union) bool {
 		p.Linef("original := (*C.%s)(%s.underlying%s())", union.CType, ug.Recv(), ug.GoName)
 		p.Linef("copied := C.%s(original)", copyMethod.CIdentifier)
 		p.Linef("dst := (*%s)(gextras.NewStructNative(unsafe.Pointer(copied)))", ug.GoName)
-		p.Linef("runtime.SetFinalizer(")
+		p.Linef("runtime.AddCleanup(")
 		p.Linef("  gextras.StructIntern(unsafe.Pointer(dst)),")
-		p.Linef("  func(intern *struct{ C unsafe.Pointer }) {")
-		p.Linef("    %s", types.RecordPrintFree(ug.gen, &typRecord, "intern.C"))
+		p.Linef("  func(ptr unsafe.Pointer) {")
+		p.Linef("    %s", types.RecordPrintFree(ug.gen, &typRecord, "ptr"))
 		p.Linef("  },")
+		p.Linef("  unsafe.Pointer(copied),")
 		p.Linef(")")
 		p.Linef("return dst")
 
@@ -264,12 +265,12 @@ func (ug *UnionGenerator) Use(union *gir.Union) bool {
 			ug.hdr.Import("unsafe")
 			ug.hdr.ImportCore("gextras")
 
-			p.Linef("runtime.SetFinalizer(")
-			// dst is ASSUMED TO BE A POINTER.
+			p.Linef("runtime.AddCleanup(")
 			p.Linef("  gextras.StructIntern(unsafe.Pointer(dst)),")
-			p.Linef("  func(intern *struct{ C unsafe.Pointer }) {")
-			p.Linef("    %s", types.RecordPrintFree(ug.gen, &typRecord, "intern.C"))
+			p.Linef("  func(ptr unsafe.Pointer) {")
+			p.Linef("    %s", types.RecordPrintFree(ug.gen, &typRecord, "ptr"))
 			p.Linef("  },")
+			p.Linef("  unsafe.Pointer(cpy),")
 			p.Linef(")")
 		}
 

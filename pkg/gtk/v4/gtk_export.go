@@ -251,9 +251,11 @@ func _gotk4_gtk4_DrawingAreaDrawFunc(arg1 *C.GtkDrawingArea, arg2 *C.cairo_t, ar
 	_drawingArea = wrapDrawingArea(coreglib.Take(unsafe.Pointer(arg1)))
 	_cr = cairo.WrapContext(uintptr(unsafe.Pointer(arg2)))
 	C.cairo_reference(arg2)
-	runtime.SetFinalizer(_cr, func(v *cairo.Context) {
-		C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_cr,
+		func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+		unsafe.Pointer(arg2),
+	)
 	_width = int(arg3)
 	_height = int(arg4)
 
@@ -741,11 +743,10 @@ func _gotk4_gtk4_ShortcutFunc(arg1 *C.GtkWidget, arg2 *C.GVariant, arg3 C.gpoint
 	if arg2 != nil {
 		_args = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg2)))
 		C.g_variant_ref(arg2)
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_args)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.g_variant_unref((*C.GVariant)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.g_variant_unref((*C.GVariant)(ptr)) },
+			unsafe.Pointer(arg2),
 		)
 	}
 
@@ -3920,11 +3921,10 @@ func _gotk4_gtk4_CssProvider_ConnectParsingError(arg0 C.gpointer, arg1 *C.GtkCss
 
 	_section = (*CSSSection)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 	C.gtk_css_section_ref(arg1)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_section)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gtk_css_section_unref((*C.GtkCssSection)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gtk_css_section_unref((*C.GtkCssSection)(ptr)) },
+		unsafe.Pointer(arg1),
 	)
 	_err = gerror.Take(unsafe.Pointer(arg2))
 

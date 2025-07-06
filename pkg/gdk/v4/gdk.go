@@ -4690,9 +4690,11 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
 		_region = (*cairo.Region)(unsafe.Pointer(_pp))
 	}
-	runtime.SetFinalizer(_region, func(v *cairo.Region) {
-		C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_region,
+		func(p unsafe.Pointer) { C.cairo_region_destroy((*C.cairo_region_t)(p)) },
+		unsafe.Pointer(_cret),
+	)
 
 	return _region
 }
@@ -7458,9 +7460,11 @@ func (self *CairoContext) CairoCreate() *cairo.Context {
 
 	if _cret != nil {
 		_context = cairo.WrapContext(uintptr(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(_context, func(v *cairo.Context) {
-			C.cairo_destroy((*C.cairo_t)(unsafe.Pointer(v.Native())))
-		})
+		runtime.AddCleanup(
+			_context,
+			func(p unsafe.Pointer) { C.cairo_destroy((*C.cairo_t)(p)) },
+			unsafe.Pointer(_cret),
+		)
 	}
 
 	return _context
@@ -7571,11 +7575,10 @@ func (clipboard *Clipboard) Formats() *ContentFormats {
 
 	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gdk_content_formats_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gdk_content_formats_unref((*C.GdkContentFormats)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _contentFormats
@@ -8706,11 +8709,10 @@ func (provider *ContentProvider) RefFormats() *ContentFormats {
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gdk_content_formats_unref((*C.GdkContentFormats)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _contentFormats
@@ -8738,11 +8740,10 @@ func (provider *ContentProvider) RefStorableFormats() *ContentFormats {
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gdk_content_formats_unref((*C.GdkContentFormats)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _contentFormats
@@ -8927,11 +8928,10 @@ func (provider *ContentProvider) refFormats() *ContentFormats {
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gdk_content_formats_unref((*C.GdkContentFormats)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _contentFormats
@@ -8962,11 +8962,10 @@ func (provider *ContentProvider) refStorableFormats() *ContentFormats {
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gdk_content_formats_unref((*C.GdkContentFormats)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _contentFormats
@@ -10733,11 +10732,10 @@ func (display *Display) DmabufFormats() *DmabufFormats {
 
 	_dmabufFormats = (*DmabufFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gdk_dmabuf_formats_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_dmabufFormats)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_dmabuf_formats_unref((*C.GdkDmabufFormats)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gdk_dmabuf_formats_unref((*C.GdkDmabufFormats)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _dmabufFormats
@@ -11090,11 +11088,10 @@ func (display *Display) MapKeycode(keycode uint) ([]KeymapKey, []uint, bool) {
 			_keys = make([]KeymapKey, _arg4)
 			for i := 0; i < int(_arg4); i++ {
 				_keys[i] = *(*KeymapKey)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
-				runtime.SetFinalizer(
+				runtime.AddCleanup(
 					gextras.StructIntern(unsafe.Pointer(&_keys[i])),
-					func(intern *struct{ C unsafe.Pointer }) {
-						C.free(intern.C)
-					},
+					func(ptr unsafe.Pointer) { C.free(ptr) },
+					unsafe.Pointer((&src[i])),
 				)
 			}
 		}
@@ -11163,11 +11160,10 @@ func (display *Display) MapKeyval(keyval uint) ([]KeymapKey, bool) {
 		_keys = make([]KeymapKey, _arg3)
 		for i := 0; i < int(_arg3); i++ {
 			_keys[i] = *(*KeymapKey)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
-			runtime.SetFinalizer(
+			runtime.AddCleanup(
 				gextras.StructIntern(unsafe.Pointer(&_keys[i])),
-				func(intern *struct{ C unsafe.Pointer }) {
-					C.free(intern.C)
-				},
+				func(ptr unsafe.Pointer) { C.free(ptr) },
+				unsafe.Pointer((&src[i])),
 			)
 		}
 	}
@@ -12022,9 +12018,11 @@ func (self *DmabufTextureBuilder) UpdateRegion() *cairo.Region {
 			_region = (*cairo.Region)(unsafe.Pointer(_pp))
 		}
 		C.cairo_region_reference(_cret)
-		runtime.SetFinalizer(_region, func(v *cairo.Region) {
-			C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
-		})
+		runtime.AddCleanup(
+			_region,
+			func(p unsafe.Pointer) { C.cairo_region_destroy((*C.cairo_region_t)(p)) },
+			unsafe.Pointer(_cret),
+		)
 	}
 
 	return _region
@@ -12593,11 +12591,10 @@ func (drag *Drag) Formats() *ContentFormats {
 
 	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gdk_content_formats_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gdk_content_formats_unref((*C.GdkContentFormats)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _contentFormats
@@ -12912,9 +12909,11 @@ func (context *DrawContext) FrameRegion() *cairo.Region {
 			_region = (*cairo.Region)(unsafe.Pointer(_pp))
 		}
 		C.cairo_region_reference(_cret)
-		runtime.SetFinalizer(_region, func(v *cairo.Region) {
-			C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
-		})
+		runtime.AddCleanup(
+			_region,
+			func(p unsafe.Pointer) { C.cairo_region_destroy((*C.cairo_region_t)(p)) },
+			unsafe.Pointer(_cret),
+		)
 	}
 
 	return _region
@@ -13207,11 +13206,10 @@ func (self *Drop) Formats() *ContentFormats {
 
 	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 	C.gdk_content_formats_ref(_cret)
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gdk_content_formats_unref((*C.GdkContentFormats)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _contentFormats
@@ -14197,11 +14195,10 @@ func (frameClock *FrameClock) CurrentTimings() *FrameTimings {
 	if _cret != nil {
 		_frameTimings = (*FrameTimings)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.gdk_frame_timings_ref(_cret)
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_frameTimings)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gdk_frame_timings_unref((*C.GdkFrameTimings)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gdk_frame_timings_unref((*C.GdkFrameTimings)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -14383,11 +14380,10 @@ func (frameClock *FrameClock) Timings(frameCounter int64) *FrameTimings {
 	if _cret != nil {
 		_frameTimings = (*FrameTimings)(gextras.NewStructNative(unsafe.Pointer(_cret)))
 		C.gdk_frame_timings_ref(_cret)
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_frameTimings)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gdk_frame_timings_unref((*C.GdkFrameTimings)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gdk_frame_timings_unref((*C.GdkFrameTimings)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -15330,9 +15326,11 @@ func (self *GLTextureBuilder) UpdateRegion() *cairo.Region {
 			_region = (*cairo.Region)(unsafe.Pointer(_pp))
 		}
 		C.cairo_region_reference(_cret)
-		runtime.SetFinalizer(_region, func(v *cairo.Region) {
-			C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
-		})
+		runtime.AddCleanup(
+			_region,
+			func(p unsafe.Pointer) { C.cairo_region_destroy((*C.cairo_region_t)(p)) },
+			unsafe.Pointer(_cret),
+		)
 	}
 
 	return _region
@@ -17185,9 +17183,11 @@ func (surface *Surface) CreateSimilarSurface(content cairo.Content, width, heigh
 	var _ret *cairo.Surface // out
 
 	_ret = cairo.WrapSurface(uintptr(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(_ret, func(v *cairo.Surface) {
-		C.cairo_surface_destroy((*C.cairo_surface_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_ret,
+		func(p unsafe.Pointer) { C.cairo_surface_destroy((*C.cairo_surface_t)(p)) },
+		unsafe.Pointer(_cret),
+	)
 
 	return _ret
 }
@@ -18124,11 +18124,10 @@ func (texture *Texture) SaveToPNGBytes() *glib.Bytes {
 	var _bytes *glib.Bytes // out
 
 	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_bytes_unref((*C.GBytes)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_bytes_unref((*C.GBytes)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _bytes
@@ -18193,11 +18192,10 @@ func (texture *Texture) SaveToTIFFBytes() *glib.Bytes {
 	var _bytes *glib.Bytes // out
 
 	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_bytes_unref((*C.GBytes)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_bytes_unref((*C.GBytes)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _bytes
@@ -18520,11 +18518,10 @@ func NewContentFormats(mimeTypes []string) *ContentFormats {
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gdk_content_formats_unref((*C.GdkContentFormats)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _contentFormats
@@ -18543,11 +18540,10 @@ func NewContentFormatsForGType(typ coreglib.Type) *ContentFormats {
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gdk_content_formats_unref((*C.GdkContentFormats)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _contentFormats
@@ -18827,11 +18823,10 @@ func (first *ContentFormats) Union(second *ContentFormats) *ContentFormats {
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gdk_content_formats_unref((*C.GdkContentFormats)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _contentFormats
@@ -18855,11 +18850,10 @@ func (formats *ContentFormats) UnionDeserializeGTypes() *ContentFormats {
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gdk_content_formats_unref((*C.GdkContentFormats)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _contentFormats
@@ -18883,11 +18877,10 @@ func (formats *ContentFormats) UnionDeserializeMIMETypes() *ContentFormats {
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gdk_content_formats_unref((*C.GdkContentFormats)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _contentFormats
@@ -18911,11 +18904,10 @@ func (formats *ContentFormats) UnionSerializeGTypes() *ContentFormats {
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gdk_content_formats_unref((*C.GdkContentFormats)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _contentFormats
@@ -18939,11 +18931,10 @@ func (formats *ContentFormats) UnionSerializeMIMETypes() *ContentFormats {
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gdk_content_formats_unref((*C.GdkContentFormats)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _contentFormats
@@ -18978,11 +18969,10 @@ func ContentFormatsParse(str string) *ContentFormats {
 
 	if _cret != nil {
 		_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-		runtime.SetFinalizer(
+		runtime.AddCleanup(
 			gextras.StructIntern(unsafe.Pointer(_contentFormats)),
-			func(intern *struct{ C unsafe.Pointer }) {
-				C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
-			},
+			func(ptr unsafe.Pointer) { C.gdk_content_formats_unref((*C.GdkContentFormats)(ptr)) },
+			unsafe.Pointer(_cret),
 		)
 	}
 
@@ -19016,11 +19006,10 @@ func NewContentFormatsBuilder() *ContentFormatsBuilder {
 	var _contentFormatsBuilder *ContentFormatsBuilder // out
 
 	_contentFormatsBuilder = (*ContentFormatsBuilder)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_contentFormatsBuilder)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_content_formats_builder_unref((*C.GdkContentFormatsBuilder)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gdk_content_formats_builder_unref((*C.GdkContentFormatsBuilder)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _contentFormatsBuilder
@@ -19103,11 +19092,10 @@ func (builder *ContentFormatsBuilder) ToFormats() *ContentFormats {
 	var _contentFormats *ContentFormats // out
 
 	_contentFormats = (*ContentFormats)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_contentFormats)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_content_formats_unref((*C.GdkContentFormats)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gdk_content_formats_unref((*C.GdkContentFormats)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _contentFormats
@@ -19342,11 +19330,10 @@ func NewFileListFromArray(files []gio.Filer) *FileList {
 	var _fileList *FileList // out
 
 	_fileList = (*FileList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_fileList)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
+		func(ptr unsafe.Pointer) { C.free(ptr) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _fileList
@@ -19371,11 +19358,10 @@ func NewFileListFromList(files []gio.Filer) *FileList {
 	var _fileList *FileList // out
 
 	_fileList = (*FileList)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_fileList)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.free(intern.C)
-		},
+		func(ptr unsafe.Pointer) { C.free(ptr) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _fileList
@@ -19780,11 +19766,10 @@ func NewPopupLayout(anchorRect *Rectangle, rectAnchor Gravity, surfaceAnchor Gra
 	var _popupLayout *PopupLayout // out
 
 	_popupLayout = (*PopupLayout)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_popupLayout)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_popup_layout_unref((*C.GdkPopupLayout)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gdk_popup_layout_unref((*C.GdkPopupLayout)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _popupLayout
@@ -19807,11 +19792,10 @@ func (layout *PopupLayout) Copy() *PopupLayout {
 	var _popupLayout *PopupLayout // out
 
 	_popupLayout = (*PopupLayout)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_popupLayout)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_popup_layout_unref((*C.GdkPopupLayout)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gdk_popup_layout_unref((*C.GdkPopupLayout)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _popupLayout
@@ -20241,11 +20225,10 @@ func (rgba *RGBA) Copy() *RGBA {
 	var _rgbA *RGBA // out
 
 	_rgbA = (*RGBA)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_rgbA)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_rgba_free((*C.GdkRGBA)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gdk_rgba_free((*C.GdkRGBA)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _rgbA
@@ -20729,11 +20712,10 @@ func NewTextureDownloader(texture Texturer) *TextureDownloader {
 	var _textureDownloader *TextureDownloader // out
 
 	_textureDownloader = (*TextureDownloader)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_textureDownloader)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_texture_downloader_free((*C.GdkTextureDownloader)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gdk_texture_downloader_free((*C.GdkTextureDownloader)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _textureDownloader
@@ -20758,11 +20740,10 @@ func (self *TextureDownloader) Copy() *TextureDownloader {
 	var _textureDownloader *TextureDownloader // out
 
 	_textureDownloader = (*TextureDownloader)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_textureDownloader)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_texture_downloader_free((*C.GdkTextureDownloader)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gdk_texture_downloader_free((*C.GdkTextureDownloader)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _textureDownloader
@@ -20795,11 +20776,10 @@ func (self *TextureDownloader) DownloadBytes() (uint, *glib.Bytes) {
 
 	_outStride = uint(_arg1)
 	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_bytes)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_bytes_unref((*C.GBytes)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.g_bytes_unref((*C.GBytes)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _outStride, _bytes
@@ -20978,11 +20958,10 @@ func NewToplevelLayout() *ToplevelLayout {
 	var _toplevelLayout *ToplevelLayout // out
 
 	_toplevelLayout = (*ToplevelLayout)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_toplevelLayout)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_toplevel_layout_unref((*C.GdkToplevelLayout)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gdk_toplevel_layout_unref((*C.GdkToplevelLayout)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _toplevelLayout
@@ -21005,11 +20984,10 @@ func (layout *ToplevelLayout) Copy() *ToplevelLayout {
 	var _toplevelLayout *ToplevelLayout // out
 
 	_toplevelLayout = (*ToplevelLayout)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
+	runtime.AddCleanup(
 		gextras.StructIntern(unsafe.Pointer(_toplevelLayout)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.gdk_toplevel_layout_unref((*C.GdkToplevelLayout)(intern.C))
-		},
+		func(ptr unsafe.Pointer) { C.gdk_toplevel_layout_unref((*C.GdkToplevelLayout)(ptr)) },
+		unsafe.Pointer(_cret),
 	)
 
 	return _toplevelLayout

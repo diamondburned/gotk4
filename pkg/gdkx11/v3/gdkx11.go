@@ -174,9 +174,11 @@ func X11GetParentRelativePattern() *cairo.Pattern {
 		_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
 		_pattern = (*cairo.Pattern)(unsafe.Pointer(_pp))
 	}
-	runtime.SetFinalizer(_pattern, func(v *cairo.Pattern) {
-		C.cairo_pattern_destroy((*C.cairo_pattern_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_pattern,
+		func(p unsafe.Pointer) { C.cairo_pattern_destroy((*C.cairo_pattern_t)(p)) },
+		unsafe.Pointer(_cret),
+	)
 
 	return _pattern
 }

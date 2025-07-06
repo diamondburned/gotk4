@@ -821,9 +821,11 @@ func _gotk4_gdk4_Surface_ConnectRender(arg0 C.gpointer, arg1 *C.cairo_region_t, 
 		_region = (*cairo.Region)(unsafe.Pointer(_pp))
 	}
 	C.cairo_region_reference(arg1)
-	runtime.SetFinalizer(_region, func(v *cairo.Region) {
-		C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
-	})
+	runtime.AddCleanup(
+		_region,
+		func(p unsafe.Pointer) { C.cairo_region_destroy((*C.cairo_region_t)(p)) },
+		unsafe.Pointer(arg1),
+	)
 
 	ok := f(_region)
 

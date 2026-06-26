@@ -91,6 +91,15 @@ func (l *ListModel[T]) At(index int) T {
 	return gbox.Get(id).(T)
 }
 
+// Update replaces the value at the given index without destroying and
+// recreating the underlying GObject. It notifies the model so GTK
+// rebinds any visible cells.
+func (l *ListModel[T]) Update(index int, v T) {
+	id := uintptr(C.gotk4_gbox_list_get_id(l.native(), C.guint(index)))
+	gbox.Update(id, v)
+	C.gotk4_gbox_list_update_item(l.native(), C.guint(index))
+}
+
 // Len returns the number of items in the list.
 func (l *ListModel[T]) Len() int {
 	return int(l.ListModel.NItems())

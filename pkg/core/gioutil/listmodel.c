@@ -132,6 +132,13 @@ void gotk4_gbox_list_append(Gotk4GboxList *self, guintptr id) {
   g_list_model_items_changed(G_LIST_MODEL(self), objects_get_size(&self->items) - 1, 0, 1);
 }
 
+void gotk4_gbox_list_update_item(Gotk4GboxList *self, guint position) {
+  g_return_if_fail(GOTK4_IS_GBOX_LIST(self));
+  g_return_if_fail(position < objects_get_size(&self->items));
+
+  g_list_model_items_changed(G_LIST_MODEL(self), position, 1, 1);
+}
+
 guintptr gotk4_gbox_list_get_id(Gotk4GboxList *self, guint position) {
   g_return_val_if_fail(GOTK4_IS_GBOX_LIST(self), 0);
   g_return_val_if_fail(position < objects_get_size(&self->items), 0);

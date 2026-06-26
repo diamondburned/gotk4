@@ -101,6 +101,11 @@ func Get(ptr uintptr) interface{} {
 	return registry.Get(ptr - minLegalPointer)
 }
 
+// Update replaces the value at the given fake pointer without changing its slot.
+func Update(ptr uintptr, v interface{}) {
+	registry.Set(ptr-minLegalPointer, v)
+}
+
 // Delete deletes a boxed value. It is exposed to C under the name
 // "callbackDelete".
 func Delete(ptr uintptr) {

@@ -121,9 +121,18 @@ func (s *Slab) Delete(i uintptr) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	// Perform simple bound check.
 	if i < uintptr(len(s.list)) {
 		s.list[i] = slabEntry{atomic.Value{}, s.free, false}
 		s.free = i
+	}
+}
+
+// Set replaces the entry at the given index without affecting the free list.
+func (s *Slab) Set(i uintptr, entry interface{}) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	if i < uintptr(len(s.list)) {
+		s.list[i].Value.Store(entry)
 	}
 }

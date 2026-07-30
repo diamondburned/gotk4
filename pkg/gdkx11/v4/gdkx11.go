@@ -74,6 +74,8 @@ func (x X11DeviceType) String() string {
 
 // X11DeviceGetID returns the device ID as seen by XInput2.
 //
+// Deprecated: since version 4.18.
+//
 // The function takes the following parameters:
 //
 //   - device: GdkDevice.
@@ -98,6 +100,8 @@ func X11DeviceGetID(device *X11DeviceXI2) int {
 }
 
 // X11DeviceManagerLookup returns the GdkDevice that wraps the given device ID.
+//
+// Deprecated: since version 4.18.
 //
 // The function takes the following parameters:
 //
@@ -132,6 +136,8 @@ func X11DeviceManagerLookup(deviceManager *X11DeviceManagerXI2, deviceId int) *X
 // X11FreeCompoundText frees the data returned from
 // gdk_x11_display_string_to_compound_text().
 //
+// Deprecated: since version 4.18.
+//
 // The function takes the following parameters:
 //
 //   - ctext: pointer stored in ctext from a call to
@@ -146,6 +152,8 @@ func X11FreeCompoundText(ctext *byte) {
 }
 
 // X11GetServerTime: routine to get the current X server time stamp.
+//
+// Deprecated: since version 4.18.
 //
 // The function takes the following parameters:
 //
@@ -395,6 +403,8 @@ func (display *X11Display) DefaultGroup() gdk.Surfacer {
 //
 // This function returns NULL if GDK is using GLX.
 //
+// Deprecated: since version 4.18.
+//
 // The function returns the following values:
 //
 //   - gpointer (optional): EGL display object.
@@ -415,6 +425,8 @@ func (display *X11Display) EglDisplay() unsafe.Pointer {
 }
 
 // EglVersion retrieves the version of the EGL implementation.
+//
+// Deprecated: since version 4.18.
 //
 // The function returns the following values:
 //
@@ -446,6 +458,8 @@ func (display *X11Display) EglVersion() (major, minor int, ok bool) {
 }
 
 // GLXVersion retrieves the version of the GLX implementation.
+//
+// Deprecated: since version 4.18.
 //
 // The function returns the following values:
 //
@@ -600,6 +614,9 @@ func (display *X11Display) Grab() {
 // by the application (GTK applications can learn about cursor theme changes by
 // listening for change notification for the corresponding GtkSetting).
 //
+// Deprecated: Use the cursor-related properties of GtkSettings
+// (../gtk4/class.Settings.html) to set the cursor theme.
+//
 // The function takes the following parameters:
 //
 //   - theme (optional): name of the cursor theme to use, or NULL to unset a
@@ -681,6 +698,8 @@ func (display *X11Display) SetSurfaceScale(scale int) {
 // StringToCompoundText: convert a string from the encoding of the current
 // locale into a form suitable for storing in a window property.
 //
+// Deprecated: since version 4.18.
+//
 // The function takes the following parameters:
 //
 //   - str: nul-terminated string.
@@ -736,6 +755,8 @@ func (display *X11Display) Ungrab() {
 
 // UTF8ToCompoundText converts from UTF-8 to compound text.
 //
+// Deprecated: since version 4.18.
+//
 // The function takes the following parameters:
 //
 //   - str: UTF-8 string.
@@ -782,6 +803,8 @@ func (display *X11Display) UTF8ToCompoundText(str string) (string, int, []byte, 
 
 // X11DisplayOpen tries to open a new display to the X server given by
 // display_name. If opening the display fails, NULL is returned.
+//
+// Deprecated: since version 4.18.
 //
 // The function takes the following parameters:
 //
@@ -930,6 +953,8 @@ func marshalX11Monitor(p uintptr) (interface{}, error) {
 // The returned geometry is in ”application pixels”, not in ”device pixels” (see
 // gdk.Monitor.GetScaleFactor()).
 //
+// Deprecated: since version 4.18.
+//
 // The function returns the following values:
 //
 //   - workarea: GdkRectangle to be filled with the monitor workarea.
@@ -977,6 +1002,8 @@ func (screen *X11Screen) ConnectWindowManagerChanged(f func()) coreglib.SignalHa
 // Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
 // specification.
 //
+// Deprecated: since version 4.18.
+//
 // The function returns the following values:
 //
 //   - guint32: current workspace, or 0 if workspaces are not supported.
@@ -1001,6 +1028,8 @@ func (screen *X11Screen) CurrentDesktop() uint32 {
 // Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
 // specification.
 //
+// Deprecated: since version 4.18.
+//
 // The function returns the following values:
 //
 //   - guint32: number of workspaces, or 0 if workspaces are not supported.
@@ -1022,6 +1051,8 @@ func (screen *X11Screen) NumberOfDesktops() uint32 {
 
 // ScreenNumber returns the index of a GdkX11Screen.
 //
+// Deprecated: since version 4.18.
+//
 // The function returns the following values:
 //
 //   - gint: position of screen among the screens of its display.
@@ -1042,6 +1073,8 @@ func (screen *X11Screen) ScreenNumber() int {
 }
 
 // WindowManagerName returns the name of the window manager for screen.
+//
+// Deprecated: since version 4.18.
 //
 // The function returns the following values:
 //
@@ -1076,6 +1109,8 @@ func (screen *X11Screen) WindowManagerName() string {
 // the window manager starts gdk_x11_screen_supports_net_wm_hint() will return
 // FALSE for every property. You can monitor the window_manager_changed signal
 // on GdkX11Screen to detect a window manager change.
+//
+// Deprecated: since version 4.18.
 //
 // The function takes the following parameters:
 //
@@ -1129,6 +1164,8 @@ func marshalX11Surface(p uintptr) (interface{}, error) {
 
 // Desktop gets the number of the workspace surface is on.
 //
+// Deprecated: since version 4.18.
+//
 // The function returns the following values:
 //
 //   - guint32: current workspace of surface.
@@ -1149,6 +1186,8 @@ func (surface *X11Surface) Desktop() uint32 {
 }
 
 // Group returns the group this surface belongs to.
+//
+// Deprecated: since version 4.18.
 //
 // The function returns the following values:
 //
@@ -1189,6 +1228,8 @@ func (surface *X11Surface) Group() gdk.Surfacer {
 // Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
 // specification. Will not do anything if the surface is already on all
 // workspaces.
+//
+// Deprecated: since version 4.18.
 func (surface *X11Surface) MoveToCurrentDesktop() {
 	var _arg0 *C.GdkSurface // out
 
@@ -1202,6 +1243,8 @@ func (surface *X11Surface) MoveToCurrentDesktop() {
 // a window manager that supports multiple workspaces, as described in the
 // Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
 // specification.
+//
+// Deprecated: since version 4.18.
 //
 // The function takes the following parameters:
 //
@@ -1225,6 +1268,8 @@ func (surface *X11Surface) MoveToDesktop(desktop uint32) {
 // manager, then frame synchronziation may need to be disabled. This is the case
 // for a surface embedded via the XEMBED protocol.
 //
+// Deprecated: since version 4.18.
+//
 // The function takes the following parameters:
 //
 //   - frameSyncEnabled: whether frame-synchronization should be enabled.
@@ -1245,6 +1290,8 @@ func (surface *X11Surface) SetFrameSyncEnabled(frameSyncEnabled bool) {
 // SetGroup sets the group leader of surface to be leader. See the ICCCM for
 // details.
 //
+// Deprecated: since version 4.18.
+//
 // The function takes the following parameters:
 //
 //   - leader: GdkSurface.
@@ -1262,6 +1309,8 @@ func (surface *X11Surface) SetGroup(leader gdk.Surfacer) {
 
 // SetSkipPagerHint sets a hint on surface that pagers should not display it.
 // See the EWMH for details.
+//
+// Deprecated: since version 4.18.
 //
 // The function takes the following parameters:
 //
@@ -1282,6 +1331,8 @@ func (surface *X11Surface) SetSkipPagerHint(skipsPager bool) {
 
 // SetSkipTaskbarHint sets a hint on surface that taskbars should not display
 // it. See the EWMH for details.
+//
+// Deprecated: since version 4.18.
 //
 // The function takes the following parameters:
 //
@@ -1309,6 +1360,8 @@ func (surface *X11Surface) SetSkipTaskbarHint(skipsTaskbar bool) {
 // should only be used by applications which do not use GTK to create toplevel
 // surfaces.
 //
+// Deprecated: since version 4.18.
+//
 // The function takes the following parameters:
 //
 //   - variant: theme variant to export.
@@ -1327,6 +1380,8 @@ func (surface *X11Surface) SetThemeVariant(variant string) {
 
 // SetUrgencyHint sets a hint on surface that it needs user attention. See the
 // ICCCM for details.
+//
+// Deprecated: since version 4.18.
 //
 // The function takes the following parameters:
 //
@@ -1356,6 +1411,8 @@ func (surface *X11Surface) SetUrgencyHint(urgent bool) {
 // Note that this property is automatically updated by GDK, so this function
 // should only be used by applications which handle input events bypassing GDK.
 //
+// Deprecated: since version 4.18.
+//
 // The function takes the following parameters:
 //
 //   - timestamp: XServer timestamp to which the property should be set.
@@ -1374,6 +1431,8 @@ func (surface *X11Surface) SetUserTime(timestamp uint32) {
 // SetUTF8Property: this function modifies or removes an arbitrary X11 window
 // property of type UTF8_STRING. If the given surface is not a toplevel surface,
 // it is ignored.
+//
+// Deprecated: since version 4.18.
 //
 // The function takes the following parameters:
 //

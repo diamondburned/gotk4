@@ -126,6 +126,8 @@ var Preprocessors = []Preprocessor{
 	RenameEnumMembers("Gsk-4.RenderNodeType", ".*", "${0}_TYPE"),
 	RenameEnumMembers("Gdk-3.EventType", ".*", "${0}_TYPE"),
 	RenameEnumMembers("Gtk-4.GraphicsOffloadEnabled", ".*", "${0}_TYPE"),
+	RenameEnumMembers("Gdk-4.MemoryFormat", `MEMORY_G(\d+)_(B\d+)_(R\d+)_(.*)`, "MEMORY_G${1}_${2}_${3}_${4}_3PLANE"),
+	RenameEnumMembers("Gdk-4.MemoryFormat", `MEMORY_G(\d+)_(R\d+)_(B\d+)_(.*)`, "MEMORY_G${1}_${2}_${3}_${4}_3PLANE"),
 	// See #28.
 	RemoveCIncludes("Gio-2.0.gir", "gio/gdesktopappinfo.h"),
 	// These probably shouldn't be built on Windows.

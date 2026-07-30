@@ -115,99 +115,108 @@ import "C"
 
 // GType values.
 var (
-	GTypeAxisUse               = coreglib.Type(C.gdk_axis_use_get_type())
-	GTypeCrossingMode          = coreglib.Type(C.gdk_crossing_mode_get_type())
-	GTypeDevicePadFeature      = coreglib.Type(C.gdk_device_pad_feature_get_type())
-	GTypeDeviceToolType        = coreglib.Type(C.gdk_device_tool_type_get_type())
-	GTypeDmabufError           = coreglib.Type(C.gdk_dmabuf_error_get_type())
-	GTypeDragCancelReason      = coreglib.Type(C.gdk_drag_cancel_reason_get_type())
-	GTypeEventType             = coreglib.Type(C.gdk_event_type_get_type())
-	GTypeFullscreenMode        = coreglib.Type(C.gdk_fullscreen_mode_get_type())
-	GTypeGLError               = coreglib.Type(C.gdk_gl_error_get_type())
-	GTypeGravity               = coreglib.Type(C.gdk_gravity_get_type())
-	GTypeInputSource           = coreglib.Type(C.gdk_input_source_get_type())
-	GTypeKeyMatch              = coreglib.Type(C.gdk_key_match_get_type())
-	GTypeMemoryFormat          = coreglib.Type(C.gdk_memory_format_get_type())
-	GTypeNotifyType            = coreglib.Type(C.gdk_notify_type_get_type())
-	GTypeScrollDirection       = coreglib.Type(C.gdk_scroll_direction_get_type())
-	GTypeScrollUnit            = coreglib.Type(C.gdk_scroll_unit_get_type())
-	GTypeSubpixelLayout        = coreglib.Type(C.gdk_subpixel_layout_get_type())
-	GTypeSurfaceEdge           = coreglib.Type(C.gdk_surface_edge_get_type())
-	GTypeTextureError          = coreglib.Type(C.gdk_texture_error_get_type())
-	GTypeTitlebarGesture       = coreglib.Type(C.gdk_titlebar_gesture_get_type())
-	GTypeTouchpadGesturePhase  = coreglib.Type(C.gdk_touchpad_gesture_phase_get_type())
-	GTypeVulkanError           = coreglib.Type(C.gdk_vulkan_error_get_type())
-	GTypeAnchorHints           = coreglib.Type(C.gdk_anchor_hints_get_type())
-	GTypeAxisFlags             = coreglib.Type(C.gdk_axis_flags_get_type())
-	GTypeDragAction            = coreglib.Type(C.gdk_drag_action_get_type())
-	GTypeFrameClockPhase       = coreglib.Type(C.gdk_frame_clock_phase_get_type())
-	GTypeGLAPI                 = coreglib.Type(C.gdk_gl_api_get_type())
-	GTypeModifierType          = coreglib.Type(C.gdk_modifier_type_get_type())
-	GTypePaintableFlags        = coreglib.Type(C.gdk_paintable_flags_get_type())
-	GTypeSeatCapabilities      = coreglib.Type(C.gdk_seat_capabilities_get_type())
-	GTypeToplevelState         = coreglib.Type(C.gdk_toplevel_state_get_type())
-	GTypeDevicePad             = coreglib.Type(C.gdk_device_pad_get_type())
-	GTypeDragSurface           = coreglib.Type(C.gdk_drag_surface_get_type())
-	GTypePaintable             = coreglib.Type(C.gdk_paintable_get_type())
-	GTypePopup                 = coreglib.Type(C.gdk_popup_get_type())
-	GTypeToplevel              = coreglib.Type(C.gdk_toplevel_get_type())
-	GTypeAppLaunchContext      = coreglib.Type(C.gdk_app_launch_context_get_type())
-	GTypeButtonEvent           = coreglib.Type(C.gdk_button_event_get_type())
-	GTypeCairoContext          = coreglib.Type(C.gdk_cairo_context_get_type())
-	GTypeClipboard             = coreglib.Type(C.gdk_clipboard_get_type())
-	GTypeContentDeserializer   = coreglib.Type(C.gdk_content_deserializer_get_type())
-	GTypeContentProvider       = coreglib.Type(C.gdk_content_provider_get_type())
-	GTypeContentSerializer     = coreglib.Type(C.gdk_content_serializer_get_type())
-	GTypeCrossingEvent         = coreglib.Type(C.gdk_crossing_event_get_type())
-	GTypeCursor                = coreglib.Type(C.gdk_cursor_get_type())
-	GTypeDNDEvent              = coreglib.Type(C.gdk_dnd_event_get_type())
-	GTypeDeleteEvent           = coreglib.Type(C.gdk_delete_event_get_type())
-	GTypeDevice                = coreglib.Type(C.gdk_device_get_type())
-	GTypeDeviceTool            = coreglib.Type(C.gdk_device_tool_get_type())
-	GTypeDisplay               = coreglib.Type(C.gdk_display_get_type())
-	GTypeDisplayManager        = coreglib.Type(C.gdk_display_manager_get_type())
-	GTypeDmabufTexture         = coreglib.Type(C.gdk_dmabuf_texture_get_type())
-	GTypeDmabufTextureBuilder  = coreglib.Type(C.gdk_dmabuf_texture_builder_get_type())
-	GTypeDrag                  = coreglib.Type(C.gdk_drag_get_type())
-	GTypeDrawContext           = coreglib.Type(C.gdk_draw_context_get_type())
-	GTypeDrop                  = coreglib.Type(C.gdk_drop_get_type())
-	GTypeEvent                 = coreglib.Type(C.gdk_event_get_type())
-	GTypeFocusEvent            = coreglib.Type(C.gdk_focus_event_get_type())
-	GTypeFrameClock            = coreglib.Type(C.gdk_frame_clock_get_type())
-	GTypeGLContext             = coreglib.Type(C.gdk_gl_context_get_type())
-	GTypeGLTexture             = coreglib.Type(C.gdk_gl_texture_get_type())
-	GTypeGLTextureBuilder      = coreglib.Type(C.gdk_gl_texture_builder_get_type())
-	GTypeGrabBrokenEvent       = coreglib.Type(C.gdk_grab_broken_event_get_type())
-	GTypeKeyEvent              = coreglib.Type(C.gdk_key_event_get_type())
-	GTypeMemoryTexture         = coreglib.Type(C.gdk_memory_texture_get_type())
-	GTypeMonitor               = coreglib.Type(C.gdk_monitor_get_type())
-	GTypeMotionEvent           = coreglib.Type(C.gdk_motion_event_get_type())
-	GTypePadEvent              = coreglib.Type(C.gdk_pad_event_get_type())
-	GTypeProximityEvent        = coreglib.Type(C.gdk_proximity_event_get_type())
-	GTypeScrollEvent           = coreglib.Type(C.gdk_scroll_event_get_type())
-	GTypeSeat                  = coreglib.Type(C.gdk_seat_get_type())
-	GTypeSnapshot              = coreglib.Type(C.gdk_snapshot_get_type())
-	GTypeSurface               = coreglib.Type(C.gdk_surface_get_type())
-	GTypeTexture               = coreglib.Type(C.gdk_texture_get_type())
-	GTypeTouchEvent            = coreglib.Type(C.gdk_touch_event_get_type())
-	GTypeTouchpadEvent         = coreglib.Type(C.gdk_touchpad_event_get_type())
-	GTypeVulkanContext         = coreglib.Type(C.gdk_vulkan_context_get_type())
-	GTypeContentFormats        = coreglib.Type(C.gdk_content_formats_get_type())
-	GTypeContentFormatsBuilder = coreglib.Type(C.gdk_content_formats_builder_get_type())
-	GTypeDmabufFormats         = coreglib.Type(C.gdk_dmabuf_formats_get_type())
-	GTypeEventSequence         = coreglib.Type(C.gdk_event_sequence_get_type())
-	GTypeFileList              = coreglib.Type(C.gdk_file_list_get_type())
-	GTypeFrameTimings          = coreglib.Type(C.gdk_frame_timings_get_type())
-	GTypePopupLayout           = coreglib.Type(C.gdk_popup_layout_get_type())
-	GTypeRGBA                  = coreglib.Type(C.gdk_rgba_get_type())
-	GTypeRectangle             = coreglib.Type(C.gdk_rectangle_get_type())
-	GTypeTextureDownloader     = coreglib.Type(C.gdk_texture_downloader_get_type())
-	GTypeToplevelLayout        = coreglib.Type(C.gdk_toplevel_layout_get_type())
+	GTypeAxisUse                 = coreglib.Type(C.gdk_axis_use_get_type())
+	GTypeCICPRange               = coreglib.Type(C.gdk_cicp_range_get_type())
+	GTypeColorChannel            = coreglib.Type(C.gdk_color_channel_get_type())
+	GTypeCrossingMode            = coreglib.Type(C.gdk_crossing_mode_get_type())
+	GTypeDevicePadFeature        = coreglib.Type(C.gdk_device_pad_feature_get_type())
+	GTypeDeviceToolType          = coreglib.Type(C.gdk_device_tool_type_get_type())
+	GTypeDmabufError             = coreglib.Type(C.gdk_dmabuf_error_get_type())
+	GTypeDragCancelReason        = coreglib.Type(C.gdk_drag_cancel_reason_get_type())
+	GTypeEventType               = coreglib.Type(C.gdk_event_type_get_type())
+	GTypeFullscreenMode          = coreglib.Type(C.gdk_fullscreen_mode_get_type())
+	GTypeGLError                 = coreglib.Type(C.gdk_gl_error_get_type())
+	GTypeGravity                 = coreglib.Type(C.gdk_gravity_get_type())
+	GTypeInputSource             = coreglib.Type(C.gdk_input_source_get_type())
+	GTypeKeyMatch                = coreglib.Type(C.gdk_key_match_get_type())
+	GTypeMemoryFormat            = coreglib.Type(C.gdk_memory_format_get_type())
+	GTypeNotifyType              = coreglib.Type(C.gdk_notify_type_get_type())
+	GTypeScrollDirection         = coreglib.Type(C.gdk_scroll_direction_get_type())
+	GTypeScrollRelativeDirection = coreglib.Type(C.gdk_scroll_relative_direction_get_type())
+	GTypeScrollUnit              = coreglib.Type(C.gdk_scroll_unit_get_type())
+	GTypeSubpixelLayout          = coreglib.Type(C.gdk_subpixel_layout_get_type())
+	GTypeSurfaceEdge             = coreglib.Type(C.gdk_surface_edge_get_type())
+	GTypeTextureError            = coreglib.Type(C.gdk_texture_error_get_type())
+	GTypeTitlebarGesture         = coreglib.Type(C.gdk_titlebar_gesture_get_type())
+	GTypeTouchpadGesturePhase    = coreglib.Type(C.gdk_touchpad_gesture_phase_get_type())
+	GTypeVulkanError             = coreglib.Type(C.gdk_vulkan_error_get_type())
+	GTypeAnchorHints             = coreglib.Type(C.gdk_anchor_hints_get_type())
+	GTypeAxisFlags               = coreglib.Type(C.gdk_axis_flags_get_type())
+	GTypeDragAction              = coreglib.Type(C.gdk_drag_action_get_type())
+	GTypeFrameClockPhase         = coreglib.Type(C.gdk_frame_clock_phase_get_type())
+	GTypeGLAPI                   = coreglib.Type(C.gdk_gl_api_get_type())
+	GTypeModifierType            = coreglib.Type(C.gdk_modifier_type_get_type())
+	GTypePaintableFlags          = coreglib.Type(C.gdk_paintable_flags_get_type())
+	GTypeSeatCapabilities        = coreglib.Type(C.gdk_seat_capabilities_get_type())
+	GTypeToplevelCapabilities    = coreglib.Type(C.gdk_toplevel_capabilities_get_type())
+	GTypeToplevelState           = coreglib.Type(C.gdk_toplevel_state_get_type())
+	GTypeDevicePad               = coreglib.Type(C.gdk_device_pad_get_type())
+	GTypeDragSurface             = coreglib.Type(C.gdk_drag_surface_get_type())
+	GTypePaintable               = coreglib.Type(C.gdk_paintable_get_type())
+	GTypePopup                   = coreglib.Type(C.gdk_popup_get_type())
+	GTypeToplevel                = coreglib.Type(C.gdk_toplevel_get_type())
+	GTypeAppLaunchContext        = coreglib.Type(C.gdk_app_launch_context_get_type())
+	GTypeButtonEvent             = coreglib.Type(C.gdk_button_event_get_type())
+	GTypeCairoContext            = coreglib.Type(C.gdk_cairo_context_get_type())
+	GTypeCICPParams              = coreglib.Type(C.gdk_cicp_params_get_type())
+	GTypeClipboard               = coreglib.Type(C.gdk_clipboard_get_type())
+	GTypeContentDeserializer     = coreglib.Type(C.gdk_content_deserializer_get_type())
+	GTypeContentProvider         = coreglib.Type(C.gdk_content_provider_get_type())
+	GTypeContentSerializer       = coreglib.Type(C.gdk_content_serializer_get_type())
+	GTypeCrossingEvent           = coreglib.Type(C.gdk_crossing_event_get_type())
+	GTypeCursor                  = coreglib.Type(C.gdk_cursor_get_type())
+	GTypeDNDEvent                = coreglib.Type(C.gdk_dnd_event_get_type())
+	GTypeDeleteEvent             = coreglib.Type(C.gdk_delete_event_get_type())
+	GTypeDevice                  = coreglib.Type(C.gdk_device_get_type())
+	GTypeDeviceTool              = coreglib.Type(C.gdk_device_tool_get_type())
+	GTypeDisplay                 = coreglib.Type(C.gdk_display_get_type())
+	GTypeDisplayManager          = coreglib.Type(C.gdk_display_manager_get_type())
+	GTypeDmabufTexture           = coreglib.Type(C.gdk_dmabuf_texture_get_type())
+	GTypeDmabufTextureBuilder    = coreglib.Type(C.gdk_dmabuf_texture_builder_get_type())
+	GTypeDrag                    = coreglib.Type(C.gdk_drag_get_type())
+	GTypeDrawContext             = coreglib.Type(C.gdk_draw_context_get_type())
+	GTypeDrop                    = coreglib.Type(C.gdk_drop_get_type())
+	GTypeEvent                   = coreglib.Type(C.gdk_event_get_type())
+	GTypeFocusEvent              = coreglib.Type(C.gdk_focus_event_get_type())
+	GTypeFrameClock              = coreglib.Type(C.gdk_frame_clock_get_type())
+	GTypeGLContext               = coreglib.Type(C.gdk_gl_context_get_type())
+	GTypeGLTexture               = coreglib.Type(C.gdk_gl_texture_get_type())
+	GTypeGLTextureBuilder        = coreglib.Type(C.gdk_gl_texture_builder_get_type())
+	GTypeGrabBrokenEvent         = coreglib.Type(C.gdk_grab_broken_event_get_type())
+	GTypeKeyEvent                = coreglib.Type(C.gdk_key_event_get_type())
+	GTypeMemoryTexture           = coreglib.Type(C.gdk_memory_texture_get_type())
+	GTypeMemoryTextureBuilder    = coreglib.Type(C.gdk_memory_texture_builder_get_type())
+	GTypeMonitor                 = coreglib.Type(C.gdk_monitor_get_type())
+	GTypeMotionEvent             = coreglib.Type(C.gdk_motion_event_get_type())
+	GTypePadEvent                = coreglib.Type(C.gdk_pad_event_get_type())
+	GTypeProximityEvent          = coreglib.Type(C.gdk_proximity_event_get_type())
+	GTypeScrollEvent             = coreglib.Type(C.gdk_scroll_event_get_type())
+	GTypeSeat                    = coreglib.Type(C.gdk_seat_get_type())
+	GTypeSnapshot                = coreglib.Type(C.gdk_snapshot_get_type())
+	GTypeSurface                 = coreglib.Type(C.gdk_surface_get_type())
+	GTypeTexture                 = coreglib.Type(C.gdk_texture_get_type())
+	GTypeTouchEvent              = coreglib.Type(C.gdk_touch_event_get_type())
+	GTypeTouchpadEvent           = coreglib.Type(C.gdk_touchpad_event_get_type())
+	GTypeVulkanContext           = coreglib.Type(C.gdk_vulkan_context_get_type())
+	GTypeColorState              = coreglib.Type(C.gdk_color_state_get_type())
+	GTypeContentFormats          = coreglib.Type(C.gdk_content_formats_get_type())
+	GTypeContentFormatsBuilder   = coreglib.Type(C.gdk_content_formats_builder_get_type())
+	GTypeDmabufFormats           = coreglib.Type(C.gdk_dmabuf_formats_get_type())
+	GTypeEventSequence           = coreglib.Type(C.gdk_event_sequence_get_type())
+	GTypeFileList                = coreglib.Type(C.gdk_file_list_get_type())
+	GTypeFrameTimings            = coreglib.Type(C.gdk_frame_timings_get_type())
+	GTypePopupLayout             = coreglib.Type(C.gdk_popup_layout_get_type())
+	GTypeRGBA                    = coreglib.Type(C.gdk_rgba_get_type())
+	GTypeRectangle               = coreglib.Type(C.gdk_rectangle_get_type())
+	GTypeTextureDownloader       = coreglib.Type(C.gdk_texture_downloader_get_type())
+	GTypeToplevelLayout          = coreglib.Type(C.gdk_toplevel_layout_get_type())
 )
 
 func init() {
 	coreglib.RegisterGValueMarshalers([]coreglib.TypeMarshaler{
 		coreglib.TypeMarshaler{T: GTypeAxisUse, F: marshalAxisUse},
+		coreglib.TypeMarshaler{T: GTypeCICPRange, F: marshalCICPRange},
+		coreglib.TypeMarshaler{T: GTypeColorChannel, F: marshalColorChannel},
 		coreglib.TypeMarshaler{T: GTypeCrossingMode, F: marshalCrossingMode},
 		coreglib.TypeMarshaler{T: GTypeDevicePadFeature, F: marshalDevicePadFeature},
 		coreglib.TypeMarshaler{T: GTypeDeviceToolType, F: marshalDeviceToolType},
@@ -222,6 +231,7 @@ func init() {
 		coreglib.TypeMarshaler{T: GTypeMemoryFormat, F: marshalMemoryFormat},
 		coreglib.TypeMarshaler{T: GTypeNotifyType, F: marshalNotifyType},
 		coreglib.TypeMarshaler{T: GTypeScrollDirection, F: marshalScrollDirection},
+		coreglib.TypeMarshaler{T: GTypeScrollRelativeDirection, F: marshalScrollRelativeDirection},
 		coreglib.TypeMarshaler{T: GTypeScrollUnit, F: marshalScrollUnit},
 		coreglib.TypeMarshaler{T: GTypeSubpixelLayout, F: marshalSubpixelLayout},
 		coreglib.TypeMarshaler{T: GTypeSurfaceEdge, F: marshalSurfaceEdge},
@@ -237,6 +247,7 @@ func init() {
 		coreglib.TypeMarshaler{T: GTypeModifierType, F: marshalModifierType},
 		coreglib.TypeMarshaler{T: GTypePaintableFlags, F: marshalPaintableFlags},
 		coreglib.TypeMarshaler{T: GTypeSeatCapabilities, F: marshalSeatCapabilities},
+		coreglib.TypeMarshaler{T: GTypeToplevelCapabilities, F: marshalToplevelCapabilities},
 		coreglib.TypeMarshaler{T: GTypeToplevelState, F: marshalToplevelState},
 		coreglib.TypeMarshaler{T: GTypeDevicePad, F: marshalDevicePad},
 		coreglib.TypeMarshaler{T: GTypeDragSurface, F: marshalDragSurface},
@@ -246,6 +257,7 @@ func init() {
 		coreglib.TypeMarshaler{T: GTypeAppLaunchContext, F: marshalAppLaunchContext},
 		coreglib.TypeMarshaler{T: GTypeButtonEvent, F: marshalButtonEvent},
 		coreglib.TypeMarshaler{T: GTypeCairoContext, F: marshalCairoContext},
+		coreglib.TypeMarshaler{T: GTypeCICPParams, F: marshalCICPParams},
 		coreglib.TypeMarshaler{T: GTypeClipboard, F: marshalClipboard},
 		coreglib.TypeMarshaler{T: GTypeContentDeserializer, F: marshalContentDeserializer},
 		coreglib.TypeMarshaler{T: GTypeContentProvider, F: marshalContentProvider},
@@ -272,6 +284,7 @@ func init() {
 		coreglib.TypeMarshaler{T: GTypeGrabBrokenEvent, F: marshalGrabBrokenEvent},
 		coreglib.TypeMarshaler{T: GTypeKeyEvent, F: marshalKeyEvent},
 		coreglib.TypeMarshaler{T: GTypeMemoryTexture, F: marshalMemoryTexture},
+		coreglib.TypeMarshaler{T: GTypeMemoryTextureBuilder, F: marshalMemoryTextureBuilder},
 		coreglib.TypeMarshaler{T: GTypeMonitor, F: marshalMonitor},
 		coreglib.TypeMarshaler{T: GTypeMotionEvent, F: marshalMotionEvent},
 		coreglib.TypeMarshaler{T: GTypePadEvent, F: marshalPadEvent},
@@ -284,6 +297,7 @@ func init() {
 		coreglib.TypeMarshaler{T: GTypeTouchEvent, F: marshalTouchEvent},
 		coreglib.TypeMarshaler{T: GTypeTouchpadEvent, F: marshalTouchpadEvent},
 		coreglib.TypeMarshaler{T: GTypeVulkanContext, F: marshalVulkanContext},
+		coreglib.TypeMarshaler{T: GTypeColorState, F: marshalColorState},
 		coreglib.TypeMarshaler{T: GTypeContentFormats, F: marshalContentFormats},
 		coreglib.TypeMarshaler{T: GTypeContentFormatsBuilder, F: marshalContentFormatsBuilder},
 		coreglib.TypeMarshaler{T: GTypeDmabufFormats, F: marshalDmabufFormats},
@@ -328,6 +342,8 @@ const EVENT_PROPAGATE = false
 const EVENT_STOP = true
 const KEY_0 = 48
 const KEY_1 = 49
+const KEY_10ChannelsDown = 268964281
+const KEY_10ChannelsUp = 268964280
 const KEY_2 = 50
 const KEY_3 = 51
 const KEY_3270_AltCursor = 64784
@@ -360,6 +376,7 @@ const KEY_3270_Right2 = 64771
 const KEY_3270_Rule = 64788
 const KEY_3270_Setup = 64791
 const KEY_3270_Test = 64781
+const KEY_3DMode = 268964463
 const KEY_4 = 52
 const KEY_5 = 53
 const KEY_6 = 54
@@ -368,6 +385,7 @@ const KEY_8 = 56
 const KEY_9 = 57
 const KEY_A = 65
 const KEY_AE = 198
+const KEY_ALSToggle = 268964400
 const KEY_Aacute = 193
 const KEY_Abelowdot = 16785056
 const KEY_Abreve = 451
@@ -378,6 +396,7 @@ const KEY_Abrevehook = 16785074
 const KEY_Abrevetilde = 16785076
 const KEY_AccessX_Enable = 65136
 const KEY_AccessX_Feedback_Enable = 65137
+const KEY_Accessibility = 268964430
 const KEY_Acircumflex = 194
 const KEY_Acircumflexacute = 16785060
 const KEY_Acircumflexbelowdot = 16785068
@@ -385,6 +404,7 @@ const KEY_Acircumflexgrave = 16785062
 const KEY_Acircumflexhook = 16785064
 const KEY_Acircumflextilde = 16785066
 const KEY_AddFavorite = 269025081
+const KEY_Addressbook = 268964269
 const KEY_Adiaeresis = 196
 const KEY_Agrave = 192
 const KEY_Ahook = 16785058
@@ -392,6 +412,7 @@ const KEY_Alt_L = 65513
 const KEY_Alt_R = 65514
 const KEY_Amacron = 960
 const KEY_Aogonek = 417
+const KEY_AppSelect = 268964420
 const KEY_ApplicationLeft = 269025104
 const KEY_ApplicationRight = 269025105
 const KEY_Arabic_0 = 16778848
@@ -565,9 +586,16 @@ const KEY_Armenian_yech = 16778597
 const KEY_Armenian_yentamna = 16778634
 const KEY_Armenian_za = 16778598
 const KEY_Armenian_zhe = 16778602
+const KEY_AspectRatio = 268964215
+const KEY_Assistant = 268964423
 const KEY_Atilde = 195
+const KEY_AttendantOff = 268964380
+const KEY_AttendantOn = 268964379
+const KEY_AttendantToggle = 268964381
 const KEY_AudibleBell_Enable = 65146
+const KEY_Audio = 268964232
 const KEY_AudioCycleTrack = 269025179
+const KEY_AudioDesc = 268964462
 const KEY_AudioForward = 269025175
 const KEY_AudioLowerVolume = 269025041
 const KEY_AudioMedia = 269025074
@@ -584,6 +612,7 @@ const KEY_AudioRecord = 269025052
 const KEY_AudioRepeat = 269025176
 const KEY_AudioRewind = 269025086
 const KEY_AudioStop = 269025045
+const KEY_AutopilotEngageToggle = 268964477
 const KEY_Away = 269025165
 const KEY_B = 66
 const KEY_Babovedot = 16784898
@@ -598,6 +627,10 @@ const KEY_Book = 269025106
 const KEY_BounceKeys_Enable = 65140
 const KEY_Break = 65387
 const KEY_BrightnessAdjust = 269025083
+const KEY_BrightnessAuto = 268964084
+const KEY_BrightnessMax = 268964433
+const KEY_BrightnessMin = 268964432
+const KEY_Buttonconfig = 268964416
 const KEY_Byelorussian_SHORTU = 1726
 const KEY_Byelorussian_shortu = 1710
 const KEY_C = 67
@@ -609,19 +642,34 @@ const KEY_Cabovedot = 709
 const KEY_Cacute = 454
 const KEY_Calculator = 269025053
 const KEY_Calendar = 269025056
+const KEY_CameraAccessDisable = 268964428
+const KEY_CameraAccessEnable = 268964427
+const KEY_CameraAccessToggle = 268964429
+const KEY_CameraDown = 268964376
+const KEY_CameraFocus = 268964368
+const KEY_CameraLeft = 268964377
+const KEY_CameraRight = 268964378
+const KEY_CameraUp = 268964375
+const KEY_CameraZoomIn = 268964373
+const KEY_CameraZoomOut = 268964374
 const KEY_Cancel = 65385
 const KEY_Caps_Lock = 65509
 const KEY_Ccaron = 456
 const KEY_Ccedilla = 199
 const KEY_Ccircumflex = 710
 const KEY_Ch = 65185
+const KEY_ChannelDown = 268964243
+const KEY_ChannelUp = 268964242
 const KEY_Clear = 65291
 const KEY_ClearGrab = 269024801
+const KEY_ClearvuSonar = 268964486
 const KEY_Close = 269025110
 const KEY_Codeinput = 65335
 const KEY_ColonSign = 16785569
 const KEY_Community = 269025085
+const KEY_ContextMenu = 268964278
 const KEY_ContrastAdjust = 269025058
+const KEY_ControlPanel = 268964419
 const KEY_Control_L = 65507
 const KEY_Control_R = 65508
 const KEY_Copy = 269025111
@@ -734,14 +782,22 @@ const KEY_Cyrillic_zhe = 1750
 const KEY_Cyrillic_zhe_descender = 16778391
 const KEY_D = 68
 const KEY_DOS = 269025114
+const KEY_DVD = 268964229
 const KEY_Dabovedot = 16784906
+const KEY_Data = 268964471
+const KEY_Database = 268964266
 const KEY_Dcaron = 463
 const KEY_Delete = 65535
+const KEY_Dictate = 268964426
 const KEY_Display = 269025113
+const KEY_DisplayOff = 268964085
+const KEY_DisplayToggle = 268964271
+const KEY_DoNotDisturb = 268964431
 const KEY_Documents = 269025115
 const KEY_DongSign = 16785579
 const KEY_Down = 65364
 const KEY_Dstroke = 464
+const KEY_DualRangeRadar = 268964483
 const KEY_E = 69
 const KEY_ENG = 957
 const KEY_ETH = 208
@@ -758,12 +814,14 @@ const KEY_Ecircumflexhook = 16785090
 const KEY_Ecircumflextilde = 16785092
 const KEY_EcuSign = 16785568
 const KEY_Ediaeresis = 203
+const KEY_Editor = 268964262
 const KEY_Egrave = 200
 const KEY_Ehook = 16785082
 const KEY_Eisu_Shift = 65327
 const KEY_Eisu_toggle = 65328
 const KEY_Eject = 269025068
 const KEY_Emacron = 938
+const KEY_EmojiPicker = 268964425
 const KEY_End = 65367
 const KEY_Eogonek = 458
 const KEY_Escape = 65307
@@ -822,13 +880,19 @@ const KEY_Farsi_7 = 16778999
 const KEY_Farsi_8 = 16779000
 const KEY_Farsi_9 = 16779001
 const KEY_Farsi_yeh = 16778956
+const KEY_FastReverse = 268964469
 const KEY_Favorites = 269025072
 const KEY_Finance = 269025084
 const KEY_Find = 65384
 const KEY_First_Virtual_Screen = 65232
+const KEY_FishingChart = 268964481
+const KEY_Fn = 268964304
+const KEY_FnRightShift = 268964325
+const KEY_Fn_Esc = 268964305
 const KEY_Forward = 269025063
 const KEY_FrameBack = 269025181
 const KEY_FrameForward = 269025182
+const KEY_FullScreen = 269025208
 const KEY_G = 71
 const KEY_Gabovedot = 725
 const KEY_Game = 269025118
@@ -876,6 +940,7 @@ const KEY_Georgian_xan = 16781550
 const KEY_Georgian_zen = 16781526
 const KEY_Georgian_zhar = 16781535
 const KEY_Go = 269025119
+const KEY_GraphicsEditor = 268964264
 const KEY_Greek_ALPHA = 1985
 const KEY_Greek_ALPHAaccent = 1953
 const KEY_Greek_BETA = 1986
@@ -1059,6 +1124,7 @@ const KEY_Hangul_YO = 3787
 const KEY_Hangul_YU = 3792
 const KEY_Hangul_YeorinHieuh = 3829
 const KEY_Hangul_switch = 65406
+const KEY_HangupPhone = 268964286
 const KEY_Hankaku = 65321
 const KEY_Hcircumflex = 678
 const KEY_Hebrew_switch = 65406
@@ -1125,11 +1191,14 @@ const KEY_Idiaeresis = 207
 const KEY_Igrave = 204
 const KEY_Ihook = 16785096
 const KEY_Imacron = 975
+const KEY_Images = 268964282
+const KEY_Info = 268964198
 const KEY_Insert = 65379
 const KEY_Iogonek = 967
 const KEY_Itilde = 933
 const KEY_J = 74
 const KEY_Jcircumflex = 684
+const KEY_Journal = 268964418
 const KEY_K = 75
 const KEY_KP_0 = 65456
 const KEY_KP_1 = 65457
@@ -1175,6 +1244,17 @@ const KEY_Kanji_Bangou = 65335
 const KEY_Katakana = 65318
 const KEY_KbdBrightnessDown = 269025030
 const KEY_KbdBrightnessUp = 269025029
+const KEY_KbdInputAssistAccept = 268964452
+const KEY_KbdInputAssistCancel = 268964453
+const KEY_KbdInputAssistNext = 268964449
+const KEY_KbdInputAssistNextgroup = 268964451
+const KEY_KbdInputAssistPrev = 268964448
+const KEY_KbdInputAssistPrevgroup = 268964450
+const KEY_KbdLcdMenu1 = 268964536
+const KEY_KbdLcdMenu2 = 268964537
+const KEY_KbdLcdMenu3 = 268964538
+const KEY_KbdLcdMenu4 = 268964539
+const KEY_KbdLcdMenu5 = 268964540
 const KEY_KbdLightOnOff = 269025028
 const KEY_Kcedilla = 979
 const KEY_Keyboard = 269025203
@@ -1212,7 +1292,10 @@ const KEY_Lbelowdot = 16784950
 const KEY_Lcaron = 421
 const KEY_Lcedilla = 934
 const KEY_Left = 65361
+const KEY_LeftDown = 268964457
+const KEY_LeftUp = 268964456
 const KEY_LightBulb = 269025077
+const KEY_LightsToggle = 268964382
 const KEY_Linefeed = 65290
 const KEY_LiraSign = 16785572
 const KEY_LogGrabInfo = 269024805
@@ -1227,11 +1310,50 @@ const KEY_Macedonia_KJE = 1724
 const KEY_Macedonia_dse = 1701
 const KEY_Macedonia_gje = 1698
 const KEY_Macedonia_kje = 1708
+const KEY_Macro1 = 268964496
+const KEY_Macro10 = 268964505
+const KEY_Macro11 = 268964506
+const KEY_Macro12 = 268964507
+const KEY_Macro13 = 268964508
+const KEY_Macro14 = 268964509
+const KEY_Macro15 = 268964510
+const KEY_Macro16 = 268964511
+const KEY_Macro17 = 268964512
+const KEY_Macro18 = 268964513
+const KEY_Macro19 = 268964514
+const KEY_Macro2 = 268964497
+const KEY_Macro20 = 268964515
+const KEY_Macro21 = 268964516
+const KEY_Macro22 = 268964517
+const KEY_Macro23 = 268964518
+const KEY_Macro24 = 268964519
+const KEY_Macro25 = 268964520
+const KEY_Macro26 = 268964521
+const KEY_Macro27 = 268964522
+const KEY_Macro28 = 268964523
+const KEY_Macro29 = 268964524
+const KEY_Macro3 = 268964498
+const KEY_Macro30 = 268964525
+const KEY_Macro4 = 268964499
+const KEY_Macro5 = 268964500
+const KEY_Macro6 = 268964501
+const KEY_Macro7 = 268964502
+const KEY_Macro8 = 268964503
+const KEY_Macro9 = 268964504
+const KEY_MacroPreset1 = 268964531
+const KEY_MacroPreset2 = 268964532
+const KEY_MacroPreset3 = 268964533
+const KEY_MacroPresetCycle = 268964530
+const KEY_MacroRecordStart = 268964528
+const KEY_MacroRecordStop = 268964529
 const KEY_Mae_Koho = 65342
 const KEY_Mail = 269025049
 const KEY_MailForward = 269025168
+const KEY_MarkWaypoint = 268964478
 const KEY_Market = 269025122
 const KEY_Massyo = 65324
+const KEY_MediaRepeat = 268964279
+const KEY_MediaTopMenu = 268964459
 const KEY_Meeting = 269025123
 const KEY_Memo = 269025054
 const KEY_Menu = 65383
@@ -1243,6 +1365,7 @@ const KEY_Meta_R = 65512
 const KEY_MillSign = 16785573
 const KEY_ModeLock = 269025025
 const KEY_Mode_switch = 65406
+const KEY_MonBrightnessCycle = 269025031
 const KEY_MonBrightnessDown = 269025027
 const KEY_MonBrightnessUp = 269025026
 const KEY_MouseKeys_Accel_Enable = 65143
@@ -1256,16 +1379,39 @@ const KEY_MySites = 269025127
 const KEY_N = 78
 const KEY_Nacute = 465
 const KEY_NairaSign = 16785574
+const KEY_NavChart = 268964480
+const KEY_NavInfo = 268964488
 const KEY_Ncaron = 466
 const KEY_Ncedilla = 977
 const KEY_New = 269025128
 const KEY_NewSheqelSign = 16785578
 const KEY_News = 269025129
 const KEY_Next = 65366
+const KEY_NextElement = 268964475
+const KEY_NextFavorite = 268964464
 const KEY_Next_VMode = 269024802
 const KEY_Next_Virtual_Screen = 65234
+const KEY_NotificationCenter = 268964284
 const KEY_Ntilde = 209
 const KEY_Num_Lock = 65407
+const KEY_Numeric0 = 268964352
+const KEY_Numeric1 = 268964353
+const KEY_Numeric11 = 268964460
+const KEY_Numeric12 = 268964461
+const KEY_Numeric2 = 268964354
+const KEY_Numeric3 = 268964355
+const KEY_Numeric4 = 268964356
+const KEY_Numeric5 = 268964357
+const KEY_Numeric6 = 268964358
+const KEY_Numeric7 = 268964359
+const KEY_Numeric8 = 268964360
+const KEY_Numeric9 = 268964361
+const KEY_NumericA = 268964364
+const KEY_NumericB = 268964365
+const KEY_NumericC = 268964366
+const KEY_NumericD = 268964367
+const KEY_NumericPound = 268964363
+const KEY_NumericStar = 268964362
 const KEY_O = 79
 const KEY_OE = 5052
 const KEY_Oacute = 211
@@ -1290,6 +1436,7 @@ const KEY_Ohorngrave = 16785116
 const KEY_Ohornhook = 16785118
 const KEY_Ohorntilde = 16785120
 const KEY_Omacron = 978
+const KEY_OnScreenKeyboard = 268964472
 const KEY_Ooblique = 216
 const KEY_Open = 269025131
 const KEY_OpenURL = 269025080
@@ -1304,8 +1451,10 @@ const KEY_Page_Down = 65366
 const KEY_Page_Up = 65365
 const KEY_Paste = 269025133
 const KEY_Pause = 65299
+const KEY_PauseRecord = 268964466
 const KEY_PesetaSign = 16785575
 const KEY_Phone = 269025134
+const KEY_PickupPhone = 268964285
 const KEY_Pictures = 269025169
 const KEY_Pointer_Accelerate = 65274
 const KEY_Pointer_Button1 = 65257
@@ -1339,11 +1488,14 @@ const KEY_Pointer_UpLeft = 65252
 const KEY_Pointer_UpRight = 65253
 const KEY_PowerDown = 269025057
 const KEY_PowerOff = 269025066
+const KEY_Presentation = 268964265
 const KEY_Prev_VMode = 269024803
 const KEY_Prev_Virtual_Screen = 65233
 const KEY_PreviousCandidate = 65342
+const KEY_PreviousElement = 268964476
 const KEY_Print = 65377
 const KEY_Prior = 65365
+const KEY_PrivacyScreenToggle = 268964473
 const KEY_Q = 81
 const KEY_R = 82
 const KEY_R1 = 65490
@@ -1363,22 +1515,28 @@ const KEY_R8 = 65497
 const KEY_R9 = 65498
 const KEY_RFKill = 269025205
 const KEY_Racute = 448
+const KEY_RadarOverlay = 268964484
 const KEY_Rcaron = 472
 const KEY_Rcedilla = 931
 const KEY_Red = 269025187
 const KEY_Redo = 65382
 const KEY_Refresh = 269025065
+const KEY_RefreshRateToggle = 268964402
 const KEY_Reload = 269025139
 const KEY_RepeatKeys_Enable = 65138
 const KEY_Reply = 269025138
 const KEY_Return = 65293
 const KEY_Right = 65363
+const KEY_RightDown = 268964455
+const KEY_RightUp = 268964454
 const KEY_RockerDown = 269025060
 const KEY_RockerEnter = 269025061
 const KEY_RockerUp = 269025059
 const KEY_Romaji = 65316
+const KEY_RootMenu = 268964458
 const KEY_RotateWindows = 269025140
 const KEY_RotationKB = 269025142
+const KEY_RotationLockToggle = 269025207
 const KEY_RotationPB = 269025141
 const KEY_RupeeSign = 16785576
 const KEY_S = 83
@@ -1390,6 +1548,7 @@ const KEY_Scaron = 425
 const KEY_Scedilla = 426
 const KEY_Scircumflex = 734
 const KEY_ScreenSaver = 269025069
+const KEY_Screensaver = 268964421
 const KEY_ScrollClick = 269025146
 const KEY_ScrollDown = 269025145
 const KEY_ScrollUp = 269025144
@@ -1397,6 +1556,7 @@ const KEY_Scroll_Lock = 65300
 const KEY_Search = 269025051
 const KEY_Select = 65376
 const KEY_SelectButton = 269025184
+const KEY_SelectiveScreenshot = 268964474
 const KEY_Send = 269025147
 const KEY_Serbian_DJE = 1713
 const KEY_Serbian_DZE = 1727
@@ -1414,7 +1574,9 @@ const KEY_Shift_L = 65505
 const KEY_Shift_Lock = 65510
 const KEY_Shift_R = 65506
 const KEY_Shop = 269025078
+const KEY_SidevuSonar = 268964487
 const KEY_SingleCandidate = 65340
+const KEY_SingleRangeRadar = 268964482
 const KEY_Sinh_a = 16780677
 const KEY_Sinh_aa = 16780678
 const KEY_Sinh_aa2 = 16780751
@@ -1497,12 +1659,16 @@ const KEY_Sinh_va = 16780736
 const KEY_Sinh_ya = 16780730
 const KEY_Sleep = 269025071
 const KEY_SlowKeys_Enable = 65139
+const KEY_SlowReverse = 268964470
+const KEY_Sos = 268964479
 const KEY_Spell = 269025148
+const KEY_SpellCheck = 268964272
 const KEY_SplitScreen = 269025149
 const KEY_Standby = 269025040
 const KEY_Start = 269025050
 const KEY_StickyKeys_Enable = 65141
 const KEY_Stop = 269025064
+const KEY_StopRecord = 268964465
 const KEY_Subtitle = 269025178
 const KEY_Super_L = 65515
 const KEY_Super_R = 65516
@@ -1526,6 +1692,7 @@ const KEY_THORN = 222
 const KEY_Tab = 65289
 const KEY_Tabovedot = 16785002
 const KEY_TaskPane = 269025151
+const KEY_Taskmanager = 268964417
 const KEY_Tcaron = 427
 const KEY_Tcedilla = 478
 const KEY_Terminal = 269025152
@@ -1623,6 +1790,7 @@ const KEY_TouchpadOff = 269025201
 const KEY_TouchpadOn = 269025200
 const KEY_TouchpadToggle = 269025193
 const KEY_Touroku = 65323
+const KEY_TraditionalSonar = 268964485
 const KEY_Travel = 269025154
 const KEY_Tslash = 940
 const KEY_U = 85
@@ -1658,6 +1826,7 @@ const KEY_Ukranian_yi = 1703
 const KEY_Umacron = 990
 const KEY_Undo = 65381
 const KEY_Ungrab = 269024800
+const KEY_Unmute = 268964468
 const KEY_Uogonek = 985
 const KEY_Up = 65362
 const KEY_Uring = 473
@@ -1666,12 +1835,17 @@ const KEY_User2KB = 269025158
 const KEY_UserPB = 269025156
 const KEY_Utilde = 989
 const KEY_V = 86
+const KEY_VOD = 268964467
 const KEY_VendorHome = 269025076
 const KEY_Video = 269025159
+const KEY_VideoPhone = 268964256
 const KEY_View = 269025185
+const KEY_VoiceCommand = 268964422
+const KEY_Voicemail = 268964268
 const KEY_VoidSymbol = 16777215
 const KEY_W = 87
 const KEY_WLAN = 269025173
+const KEY_WPSButton = 268964369
 const KEY_WWAN = 269025204
 const KEY_WWW = 269025070
 const KEY_Wacute = 16785026
@@ -1705,6 +1879,7 @@ const KEY_Zenkaku = 65320
 const KEY_Zenkaku_Hankaku = 65322
 const KEY_ZoomIn = 269025163
 const KEY_ZoomOut = 269025164
+const KEY_ZoomReset = 268964260
 const KEY_Zstroke = 16777653
 const KEY_a = 97
 const KEY_aacute = 225
@@ -2045,6 +2220,11 @@ const KEY_checkmark = 2803
 const KEY_circle = 3023
 const KEY_club = 2796
 const KEY_colon = 58
+const KEY_combining_acute = 16777985
+const KEY_combining_belowdot = 16778019
+const KEY_combining_grave = 16777984
+const KEY_combining_hook = 16777993
+const KEY_combining_tilde = 16777987
 const KEY_comma = 44
 const KEY_containsas = 16785931
 const KEY_copyright = 169
@@ -2061,6 +2241,7 @@ const KEY_dead_A = 65153
 const KEY_dead_E = 65155
 const KEY_dead_I = 65157
 const KEY_dead_O = 65159
+const KEY_dead_SCHWA = 65163
 const KEY_dead_U = 65161
 const KEY_dead_a = 65152
 const KEY_dead_abovecomma = 65124
@@ -2091,6 +2272,7 @@ const KEY_dead_doublegrave = 65126
 const KEY_dead_e = 65154
 const KEY_dead_grave = 65104
 const KEY_dead_greek = 65164
+const KEY_dead_hamza = 65165
 const KEY_dead_hook = 65121
 const KEY_dead_horn = 65122
 const KEY_dead_i = 65156
@@ -2103,6 +2285,7 @@ const KEY_dead_o = 65158
 const KEY_dead_ogonek = 65116
 const KEY_dead_perispomeni = 65107
 const KEY_dead_psili = 65124
+const KEY_dead_schwa = 65162
 const KEY_dead_semivoiced_sound = 65119
 const KEY_dead_small_schwa = 65162
 const KEY_dead_stroke = 65123
@@ -2197,6 +2380,8 @@ const KEY_gcircumflex = 760
 const KEY_grave = 96
 const KEY_greater = 62
 const KEY_greaterthanequal = 2238
+const KEY_guillemetleft = 171
+const KEY_guillemetright = 187
 const KEY_guillemotleft = 171
 const KEY_guillemotright = 187
 const KEY_h = 104
@@ -2440,6 +2625,7 @@ const KEY_openstar = 2789
 const KEY_opentribulletdown = 2788
 const KEY_opentribulletup = 2787
 const KEY_ordfeminine = 170
+const KEY_ordmasculine = 186
 const KEY_oslash = 248
 const KEY_otilde = 245
 const KEY_overbar = 3008
@@ -2686,6 +2872,76 @@ func (a AxisUse) String() string {
 	}
 }
 
+// CICPRange values of this enumeration describe whether image data uses the
+// full range of 8-bit values.
+//
+// In digital broadcasting, it is common to reserve the lowest and highest
+// values. Typically the allowed values for the narrow range are 16-235 for Y
+// and 16-240 for u,v (when dealing with YUV data).
+type CICPRange C.gint
+
+const (
+	// CICPRangeNarrow values use the range of 16-235 (for Y) and 16-240 for u
+	// and v.
+	CICPRangeNarrow CICPRange = iota
+	// CICPRangeFull values use the full range.
+	CICPRangeFull
+)
+
+func marshalCICPRange(p uintptr) (interface{}, error) {
+	return CICPRange(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+}
+
+// String returns the name in string for CICPRange.
+func (c CICPRange) String() string {
+	switch c {
+	case CICPRangeNarrow:
+		return "Narrow"
+	case CICPRangeFull:
+		return "Full"
+	default:
+		return fmt.Sprintf("CICPRange(%d)", c)
+	}
+}
+
+// ColorChannel enumerates the color channels of RGBA values as used in GdkColor
+// and OpenGL/Vulkan shaders.
+//
+// Note that this is not the order of pixel values in Cairo and GdkMemoryFormat
+// can have many different orders.
+type ColorChannel C.gint
+
+const (
+	// ColorChannelRed: red color channel, aka 0.
+	ColorChannelRed ColorChannel = iota
+	// ColorChannelGreen: green color channel, aka 1.
+	ColorChannelGreen
+	// ColorChannelBlue: blue color channel, aka 2.
+	ColorChannelBlue
+	// ColorChannelAlpha: alpha color channel, aka 3.
+	ColorChannelAlpha
+)
+
+func marshalColorChannel(p uintptr) (interface{}, error) {
+	return ColorChannel(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+}
+
+// String returns the name in string for ColorChannel.
+func (c ColorChannel) String() string {
+	switch c {
+	case ColorChannelRed:
+		return "Red"
+	case ColorChannelGreen:
+		return "Green"
+	case ColorChannelBlue:
+		return "Blue"
+	case ColorChannelAlpha:
+		return "Alpha"
+	default:
+		return fmt.Sprintf("ColorChannel(%d)", c)
+	}
+}
+
 // CrossingMode specifies the crossing mode for enter and leave events.
 type CrossingMode C.gint
 
@@ -2858,6 +3114,11 @@ func (d DmabufError) String() string {
 	}
 }
 
+// DmabufErrorQuark registers an error quark for gdk.DmabufTexture errors.
+//
+// The function returns the following values:
+//
+//   - quark: error quark.
 func DmabufErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -2969,6 +3230,8 @@ const (
 	// TouchpadHold: touchpad hold gesture event, the current state is
 	// determined by its phase field.
 	TouchpadHold
+	// PadDial: tablet pad axis event from a "dial".
+	PadDial
 	// EventLast marks the end of the GdkEventType enumeration.
 	EventLast
 )
@@ -3038,6 +3301,8 @@ func (e EventType) String() string {
 		return "PadGroupMode"
 	case TouchpadHold:
 		return "TouchpadHold"
+	case PadDial:
+		return "PadDial"
 	case EventLast:
 		return "EventLast"
 	default:
@@ -3110,6 +3375,11 @@ func (g GLError) String() string {
 	}
 }
 
+// GLErrorQuark registers an error quark for gdk.GLContext errors.
+//
+// The function returns the following values:
+//
+//   - quark: error quark.
 func GLErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -3265,8 +3535,7 @@ func (k KeyMatch) String() string {
 	}
 }
 
-// MemoryFormat: GdkMemoryFormat describes formats that image data can have in
-// memory.
+// MemoryFormat describes formats that image data can have in memory.
 //
 // It describes formats by listing the contents of the memory passed to it. So
 // GDK_MEMORY_A8R8G8B8 will be 1 byte (8 bits) of alpha, followed by a byte each
@@ -3352,12 +3621,433 @@ const (
 	MemoryA8B8G8R8Premultiplied
 	// MemoryB8G8R8X8: 4 bytes; for blue, green, red, unused.
 	MemoryB8G8R8X8
-	// MemorYX8R8G8B8: 4 bytes; for unused, red, green, blue.
-	MemorYX8R8G8B8
+	// MemoryX8R8G8B8: 4 bytes; for unused, red, green, blue.
+	MemoryX8R8G8B8
 	// MemoryR8G8B8X8: 4 bytes; for red, green, blue, unused.
 	MemoryR8G8B8X8
-	// MemorYX8B8G8R8: 4 bytes; for unused, blue, green, red.
-	MemorYX8B8G8R8
+	// MemoryX8B8G8R8: 4 bytes; for unused, blue, green, red.
+	MemoryX8B8G8R8
+	// MemoryG8B8R8420: multiplane format with 2 planes.
+	//
+	// The first plane contains the first channel, usually containing luma
+	// values. The second plane with interleaved chroma values, Cb followed by
+	// Cr. Subsampled in both the X and Y direction.
+	//
+	// Commonly known by the fourcc "NV12".
+	MemoryG8B8R8420
+	// MemoryG8R8B8420: multiplane format with 2 planes.
+	//
+	// The first plane contains the first channel, usually containing luma
+	// values. The second plane with interleaved chroma values, Cr followed by
+	// Cb. Subsampled in both the X and Y direction.
+	//
+	// Commonly known by the fourcc "NV21".
+	MemoryG8R8B8420
+	// MemoryG8B8R8422: multiplane format with 2 planes.
+	//
+	// The first plane contains the first channel, usually containing luma
+	// values. The second plane with interleaved chroma values, Cb followed by
+	// Cr. Subsampled in the X direction.
+	//
+	// Commonly known by the fourcc "NV16".
+	MemoryG8B8R8422
+	// MemoryG8R8B8422: multiplane format with 2 planes.
+	//
+	// The first plane contains the first channel, usually containing luma
+	// values. The second plane with interleaved chroma values, Cr followed by
+	// Cb. Subsampled in the X direction.
+	//
+	// Commonly known by the fourcc "NV61".
+	MemoryG8R8B8422
+	// MemoryG8B8R8444: multiplane format with 2 planes.
+	//
+	// The first plane contains the first channel, usually containing luma
+	// values. The second plane with interleaved chroma values, Cb followed by
+	// Cr. This format is not subsampled.
+	//
+	// Commonly known by the fourcc "NV24".
+	MemoryG8B8R8444
+	// MemoryG8R8B8444: multiplane format with 2 planes.
+	//
+	// The first plane contains the first channel, usually containing luma
+	// values. The second plane with interleaved chroma values, Cr followed by
+	// Cb. This format is not subsampled.
+	//
+	// Commonly known by the fourcc "NV42".
+	MemoryG8R8B8444
+	// MemoryG10X6B10X6R10X6420: multiplane format with 2 planes.
+	//
+	// Each channel is a 16 bit integer, but only the highest 10 bits are used.
+	//
+	// The first plane contains the first channel, usually containing luma
+	// values. The second plane with interleaved chroma values, Cr followed by
+	// Cb. This format is not subsampled.
+	//
+	// Commonly known by the fourcc "P010".
+	MemoryG10X6B10X6R10X6420
+	// MemoryG12X4B12X4R12X4420: multiplane format with 2 planes.
+	//
+	// Each channel is a 16 bit integer, but only the highest 10 bits are used.
+	//
+	// The first plane contains the first channel, usually containing luma
+	// values. The second plane with interleaved chroma values, Cr followed by
+	// Cb. This format is not subsampled.
+	//
+	// Commonly known by the fourcc "P012".
+	MemoryG12X4B12X4R12X4420
+	// MemoryG16B16R16420: multiplane format with 2 planes.
+	//
+	// Each channel is a 16 bit integer.
+	//
+	// The first plane contains the first channel, usually containing luma
+	// values. The second plane with interleaved chroma values, Cr followed by
+	// Cb. This format is not subsampled.
+	//
+	// Commonly known by the fourcc "P016".
+	MemoryG16B16R16420
+	// MemoryG8B8R84103Plane: multiplane format with 3 planes.
+	//
+	// Each channel is a 8 bit integer.
+	//
+	// The first plane usually contains the luma channel. It is mapped into the
+	// 2nd channel.
+	//
+	// The second plane usually contains the first chroma chanel. Subsampled
+	// in both the X and Y direction with 4:1 ratio. It is mapped into the 3rd
+	// channel.
+	//
+	// The third plane usually contains the second chroma channel. Subsampled
+	// in both the X and Y direction with 4:1 ratio. It is mapped into the 1st
+	// channel.
+	//
+	// Commonly known by the fourcc "YUV410".
+	MemoryG8B8R84103Plane
+	// MemoryG8R8B84103Plane: multiplane format with 3 planes.
+	//
+	// Each channel is a 8 bit integer.
+	//
+	// The first plane usually contains the luma channel. It is mapped into the
+	// 2nd channel.
+	//
+	// The second plane usually contains the second chroma chanel. Subsampled
+	// in both the X and Y direction with 4:1 ratio. It is mapped into the 1st
+	// channel.
+	//
+	// The third plane usually contains the first chroma channel. Subsampled
+	// in both the X and Y direction with 4:1 ratio. It is mapped into the 3rd
+	// channel.
+	//
+	// Commonly known by the fourcc "YVU410".
+	MemoryG8R8B84103Plane
+	// MemoryG8B8R84113Plane: multiplane format with 3 planes.
+	//
+	// Each channel is a 8 bit integer.
+	//
+	// The first plane usually contains the luma channel. It is mapped into the
+	// 2nd channel.
+	//
+	// The second plane usually contains the first chroma chanel. Subsampled in
+	// the X direction with 4:1 ratio. It is mapped into the 3rd channel.
+	//
+	// The third plane usually contains the second chroma channel. Subsampled in
+	// the X direction with 4:1 ratio. It is mapped into the 1st channel.
+	//
+	// Commonly known by the fourcc "YUV411".
+	MemoryG8B8R84113Plane
+	// MemoryG8R8B84113Plane: multiplane format with 3 planes.
+	//
+	// Each channel is a 8 bit integer.
+	//
+	// The first plane usually contains the luma channel. It is mapped into the
+	// 2nd channel.
+	//
+	// The second plane usually contains the second chroma chanel. Subsampled in
+	// the X direction with 4:1 ratio. It is mapped into the 1st channel.
+	//
+	// The third plane usually contains the first chroma channel. Subsampled in
+	// the X direction with 4:1 ratio. It is mapped into the 3rd channel.
+	//
+	// Commonly known by the fourcc "YVU411".
+	MemoryG8R8B84113Plane
+	// MemoryG8B8R84203Plane: multiplane format with 3 planes.
+	//
+	// Each channel is a 8 bit integer.
+	//
+	// The first plane usually contains the luma channel. It is mapped into the
+	// 2nd channel.
+	//
+	// The second plane usually contains the first chroma chanel. Subsampled in
+	// both the X and Y direction. It is mapped into the 3rd channel.
+	//
+	// The third plane usually contains the second chroma channel. Subsampled in
+	// both the X and Y direction. It is mapped into the 1st channel.
+	//
+	// Commonly known by the fourcc "YUV420".
+	MemoryG8B8R84203Plane
+	// MemoryG8R8B84203Plane: multiplane format with 3 planes.
+	//
+	// Each channel is a 8 bit integer.
+	//
+	// The first plane usually contains the luma channel. It is mapped into the
+	// 2nd channel.
+	//
+	// The second plane usually contains the second chroma chanel. Subsampled in
+	// both the X and Y direction. It is mapped into the 1st channel.
+	//
+	// The third plane usually contains the first chroma channel. Subsampled in
+	// both the X and Y direction. It is mapped into the 3rd channel.
+	//
+	// Commonly known by the fourcc "YVU420".
+	MemoryG8R8B84203Plane
+	// MemoryG8B8R84223Plane: multiplane format with 3 planes.
+	//
+	// Each channel is a 8 bit integer.
+	//
+	// The first plane usually contains the luma channel. It is mapped into the
+	// 2nd channel.
+	//
+	// The second plane usually contains the first chroma chanel. Subsampled in
+	// the X direction. It is mapped into the 3rd channel.
+	//
+	// The third plane usually contains the second chroma channel. Subsampled in
+	// the X direction. It is mapped into the 1st channel.
+	//
+	// Commonly known by the fourcc "YUV422".
+	MemoryG8B8R84223Plane
+	// MemoryG8R8B84223Plane: multiplane format with 3 planes.
+	//
+	// Each channel is a 8 bit integer.
+	//
+	// The first plane usually contains the luma channel. It is mapped into the
+	// 2nd channel.
+	//
+	// The second plane usually contains the second chroma chanel. Subsampled in
+	// the X direction. It is mapped into the 1st channel.
+	//
+	// The third plane usually contains the first chroma channel. Subsampled in
+	// the X direction. It is mapped into the 3rd channel.
+	//
+	// Commonly known by the fourcc "YVU422".
+	MemoryG8R8B84223Plane
+	// MemoryG8B8R84443Plane: multiplane format with 3 planes.
+	//
+	// Each channel is a 8 bit integer.
+	//
+	// The first plane usually contains the luma channel. It is mapped into the
+	// 2nd channel.
+	//
+	// The second plane usually contains the first chroma chanel. It is mapped
+	// into the 3rd channel.
+	//
+	// The third plane usually contains the second chroma channel. It is mapped
+	// into the 1st channel.
+	//
+	// Commonly known by the fourcc "YUV444".
+	MemoryG8B8R84443Plane
+	// MemoryG8R8B84443Plane: multiplane format with 3 planes.
+	//
+	// Each channel is a 8 bit integer.
+	//
+	// The first plane usually contains the luma channel. It is mapped into the
+	// 2nd channel.
+	//
+	// The second plane usually contains the second chroma chanel. Subsampled in
+	// the X direction. It is mapped into the 1st channel.
+	//
+	// The third plane usually contains the first chroma channel. Subsampled in
+	// the X direction. It is mapped into the 3rd channel.
+	//
+	// Commonly known by the fourcc "YVU444".
+	MemoryG8R8B84443Plane
+	// MemoryG8B8G8R8422: packed format with subsampled channels.
+	//
+	// Each channel is a 8 bit integer. The red and blue/chroma channels are
+	// subsampled and interleaved with the green/luma channel.
+	//
+	// Each block contains 2 pixels, so the width must be a multiple of 2.
+	//
+	// Commonly known by the fourcc "YUYV".
+	MemoryG8B8G8R8422
+	// MemoryG8R8G8B8422: packed format with subsampled channels.
+	//
+	// Each channel is a 8 bit integer. The red and blue/chroma channels are
+	// subsampled and interleaved with the green/luma channel.
+	//
+	// Each block contains 2 pixels, so the width must be a multiple of 2.
+	//
+	// Commonly known by the fourcc "YVYU".
+	MemoryG8R8G8B8422
+	// MemoryR8G8B8G8422: packed format with subsampled channels.
+	//
+	// Each channel is a 8 bit integer. The red and blue/chroma channels are
+	// subsampled and interleaved with the green/luma channel.
+	//
+	// Each block contains 2 pixels, so the width must be a multiple of 2.
+	//
+	// Commonly known by the fourcc "VYUY".
+	MemoryR8G8B8G8422
+	// MemoryB8G8R8G8422: packed format with subsampled channels.
+	//
+	// Each channel is a 8 bit integer. The red and blue/chroma channels are
+	// subsampled and interleaved with the green/luma channel.
+	//
+	// Each block contains 2 pixels, so the width must be a multiple of 2.
+	//
+	// Commonly known by the fourcc "UYVY".
+	MemoryB8G8R8G8422
+	// MemoryX6G10X6B10X6R10420: multiplane format with 3 planes.
+	//
+	// Each channel is a 16 bit integer.
+	//
+	// Only the 10 lower bits are used. The remaining ones must be set to 0 by
+	// the producer.
+	//
+	// The first plane usually contains the luma channel. It is mapped into the
+	// 2nd channel.
+	//
+	// The second plane usually contains the first chroma chanel. Subsampled in
+	// both the X and Y direction. It is mapped into the 3rd channel.
+	//
+	// The third plane usually contains the second chroma channel. Subsampled in
+	// both the X and Y direction. It is mapped into the 1st channel.
+	//
+	// Commonly known by the fourcc "S010".
+	MemoryX6G10X6B10X6R10420
+	// MemoryX6G10X6B10X6R10422: multiplane format with 3 planes.
+	//
+	// Each channel is a 16 bit integer.
+	//
+	// Only the 10 lower bits are used. The remaining ones must be set to 0 by
+	// the producer.
+	//
+	// The first plane usually contains the luma channel. It is mapped into the
+	// 2nd channel.
+	//
+	// The second plane usually contains the first chroma chanel. Subsampled in
+	// the X direction. It is mapped into the 3rd channel.
+	//
+	// The third plane usually contains the second chroma channel. Subsampled in
+	// the X direction. It is mapped into the 1st channel.
+	//
+	// Commonly known by the fourcc "S210".
+	MemoryX6G10X6B10X6R10422
+	// MemoryX6G10X6B10X6R10444: multiplane format with 3 planes.
+	//
+	// Each channel is a 16 bit integer.
+	//
+	// Only the 10 lower bits are used. The remaining ones must be set to 0 by
+	// the producer.
+	//
+	// The first plane usually contains the luma channel. It is mapped into the
+	// 2nd channel.
+	//
+	// The second plane usually contains the first chroma chanel. It is mapped
+	// into the 3rd channel.
+	//
+	// The third plane usually contains the second chroma channel. It is mapped
+	// into the 1st channel.
+	//
+	// Commonly known by the fourcc "S410".
+	MemoryX6G10X6B10X6R10444
+	// MemoryX4G12X4B12X4R12420: multiplane format with 3 planes.
+	//
+	// Each channel is a 16 bit integer.
+	//
+	// Only the 12 lower bits are used. The remaining ones must be set to 0 by
+	// the producer.
+	//
+	// The first plane usually contains the luma channel. It is mapped into the
+	// 2nd channel.
+	//
+	// The second plane usually contains the first chroma chanel. Subsampled in
+	// both the X and Y direction. It is mapped into the 3rd channel.
+	//
+	// The third plane usually contains the second chroma channel. Subsampled in
+	// both the X and Y direction. It is mapped into the 1st channel.
+	//
+	// Commonly known by the fourcc "S012".
+	MemoryX4G12X4B12X4R12420
+	// MemoryX4G12X4B12X4R12422: multiplane format with 3 planes.
+	//
+	// Each channel is a 16 bit integer.
+	//
+	// Only the 12 lower bits are used. The remaining ones must be set to 0 by
+	// the producer.
+	//
+	// The first plane usually contains the luma channel. It is mapped into the
+	// 2nd channel.
+	//
+	// The second plane usually contains the first chroma chanel. Subsampled in
+	// the X direction. It is mapped into the 3rd channel.
+	//
+	// The third plane usually contains the second chroma channel. Subsampled in
+	// the X direction. It is mapped into the 1st channel.
+	//
+	// Commonly known by the fourcc "S212".
+	MemoryX4G12X4B12X4R12422
+	// MemoryX4G12X4B12X4R12444: multiplane format with 3 planes.
+	//
+	// Each channel is a 16 bit integer.
+	//
+	// Only the 12 lower bits are used. The remaining ones must be set to 0 by
+	// the producer.
+	//
+	// The first plane usually contains the luma channel. It is mapped into the
+	// 2nd channel.
+	//
+	// The second plane usually contains the first chroma chanel. It is mapped
+	// into the 3rd channel.
+	//
+	// The third plane usually contains the second chroma channel. It is mapped
+	// into the 1st channel.
+	//
+	// Commonly known by the fourcc "S412".
+	MemoryX4G12X4B12X4R12444
+	// MemoryG16B16R164203Plane: multiplane format with 3 planes.
+	//
+	// Each channel is a 16 bit integer.
+	//
+	// The first plane usually contains the luma channel. It is mapped into the
+	// 2nd channel.
+	//
+	// The second plane usually contains the first chroma chanel. Subsampled in
+	// both the X and Y direction. It is mapped into the 3rd channel.
+	//
+	// The third plane usually contains the second chroma channel. Subsampled in
+	// both the X and Y direction. It is mapped into the 1st channel.
+	//
+	// Commonly known by the fourcc "S016".
+	MemoryG16B16R164203Plane
+	// MemoryG16B16R164223Plane: multiplane format with 3 planes.
+	//
+	// Each channel is a 16 bit integer.
+	//
+	// The first plane usually contains the luma channel. It is mapped into the
+	// 2nd channel.
+	//
+	// The second plane usually contains the first chroma chanel. Subsampled in
+	// the X direction. It is mapped into the 3rd channel.
+	//
+	// The third plane usually contains the second chroma channel. Subsampled in
+	// the X direction. It is mapped into the 1st channel.
+	//
+	// Commonly known by the fourcc "S216".
+	MemoryG16B16R164223Plane
+	// MemoryG16B16R164443Plane: multiplane format with 3 planes.
+	//
+	// Each channel is a 16 bit integer.
+	//
+	// The first plane usually contains the luma channel. It is mapped into the
+	// 2nd channel.
+	//
+	// The second plane usually contains the first chroma chanel. It is mapped
+	// into the 3rd channel.
+	//
+	// The third plane usually contains the second chroma channel. It is mapped
+	// into the 1st channel.
+	//
+	// Commonly known by the fourcc "S416".
+	MemoryG16B16R164443Plane
 	// MemoryNFormats: number of formats. This value will change as more formats
 	// get added, so do not rely on its concrete integer.
 	MemoryNFormats
@@ -3430,12 +4120,76 @@ func (m MemoryFormat) String() string {
 		return "A8B8G8R8Premultiplied"
 	case MemoryB8G8R8X8:
 		return "B8G8R8X8"
-	case MemorYX8R8G8B8:
+	case MemoryX8R8G8B8:
 		return "X8R8G8B8"
 	case MemoryR8G8B8X8:
 		return "R8G8B8X8"
-	case MemorYX8B8G8R8:
+	case MemoryX8B8G8R8:
 		return "X8B8G8R8"
+	case MemoryG8B8R8420:
+		return "G8B8R8420"
+	case MemoryG8R8B8420:
+		return "G8R8B8420"
+	case MemoryG8B8R8422:
+		return "G8B8R8422"
+	case MemoryG8R8B8422:
+		return "G8R8B8422"
+	case MemoryG8B8R8444:
+		return "G8B8R8444"
+	case MemoryG8R8B8444:
+		return "G8R8B8444"
+	case MemoryG10X6B10X6R10X6420:
+		return "G10X6B10X6R10X6420"
+	case MemoryG12X4B12X4R12X4420:
+		return "G12X4B12X4R12X4420"
+	case MemoryG16B16R16420:
+		return "G16B16R16420"
+	case MemoryG8B8R84103Plane:
+		return "G8B8R8410"
+	case MemoryG8R8B84103Plane:
+		return "G8R8B8410"
+	case MemoryG8B8R84113Plane:
+		return "G8B8R8411"
+	case MemoryG8R8B84113Plane:
+		return "G8R8B8411"
+	case MemoryG8B8R84203Plane:
+		return "G8B8R8420"
+	case MemoryG8R8B84203Plane:
+		return "G8R8B8420"
+	case MemoryG8B8R84223Plane:
+		return "G8B8R8422"
+	case MemoryG8R8B84223Plane:
+		return "G8R8B8422"
+	case MemoryG8B8R84443Plane:
+		return "G8B8R8444"
+	case MemoryG8R8B84443Plane:
+		return "G8R8B8444"
+	case MemoryG8B8G8R8422:
+		return "G8B8G8R8422"
+	case MemoryG8R8G8B8422:
+		return "G8R8G8B8422"
+	case MemoryR8G8B8G8422:
+		return "R8G8B8G8422"
+	case MemoryB8G8R8G8422:
+		return "B8G8R8G8422"
+	case MemoryX6G10X6B10X6R10420:
+		return "X6G10X6B10X6R10420"
+	case MemoryX6G10X6B10X6R10422:
+		return "X6G10X6B10X6R10422"
+	case MemoryX6G10X6B10X6R10444:
+		return "X6G10X6B10X6R10444"
+	case MemoryX4G12X4B12X4R12420:
+		return "X4G12X4B12X4R12420"
+	case MemoryX4G12X4B12X4R12422:
+		return "X4G12X4B12X4R12422"
+	case MemoryX4G12X4B12X4R12444:
+		return "X4G12X4B12X4R12444"
+	case MemoryG16B16R164203Plane:
+		return "G16B16R16420"
+	case MemoryG16B16R164223Plane:
+		return "G16B16R16422"
+	case MemoryG16B16R164443Plane:
+		return "G16B16R16444"
 	case MemoryNFormats:
 		return "NFormats"
 	default:
@@ -3530,6 +4284,40 @@ func (s ScrollDirection) String() string {
 		return "Smooth"
 	default:
 		return fmt.Sprintf("ScrollDirection(%d)", s)
+	}
+}
+
+// ScrollRelativeDirection: used in scroll events, to announce the direction
+// relative to physical motion.
+type ScrollRelativeDirection C.gint
+
+const (
+	// ScrollRelativeDirectionIdentical: physical motion and event motion are
+	// the same.
+	ScrollRelativeDirectionIdentical ScrollRelativeDirection = iota
+	// ScrollRelativeDirectionInverted: physical motion is inverted relative to
+	// event motion.
+	ScrollRelativeDirectionInverted
+	// ScrollRelativeDirectionUnknown: relative motion is unknown on this device
+	// or backend.
+	ScrollRelativeDirectionUnknown
+)
+
+func marshalScrollRelativeDirection(p uintptr) (interface{}, error) {
+	return ScrollRelativeDirection(coreglib.ValueFromNative(unsafe.Pointer(p)).Enum()), nil
+}
+
+// String returns the name in string for ScrollRelativeDirection.
+func (s ScrollRelativeDirection) String() string {
+	switch s {
+	case ScrollRelativeDirectionIdentical:
+		return "Identical"
+	case ScrollRelativeDirectionInverted:
+		return "Inverted"
+	case ScrollRelativeDirectionUnknown:
+		return "Unknown"
+	default:
+		return fmt.Sprintf("ScrollRelativeDirection(%d)", s)
 	}
 }
 
@@ -3704,6 +4492,11 @@ func (t TextureError) String() string {
 	}
 }
 
+// TextureErrorQuark registers an error quark for gdk.Texture errors.
+//
+// The function returns the following values:
+//
+//   - quark: error quark.
 func TextureErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -3716,11 +4509,16 @@ func TextureErrorQuark() glib.Quark {
 	return _quark
 }
 
+// TitlebarGesture: kind of title bar gesture to emit with
+// gdk.Toplevel.TitlebarGesture().
 type TitlebarGesture C.gint
 
 const (
+	// TitlebarGestureDoubleClick: double click gesture.
 	TitlebarGestureDoubleClick TitlebarGesture = 1
-	TitlebarGestureRightClick  TitlebarGesture = 2
+	// TitlebarGestureRightClick: right click gesture.
+	TitlebarGestureRightClick TitlebarGesture = 2
+	// TitlebarGestureMiddleClick: middle click gesture.
 	TitlebarGestureMiddleClick TitlebarGesture = 3
 )
 
@@ -3821,6 +4619,11 @@ func (v VulkanError) String() string {
 	}
 }
 
+// VulkanErrorQuark registers an error quark for gdk.VulkanContext errors.
+//
+// The function returns the following values:
+//
+//   - quark: error quark.
 func VulkanErrorQuark() glib.Quark {
 	var _cret C.GQuark // in
 
@@ -4011,6 +4814,8 @@ func (a AxisFlags) Has(other AxisFlags) bool {
 type DragAction C.guint
 
 const (
+	// ActionNone: no action.
+	ActionNone DragAction = 0b0
 	// ActionCopy: copy the data.
 	ActionCopy DragAction = 0b1
 	// ActionMove: move the data, i.e. first copy it, then delete it from the
@@ -4035,13 +4840,15 @@ func (d DragAction) String() string {
 	}
 
 	var builder strings.Builder
-	builder.Grow(42)
+	builder.Grow(53)
 
 	for d != 0 {
 		next := d & (d - 1)
 		bit := d - next
 
 		switch bit {
+		case ActionNone:
+			builder.WriteString("None|")
 		case ActionCopy:
 			builder.WriteString("Copy|")
 		case ActionMove:
@@ -4068,7 +4875,7 @@ func (d DragAction) Has(other DragAction) bool {
 // DragActionIsUnique checks if action represents a single action or includes
 // multiple actions.
 //
-// When action is 0 - ie no action was given, TRUE is returned.
+// When action is GDK_ACTION_NONE - ie no action was given, TRUE is returned.
 //
 // The function takes the following parameters:
 //
@@ -4237,14 +5044,14 @@ const (
 	NoModifierMask ModifierType = 0b0
 	// ShiftMask: shift key.
 	ShiftMask ModifierType = 0b1
-	// LockMask: lock key (depending on the modifier mapping of the X server
-	// this may either be CapsLock or ShiftLock).
+	// LockMask: lock key (depending on the Windowing System configuration,
+	// this may either be <kbd>CapsLock</kbd> or <kbd>ShiftLock</kbd>).
 	LockMask ModifierType = 0b10
 	// ControlMask: control key.
 	ControlMask ModifierType = 0b100
-	// AltMask: fourth modifier key (it depends on the modifier mapping of the X
-	// server which key is interpreted as this modifier, but normally it is the
-	// Alt key).
+	// AltMask: fourth modifier key (it depends on the Windowing System
+	// configuration which key is interpreted as this modifier, but normally it
+	// is the <kbd>Alt</kbd> key).
 	AltMask ModifierType = 0b1000
 	// Button1Mask: first mouse button.
 	Button1Mask ModifierType = 0b100000000
@@ -4260,7 +5067,7 @@ const (
 	SuperMask ModifierType = 0b100000000000000000000000000
 	// HyperMask: hyper modifier.
 	HyperMask ModifierType = 0b1000000000000000000000000000
-	// MetaMask: meta modifier.
+	// MetaMask: meta modifier. Maps to Command on macOS.
 	MetaMask ModifierType = 0b10000000000000000000000000000
 )
 
@@ -4356,9 +5163,9 @@ func (p PaintableFlags) String() string {
 
 		switch bit {
 		case PaintableStaticSize:
-			builder.WriteString("Size|")
+			builder.WriteString("StaticSize|")
 		case PaintableStaticContents:
-			builder.WriteString("Contents|")
+			builder.WriteString("StaticContents|")
 		default:
 			builder.WriteString(fmt.Sprintf("PaintableFlags(0b%b)|", bit))
 		}
@@ -4443,6 +5250,84 @@ func (s SeatCapabilities) String() string {
 // Has returns true if s contains other.
 func (s SeatCapabilities) Has(other SeatCapabilities) bool {
 	return (s & other) == other
+}
+
+// ToplevelCapabilities reflects what features a GdkToplevel supports.
+type ToplevelCapabilities C.guint
+
+const (
+	// ToplevelCapabilitiesEdgeConstraints: whether tiled window states are
+	// supported.
+	ToplevelCapabilitiesEdgeConstraints ToplevelCapabilities = 0b1
+	// ToplevelCapabilitiesInhibitShortcuts: whether inhibiting system shortcuts
+	// is supported. See gdk.Toplevel.InhibitSystemShortcuts().
+	ToplevelCapabilitiesInhibitShortcuts ToplevelCapabilities = 0b10
+	// ToplevelCapabilitiesTitlebarGestures: whether titlebar gestures are
+	// supported. See gdk.Toplevel.TitlebarGesture().
+	ToplevelCapabilitiesTitlebarGestures ToplevelCapabilities = 0b100
+	// ToplevelCapabilitiesWindowMenu: whether showing the window menu is
+	// supported. See gdk.Toplevel.ShowWindowMenu().
+	ToplevelCapabilitiesWindowMenu ToplevelCapabilities = 0b1000
+	// ToplevelCapabilitiesMaximize: whether the toplevel can be maximized.
+	ToplevelCapabilitiesMaximize ToplevelCapabilities = 0b10000
+	// ToplevelCapabilitiesFullscreen: whether the toplevel can be made
+	// fullscreen.
+	ToplevelCapabilitiesFullscreen ToplevelCapabilities = 0b100000
+	// ToplevelCapabilitiesMinimize: whether the toplevel can be minimized.
+	// See gdk.Toplevel.Minimize().
+	ToplevelCapabilitiesMinimize ToplevelCapabilities = 0b1000000
+	// ToplevelCapabilitiesLower: whether the toplevel can be lowered.
+	// See gdk.Toplevel.Lower().
+	ToplevelCapabilitiesLower ToplevelCapabilities = 0b10000000
+)
+
+func marshalToplevelCapabilities(p uintptr) (interface{}, error) {
+	return ToplevelCapabilities(coreglib.ValueFromNative(unsafe.Pointer(p)).Flags()), nil
+}
+
+// String returns the names in string for ToplevelCapabilities.
+func (t ToplevelCapabilities) String() string {
+	if t == 0 {
+		return "ToplevelCapabilities(0)"
+	}
+
+	var builder strings.Builder
+	builder.Grow(255)
+
+	for t != 0 {
+		next := t & (t - 1)
+		bit := t - next
+
+		switch bit {
+		case ToplevelCapabilitiesEdgeConstraints:
+			builder.WriteString("EdgeConstraints|")
+		case ToplevelCapabilitiesInhibitShortcuts:
+			builder.WriteString("InhibitShortcuts|")
+		case ToplevelCapabilitiesTitlebarGestures:
+			builder.WriteString("TitlebarGestures|")
+		case ToplevelCapabilitiesWindowMenu:
+			builder.WriteString("WindowMenu|")
+		case ToplevelCapabilitiesMaximize:
+			builder.WriteString("Maximize|")
+		case ToplevelCapabilitiesFullscreen:
+			builder.WriteString("Fullscreen|")
+		case ToplevelCapabilitiesMinimize:
+			builder.WriteString("Minimize|")
+		case ToplevelCapabilitiesLower:
+			builder.WriteString("Lower|")
+		default:
+			builder.WriteString(fmt.Sprintf("ToplevelCapabilities(0b%b)|", bit))
+		}
+
+		t = next
+	}
+
+	return strings.TrimSuffix(builder.String(), "|")
+}
+
+// Has returns true if t contains other.
+func (t ToplevelCapabilities) Has(other ToplevelCapabilities) bool {
+	return (t & other) == other
 }
 
 // ToplevelState specifies the state of a toplevel surface.
@@ -4559,7 +5444,7 @@ func (t ToplevelState) Has(other ToplevelState) bool {
 	return (t & other) == other
 }
 
-// CairoDrawFromGL: main way to not draw GL content in GTK.
+// CairoDrawFromGL draws GL content onto a cairo context.
 //
 // It takes a render buffer ID (source_type == GL_RENDERBUFFER) or a texture
 // id (source_type == GL_TEXTURE) and draws it onto cr with an OVER operation,
@@ -4702,6 +5587,8 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 // The pattern has an extend mode of CAIRO_EXTEND_NONE and is aligned so that
 // the origin of pixbuf is pixbuf_x, pixbuf_y.
 //
+// Deprecated: Use cairo_set_source_surface() and gdk_texture_download().
+//
 // The function takes the following parameters:
 //
 //   - cr: cairo context.
@@ -4744,14 +5631,11 @@ func CairoSetSourceRGBA(cr *cairo.Context, rgba *RGBA) {
 	runtime.KeepAlive(rgba)
 }
 
-// ContentDeserializeAsync: read content from the given input stream and
+// ContentDeserializeAsync reads content from the given input stream and
 // deserialize it, asynchronously.
 //
 // The default I/O priority is G_PRIORITY_DEFAULT (i.e. 0), and lower numbers
 // indicate a higher priority.
-//
-// When the operation is finished, callback will be called. You must then call
-// gdk.ContentDeserializeFinish() to get the result of the operation.
 //
 // The function takes the following parameters:
 //
@@ -4830,9 +5714,6 @@ func ContentDeserializeFinish(result gio.AsyncResulter) (coreglib.Value, error) 
 // The default I/O priority is G_PRIORITY_DEFAULT (i.e. 0), and lower numbers
 // indicate a higher priority.
 //
-// When the operation is finished, callback will be called. You must then call
-// gdk.ContentSerializeFinish() to get the result of the operation.
-//
 // The function takes the following parameters:
 //
 //   - ctx (optional): optional GCancellable object.
@@ -4895,18 +5776,6 @@ func ContentSerializeFinish(result gio.AsyncResulter) error {
 	}
 
 	return _goerr
-}
-
-func DragSurfaceSizeGetType() coreglib.Type {
-	var _cret C.GType // in
-
-	_cret = C.gdk_drag_surface_size_get_type()
-
-	var _gType coreglib.Type // out
-
-	_gType = coreglib.Type(_cret)
-
-	return _gType
 }
 
 // EventsGetAngle returns the relative angle from event1 to event2.
@@ -5125,7 +5994,7 @@ func KeyvalFromName(keyvalName string) uint {
 	return _guint
 }
 
-// KeyvalIsLower returns TRUE if the given key value is in lower case.
+// KeyvalIsLower returns true if the given key value is in lower case.
 //
 // The function takes the following parameters:
 //
@@ -5133,7 +6002,7 @@ func KeyvalFromName(keyvalName string) uint {
 //
 // The function returns the following values:
 //
-//   - ok: TRUE if keyval is in lower case, or if keyval is not subject to case
+//   - ok: true if keyval is in lower case, or if keyval is not subject to case
 //     conversion.
 func KeyvalIsLower(keyval uint) bool {
 	var _arg1 C.guint    // out
@@ -5153,7 +6022,7 @@ func KeyvalIsLower(keyval uint) bool {
 	return _ok
 }
 
-// KeyvalIsUpper returns TRUE if the given key value is in upper case.
+// KeyvalIsUpper returns true if the given key value is in upper case.
 //
 // The function takes the following parameters:
 //
@@ -5161,7 +6030,7 @@ func KeyvalIsLower(keyval uint) bool {
 //
 // The function returns the following values:
 //
-//   - ok: TRUE if keyval is in upper case, or if keyval is not subject to case
+//   - ok: true if keyval is in upper case, or if keyval is not subject to case
 //     conversion.
 func KeyvalIsUpper(keyval uint) bool {
 	var _arg1 C.guint    // out
@@ -5237,7 +6106,7 @@ func KeyvalToLower(keyval uint) uint {
 	return _guint
 }
 
-// KeyvalToUnicode: convert from a GDK key symbol to the corresponding Unicode
+// KeyvalToUnicode converts from a GDK key symbol to the corresponding Unicode
 // character.
 //
 // Note that the conversion does not take the current locale into consideration,
@@ -5442,19 +6311,7 @@ func SetAllowedBackends(backends string) {
 	runtime.KeepAlive(backends)
 }
 
-func ToplevelSizeGetType() coreglib.Type {
-	var _cret C.GType // in
-
-	_cret = C.gdk_toplevel_size_get_type()
-
-	var _gType coreglib.Type // out
-
-	_gType = coreglib.Type(_cret)
-
-	return _gType
-}
-
-// UnicodeToKeyval: convert from a Unicode character to a key symbol.
+// UnicodeToKeyval converts from a Unicode character to a key symbol.
 //
 // The function takes the following parameters:
 //
@@ -5462,7 +6319,7 @@ func ToplevelSizeGetType() coreglib.Type {
 //
 // The function returns the following values:
 //
-//   - guint: corresponding GDK key symbol, if one exists. or, if there is no
+//   - guint: corresponding GDK key symbol, if one exists, or, if there is no
 //     corresponding symbol, wc | 0x01000000.
 func UnicodeToKeyval(wc uint32) uint {
 	var _arg1 C.guint32 // out
@@ -5480,8 +6337,7 @@ func UnicodeToKeyval(wc uint32) uint {
 	return _guint
 }
 
-// DevicePad: GdkDevicePad is an interface implemented by devices of type
-// GDK_SOURCE_TABLET_PAD
+// DevicePad: interface for tablet pad devices.
 //
 // It allows querying the features provided by the pad device.
 //
@@ -5651,7 +6507,7 @@ func (pad *DevicePad) NGroups() int {
 	return _gint
 }
 
-// DragSurface: GdkDragSurface is an interface for surfaces used during DND.
+// DragSurface: surface that is used during DND.
 //
 // DragSurface wraps an interface. This means the user can get the
 // underlying type by calling Cast().
@@ -5720,8 +6576,7 @@ func (dragSurface *DragSurface) Present(width, height int) bool {
 	return _ok
 }
 
-// Paintable: GdkPaintable is a simple interface used by GTK to represent
-// content that can be painted.
+// Paintable: interface for content that can be painted.
 //
 // The content of a GdkPaintable can be painted anywhere at any
 // size without requiring any sort of layout. The interface is
@@ -6350,7 +7205,7 @@ func NewPaintableEmpty(intrinsicWidth, intrinsicHeight int) *Paintable {
 	return _paintable
 }
 
-// Popup: GdkPopup is a surface that is attached to another surface.
+// Popup: surface that is attached to another surface.
 //
 // The GdkPopup is positioned relative to its parent surface.
 //
@@ -6553,7 +7408,7 @@ func (popup *Popup) SurfaceAnchor() Gravity {
 
 // Present popup after having processed the GdkPopupLayout rules.
 //
-// If the popup was previously now showing, it will be showed, otherwise it will
+// If the popup was previously not showing, it will be shown, otherwise it will
 // change position according to layout.
 //
 // After calling this function, the result should be handled in response to
@@ -6603,7 +7458,7 @@ func (popup *Popup) Present(width, height int, layout *PopupLayout) bool {
 	return _ok
 }
 
-// Toplevel: GdkToplevel is a freestanding toplevel surface.
+// Toplevel: freestanding toplevel surface.
 //
 // The GdkToplevel interface provides useful APIs for interacting with the
 // windowing system, such as controlling maximization and size of the surface,
@@ -6630,6 +7485,11 @@ type Topleveller interface {
 	BeginResize(edge SurfaceEdge, device Devicer, button int, x, y float64, timestamp uint32)
 	// Focus sets keyboard focus to surface.
 	Focus(timestamp uint32)
+	// Capabilities capabilities that are available for this toplevel.
+	Capabilities() ToplevelCapabilities
+	// Gravity returns the gravity that is used when changing the toplevel size
+	// programmatically.
+	Gravity() Gravity
 	// State gets the bitwise or of the currently active surface state flags,
 	// from the GdkToplevelState enumeration.
 	State() ToplevelState
@@ -6649,6 +7509,9 @@ type Topleveller interface {
 	SetDecorated(decorated bool)
 	// SetDeletable sets the toplevel to be deletable.
 	SetDeletable(deletable bool)
+	// SetGravity sets the gravity that is used when changing the toplevel size
+	// programmatically.
+	SetGravity(gravity Gravity)
 	// SetIconList sets a list of icons for the surface.
 	SetIconList(surfaces []Texturer)
 	// SetModal sets the toplevel to be modal.
@@ -6664,6 +7527,7 @@ type Topleveller interface {
 	// SupportsEdgeConstraints returns whether the desktop environment supports
 	// tiled window states.
 	SupportsEdgeConstraints() bool
+	// TitlebarGesture performs a title bar gesture.
 	TitlebarGesture(gesture TitlebarGesture) bool
 }
 
@@ -6776,6 +7640,49 @@ func (toplevel *Toplevel) Focus(timestamp uint32) {
 	C.gdk_toplevel_focus(_arg0, _arg1)
 	runtime.KeepAlive(toplevel)
 	runtime.KeepAlive(timestamp)
+}
+
+// Capabilities capabilities that are available for this toplevel.
+//
+// The function returns the following values:
+//
+//   - toplevelCapabilities capabilities of the GdkToplevel.
+func (toplevel *Toplevel) Capabilities() ToplevelCapabilities {
+	var _arg0 *C.GdkToplevel            // out
+	var _cret C.GdkToplevelCapabilities // in
+
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
+
+	_cret = C.gdk_toplevel_get_capabilities(_arg0)
+	runtime.KeepAlive(toplevel)
+
+	var _toplevelCapabilities ToplevelCapabilities // out
+
+	_toplevelCapabilities = ToplevelCapabilities(_cret)
+
+	return _toplevelCapabilities
+}
+
+// Gravity returns the gravity that is used when changing the toplevel size
+// programmatically.
+//
+// The function returns the following values:
+//
+//   - gravity: gravity.
+func (toplevel *Toplevel) Gravity() Gravity {
+	var _arg0 *C.GdkToplevel // out
+	var _cret C.GdkGravity   // in
+
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
+
+	_cret = C.gdk_toplevel_get_gravity(_arg0)
+	runtime.KeepAlive(toplevel)
+
+	var _gravity Gravity // out
+
+	_gravity = Gravity(_cret)
+
+	return _gravity
 }
 
 // State gets the bitwise or of the currently active surface state flags,
@@ -6973,6 +7880,24 @@ func (toplevel *Toplevel) SetDeletable(deletable bool) {
 	runtime.KeepAlive(deletable)
 }
 
+// SetGravity sets the gravity that is used when changing the toplevel size
+// programmatically.
+//
+// The function takes the following parameters:
+//
+//   - gravity: new gravity.
+func (toplevel *Toplevel) SetGravity(gravity Gravity) {
+	var _arg0 *C.GdkToplevel // out
+	var _arg1 C.GdkGravity   // out
+
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(coreglib.InternObject(toplevel).Native()))
+	_arg1 = C.GdkGravity(gravity)
+
+	C.gdk_toplevel_set_gravity(_arg0, _arg1)
+	runtime.KeepAlive(toplevel)
+	runtime.KeepAlive(gravity)
+}
+
 // SetIconList sets a list of icons for the surface.
 //
 // One of these will be used to represent the surface in iconic form. The icon
@@ -7155,9 +8080,15 @@ func (toplevel *Toplevel) SupportsEdgeConstraints() bool {
 	return _ok
 }
 
+// TitlebarGesture performs a title bar gesture.
+//
 // The function takes the following parameters:
 //
 //   - gesture: GdkTitlebarGesture.
+//
+// The function returns the following values:
+//
+//   - ok: whether the gesture was performed.
 func (toplevel *Toplevel) TitlebarGesture(gesture TitlebarGesture) bool {
 	var _arg0 *C.GdkToplevel       // out
 	var _arg1 C.GdkTitlebarGesture // out
@@ -7179,8 +8110,7 @@ func (toplevel *Toplevel) TitlebarGesture(gesture TitlebarGesture) bool {
 	return _ok
 }
 
-// AppLaunchContext: GdkAppLaunchContext handles launching an application in a
-// graphical context.
+// AppLaunchContext handles launching an application in a graphical context.
 //
 // It is an implementation of GAppLaunchContext that provides startup
 // notification and allows to launch applications on a specific workspace.
@@ -7386,8 +8316,7 @@ func (event *ButtonEvent) Button() uint {
 	return _guint
 }
 
-// CairoContext: GdkCairoContext is an object representing the platform-specific
-// draw context.
+// CairoContext represents the platform-specific draw context.
 //
 // GdkCairoContexts are created for a surface using
 // gdk.Surface.CreateCairoContext(), and the context can then be used to draw on
@@ -7442,6 +8371,9 @@ func BaseCairoContext(obj CairoContexter) *CairoContext {
 // The returned context is guaranteed to be valid until
 // gdk.DrawContext.EndFrame() is called.
 //
+// Deprecated: Drawing content with Cairo should be done via Cairo rendernodes,
+// not by using renderers.
+//
 // The function returns the following values:
 //
 //   - context (optional): cairo context to draw on `GdkSurface.
@@ -7466,8 +8398,256 @@ func (self *CairoContext) CairoCreate() *cairo.Context {
 	return _context
 }
 
-// Clipboard: GdkClipboard object represents data shared between applications or
-// inside an application.
+// CICPParams contains the parameters that define a colorstate with cicp
+// parameters.
+//
+// Cicp parameters are specified in the ITU-T H.273 specification
+// (https://www.itu.int/rec/T-REC-H.273/en).
+//
+// See the documentation of individual properties for supported values.
+//
+// The 'unspecified' value (2) is not treated in any special way, and must be
+// replaced by a different value before creating a color state.
+//
+// GdkCicpParams can be used as a builder object to construct a color state from
+// Cicp data with gdk.CICPParams.BuildColorState(). The function will return an
+// error if the given parameters are not supported.
+//
+// You can obtain a GdkCicpParams object from a color state with
+// gdk.ColorState.CreateCICPParams(). This can be used to create a variant of a
+// color state, by changing just one of the cicp parameters, or just to obtain
+// information about the color state.
+type CICPParams struct {
+	_ [0]func() // equal guard
+	*coreglib.Object
+}
+
+var (
+	_ coreglib.Objector = (*CICPParams)(nil)
+)
+
+func wrapCICPParams(obj *coreglib.Object) *CICPParams {
+	return &CICPParams{
+		Object: obj,
+	}
+}
+
+func marshalCICPParams(p uintptr) (interface{}, error) {
+	return wrapCICPParams(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewCICPParams creates a new GdkCicpParams object.
+//
+// The initial values of the properties are the values for "undefined" and need
+// to be set before a color state object can be built.
+//
+// The function returns the following values:
+//
+//   - cicpParams: new GdkCicpParams.
+func NewCICPParams() *CICPParams {
+	var _cret *C.GdkCicpParams // in
+
+	_cret = C.gdk_cicp_params_new()
+
+	var _cicpParams *CICPParams // out
+
+	_cicpParams = wrapCICPParams(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _cicpParams
+}
+
+// BuildColorState creates a new GdkColorState object for the cicp parameters in
+// self.
+//
+// Note that this may fail if the cicp parameters in self are not supported by
+// GTK. In that case, NULL is returned, and error is set with an error message
+// that can be presented to the user.
+//
+// The function returns the following values:
+//
+//   - colorState: newly allocated GdkColorState.
+func (self *CICPParams) BuildColorState() (*ColorState, error) {
+	var _arg0 *C.GdkCicpParams // out
+	var _cret *C.GdkColorState // in
+	var _cerr *C.GError        // in
+
+	_arg0 = (*C.GdkCicpParams)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_cicp_params_build_color_state(_arg0, &_cerr)
+	runtime.KeepAlive(self)
+
+	var _colorState *ColorState // out
+	var _goerr error            // out
+
+	_colorState = (*ColorState)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_colorState)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_color_state_unref((*C.GdkColorState)(intern.C))
+		},
+	)
+	if _cerr != nil {
+		_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	}
+
+	return _colorState, _goerr
+}
+
+// ColorPrimaries returns the value of the color-primaries property of self.
+//
+// The function returns the following values:
+//
+//   - guint color-primaries value.
+func (self *CICPParams) ColorPrimaries() uint {
+	var _arg0 *C.GdkCicpParams // out
+	var _cret C.guint          // in
+
+	_arg0 = (*C.GdkCicpParams)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_cicp_params_get_color_primaries(_arg0)
+	runtime.KeepAlive(self)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// MatrixCoefficients gets the matrix-coefficients property of self.
+//
+// The function returns the following values:
+//
+//   - guint matrix-coefficients value.
+func (self *CICPParams) MatrixCoefficients() uint {
+	var _arg0 *C.GdkCicpParams // out
+	var _cret C.guint          // in
+
+	_arg0 = (*C.GdkCicpParams)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_cicp_params_get_matrix_coefficients(_arg0)
+	runtime.KeepAlive(self)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// Range gets the range property of self.
+//
+// The function returns the following values:
+//
+//   - cicpRange: range value.
+func (self *CICPParams) Range() CICPRange {
+	var _arg0 *C.GdkCicpParams // out
+	var _cret C.GdkCicpRange   // in
+
+	_arg0 = (*C.GdkCicpParams)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_cicp_params_get_range(_arg0)
+	runtime.KeepAlive(self)
+
+	var _cicpRange CICPRange // out
+
+	_cicpRange = CICPRange(_cret)
+
+	return _cicpRange
+}
+
+// TransferFunction gets the transfer-function property of self.
+//
+// The function returns the following values:
+//
+//   - guint: transfer-function value.
+func (self *CICPParams) TransferFunction() uint {
+	var _arg0 *C.GdkCicpParams // out
+	var _cret C.guint          // in
+
+	_arg0 = (*C.GdkCicpParams)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_cicp_params_get_transfer_function(_arg0)
+	runtime.KeepAlive(self)
+
+	var _guint uint // out
+
+	_guint = uint(_cret)
+
+	return _guint
+}
+
+// SetColorPrimaries sets the color-primaries property of self.
+//
+// The function takes the following parameters:
+//
+//   - colorPrimaries: new color primaries value.
+func (self *CICPParams) SetColorPrimaries(colorPrimaries uint) {
+	var _arg0 *C.GdkCicpParams // out
+	var _arg1 C.guint          // out
+
+	_arg0 = (*C.GdkCicpParams)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.guint(colorPrimaries)
+
+	C.gdk_cicp_params_set_color_primaries(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(colorPrimaries)
+}
+
+// SetMatrixCoefficients: self a GdkCicpParams Sets the matrix-coefficients
+// property of self.
+//
+// The function takes the following parameters:
+//
+//   - matrixCoefficients: new matrix-coefficients value.
+func (self *CICPParams) SetMatrixCoefficients(matrixCoefficients uint) {
+	var _arg0 *C.GdkCicpParams // out
+	var _arg1 C.guint          // out
+
+	_arg0 = (*C.GdkCicpParams)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.guint(matrixCoefficients)
+
+	C.gdk_cicp_params_set_matrix_coefficients(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(matrixCoefficients)
+}
+
+// SetRange sets the range property of self.
+//
+// The function takes the following parameters:
+//
+//   - range value.
+func (self *CICPParams) SetRange(_range CICPRange) {
+	var _arg0 *C.GdkCicpParams // out
+	var _arg1 C.GdkCicpRange   // out
+
+	_arg0 = (*C.GdkCicpParams)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.GdkCicpRange(_range)
+
+	C.gdk_cicp_params_set_range(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(_range)
+}
+
+// SetTransferFunction sets the transfer-function property of self.
+//
+// The function takes the following parameters:
+//
+//   - transferFunction: new transfer-function value.
+func (self *CICPParams) SetTransferFunction(transferFunction uint) {
+	var _arg0 *C.GdkCicpParams // out
+	var _arg1 C.guint          // out
+
+	_arg0 = (*C.GdkCicpParams)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.guint(transferFunction)
+
+	C.gdk_cicp_params_set_transfer_function(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(transferFunction)
+}
+
+// Clipboard represents data shared between applications or inside an
+// application.
 //
 // To get a GdkClipboard object, use gdk.Display.GetClipboard() or
 // gdk.Display.GetPrimaryClipboard(). You can find out about the data that is
@@ -7613,9 +8793,6 @@ func (clipboard *Clipboard) IsLocal() bool {
 // ReadAsync: asynchronously requests an input stream to read the clipboard's
 // contents from.
 //
-// When the operation is finished callback will be called. You must then call
-// gdk.Clipboard.ReadFinish() to get the result of the operation.
-//
 // The clipboard will choose the most suitable mime type from the given list to
 // fulfill the request, preferring the ones listed first.
 //
@@ -7725,9 +8902,6 @@ func (clipboard *Clipboard) ReadFinish(result gio.AsyncResulter) (string, gio.In
 // ReadTextAsync: asynchronously request the clipboard contents converted to a
 // string.
 //
-// When the operation is finished callback will be called. You must then call
-// gdk.Clipboard.ReadTextFinish() to get the result.
-//
 // This is a simple wrapper around gdk.Clipboard.ReadValueAsync(). Use that
 // function or gdk.Clipboard.ReadAsync() directly if you need more control over
 // the operation.
@@ -7799,9 +8973,6 @@ func (clipboard *Clipboard) ReadTextFinish(result gio.AsyncResulter) (string, er
 
 // ReadTextureAsync: asynchronously request the clipboard contents converted to
 // a GdkPixbuf.
-//
-// When the operation is finished callback will be called. You must then call
-// gdk.Clipboard.ReadTextureFinish() to get the result.
 //
 // This is a simple wrapper around gdk.Clipboard.ReadValueAsync(). Use that
 // function or gdk.Clipboard.ReadAsync() directly if you need more control over
@@ -7886,9 +9057,6 @@ func (clipboard *Clipboard) ReadTextureFinish(result gio.AsyncResulter) (Texture
 
 // ReadValueAsync: asynchronously request the clipboard contents converted to
 // the given type.
-//
-// When the operation is finished callback will be called. You must then call
-// gdk.Clipboard.ReadValueFinish() to get the resulting GValue.
 //
 // For local clipboard contents that are available in the given GType,
 // the value will be copied directly. Otherwise, GDK will try to use
@@ -8064,8 +9232,6 @@ func (clipboard *Clipboard) Set(value *coreglib.Value) {
 //
 // If the clipboard is not local, this function does nothing but report success.
 //
-// The callback must call gdk.Clipboard.StoreFinish().
-//
 // The purpose of this call is to preserve clipboard contents beyond the
 // lifetime of an application, so this function is typically called on exit.
 // Depending on the platform, the functionality may not be available unless a
@@ -8134,8 +9300,8 @@ func (clipboard *Clipboard) StoreFinish(result gio.AsyncResulter) error {
 	return _goerr
 }
 
-// ContentDeserializer: GdkContentDeserializer is used to deserialize content
-// received via inter-application data transfers.
+// ContentDeserializer deserializes content received via inter-application data
+// transfers.
 //
 // The GdkContentDeserializer transforms serialized content that is identified
 // by a mime type into an object identified by a GType.
@@ -8459,8 +9625,8 @@ func defaultContentProviderOverrides(v *ContentProvider) ContentProviderOverride
 	}
 }
 
-// ContentProvider: GdkContentProvider is used to provide content for the
-// clipboard or for drag-and-drop operations in a number of formats.
+// ContentProvider provides content for the clipboard or for drag-and-drop
+// operations in a number of formats.
 //
 // To create a GdkContentProvider, use gdk.ContentProvider.NewForValue or
 // gdk.ContentProvider.NewForBytes.
@@ -8609,7 +9775,7 @@ func NewContentProviderForValue(value *coreglib.Value) *ContentProvider {
 //
 //	gdk_content_provider_new_union ((GdkContentProvider *[2]) {
 //	                                  gdk_content_provider_new_typed (G_TYPE_FILE, file),
-//	                                  gdk_content_provider_new_typed (G_TYPE_TEXTURE, texture)
+//	                                  gdk_content_provider_new_typed (GDK_TYPE_TEXTURE, texture)
 //	                                }, 2);.
 //
 // The function takes the following parameters:
@@ -8750,9 +9916,6 @@ func (provider *ContentProvider) RefStorableFormats() *ContentFormats {
 
 // WriteMIMETypeAsync: asynchronously writes the contents of provider to stream
 // in the given mime_type.
-//
-// When the operation is finished callback will be called. You must then call
-// gdk.ContentProvider.WriteMIMETypeFinish() to get the result of the operation.
 //
 // The given mime type does not need to be listed in the formats returned
 // by gdk.ContentProvider.RefFormats(). However, if the given GType is not
@@ -8975,9 +10138,6 @@ func (provider *ContentProvider) refStorableFormats() *ContentFormats {
 // writeMIMETypeAsync: asynchronously writes the contents of provider to stream
 // in the given mime_type.
 //
-// When the operation is finished callback will be called. You must then call
-// gdk.ContentProvider.WriteMIMETypeFinish() to get the result of the operation.
-//
 // The given mime type does not need to be listed in the formats returned
 // by gdk.ContentProvider.RefFormats(). However, if the given GType is not
 // supported, G_IO_ERROR_NOT_SUPPORTED will be reported.
@@ -9058,8 +10218,7 @@ func (provider *ContentProvider) writeMIMETypeFinish(result gio.AsyncResulter) e
 	return _goerr
 }
 
-// ContentSerializer: GdkContentSerializer is used to serialize content for
-// inter-application data transfers.
+// ContentSerializer serializes content for inter-application data transfers.
 //
 // The GdkContentSerializer transforms an object that is identified by a GType
 // into a serialized form (i.e. a byte stream) that is identified by a mime
@@ -9413,7 +10572,7 @@ func (event *CrossingEvent) Mode() CrossingMode {
 	return _crossingMode
 }
 
-// Cursor: GdkCursor is used to create and destroy cursors.
+// Cursor: used to create and destroy cursors.
 //
 // Cursors are immutable objects, so once you created them, there is no way to
 // modify them later. You should create a new cursor when you want to change
@@ -9470,25 +10629,44 @@ func marshalCursor(p uintptr) (interface{}, error) {
 // A recommended set of cursor names that will work across different platforms
 // can be found in the CSS specification:
 //
-// | | | | | | --- | --- | ---- | --- | | "none" | ! (default_cursor.png)
-// "default" | ! (help_cursor.png) "help" | ! (pointer_cursor.png) "pointer"
-// | | ! (context_menu_cursor.png) "context-menu" | ! (progress_cursor.png)
-// "progress" | ! (wait_cursor.png) "wait" | ! (cell_cursor.png) "cell"
-// | | ! (crosshair_cursor.png) "crosshair" | ! (text_cursor.png) "text"
-// | ! (vertical_text_cursor.png) "vertical-text" | ! (alias_cursor.png)
-// "alias" | | ! (copy_cursor.png) "copy" | ! (no_drop_cursor.png) "no-drop"
-// | ! (move_cursor.png) "move" | ! (not_allowed_cursor.png) "not-allowed"
-// | | ! (grab_cursor.png) "grab" | ! (grabbing_cursor.png) "grabbing"
-// | ! (all_scroll_cursor.png) "all-scroll" | ! (col_resize_cursor.png)
-// "col-resize" | | ! (row_resize_cursor.png) "row-resize" | !
-// (n_resize_cursor.png) "n-resize" | ! (e_resize_cursor.png) "e-resize" | !
-// (s_resize_cursor.png) "s-resize" | | ! (w_resize_cursor.png) "w-resize" | !
-// (ne_resize_cursor.png) "ne-resize" | ! (nw_resize_cursor.png) "nw-resize" | !
-// (sw_resize_cursor.png) "sw-resize" | | ! (se_resize_cursor.png) "se-resize" |
-// ! (ew_resize_cursor.png) "ew-resize" | ! (ns_resize_cursor.png) "ns-resize"
-// | ! (nesw_resize_cursor.png) "nesw-resize" | | ! (nwse_resize_cursor.png)
-// "nwse-resize" | ! (zoom_in_cursor.png) "zoom-in" | ! (zoom_out_cursor.png)
-// "zoom-out" | |.
+// | | | | | --- | --- | --- | | | "none" | No cursor | | ! (default_cursor.png)
+// | "default" | The default cursor | | ! (help_cursor.png) | "help" |
+// Help is available | | ! (pointer_cursor.png) | "pointer" | Indicates
+// a link or interactive element | | ! (context_menu_cursor.png)
+// |"context-menu" | A context menu is available | | ! (progress_cursor.png)
+// | "progress" | Progress indicator | | ! (wait_cursor.png) | "wait"
+// | Busy cursor | | ! (cell_cursor.png) | "cell" | Cell(s) may be
+// selected | | ! (crosshair_cursor.png) | "crosshair" | Simple crosshair
+// | | ! (text_cursor.png) | "text" | Text may be selected | | !
+// (vertical_text_cursor.png) | "vertical-text" | Vertical text may be
+// selected | | ! (alias_cursor.png) | "alias" | DND: Something will be
+// linked | | ! (copy_cursor.png) | "copy" | DND: Something will be copied
+// | | ! (move_cursor.png) | "move" | DND: Something will be moved | | !
+// (dnd_ask_cursor.png) | "dnd-ask" | DND: User can choose action to be carried
+// out | | ! (no_drop_cursor.png) | "no-drop" | DND: Can't drop here | | !
+// (not_allowed_cursor.png) | "not-allowed" | DND: Action will not be carried
+// out | | ! (grab_cursor.png) | "grab" | DND: Something can be grabbed | |
+// ! (grabbing_cursor.png) | "grabbing" | DND: Something is being grabbed
+// | | ! (n_resize_cursor.png) | "n-resize" | Resizing: Move north border
+// | | ! (e_resize_cursor.png) | "e-resize" | Resizing: Move east border |
+// | ! (s_resize_cursor.png) | "s-resize" | Resizing: Move south border | |
+// ! (w_resize_cursor.png) | "w-resize" | Resizing: Move west border | | !
+// (ne_resize_cursor.png) | "ne-resize" | Resizing: Move north-east corner | |
+// ! (nw_resize_cursor.png) | "nw-resize" | Resizing: Move north-west corner |
+// | ! (sw_resize_cursor.png) | "sw-resize" | Resizing: Move south-west corner |
+// | ! (se_resize_cursor.png) | "se-resize" | Resizing: Move south-east corner
+// | | ! (col_resize_cursor.png) | "col-resize" | Resizing: Move an item or
+// border horizontally | | ! (row_resize_cursor.png) | "row-resize" | Resizing:
+// Move an item or border vertically | | ! (ew_resize_cursor.png) | "ew-resize"
+// | Moving: Something can be moved horizontally | | ! (ns_resize_cursor.png)
+// | "ns-resize" | Moving: Something can be moved vertically | | !
+// (nesw_resize_cursor.png) | "nesw-resize" | Moving: Something can be moved
+// diagonally, north-east to south-west | | ! (nwse_resize_cursor.png) |
+// "nwse-resize" | Moving: something can be moved diagonally, north-west to
+// south-east | | ! (all_resize_cursor.png) | "all-resize" | Moving: Something
+// can be moved in any direction | | ! (all_scroll_cursor.png) | "all-scroll" |
+// Can scroll in any direction | | ! (zoom_in_cursor.png) | "zoom-in" | Zoom in
+// | | ! (zoom_out_cursor.png) | "zoom-out" | Zoom out |.
 //
 // The function takes the following parameters:
 //
@@ -9791,8 +10969,7 @@ func marshalDeleteEvent(p uintptr) (interface{}, error) {
 	return wrapDeleteEvent(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// Device: GdkDevice object represents an input device, such as a keyboard,
-// a mouse, or a touchpad.
+// Device represents an input device, such as a keyboard, mouse or touchpad.
 //
 // See the gdk.Seat documentation for more information about the various kinds
 // of devices, and their relationships.
@@ -9850,6 +11027,32 @@ func (device *Device) ConnectChanged(f func()) coreglib.SignalHandle {
 // leave proximity.
 func (device *Device) ConnectToolChanged(f func(tool *DeviceTool)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(device, "tool-changed", false, unsafe.Pointer(C._gotk4_gdk4_Device_ConnectToolChanged), f)
+}
+
+// ActiveLayoutIndex retrieves the index of the active layout of the keyboard.
+//
+// If there is no valid active layout for the GdkDevice, this function will
+// return -1;
+//
+// This is only relevant for keyboard devices.
+//
+// The function returns the following values:
+//
+//   - gint: layout index of the active layout or -1.
+func (device *Device) ActiveLayoutIndex() int {
+	var _arg0 *C.GdkDevice // out
+	var _cret C.gint       // in
+
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+
+	_cret = C.gdk_device_get_active_layout_index(_arg0)
+	runtime.KeepAlive(device)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
 }
 
 // CapsLockState retrieves whether the Caps Lock modifier of the keyboard is
@@ -9972,6 +11175,45 @@ func (device *Device) HasCursor() bool {
 	}
 
 	return _ok
+}
+
+// LayoutNames retrieves the names of the layouts of the keyboard.
+//
+// This is only relevant for keyboard devices.
+//
+// The function returns the following values:
+//
+//   - utf8s (optional): NULL-terminated array of strings of layouts,.
+func (device *Device) LayoutNames() []string {
+	var _arg0 *C.GdkDevice // out
+	var _cret **C.gchar    // in
+
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(coreglib.InternObject(device).Native()))
+
+	_cret = C.gdk_device_get_layout_names(_arg0)
+	runtime.KeepAlive(device)
+
+	var _utf8s []string // out
+
+	if _cret != nil {
+		defer C.free(unsafe.Pointer(_cret))
+		{
+			var i int
+			var z *C.gchar
+			for p := _cret; *p != z; p = &unsafe.Slice(p, 2)[1] {
+				i++
+			}
+
+			src := unsafe.Slice(_cret, i)
+			_utf8s = make([]string, i)
+			for i := range src {
+				_utf8s[i] = C.GoString((*C.gchar)(unsafe.Pointer(src[i])))
+				defer C.free(unsafe.Pointer(src[i]))
+			}
+		}
+	}
+
+	return _utf8s
 }
 
 // ModifierState retrieves the current modifier state of the keyboard.
@@ -10439,7 +11681,7 @@ func (tool *DeviceTool) ToolType() DeviceToolType {
 	return _deviceToolType
 }
 
-// Display: GdkDisplay objects are the GDK representation of a workstation.
+// Display: representation of a workstation.
 //
 // Their purpose are two-fold:
 //
@@ -10716,6 +11958,8 @@ func (display *Display) DefaultSeat() Seater {
 // formats with producers such as v4l, pipewire or GStreamer.
 //
 // To learn more about dma-bufs, see gdk.DmabufTextureBuilder.
+//
+// This function is threadsafe. It can be called from any thread.
 //
 // The function returns the following values:
 //
@@ -11459,8 +12703,9 @@ func DisplayOpen(displayName string) *Display {
 	return _display
 }
 
-// DisplayManager: singleton object that offers notification when displays
-// appear or disappear.
+// DisplayManager offers notification when displays appear or disappear.
+//
+// GdkDisplayManager is a singleton object.
 //
 // You can use gdk.DisplayManager().Get to obtain the GdkDisplayManager
 // singleton, but that should be rarely necessary. Typically, initializing
@@ -11682,8 +12927,7 @@ func marshalDmabufTexture(p uintptr) (interface{}, error) {
 	return wrapDmabufTexture(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
 }
 
-// DmabufTextureBuilder: GdkDmabufTextureBuilder is a builder used to construct
-// gdk.Texture objects from DMA buffers.
+// DmabufTextureBuilder constructs gdk.Texture objects from DMA buffers.
 //
 // DMA buffers are commonly called **_dma-bufs_**.
 //
@@ -11709,8 +12953,10 @@ func marshalDmabufTexture(p uintptr) (interface{}, error) {
 // beginning of the data.
 //
 // DMA buffers are exposed to user-space as file descriptors allowing to pass
-// them between processes. If a DMA buffer has multiple planes, there is one
-// file descriptor per plane.
+// them between processes. If a DMA buffer has multiple planes, more than one
+// file descriptor may be present, up to the number of planes. If the number of
+// file descriptors is less than the number of planes, the remaining ones should
+// be set to -1.
 //
 // The format of the data (for graphics data, essentially its colorspace) is
 // described by a 32-bit integer. These format identifiers are defined in the
@@ -11783,6 +13029,37 @@ func NewDmabufTextureBuilder() *DmabufTextureBuilder {
 	return _dmabufTextureBuilder
 }
 
+// ColorState gets the color state previously set via
+// gdk_dmabuf_texture_builder_set_color_state().
+//
+// The function returns the following values:
+//
+//   - colorState (optional): color state.
+func (self *DmabufTextureBuilder) ColorState() *ColorState {
+	var _arg0 *C.GdkDmabufTextureBuilder // out
+	var _cret *C.GdkColorState           // in
+
+	_arg0 = (*C.GdkDmabufTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_dmabuf_texture_builder_get_color_state(_arg0)
+	runtime.KeepAlive(self)
+
+	var _colorState *ColorState // out
+
+	if _cret != nil {
+		_colorState = (*ColorState)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.gdk_color_state_ref(_cret)
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_colorState)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.gdk_color_state_unref((*C.GdkColorState)(intern.C))
+			},
+		)
+	}
+
+	return _colorState
+}
+
 // Display returns the display that this texture builder is associated with.
 //
 // The function returns the following values:
@@ -11804,7 +13081,7 @@ func (self *DmabufTextureBuilder) Display() *Display {
 	return _display
 }
 
-// Fd gets the file descriptor for a plane.
+// Fd gets the file descriptor for a plane or -1 if none.
 //
 // The function takes the following parameters:
 //
@@ -12089,6 +13366,29 @@ func (self *DmabufTextureBuilder) Width() uint {
 	return _guint
 }
 
+// SetColorState sets the color state for the texture.
+//
+// By default, the colorstate is NULL. In that case, GTK will choose the correct
+// colorstate based on the format. If you don't know what colorstates are,
+// this is probably the right thing.
+//
+// The function takes the following parameters:
+//
+//   - colorState (optional): GdkColorState or NULL to unset the colorstate.
+func (self *DmabufTextureBuilder) SetColorState(colorState *ColorState) {
+	var _arg0 *C.GdkDmabufTextureBuilder // out
+	var _arg1 *C.GdkColorState           // out
+
+	_arg0 = (*C.GdkDmabufTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if colorState != nil {
+		_arg1 = (*C.GdkColorState)(gextras.StructNative(unsafe.Pointer(colorState)))
+	}
+
+	C.gdk_dmabuf_texture_builder_set_color_state(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(colorState)
+}
+
 // SetDisplay sets the display that this texture builder is associated with.
 //
 // The display is used to determine the supported dma-buf formats.
@@ -12108,7 +13408,7 @@ func (self *DmabufTextureBuilder) SetDisplay(display *Display) {
 	runtime.KeepAlive(display)
 }
 
-// SetFd sets the file descriptor for a plane.
+// SetFd sets the file descriptor for a plane or to -1 to unset it.
 //
 // The function takes the following parameters:
 //
@@ -12133,7 +13433,7 @@ func (self *DmabufTextureBuilder) SetFd(plane uint, fd int) {
 //
 // The format is specified as a fourcc code.
 //
-// The format must be set before calling gdk.GLTextureBuilder.Build().
+// The format must be set before calling gdk.DmabufTextureBuilder.Build().
 //
 // The function takes the following parameters:
 //
@@ -12152,7 +13452,7 @@ func (self *DmabufTextureBuilder) SetFourcc(fourcc uint32) {
 
 // SetHeight sets the height of the texture.
 //
-// The height must be set before calling gdk.GLTextureBuilder.Build().
+// The height must be set before calling gdk.DmabufTextureBuilder.Build().
 //
 // The function takes the following parameters:
 //
@@ -12249,7 +13549,7 @@ func (self *DmabufTextureBuilder) SetPremultiplied(premultiplied bool) {
 // SetStride sets the stride for a plane.
 //
 // The stride must be set for all planes before calling
-// gdk.GLTextureBuilder.Build().
+// gdk.DmabufTextureBuilder.Build().
 //
 // The function takes the following parameters:
 //
@@ -12320,7 +13620,7 @@ func (self *DmabufTextureBuilder) SetUpdateTexture(texture Texturer) {
 
 // SetWidth sets the width of the texture.
 //
-// The width must be set before calling gdk.GLTextureBuilder.Build().
+// The width must be set before calling gdk.DmabufTextureBuilder.Build().
 //
 // The function takes the following parameters:
 //
@@ -12337,7 +13637,7 @@ func (self *DmabufTextureBuilder) SetWidth(width uint) {
 	runtime.KeepAlive(width)
 }
 
-// Drag: GdkDrag object represents the source of an ongoing DND operation.
+// Drag represents the source of an ongoing DND operation.
 //
 // A GdkDrag is created when a drag is started, and stays alive for duration
 // of the DND operation. After a drag has been started with gdk.Drag().Begin,
@@ -12827,6 +14127,9 @@ func BaseDrawContext(obj DrawContexter) *DrawContext {
 // of GskRenderer (../gsk4/class.Renderer.html)s, so application code does not
 // need to call these functions explicitly.
 //
+// Deprecated: Drawing directly to the surface is no longer recommended.
+// Use GskRenderNode and GskRenderer.
+//
 // The function takes the following parameters:
 //
 //   - region: minimum region that should be drawn.
@@ -12851,6 +14154,9 @@ func (context *DrawContext) BeginFrame(region *cairo.Region) {
 // When using a gdk.GLContext, this function may call glFlush() implicitly
 // before returning; it is not recommended to call glFlush() explicitly before
 // calling this function.
+//
+// Deprecated: Drawing directly to the surface is no longer recommended.
+// Use GskRenderNode and GskRenderer.
 func (context *DrawContext) EndFrame() {
 	var _arg0 *C.GdkDrawContext // out
 
@@ -12891,6 +14197,9 @@ func (context *DrawContext) Display() *Display {
 //
 // If context is not in between calls to gdk.DrawContext.BeginFrame() and
 // gdk.DrawContext.EndFrame(), NULL will be returned.
+//
+// Deprecated: Drawing directly to the surface is no longer recommended.
+// Use GskRenderNode and GskRenderer.
 //
 // The function returns the following values:
 //
@@ -12963,6 +14272,9 @@ func (context *DrawContext) Surface() Surfacer {
 // gdk.DrawContext.EndFrame(). In this situation, drawing commands may be
 // effecting the contents of the context's surface.
 //
+// Deprecated: Drawing directly to the surface is no longer recommended.
+// Use GskRenderNode and GskRenderer.
+//
 // The function returns the following values:
 //
 //   - ok: TRUE if the context is between gdk.DrawContext.BeginFrame() and
@@ -12985,7 +14297,7 @@ func (context *DrawContext) IsInFrame() bool {
 	return _ok
 }
 
-// Drop: GdkDrop object represents the target of an ongoing DND operation.
+// Drop represents the target of an ongoing DND operation.
 //
 // Possible drop sites get informed about the status of the ongoing drag
 // operation with events of type GDK_DRAG_ENTER, GDK_DRAG_LEAVE, GDK_DRAG_MOTION
@@ -13045,7 +14357,8 @@ func BaseDrop(obj Dropper) *Drop {
 //
 // The function takes the following parameters:
 //
-//   - action performed by the destination or 0 if the drop failed.
+//   - action performed by the destination or GDK_ACTION_NONE if the drop
+//     failed.
 func (self *Drop) Finish(action DragAction) {
 	var _arg0 *C.GdkDrop      // out
 	var _arg1 C.GdkDragAction // out
@@ -13061,7 +14374,7 @@ func (self *Drop) Finish(action DragAction) {
 // Actions returns the possible actions for this GdkDrop.
 //
 // If this value contains multiple actions - i.e. gdk.DragAction().IsUnique
-// returns FALSE for the result - gdk.Drop.Finish() must choose the action
+// returns false for the result - gdk.Drop.Finish() must choose the action
 // to use when accepting the drop. This will only happen if you passed
 // GDK_ACTION_ASK as one of the possible actions in gdk.Drop.Status().
 // GDK_ACTION_ASK itself will not be included in the actions returned by this
@@ -13367,9 +14680,6 @@ func (self *Drop) ReadFinish(result gio.AsyncResulter) (string, gio.InputStreame
 // ReadValueAsync: asynchronously request the drag operation's contents
 // converted to the given type.
 //
-// When the operation is finished callback will be called. You must then call
-// gdk.Drop.ReadValueFinish() to get the resulting GValue.
-//
 // For local drag-and-drop operations that are available in the given GType,
 // the value will be copied directly. Otherwise, GDK will try to use
 // gdk.ContentDeserializeAsync() to convert the data.
@@ -13460,8 +14770,8 @@ func (self *Drop) ReadValueFinish(result gio.AsyncResulter) (*coreglib.Value, er
 //
 // The function takes the following parameters:
 //
-//   - actions: supported actions of the destination, or 0 to indicate that a
-//     drop will not be accepted.
+//   - actions: supported actions of the destination, or GDK_ACTION_NONE to
+//     indicate that a drop will not be accepted.
 //   - preferred: unique action that's a member of actions indicating the
 //     preferred action.
 func (self *Drop) Status(actions, preferred DragAction) {
@@ -13479,12 +14789,13 @@ func (self *Drop) Status(actions, preferred DragAction) {
 	runtime.KeepAlive(preferred)
 }
 
-// Event GdkEvents are immutable data structures, created by GDK to represent
-// windowing system events.
+// Event represents windowing system events.
 //
 // In GTK applications the events are handled automatically by toplevel widgets
 // and passed on to the event controllers of appropriate widgets, so using
 // GdkEvent and its related API is rarely needed.
+//
+// GdkEvent structs are immutable.
 type Event struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
@@ -13821,7 +15132,7 @@ func (event *Event) PointerEmulated() bool {
 //
 //   - x: location to put event surface x coordinate.
 //   - y: location to put event surface y coordinate.
-//   - ok
+//   - ok: whether the positions were set.
 func (event *Event) Position() (x, y float64, ok bool) {
 	var _arg0 *C.GdkEvent // out
 	var _arg1 C.double    // in
@@ -13945,10 +15256,12 @@ func (event *Event) Time() uint32 {
 // TriggersContextMenu returns whether a GdkEvent should trigger a context menu,
 // according to platform conventions.
 //
-// The right mouse button typically triggers context menus.
+// The right mouse button typically triggers context menus. On macOS,
+// Control+left mouse button also triggers.
 //
 // This function should always be used instead of simply checking for
-// event->button == GDK_BUTTON_SECONDARY.
+//
+//	event->button == GDK_BUTTON_SECONDARY.
 //
 // The function returns the following values:
 //
@@ -14017,8 +15330,7 @@ func (event *FocusEvent) In() bool {
 	return _ok
 }
 
-// FrameClock: GdkFrameClock tells the application when to update and repaint a
-// surface.
+// FrameClock tells the application when to update and repaint a surface.
 //
 // This may be synced to the vertical refresh rate of the monitor, for example.
 // Even when the frame clock uses a simple timer rather than a hardware-based
@@ -14419,8 +15731,7 @@ func (frameClock *FrameClock) RequestPhase(phase FrameClockPhase) {
 	runtime.KeepAlive(phase)
 }
 
-// GLContext: GdkGLContext is an object representing a platform-specific OpenGL
-// draw context.
+// GLContext represents a platform-specific OpenGL draw context.
 //
 // GdkGLContexts are created for a surface using gdk.Surface.CreateGLContext(),
 // and the context will match the characteristics of the surface.
@@ -15070,7 +16381,7 @@ func GLContextGetCurrent() GLContexter {
 	return _glContext
 }
 
-// GLTexture: gdkTexture representing a GL texture object.
+// GLTexture: GdkTexture representing a GL texture object.
 type GLTexture struct {
 	_ [0]func() // equal guard
 	Texture
@@ -15113,8 +16424,7 @@ func (self *GLTexture) Release() {
 	runtime.KeepAlive(self)
 }
 
-// GLTextureBuilder: GdkGLTextureBuilder is a builder used to construct
-// gdk.Texture objects from GL textures.
+// GLTextureBuilder constructs gdk.Texture objects from GL textures.
 //
 // The operation is quite simple: Create a texture builder,
 // set all the necessary properties - keep in mind that the
@@ -15158,6 +16468,35 @@ func NewGLTextureBuilder() *GLTextureBuilder {
 	_glTextureBuilder = wrapGLTextureBuilder(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _glTextureBuilder
+}
+
+// ColorState gets the color state previously set via
+// gdk_gl_texture_builder_set_color_state().
+//
+// The function returns the following values:
+//
+//   - colorState: color state.
+func (self *GLTextureBuilder) ColorState() *ColorState {
+	var _arg0 *C.GdkGLTextureBuilder // out
+	var _cret *C.GdkColorState       // in
+
+	_arg0 = (*C.GdkGLTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_gl_texture_builder_get_color_state(_arg0)
+	runtime.KeepAlive(self)
+
+	var _colorState *ColorState // out
+
+	_colorState = (*ColorState)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.gdk_color_state_ref(_cret)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_colorState)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_color_state_unref((*C.GdkColorState)(intern.C))
+		},
+	)
+
+	return _colorState
 }
 
 // Context gets the context previously set via
@@ -15397,6 +16736,26 @@ func (self *GLTextureBuilder) Width() int {
 	return _gint
 }
 
+// SetColorState sets the color state for the texture.
+//
+// By default, the sRGB colorstate is used. If you don't know what colorstates
+// are, this is probably the right thing.
+//
+// The function takes the following parameters:
+//
+//   - colorState: GdkColorState.
+func (self *GLTextureBuilder) SetColorState(colorState *ColorState) {
+	var _arg0 *C.GdkGLTextureBuilder // out
+	var _arg1 *C.GdkColorState       // out
+
+	_arg0 = (*C.GdkGLTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.GdkColorState)(gextras.StructNative(unsafe.Pointer(colorState)))
+
+	C.gdk_gl_texture_builder_set_color_state(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(colorState)
+}
+
 // SetContext sets the context to be used for the texture. This is the context
 // that owns the texture.
 //
@@ -15404,7 +16763,7 @@ func (self *GLTextureBuilder) Width() int {
 //
 // The function takes the following parameters:
 //
-//   - context (optional) the texture beongs to or NULL to unset.
+//   - context (optional) the texture belongs to or NULL to unset.
 func (self *GLTextureBuilder) SetContext(context GLContexter) {
 	var _arg0 *C.GdkGLTextureBuilder // out
 	var _arg1 *C.GdkGLContext        // out
@@ -15985,8 +17344,584 @@ func NewMemoryTexture(width, height int, format MemoryFormat, bytes *glib.Bytes,
 	return _memoryTexture
 }
 
-// Monitor: GdkMonitor objects represent the individual outputs that are
-// associated with a GdkDisplay.
+// MemoryTextureBuilder constructs gdk.Texture objects from system memory
+// provided via glib.Bytes.
+//
+// The operation is quite simple: Create a texture builder,
+// set all the necessary properties - keep in mind that the properties
+// gdk.MemoryTextureBuilder:bytes, gdk.MemoryTextureBuilder:stride,
+// gdk.MemoryTextureBuilder:width, and gdk.MemoryTextureBuilder:height are
+// mandatory - and then call gdk.MemoryTextureBuilder.Build() to create the new
+// texture.
+//
+// GdkMemoryTextureBuilder can be used for quick one-shot construction of
+// textures as well as kept around and reused to construct multiple textures.
+type MemoryTextureBuilder struct {
+	_ [0]func() // equal guard
+	*coreglib.Object
+}
+
+var (
+	_ coreglib.Objector = (*MemoryTextureBuilder)(nil)
+)
+
+func wrapMemoryTextureBuilder(obj *coreglib.Object) *MemoryTextureBuilder {
+	return &MemoryTextureBuilder{
+		Object: obj,
+	}
+}
+
+func marshalMemoryTextureBuilder(p uintptr) (interface{}, error) {
+	return wrapMemoryTextureBuilder(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// NewMemoryTextureBuilder creates a new texture builder.
+//
+// The function returns the following values:
+//
+//   - memoryTextureBuilder: new GdkTextureBuilder.
+func NewMemoryTextureBuilder() *MemoryTextureBuilder {
+	var _cret *C.GdkMemoryTextureBuilder // in
+
+	_cret = C.gdk_memory_texture_builder_new()
+
+	var _memoryTextureBuilder *MemoryTextureBuilder // out
+
+	_memoryTextureBuilder = wrapMemoryTextureBuilder(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+
+	return _memoryTextureBuilder
+}
+
+// Build builds a new GdkTexture with the values set up in the builder.
+//
+// Note that it is a programming error to call this function if any mandatory
+// property has not been set.
+//
+// It is possible to call this function multiple times to create multiple
+// textures, possibly with changing properties in between.
+//
+// The function returns the following values:
+//
+//   - texture: newly built GdkTexture.
+func (self *MemoryTextureBuilder) Build() Texturer {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _cret *C.GdkTexture              // in
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_memory_texture_builder_build(_arg0)
+	runtime.KeepAlive(self)
+
+	var _texture Texturer // out
+
+	{
+		objptr := unsafe.Pointer(_cret)
+		if objptr == nil {
+			panic("object of type gdk.Texturer is nil")
+		}
+
+		object := coreglib.AssumeOwnership(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(Texturer)
+			return ok
+		})
+		rv, ok := casted.(Texturer)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Texturer")
+		}
+		_texture = rv
+	}
+
+	return _texture
+}
+
+// Bytes gets the bytes previously set via
+// gdk_memory_texture_builder_set_bytes() or NULL if none was set.
+//
+// The function returns the following values:
+//
+//   - bytes (optional): bytes.
+func (self *MemoryTextureBuilder) Bytes() *glib.Bytes {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _cret *C.GBytes                  // in
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_memory_texture_builder_get_bytes(_arg0)
+	runtime.KeepAlive(self)
+
+	var _bytes *glib.Bytes // out
+
+	if _cret != nil {
+		_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_bytes_ref(_cret)
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_bytes)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_bytes_unref((*C.GBytes)(intern.C))
+			},
+		)
+	}
+
+	return _bytes
+}
+
+// ColorState gets the colorstate previously set via
+// gdk_memory_texture_builder_set_color_state().
+//
+// The function returns the following values:
+//
+//   - colorState: colorstate.
+func (self *MemoryTextureBuilder) ColorState() *ColorState {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _cret *C.GdkColorState           // in
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_memory_texture_builder_get_color_state(_arg0)
+	runtime.KeepAlive(self)
+
+	var _colorState *ColorState // out
+
+	_colorState = (*ColorState)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.gdk_color_state_ref(_cret)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_colorState)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_color_state_unref((*C.GdkColorState)(intern.C))
+		},
+	)
+
+	return _colorState
+}
+
+// Format gets the format previously set via
+// gdk_memory_texture_builder_set_format().
+//
+// The function returns the following values:
+//
+//   - memoryFormat: format.
+func (self *MemoryTextureBuilder) Format() MemoryFormat {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _cret C.GdkMemoryFormat          // in
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_memory_texture_builder_get_format(_arg0)
+	runtime.KeepAlive(self)
+
+	var _memoryFormat MemoryFormat // out
+
+	_memoryFormat = MemoryFormat(_cret)
+
+	return _memoryFormat
+}
+
+// Height gets the height previously set via
+// gdk_memory_texture_builder_set_height() or 0 if the height wasn't set.
+//
+// The function returns the following values:
+//
+//   - gint: height.
+func (self *MemoryTextureBuilder) Height() int {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _cret C.int                      // in
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_memory_texture_builder_get_height(_arg0)
+	runtime.KeepAlive(self)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// Offset gets the offset previously set via
+// gdk_memory_texture_builder_set_offset().
+//
+// The function takes the following parameters:
+//
+//   - plane: plane.
+//
+// The function returns the following values:
+//
+//   - gsize: offset associated to a plane.
+func (self *MemoryTextureBuilder) Offset(plane uint) uint {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _arg1 C.uint                     // out
+	var _cret C.gsize                    // in
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.uint(plane)
+
+	_cret = C.gdk_memory_texture_builder_get_offset(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(plane)
+
+	var _gsize uint // out
+
+	_gsize = uint(_cret)
+
+	return _gsize
+}
+
+// Stride gets the stride previously set via
+// gdk_memory_texture_builder_set_stride().
+//
+// The function returns the following values:
+//
+//   - gsize: stride.
+func (self *MemoryTextureBuilder) Stride() uint {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _cret C.gsize                    // in
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_memory_texture_builder_get_stride(_arg0)
+	runtime.KeepAlive(self)
+
+	var _gsize uint // out
+
+	_gsize = uint(_cret)
+
+	return _gsize
+}
+
+// StrideForPlane gets the stride previously set via
+// gdk_memory_texture_builder_set_stride_for_plane().
+//
+// The function takes the following parameters:
+//
+//   - plane: plane.
+//
+// The function returns the following values:
+//
+//   - gsize: stride associated to a plane.
+func (self *MemoryTextureBuilder) StrideForPlane(plane uint) uint {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _arg1 C.uint                     // out
+	var _cret C.gsize                    // in
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.uint(plane)
+
+	_cret = C.gdk_memory_texture_builder_get_stride_for_plane(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(plane)
+
+	var _gsize uint // out
+
+	_gsize = uint(_cret)
+
+	return _gsize
+}
+
+// UpdateRegion gets the region previously set via
+// gdk_memory_texture_builder_set_update_region() or NULL if none was set.
+//
+// The function returns the following values:
+//
+//   - region (optional): update region.
+func (self *MemoryTextureBuilder) UpdateRegion() *cairo.Region {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _cret *C.cairo_region_t          // in
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_memory_texture_builder_get_update_region(_arg0)
+	runtime.KeepAlive(self)
+
+	var _region *cairo.Region // out
+
+	if _cret != nil {
+		{
+			_pp := &struct{ p unsafe.Pointer }{unsafe.Pointer(_cret)}
+			_region = (*cairo.Region)(unsafe.Pointer(_pp))
+		}
+		C.cairo_region_reference(_cret)
+		runtime.SetFinalizer(_region, func(v *cairo.Region) {
+			C.cairo_region_destroy((*C.cairo_region_t)(unsafe.Pointer(v.Native())))
+		})
+	}
+
+	return _region
+}
+
+// UpdateTexture gets the texture previously set via
+// gdk_memory_texture_builder_set_update_texture() or NULL if none was set.
+//
+// The function returns the following values:
+//
+//   - texture (optional): update texture.
+func (self *MemoryTextureBuilder) UpdateTexture() Texturer {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _cret *C.GdkTexture              // in
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_memory_texture_builder_get_update_texture(_arg0)
+	runtime.KeepAlive(self)
+
+	var _texture Texturer // out
+
+	if _cret != nil {
+		{
+			objptr := unsafe.Pointer(_cret)
+
+			object := coreglib.Take(objptr)
+			casted := object.WalkCast(func(obj coreglib.Objector) bool {
+				_, ok := obj.(Texturer)
+				return ok
+			})
+			rv, ok := casted.(Texturer)
+			if !ok {
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Texturer")
+			}
+			_texture = rv
+		}
+	}
+
+	return _texture
+}
+
+// Width gets the width previously set via
+// gdk_memory_texture_builder_set_width() or 0 if the width wasn't set.
+//
+// The function returns the following values:
+//
+//   - gint: width.
+func (self *MemoryTextureBuilder) Width() int {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _cret C.int                      // in
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_memory_texture_builder_get_width(_arg0)
+	runtime.KeepAlive(self)
+
+	var _gint int // out
+
+	_gint = int(_cret)
+
+	return _gint
+}
+
+// SetBytes sets the data to be shown but the texture.
+//
+// The bytes must be set before calling gdk.MemoryTextureBuilder.Build().
+//
+// The function takes the following parameters:
+//
+//   - bytes (optional) the texture shows or NULL to unset.
+func (self *MemoryTextureBuilder) SetBytes(bytes *glib.Bytes) {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _arg1 *C.GBytes                  // out
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if bytes != nil {
+		_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(bytes)))
+	}
+
+	C.gdk_memory_texture_builder_set_bytes(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(bytes)
+}
+
+// SetColorState sets the colorstate describing the data.
+//
+// By default, the sRGB colorstate is used. If you don't know what colorstates
+// are, this is probably the right thing.
+//
+// The function takes the following parameters:
+//
+//   - colorState: colorstate describing the data.
+func (self *MemoryTextureBuilder) SetColorState(colorState *ColorState) {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _arg1 *C.GdkColorState           // out
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = (*C.GdkColorState)(gextras.StructNative(unsafe.Pointer(colorState)))
+
+	C.gdk_memory_texture_builder_set_color_state(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(colorState)
+}
+
+// SetFormat sets the format of the bytes.
+//
+// The default is GDK_MEMORY_R8G8B8A8_PREMULTIPLIED.
+//
+// The function takes the following parameters:
+//
+//   - format texture's format.
+func (self *MemoryTextureBuilder) SetFormat(format MemoryFormat) {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _arg1 C.GdkMemoryFormat          // out
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.GdkMemoryFormat(format)
+
+	C.gdk_memory_texture_builder_set_format(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(format)
+}
+
+// SetHeight sets the height of the texture.
+//
+// The height must be set before calling gdk.MemoryTextureBuilder.Build() and
+// conform to size requirements of the provided format.
+//
+// The function takes the following parameters:
+//
+//   - height texture's height or 0 to unset.
+func (self *MemoryTextureBuilder) SetHeight(height int) {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _arg1 C.int                      // out
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.int(height)
+
+	C.gdk_memory_texture_builder_set_height(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(height)
+}
+
+// SetOffset sets the offset of the texture for plane.
+//
+// The function takes the following parameters:
+//
+//   - plane: plane.
+//   - offset texture's offset for plane.
+func (self *MemoryTextureBuilder) SetOffset(plane, offset uint) {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _arg1 C.uint                     // out
+	var _arg2 C.gsize                    // out
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.uint(plane)
+	_arg2 = C.gsize(offset)
+
+	C.gdk_memory_texture_builder_set_offset(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(plane)
+	runtime.KeepAlive(offset)
+}
+
+// SetStride sets the rowstride of the bytes used.
+//
+// The rowstride must be set before calling gdk.MemoryTextureBuilder.Build().
+//
+// The function takes the following parameters:
+//
+//   - stride or 0 to unset.
+func (self *MemoryTextureBuilder) SetStride(stride uint) {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _arg1 C.gsize                    // out
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.gsize(stride)
+
+	C.gdk_memory_texture_builder_set_stride(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(stride)
+}
+
+// SetStrideForPlane sets the stride of the texture for plane.
+//
+// The function takes the following parameters:
+//
+//   - plane: plane.
+//   - stride texture's stride for plane.
+func (self *MemoryTextureBuilder) SetStrideForPlane(plane, stride uint) {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _arg1 C.uint                     // out
+	var _arg2 C.gsize                    // out
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.uint(plane)
+	_arg2 = C.gsize(stride)
+
+	C.gdk_memory_texture_builder_set_stride_for_plane(_arg0, _arg1, _arg2)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(plane)
+	runtime.KeepAlive(stride)
+}
+
+// SetUpdateRegion sets the region to be updated by this texture.
+//
+// Together with gdk.MemoryTextureBuilder:update-texture, this describes an
+// update of a previous texture.
+//
+// When rendering animations of large textures, it is possible that consecutive
+// textures are only updating contents in parts of the texture. It is then
+// possible to describe this update via these two properties, so that GTK can
+// avoid rerendering parts that did not change.
+//
+// An example would be a screen recording where only the mouse pointer moves.
+//
+// The function takes the following parameters:
+//
+//   - region (optional) to update.
+func (self *MemoryTextureBuilder) SetUpdateRegion(region *cairo.Region) {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _arg1 *C.cairo_region_t          // out
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if region != nil {
+		_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+	}
+
+	C.gdk_memory_texture_builder_set_update_region(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(region)
+}
+
+// SetUpdateTexture sets the texture to be updated by this texture.
+//
+// See gdk.MemoryTextureBuilder.SetUpdateRegion() for an explanation.
+//
+// The function takes the following parameters:
+//
+//   - texture (optional) to update.
+func (self *MemoryTextureBuilder) SetUpdateTexture(texture Texturer) {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _arg1 *C.GdkTexture              // out
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	if texture != nil {
+		_arg1 = (*C.GdkTexture)(unsafe.Pointer(coreglib.InternObject(texture).Native()))
+	}
+
+	C.gdk_memory_texture_builder_set_update_texture(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(texture)
+}
+
+// SetWidth sets the width of the texture.
+//
+// The width must be set before calling gdk.MemoryTextureBuilder.Build() and
+// conform to size requirements of the provided format.
+//
+// The function takes the following parameters:
+//
+//   - width texture's width or 0 to unset.
+func (self *MemoryTextureBuilder) SetWidth(width int) {
+	var _arg0 *C.GdkMemoryTextureBuilder // out
+	var _arg1 C.int                      // out
+
+	_arg0 = (*C.GdkMemoryTextureBuilder)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+	_arg1 = C.int(width)
+
+	C.gdk_memory_texture_builder_set_width(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(width)
+}
+
+// Monitor represents the individual outputs that are associated with a
+// GdkDisplay.
 //
 // GdkDisplay keeps a GListModel to enumerate and monitor monitors with
 // gdk.Display.GetMonitors(). You can use gdk.Display.GetMonitorAtSurface() to
@@ -16542,6 +18477,28 @@ func (event *ScrollEvent) Direction() ScrollDirection {
 	return _scrollDirection
 }
 
+// RelativeDirection extracts the scroll direction relative to the physical
+// motion.
+//
+// The function returns the following values:
+//
+//   - scrollRelativeDirection: relative scroll direction.
+func (event *ScrollEvent) RelativeDirection() ScrollRelativeDirection {
+	var _arg0 *C.GdkEvent                  // out
+	var _cret C.GdkScrollRelativeDirection // in
+
+	_arg0 = (*C.GdkEvent)(unsafe.Pointer(coreglib.InternObject(event).Native()))
+
+	_cret = C.gdk_scroll_event_get_relative_direction(_arg0)
+	runtime.KeepAlive(event)
+
+	var _scrollRelativeDirection ScrollRelativeDirection // out
+
+	_scrollRelativeDirection = ScrollRelativeDirection(_cret)
+
+	return _scrollRelativeDirection
+}
+
 // Unit extracts the scroll delta unit of a scroll event.
 //
 // The unit will always be GDK_SCROLL_UNIT_WHEEL if the scroll direction is not
@@ -16596,8 +18553,7 @@ func (event *ScrollEvent) IsStop() bool {
 	return _ok
 }
 
-// Seat: GdkSeat object represents a collection of input devices that belong to
-// a user.
+// Seat represents a collection of input devices that belong to a user.
 type Seat struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
@@ -16902,7 +18858,7 @@ func BaseSnapshot(obj Snapshotter) *Snapshot {
 	return obj.baseSnapshot()
 }
 
-// Surface: GdkSurface is a rectangular region on the screen.
+// Surface represents a rectangular region on the screen.
 //
 // It’s a low-level object, used to implement high-level objects such as
 // GtkWindow (../gtk4/class.Window.html).
@@ -17054,6 +19010,9 @@ func (surface *Surface) Beep() {
 }
 
 // CreateCairoContext creates a new GdkCairoContext for rendering on surface.
+//
+// Deprecated: Drawing content with Cairo should be done via Cairo rendernodes,
+// not by using the Cairo renderer.
 //
 // The function returns the following values:
 //
@@ -17694,13 +19653,16 @@ func (surface *Surface) SetDeviceCursor(device Devicer, cursor *Cursor) {
 //
 // The function takes the following parameters:
 //
-//   - region of surface to be reactive.
+//   - region (optional) of surface to be reactive, or NULL to make the entire
+//     surface reactive.
 func (surface *Surface) SetInputRegion(region *cairo.Region) {
 	var _arg0 *C.GdkSurface     // out
 	var _arg1 *C.cairo_region_t // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
-	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+	if region != nil {
+		_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+	}
 
 	C.gdk_surface_set_input_region(_arg0, _arg1)
 	runtime.KeepAlive(surface)
@@ -17722,6 +19684,9 @@ func (surface *Surface) SetInputRegion(region *cairo.Region) {
 // is not opaque, please update this property in your GtkWidgetClass.css_changed
 // (../gtk4/vfunc.Widget.css_changed.html) handler.
 //
+// Deprecated: GDK can figure out the opaque parts of a window itself by
+// inspecting the contents that are drawn.
+//
 // The function takes the following parameters:
 //
 //   - region (optional): region, or NULL to make the entire surface opaque.
@@ -17739,7 +19704,7 @@ func (surface *Surface) SetOpaqueRegion(region *cairo.Region) {
 	runtime.KeepAlive(region)
 }
 
-// Texture: GdkTexture is the basic element used to refer to pixel data.
+// Texture refers to pixel data in various forms.
 //
 // It is primarily meant for pixel data that will not change over multiple
 // frames, and will be used for a long time.
@@ -17752,7 +19717,15 @@ func (surface *Surface) SetOpaqueRegion(region *cairo.Region) {
 //
 // GdkTexture is an immutable object: That means you cannot change anything
 // about it other than increasing the reference count via gobject.Object.Ref(),
-// and consequently, it is a thread-safe object.
+// and consequently, it is a threadsafe object.
+//
+// GDK provides a number of threadsafe texture loading functions:
+// gdk.Texture.NewFromResource, gdk.Texture.NewFromBytes,
+// gdk.Texture.NewFromFile, gdk.Texture.NewFromFilename,
+// gdk.Texture.NewForPixbuf. Note that these are meant for loading icons
+// and resources that are shipped with the toolkit or application. It is
+// recommended that you use a dedicated image loading framework such as glycin
+// (https://lib.rs/crates/glycin), if you need to load untrusted image data.
 type Texture struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
@@ -17809,6 +19782,9 @@ func BaseTexture(obj Texturer) *Texture {
 // gio.Task.RunInThread() to avoid blocking the main thread while loading a big
 // image.
 //
+// Deprecated: Use e.g. libglycin, which can load many image formats into a
+// GdkTexture.
+//
 // The function takes the following parameters:
 //
 //   - pixbuf: GdkPixbuf.
@@ -17842,6 +19818,10 @@ func NewTextureForPixbuf(pixbuf *gdkpixbuf.Pixbuf) *Texture {
 // This function is threadsafe, so that you can e.g. use GTask and
 // gio.Task.RunInThread() to avoid blocking the main thread while loading a big
 // image.
+//
+// ::: warning Note that this function should not be used with untrusted data.
+// Use a proper image loading framework such as libglycin, which can load many
+// image formats into a GdkTexture.
 //
 // The function takes the following parameters:
 //
@@ -17882,6 +19862,10 @@ func NewTextureFromBytes(bytes *glib.Bytes) (*Texture, error) {
 // gio.Task.RunInThread() to avoid blocking the main thread while loading a big
 // image.
 //
+// ::: warning Note that this function should not be used with untrusted data.
+// Use a proper image loading framework such as libglycin, which can load many
+// image formats into a GdkTexture.
+//
 // The function takes the following parameters:
 //
 //   - file: GFile to load.
@@ -17921,6 +19905,10 @@ func NewTextureFromFile(file gio.Filer) (*Texture, error) {
 // gio.Task.RunInThread() to avoid blocking the main thread while loading a big
 // image.
 //
+// ::: warning Note that this function should not be used with untrusted data.
+// Use a proper image loading framework such as libglycin, which can load many
+// image formats into a GdkTexture.
+//
 // The function takes the following parameters:
 //
 //   - path: filename to load.
@@ -17953,8 +19941,8 @@ func NewTextureFromFilename(path string) (*Texture, error) {
 // NewTextureFromResource creates a new texture by loading an image from a
 // resource.
 //
-// The file format is detected automatically. The supported formats are PNG and
-// JPEG, though more formats might be available.
+// The file format is detected automatically. The supported formats are PNG,
+// JPEG and TIFF, though more formats might be available.
 //
 // It is a fatal error if resource_path does not specify a valid image resource
 // and the program will abort if that happens. If you are unsure about the
@@ -17986,6 +19974,34 @@ func NewTextureFromResource(resourcePath string) *Texture {
 	_texture = wrapTexture(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _texture
+}
+
+// ColorState returns the color state associated with the texture.
+//
+// The function returns the following values:
+//
+//   - colorState: color state of the GdkTexture.
+func (self *Texture) ColorState() *ColorState {
+	var _arg0 *C.GdkTexture    // out
+	var _cret *C.GdkColorState // in
+
+	_arg0 = (*C.GdkTexture)(unsafe.Pointer(coreglib.InternObject(self).Native()))
+
+	_cret = C.gdk_texture_get_color_state(_arg0)
+	runtime.KeepAlive(self)
+
+	var _colorState *ColorState // out
+
+	_colorState = (*ColorState)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	C.gdk_color_state_ref(_cret)
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_colorState)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_color_state_unref((*C.GdkColorState)(intern.C))
+		},
+	)
+
+	return _colorState
 }
 
 // Format gets the memory format most closely associated with the data of the
@@ -18064,7 +20080,7 @@ func (texture *Texture) Width() int {
 // This is a utility function intended for debugging and testing.
 // If you want more control over formats, proper error handling or
 // want to store to a gio.File or other location, you might want to use
-// gdk.Texture.SaveToPNGBytes() or look into the gdk-pixbuf library.
+// gdk.Texture.SaveToPNGBytes() or look into the libglycin library.
 //
 // The function takes the following parameters:
 //
@@ -18104,7 +20120,7 @@ func (texture *Texture) SaveToPNG(filename string) bool {
 //
 // If you need more control over the generated image, such as attaching
 // metadata, you should look into an image handling library such as the
-// gdk-pixbuf library.
+// libglycin library.
 //
 // If you are dealing with high dynamic range float data, you might also want to
 // consider gdk.Texture.SaveToTIFFBytes() instead.
@@ -18384,8 +20400,7 @@ func (event *TouchpadEvent) PinchScale() float64 {
 	return _gdouble
 }
 
-// VulkanContext: GdkVulkanContext is an object representing the
-// platform-specific Vulkan draw context.
+// VulkanContext represents the platform-specific Vulkan draw context.
 //
 // GdkVulkanContexts are created for a surface using
 // gdk.Surface.CreateVulkanContext(), and the context will match the
@@ -18393,17 +20408,16 @@ func (event *TouchpadEvent) PinchScale() float64 {
 //
 // Support for GdkVulkanContext is platform-specific and context creation can
 // fail, returning NULL context.
+//
+// Deprecated: GTK does not expose any Vulkan internals. This struct is a
+// leftover that was accidentally exposed.
 type VulkanContext struct {
 	_ [0]func() // equal guard
 	DrawContext
-
-	*coreglib.Object
-	gio.Initable
 }
 
 var (
-	_ DrawContexter     = (*VulkanContext)(nil)
-	_ coreglib.Objector = (*VulkanContext)(nil)
+	_ DrawContexter = (*VulkanContext)(nil)
 )
 
 // VulkanContexter describes types inherited from class VulkanContext.
@@ -18420,10 +20434,6 @@ var _ VulkanContexter = (*VulkanContext)(nil)
 func wrapVulkanContext(obj *coreglib.Object) *VulkanContext {
 	return &VulkanContext{
 		DrawContext: DrawContext{
-			Object: obj,
-		},
-		Object: obj,
-		Initable: gio.Initable{
 			Object: obj,
 		},
 	}
@@ -18451,8 +20461,310 @@ func (v *VulkanContext) ConnectImagesUpdated(f func()) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(v, "images-updated", false, unsafe.Pointer(C._gotk4_gdk4_VulkanContext_ConnectImagesUpdated), f)
 }
 
-// ContentFormats: GdkContentFormats structure is used to advertise and
-// negotiate the format of content.
+// ColorState provides information to interpret colors and pixels in a variety
+// of ways.
+//
+// They are also known as *color spaces*
+// (https://en.wikipedia.org/wiki/Color_space).
+//
+// Crucially, GTK knows how to convert colors from one color state to another.
+//
+// GdkColorState objects are immutable and therefore threadsafe.
+//
+// An instance of this type is always passed by reference.
+type ColorState struct {
+	*colorState
+}
+
+// colorState is the struct that's finalized.
+type colorState struct {
+	native *C.GdkColorState
+}
+
+func marshalColorState(p uintptr) (interface{}, error) {
+	b := coreglib.ValueFromNative(unsafe.Pointer(p)).Boxed()
+	return &ColorState{&colorState{(*C.GdkColorState)(b)}}, nil
+}
+
+// CreateCICPParams: create a gdk.CICPParams representing the colorstate.
+//
+// It is not guaranteed that every GdkColorState can be represented with Cicp
+// parameters. If that is the case, this function returns NULL.
+//
+// The function returns the following values:
+//
+//   - cicpParams (optional): new gdk.CICPParams.
+func (self *ColorState) CreateCICPParams() *CICPParams {
+	var _arg0 *C.GdkColorState // out
+	var _cret *C.GdkCicpParams // in
+
+	_arg0 = (*C.GdkColorState)(gextras.StructNative(unsafe.Pointer(self)))
+
+	_cret = C.gdk_color_state_create_cicp_params(_arg0)
+	runtime.KeepAlive(self)
+
+	var _cicpParams *CICPParams // out
+
+	if _cret != nil {
+		_cicpParams = wrapCICPParams(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
+	}
+
+	return _cicpParams
+}
+
+// Equal compares two GdkColorStates for equality.
+//
+// Note that this function is not guaranteed to be perfect and two objects
+// describing the same color state may compare not equal. However, different
+// color states will never compare equal.
+//
+// The function takes the following parameters:
+//
+//   - other GdkColorStatee.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if the two color states compare equal.
+func (self *ColorState) Equal(other *ColorState) bool {
+	var _arg0 *C.GdkColorState // out
+	var _arg1 *C.GdkColorState // out
+	var _cret C.gboolean       // in
+
+	_arg0 = (*C.GdkColorState)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = (*C.GdkColorState)(gextras.StructNative(unsafe.Pointer(other)))
+
+	_cret = C.gdk_color_state_equal(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(other)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// Equivalent compares two GdkColorStates for equivalence.
+//
+// Two objects that represent the same color state should be equivalent,
+// even though they may not be equal in the sense of gdk.ColorState.Equal().
+//
+// The function takes the following parameters:
+//
+//   - other GdkColorStatee.
+//
+// The function returns the following values:
+//
+//   - ok: TRUE if the two color states are equivalent.
+func (self *ColorState) Equivalent(other *ColorState) bool {
+	var _arg0 *C.GdkColorState // out
+	var _arg1 *C.GdkColorState // out
+	var _cret C.gboolean       // in
+
+	_arg0 = (*C.GdkColorState)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = (*C.GdkColorState)(gextras.StructNative(unsafe.Pointer(other)))
+
+	_cret = C.gdk_color_state_equivalent(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(other)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
+}
+
+// ColorStateGetOklab returns the color state object representing the oklab
+// color space.
+//
+// This is a perceptually uniform color state.
+//
+// The function returns the following values:
+//
+//   - colorState: color state object for oklab.
+func ColorStateGetOklab() *ColorState {
+	var _cret *C.GdkColorState // in
+
+	_cret = C.gdk_color_state_get_oklab()
+
+	var _colorState *ColorState // out
+
+	_colorState = (*ColorState)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_colorState)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_color_state_unref((*C.GdkColorState)(intern.C))
+		},
+	)
+
+	return _colorState
+}
+
+// ColorStateGetOklch returns the color state object representing the oklch
+// color space.
+//
+// This is the polar variant of oklab, in which the hue is encoded as a polar
+// coordinate.
+//
+// The function returns the following values:
+//
+//   - colorState: color state object for oklch.
+func ColorStateGetOklch() *ColorState {
+	var _cret *C.GdkColorState // in
+
+	_cret = C.gdk_color_state_get_oklch()
+
+	var _colorState *ColorState // out
+
+	_colorState = (*ColorState)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_colorState)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_color_state_unref((*C.GdkColorState)(intern.C))
+		},
+	)
+
+	return _colorState
+}
+
+// ColorStateGetRec2100Linear returns the color state object representing the
+// linear rec2100 color space.
+//
+// This color state uses the primaries defined by BT.2020-2 and BT.2100-0 and a
+// linear transfer function.
+//
+// It is equivalent to the Cicp (class.CicpParams.html) tuple 9/8/0/1.
+//
+// See e.g. the CSS HDR Module
+// (https://drafts.csswg.org/css-color-hdr/#valdef-color-rec2100-linear) for
+// details about this colorstate.
+//
+// The function returns the following values:
+//
+//   - colorState: color state object for linearized rec2100.
+func ColorStateGetRec2100Linear() *ColorState {
+	var _cret *C.GdkColorState // in
+
+	_cret = C.gdk_color_state_get_rec2100_linear()
+
+	var _colorState *ColorState // out
+
+	_colorState = (*ColorState)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_colorState)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_color_state_unref((*C.GdkColorState)(intern.C))
+		},
+	)
+
+	return _colorState
+}
+
+// ColorStateGetRec2100Pq returns the color state object representing the
+// rec2100-pq color space.
+//
+// This color state uses the primaries defined by BT.2020-2 and BT.2100-0 and
+// the transfer function defined by SMPTE ST 2084 and BT.2100-2.
+//
+// It is equivalent to the Cicp (class.CicpParams.html) tuple 9/16/0/1.
+//
+// See e.g. the CSS HDR Module
+// (https://drafts.csswg.org/css-color-hdr/#valdef-color-rec2100-pq) for details
+// about this colorstate.
+//
+// The function returns the following values:
+//
+//   - colorState: color state object for rec2100-pq.
+func ColorStateGetRec2100Pq() *ColorState {
+	var _cret *C.GdkColorState // in
+
+	_cret = C.gdk_color_state_get_rec2100_pq()
+
+	var _colorState *ColorState // out
+
+	_colorState = (*ColorState)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_colorState)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_color_state_unref((*C.GdkColorState)(intern.C))
+		},
+	)
+
+	return _colorState
+}
+
+// ColorStateGetSRGB returns the color state object representing the sRGB color
+// space.
+//
+// This color state uses the primaries defined by BT.709-6 and the transfer
+// function defined by IEC 61966-2-1.
+//
+// It is equivalent to the Cicp (class.CicpParams.html) tuple 1/13/0/1.
+//
+// See e.g. the CSS Color Module
+// (https://www.w3.org/TR/css-color-4/#predefined-sRGB) for details about this
+// colorstate.
+//
+// The function returns the following values:
+//
+//   - colorState: color state object for sRGB.
+func ColorStateGetSRGB() *ColorState {
+	var _cret *C.GdkColorState // in
+
+	_cret = C.gdk_color_state_get_srgb()
+
+	var _colorState *ColorState // out
+
+	_colorState = (*ColorState)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_colorState)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_color_state_unref((*C.GdkColorState)(intern.C))
+		},
+	)
+
+	return _colorState
+}
+
+// ColorStateGetSRGBLinear returns the color state object representing the
+// linearized sRGB color space.
+//
+// This color state uses the primaries defined by BT.709-6 and a linear transfer
+// function.
+//
+// It is equivalent to the Cicp (class.CicpParams.html) tuple 1/8/0/1.
+//
+// See e.g. the CSS Color Module
+// (https://www.w3.org/TR/css-color-4/#predefined-sRGB-linear) for details about
+// this colorstate.
+//
+// The function returns the following values:
+//
+//   - colorState: color state object for linearized sRGB.
+func ColorStateGetSRGBLinear() *ColorState {
+	var _cret *C.GdkColorState // in
+
+	_cret = C.gdk_color_state_get_srgb_linear()
+
+	var _colorState *ColorState // out
+
+	_colorState = (*ColorState)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_colorState)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_color_state_unref((*C.GdkColorState)(intern.C))
+		},
+	)
+
+	return _colorState
+}
+
+// ContentFormats: used to advertise and negotiate the format of content.
 //
 // You will encounter GdkContentFormats when interacting with objects
 // controlling operations that pass data between different widgets, window or
@@ -18680,6 +20992,29 @@ func (formats *ContentFormats) MIMETypes() []string {
 	}
 
 	return _utf8s
+}
+
+// IsEmpty returns whether the content formats contain any formats.
+//
+// The function returns the following values:
+//
+//   - ok: true if formats contains no mime types and no GTypes.
+func (formats *ContentFormats) IsEmpty() bool {
+	var _arg0 *C.GdkContentFormats // out
+	var _cret C.gboolean           // in
+
+	_arg0 = (*C.GdkContentFormats)(gextras.StructNative(unsafe.Pointer(formats)))
+
+	_cret = C.gdk_content_formats_is_empty(_arg0)
+	runtime.KeepAlive(formats)
+
+	var _ok bool // out
+
+	if _cret != 0 {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // Match checks if first and second have any matching formats.
@@ -18989,8 +21324,7 @@ func ContentFormatsParse(str string) *ContentFormats {
 	return _contentFormats
 }
 
-// ContentFormatsBuilder: GdkContentFormatsBuilder is an auxiliary struct used
-// to create new GdkContentFormats, and should not be kept around.
+// ContentFormatsBuilder creates GdkContentFormats objects.
 //
 // An instance of this type is always passed by reference.
 type ContentFormatsBuilder struct {
@@ -19125,8 +21459,7 @@ type contentProviderClass struct {
 	native *C.GdkContentProviderClass
 }
 
-// DmabufFormats: GdkDmabufFormats struct provides information about supported
-// DMA buffer formats.
+// DmabufFormats provides information about supported DMA buffer formats.
 //
 // You can query whether a given format is supported with
 // gdk.DmabufFormats.Contains() and you can iterate over the list
@@ -19285,8 +21618,7 @@ func (formats *DmabufFormats) NFormats() uint {
 	return _gsize
 }
 
-// EventSequence: GdkEventSequence is an opaque type representing a sequence of
-// related touch events.
+// EventSequence: opaque type representing a sequence of related events.
 //
 // An instance of this type is always passed by reference.
 type EventSequence struct {
@@ -19415,8 +21747,8 @@ func (fileList *FileList) Files() []*gio.File {
 	return _sList
 }
 
-// FrameTimings: GdkFrameTimings object holds timing information for a single
-// frame of the application’s displays.
+// FrameTimings holds timing information for a single frame of the application’s
+// displays.
 //
 // To retrieve GdkFrameTimings objects, use gdk.FrameClock.GetTimings() or
 // gdk.FrameClock.GetCurrentTimings(). The information in GdkFrameTimings is
@@ -19603,7 +21935,7 @@ func (timings *FrameTimings) RefreshInterval() int64 {
 	return _gint64
 }
 
-// KeymapKey: GdkKeymapKey is a hardware key that can be mapped to a keyval.
+// KeymapKey represents a hardware key that can be mapped to a keyval.
 //
 // An instance of this type is always passed by reference.
 type KeymapKey struct {
@@ -19713,8 +22045,8 @@ type paintableInterface struct {
 	native *C.GdkPaintableInterface
 }
 
-// PopupLayout: GdkPopupLayout struct contains information that is necessary
-// position a gdk.Popup relative to its parent.
+// PopupLayout contains information that is necessary position a gdk.Popup
+// relative to its parent.
 //
 // The positioning requires a negotiation with the windowing system, since it
 // depends on external constraints, such as the position of the parent surface,
@@ -19821,12 +22153,12 @@ func (layout *PopupLayout) Copy() *PopupLayout {
 //
 // The function takes the following parameters:
 //
-//   - other GdkPopupLayout.
+//   - other popup layout.
 //
 // The function returns the following values:
 //
-//   - ok: TRUE if layout and other have identical layout properties, otherwise
-//     FALSE.
+//   - ok: true if layout and other have identical layout properties, otherwise
+//     false.
 func (layout *PopupLayout) Equal(other *PopupLayout) bool {
 	var _arg0 *C.GdkPopupLayout // out
 	var _arg1 *C.GdkPopupLayout // out
@@ -19848,11 +22180,11 @@ func (layout *PopupLayout) Equal(other *PopupLayout) bool {
 	return _ok
 }
 
-// AnchorHints: get the GdkAnchorHints.
+// AnchorHints: get the anchor hints.
 //
 // The function returns the following values:
 //
-//   - anchorHints: GdkAnchorHints.
+//   - anchorHints: anchor hints.
 func (layout *PopupLayout) AnchorHints() AnchorHints {
 	var _arg0 *C.GdkPopupLayout // out
 	var _cret C.GdkAnchorHints  // in
@@ -19999,7 +22331,7 @@ func (layout *PopupLayout) SurfaceAnchor() Gravity {
 //
 // The function takes the following parameters:
 //
-//   - anchorHints: new GdkAnchorHints.
+//   - anchorHints: new anchor hints.
 func (layout *PopupLayout) SetAnchorHints(anchorHints AnchorHints) {
 	var _arg0 *C.GdkPopupLayout // out
 	var _arg1 C.GdkAnchorHints  // out
@@ -20117,8 +22449,8 @@ func (layout *PopupLayout) SetSurfaceAnchor(anchor Gravity) {
 	runtime.KeepAlive(anchor)
 }
 
-// RGBA: GdkRGBA is used to represent a color, in a way that is compatible with
-// cairo’s notion of color.
+// RGBA represents a color, in a way that is compatible with cairo’s notion of
+// color.
 //
 // GdkRGBA is a convenient way to pass colors around. It’s based on cairo’s way
 // to deal with colors and mirrors its behavior. All values are in the range
@@ -20370,14 +22702,15 @@ func (rgba *RGBA) IsOpaque() bool {
 //
 // - A RGBA color in the form “rgba(r,g,b,a)”
 //
-// - A HSL color in the form "hsl(hue, saturation, lightness)"
+// - A HSL color in the form “hsl(h,s,l)”
 //
-// - A HSLA color in the form "hsla(hue, saturation, lightness, alpha)"
+// - A HSLA color in the form “hsla(h,s,l,a)”
 //
 // Where “r”, “g”, “b” and “a” are respectively the red, green, blue and alpha
-// color values. In the last two cases, “r”, “g”, and “b” are either integers in
-// the range 0 to 255 or percentage values in the range 0% to 100%, and a is a
-// floating point value in the range 0 to 1.
+// color values. In the last two cases, “r”, “g”, and “b” are either integers
+// in the range 0 to 255 or percentage values in the range 0% to 100%, and a is
+// a floating point value in the range 0 to 1. The range for “h” is 0 to 360,
+// and “s”, “l” can be either numbers in the range 0 to 100 or percentages.
 //
 // The function takes the following parameters:
 //
@@ -20441,7 +22774,7 @@ func (rgba *RGBA) String() string {
 	return _utf8
 }
 
-// Rectangle: GdkRectangle data type for representing rectangles.
+// Rectangle represents a rectangle.
 //
 // GdkRectangle is identical to cairo_rectangle_t. Together with Cairo’s
 // cairo_region_t data type, these are the central types for representing sets
@@ -20690,8 +23023,7 @@ func (src1 *Rectangle) Union(src2 *Rectangle) *Rectangle {
 	return _dest
 }
 
-// TextureDownloader: GdkTextureDownloader is used to download the contents of a
-// gdk.Texture.
+// TextureDownloader: used to download the contents of a gdk.Texture.
 //
 // It is intended to be created as a short-term object for a single download,
 // but can be used for multiple downloads of different textures or with
@@ -20776,6 +23108,9 @@ func (self *TextureDownloader) Copy() *TextureDownloader {
 // allocation yourself and use gdk.TextureDownloader.DownloadInto() once
 // allocation succeeded.
 //
+// This function cannot be used with a multiplanar format. Use
+// gdk.TextureDownloader.DownloadBytesWithPlanes() for that purpose.
+//
 // The function returns the following values:
 //
 //   - outStride: stride of the resulting data in bytes.
@@ -20803,6 +23138,73 @@ func (self *TextureDownloader) DownloadBytes() (uint, *glib.Bytes) {
 	)
 
 	return _outStride, _bytes
+}
+
+// DownloadBytesWithPlanes downloads the given texture pixels into a GBytes. The
+// offsets and strides of the resulting buffer will be stored in the respective
+// values.
+//
+// If the format does have less than 4 planes, the remaining offsets and strides
+// will be set to 0.
+//
+// The function returns the following values:
+//
+//   - outOffsets: The offsets of the resulting data planes in bytes.
+//   - outStrides: The stride of the resulting data planes in bytes.
+//   - bytes: downloaded pixels.
+func (self *TextureDownloader) DownloadBytesWithPlanes() (outOffsets [4]uint, outStrides [4]uint, bytes *glib.Bytes) {
+	var _arg0 *C.GdkTextureDownloader // out
+	var _arg1 [4]C.gsize              // in
+	var _arg2 [4]C.gsize              // in
+	var _cret *C.GBytes               // in
+
+	_arg0 = (*C.GdkTextureDownloader)(gextras.StructNative(unsafe.Pointer(self)))
+
+	_cret = C.gdk_texture_downloader_download_bytes_with_planes(_arg0, &_arg1[0], &_arg2[0])
+	runtime.KeepAlive(self)
+
+	var _outOffsets [4]uint // out
+	var _outStrides [4]uint // out
+	var _bytes *glib.Bytes  // out
+
+	_outOffsets = *(*[4]uint)(unsafe.Pointer(&_arg1))
+	_outStrides = *(*[4]uint)(unsafe.Pointer(&_arg2))
+	_bytes = (*glib.Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_bytes)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_bytes_unref((*C.GBytes)(intern.C))
+		},
+	)
+
+	return _outOffsets, _outStrides, _bytes
+}
+
+// ColorState gets the color state that the data will be downloaded in.
+//
+// The function returns the following values:
+//
+//   - colorState: color state of the download.
+func (self *TextureDownloader) ColorState() *ColorState {
+	var _arg0 *C.GdkTextureDownloader // out
+	var _cret *C.GdkColorState        // in
+
+	_arg0 = (*C.GdkTextureDownloader)(gextras.StructNative(unsafe.Pointer(self)))
+
+	_cret = C.gdk_texture_downloader_get_color_state(_arg0)
+	runtime.KeepAlive(self)
+
+	var _colorState *ColorState // out
+
+	_colorState = (*ColorState)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_colorState)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.gdk_color_state_unref((*C.GdkColorState)(intern.C))
+		},
+	)
+
+	return _colorState
 }
 
 // Format gets the format that the data will be downloaded in.
@@ -20863,6 +23265,25 @@ func (self *TextureDownloader) Texture() Texturer {
 	return _texture
 }
 
+// SetColorState sets the color state the downloader will convert the data to.
+//
+// By default, the sRGB colorstate returned by colorstate.GetSRGB() is used.
+//
+// The function takes the following parameters:
+//
+//   - colorState: color state to use.
+func (self *TextureDownloader) SetColorState(colorState *ColorState) {
+	var _arg0 *C.GdkTextureDownloader // out
+	var _arg1 *C.GdkColorState        // out
+
+	_arg0 = (*C.GdkTextureDownloader)(gextras.StructNative(unsafe.Pointer(self)))
+	_arg1 = (*C.GdkColorState)(gextras.StructNative(unsafe.Pointer(colorState)))
+
+	C.gdk_texture_downloader_set_color_state(_arg0, _arg1)
+	runtime.KeepAlive(self)
+	runtime.KeepAlive(colorState)
+}
+
 // SetFormat sets the format the downloader will download.
 //
 // By default, GDK_MEMORY_DEFAULT is set.
@@ -20899,7 +23320,7 @@ func (self *TextureDownloader) SetTexture(texture Texturer) {
 	runtime.KeepAlive(texture)
 }
 
-// TimeCoord: GdkTimeCoord stores a single event in a motion history.
+// TimeCoord stores a single event in a motion history.
 //
 // To check whether an axis is present, check whether the corresponding flag
 // from the gdk.AxisFlags enumeration is set in the flags To access individual
@@ -20946,8 +23367,8 @@ func (t *TimeCoord) SetTime(time uint32) {
 	*valptr = C.guint32(time)
 }
 
-// ToplevelLayout: GdkToplevelLayout struct contains information that is
-// necessary to present a sovereign window on screen.
+// ToplevelLayout contains information that is necessary to present a sovereign
+// window on screen.
 //
 // The GdkToplevelLayout struct is necessary for using gdk.Toplevel.Present().
 //
@@ -21019,12 +23440,12 @@ func (layout *ToplevelLayout) Copy() *ToplevelLayout {
 //
 // The function takes the following parameters:
 //
-//   - other GdkToplevelLayout.
+//   - other toplevel layout.
 //
 // The function returns the following values:
 //
-//   - ok: TRUE if layout and other have identical layout properties, otherwise
-//     FALSE.
+//   - ok: true if layout and other have identical layout properties, otherwise
+//     false.
 func (layout *ToplevelLayout) Equal(other *ToplevelLayout) bool {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _arg1 *C.GdkToplevelLayout // out
@@ -21047,8 +23468,8 @@ func (layout *ToplevelLayout) Equal(other *ToplevelLayout) bool {
 }
 
 // Fullscreen: if the layout specifies whether to the toplevel should go
-// fullscreen, the value pointed to by fullscreen is set to TRUE if it should go
-// fullscreen, or FALSE, if it should go unfullscreen.
+// fullscreen, the value pointed to by fullscreen is set to true if it should go
+// fullscreen, or false, if it should go unfullscreen.
 //
 // The function returns the following values:
 //
@@ -21102,12 +23523,12 @@ func (layout *ToplevelLayout) FullscreenMonitor() *Monitor {
 }
 
 // Maximized: if the layout specifies whether to the toplevel should go
-// maximized, the value pointed to by maximized is set to TRUE if it should go
-// fullscreen, or FALSE, if it should go unmaximized.
+// maximized, the value pointed to by maximized is set to true if it should go
+// maximized, or false, if it should go unmaximized.
 //
 // The function returns the following values:
 //
-//   - maximized: set to TRUE if the toplevel should be maximized.
+//   - maximized: set to true if the toplevel should be maximized.
 //   - ok: whether the layout specifies the maximized state for the toplevel.
 func (layout *ToplevelLayout) Maximized() (maximized bool, ok bool) {
 	var _arg0 *C.GdkToplevelLayout // out
@@ -21137,7 +23558,7 @@ func (layout *ToplevelLayout) Maximized() (maximized bool, ok bool) {
 //
 // The function returns the following values:
 //
-//   - ok: TRUE if the layout is resizable.
+//   - ok: true if the layout is resizable.
 func (layout *ToplevelLayout) Resizable() bool {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _cret C.gboolean           // in
@@ -21161,7 +23582,7 @@ func (layout *ToplevelLayout) Resizable() bool {
 //
 // The function takes the following parameters:
 //
-//   - fullscreen: TRUE to fullscreen the surface.
+//   - fullscreen: true to fullscreen the surface.
 //   - monitor (optional) to fullscreen on.
 func (layout *ToplevelLayout) SetFullscreen(fullscreen bool, monitor *Monitor) {
 	var _arg0 *C.GdkToplevelLayout // out
@@ -21187,7 +23608,7 @@ func (layout *ToplevelLayout) SetFullscreen(fullscreen bool, monitor *Monitor) {
 //
 // The function takes the following parameters:
 //
-//   - maximized: TRUE to maximize.
+//   - maximized: true to maximize.
 func (layout *ToplevelLayout) SetMaximized(maximized bool) {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _arg1 C.gboolean           // out
@@ -21207,7 +23628,7 @@ func (layout *ToplevelLayout) SetMaximized(maximized bool) {
 //
 // The function takes the following parameters:
 //
-//   - resizable: TRUE to allow resizing.
+//   - resizable: true to allow resizing.
 func (layout *ToplevelLayout) SetResizable(resizable bool) {
 	var _arg0 *C.GdkToplevelLayout // out
 	var _arg1 C.gboolean           // out

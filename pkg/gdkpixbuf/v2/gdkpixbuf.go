@@ -91,16 +91,16 @@ const PIXBUF_MAJOR = 2
 
 // PIXBUF_MICRO: micro version of gdk-pixbuf library, that is the "2" in "0.8.2"
 // for example.
-const PIXBUF_MICRO = 12
+const PIXBUF_MICRO = 6
 
 // PIXBUF_MINOR: minor version of gdk-pixbuf library, that is the "8" in "0.8.2"
 // for example.
-const PIXBUF_MINOR = 42
+const PIXBUF_MINOR = 44
 
 // PIXBUF_VERSION contains the full version of GdkPixbuf as a string.
 //
 // This is the version being compiled against; contrast with gdk_pixbuf_version.
-const PIXBUF_VERSION = "2.42.12"
+const PIXBUF_VERSION = "2.44.6"
 
 // Colorspace: this enumeration defines the color spaces that are supported by
 // the gdk-pixbuf library.
@@ -439,9 +439,6 @@ type PixbufSaveFunc func(buf []byte) (err error, ok bool)
 // buffer using malloc() and then wrapping it with gdk_pixbuf_new_from_data().
 // The gdk_pixbuf_new() function will compute an optimal rowstride so that
 // rendering can be performed with an efficient algorithm.
-//
-// As a special case, you can use the gdkpixbuf.Pixbuf.NewFromXPMData function
-// to create a pixbuf from inline XPM image data.
 //
 // You can also copy an existing pixbuf with the pixbuf.Copy function. This
 // is not the same as just acquiring a reference to the old pixbuf instance:
@@ -1168,6 +1165,9 @@ func NewPixbufFromStreamFinish(asyncResult gio.AsyncResulter) (*Pixbuf, error) {
 //
 // This data is commonly the result of including an XPM file into a program's C
 // source.
+//
+// Deprecated: Use gdkpixbuf.Pixbuf.NewFromStream with a gio.MemoryInputStream,
+// making sure to handle errors in case the XPM format loader is not available.
 //
 // The function takes the following parameters:
 //
@@ -3037,6 +3037,8 @@ func PixbufSaveToStreamFinish(asyncResult gio.AsyncResulter) error {
 // To display an animation you don't need to understand its representation,
 // however; you just ask GdkPixbuf what should be displayed at a given point in
 // time.
+//
+// Deprecated: Use a different image loading library for animatable assets.
 type PixbufAnimation struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
@@ -3064,6 +3066,8 @@ func marshalPixbufAnimation(p uintptr) (interface{}, error) {
 // with a single frame will be created.
 //
 // Possible errors are in the GDK_PIXBUF_ERROR and G_FILE_ERROR domains.
+//
+// Deprecated: Use a different image loading library for animatable assets.
 //
 // The function takes the following parameters:
 //
@@ -3101,6 +3105,8 @@ func NewPixbufAnimationFromFile(filename string) (*PixbufAnimation, error) {
 //
 // The file format is detected automatically. If NULL is returned, then error
 // will be set.
+//
+// Deprecated: Use a different image loading library for animatable assets.
 //
 // The function takes the following parameters:
 //
@@ -3146,6 +3152,8 @@ func NewPixbufAnimationFromResource(resourcePath string) (*PixbufAnimation, erro
 //
 // The stream is not closed.
 //
+// Deprecated: Use a different image loading library for animatable assets.
+//
 // The function takes the following parameters:
 //
 //   - ctx (optional): optional GCancellable object.
@@ -3188,6 +3196,8 @@ func NewPixbufAnimationFromStream(ctx context.Context, stream gio.InputStreamer)
 // pixbuf animation creation operation started with
 // gdkpixbuf.PixbufAnimation().NewFromStreamAsync.
 //
+// Deprecated: Use a different image loading library for animatable assets.
+//
 // The function takes the following parameters:
 //
 //   - asyncResult: Result.
@@ -3219,6 +3229,8 @@ func NewPixbufAnimationFromStreamFinish(asyncResult gio.AsyncResulter) (*PixbufA
 }
 
 // Height queries the height of the bounding box of a pixbuf animation.
+//
+// Deprecated: Use a different image loading library for animatable assets.
 //
 // The function returns the following values:
 //
@@ -3270,6 +3282,8 @@ func (animation *PixbufAnimation) Height() int {
 //
 // A delay time of -1 is possible, indicating "infinite".
 //
+// Deprecated: Use a different image loading library for animatable assets.
+//
 // The function takes the following parameters:
 //
 //   - startTime (optional): time when the animation starts playing.
@@ -3309,6 +3323,8 @@ func (animation *PixbufAnimation) Iter(startTime *glib.TimeVal) *PixbufAnimation
 //
 // If an animation hasn't loaded any frames yet, this function will return NULL.
 //
+// Deprecated: Use a different image loading library for animatable assets.
+//
 // The function returns the following values:
 //
 //   - pixbuf: unanimated image representing the animation.
@@ -3329,6 +3345,8 @@ func (animation *PixbufAnimation) StaticImage() *Pixbuf {
 }
 
 // Width queries the width of the bounding box of a pixbuf animation.
+//
+// Deprecated: Use a different image loading library for animatable assets.
 //
 // The function returns the following values:
 //
@@ -3354,6 +3372,8 @@ func (animation *PixbufAnimation) Width() int {
 // If you load a file with gdk_pixbuf_animation_new_from_file() and it turns
 // out to be a plain, unanimated image, then this function will return TRUE.
 // Use gdk_pixbuf_animation_get_static_image() to retrieve the image.
+//
+// Deprecated: Use a different image loading library for animatable assets.
 //
 // The function returns the following values:
 //
@@ -3386,6 +3406,8 @@ func (animation *PixbufAnimation) IsStaticImage() bool {
 // You can then call gdk_pixbuf_animation_new_from_stream_finish() to get the
 // result of the operation.
 //
+// Deprecated: Use a different image loading library for animatable assets.
+//
 // The function takes the following parameters:
 //
 //   - ctx (optional): optional #GCancellable object.
@@ -3417,6 +3439,8 @@ func NewPixbufAnimationFromStreamAsync(ctx context.Context, stream gio.InputStre
 
 // PixbufAnimationIter: opaque object representing an iterator which points to a
 // certain position in an animation.
+//
+// Deprecated: Use a different image loading library for animatable assets.
 type PixbufAnimationIter struct {
 	_ [0]func() // equal guard
 	*coreglib.Object
@@ -3455,6 +3479,8 @@ func marshalPixbufAnimationIter(p uintptr) (interface{}, error) {
 // display, assuming the display had been rendered prior to advancing; if TRUE,
 // you need to call gdk_pixbuf_animation_iter_get_pixbuf() and update the
 // display with the new pixbuf.
+//
+// Deprecated: Use a different image loading library for animatable assets.
 //
 // The function takes the following parameters:
 //
@@ -3496,6 +3522,8 @@ func (iter *PixbufAnimationIter) Advance(currentTime *glib.TimeVal) bool {
 // file to avoid updates that are just too quick. The minimum timeout for GIF
 // images is currently 20 milliseconds.
 //
+// Deprecated: Use a different image loading library for animatable assets.
+//
 // The function returns the following values:
 //
 //   - gint: delay time in milliseconds (thousandths of a second).
@@ -3531,6 +3559,8 @@ func (iter *PixbufAnimationIter) DelayTime() int {
 // Copy the pixbuf to keep it (don't just add a reference), as it may get
 // recycled as you advance the iterator.
 //
+// Deprecated: Use a different image loading library for animatable assets.
+//
 // The function returns the following values:
 //
 //   - pixbuf to be displayed.
@@ -3556,6 +3586,8 @@ func (iter *PixbufAnimationIter) Pixbuf() *Pixbuf {
 // The ::area_updated signal is emitted for an area of the frame currently
 // streaming in to the loader. So if you're on the currently loading frame,
 // you will need to redraw the screen for the updated area.
+//
+// Deprecated: Use a different image loading library for animatable assets.
 //
 // The function returns the following values:
 //
@@ -4151,6 +4183,8 @@ func marshalPixbufSimpleAnim(p uintptr) (interface{}, error) {
 
 // NewPixbufSimpleAnim creates a new, empty animation.
 //
+// Deprecated: Use a different image loading library for animatable assets.
+//
 // The function takes the following parameters:
 //
 //   - width of the animation.
@@ -4185,6 +4219,8 @@ func NewPixbufSimpleAnim(width, height int, rate float32) *PixbufSimpleAnim {
 // AddFrame adds a new frame to animation. The pixbuf must have the dimensions
 // specified when the animation was constructed.
 //
+// Deprecated: Use a different image loading library for animatable assets.
+//
 // The function takes the following parameters:
 //
 //   - pixbuf to add.
@@ -4201,6 +4237,8 @@ func (animation *PixbufSimpleAnim) AddFrame(pixbuf *Pixbuf) {
 }
 
 // Loop gets whether animation should loop indefinitely when it reaches the end.
+//
+// Deprecated: Use a different image loading library for animatable assets.
 //
 // The function returns the following values:
 //
@@ -4225,6 +4263,8 @@ func (animation *PixbufSimpleAnim) Loop() bool {
 
 // SetLoop sets whether animation should loop indefinitely when it reaches the
 // end.
+//
+// Deprecated: Use a different image loading library for animatable assets.
 //
 // The function takes the following parameters:
 //

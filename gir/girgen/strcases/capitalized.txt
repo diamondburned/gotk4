@@ -50,7 +50,6 @@ Cas
 Fps
 Lsf
 Msf
-Tls
 Glx
 Gpl
 Mit
@@ -85,12 +84,14 @@ Http
 Https
 Ascii
 Iso8601
-[LA]gpl
-[234]d
-[A-Z]fs
+Cicp
+Ecn
+Dscp
+[234][Dd]
+[A-Z][Ff]s
 Sha(\d+)?
 Utf(\d+)?
 Ucs(\d+)?
 [XY][^aiueo]
-[XYZxyz]{2,3}
-(|S|R)[XYZxyz]{3}
+[XYZ][xyz]{1,2}
+[SR]?[XYZ][xyz]{2}

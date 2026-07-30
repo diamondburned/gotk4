@@ -174,7 +174,9 @@ func _gotk4_gio2_DBusInterfaceGetPropertyFunc(arg1 *C.GDBusConnection, arg2 *C.g
 	var _propertyName string        // out
 
 	_connection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(arg1)))
-	_sender = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	if arg2 != nil {
+		_sender = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	}
 	_objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
 	_interfaceName = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
 	_propertyName = C.GoString((*C.gchar)(unsafe.Pointer(arg5)))
@@ -212,9 +214,13 @@ func _gotk4_gio2_DBusInterfaceMethodCallFunc(arg1 *C.GDBusConnection, arg2 *C.gc
 	var _invocation *DBusMethodInvocation // out
 
 	_connection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(arg1)))
-	_sender = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	if arg2 != nil {
+		_sender = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	}
 	_objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
-	_interfaceName = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
+	if arg4 != nil {
+		_interfaceName = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
+	}
 	_methodName = C.GoString((*C.gchar)(unsafe.Pointer(arg5)))
 	_parameters = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg6)))
 	C.g_variant_ref(arg6)
@@ -248,7 +254,9 @@ func _gotk4_gio2_DBusInterfaceSetPropertyFunc(arg1 *C.GDBusConnection, arg2 *C.g
 	var _value *glib.Variant        // out
 
 	_connection = wrapDBusConnection(coreglib.Take(unsafe.Pointer(arg1)))
-	_sender = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	if arg2 != nil {
+		_sender = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+	}
 	_objectPath = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
 	_interfaceName = C.GoString((*C.gchar)(unsafe.Pointer(arg4)))
 	_propertyName = C.GoString((*C.gchar)(unsafe.Pointer(arg5)))
@@ -518,7 +526,9 @@ func _gotk4_gio2_SettingsBindSetMapping(arg1 *C.GValue, arg2 *C.GVariantType, ar
 
 	var _ *glib.Variant
 
-	cret = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant)))
+	if variant != nil {
+		cret = (*C.GVariant)(gextras.StructNative(unsafe.Pointer(variant)))
+	}
 
 	return cret
 }
@@ -536,14 +546,16 @@ func _gotk4_gio2_SettingsGetMapping(arg1 *C.GVariant, arg2 *C.gpointer, arg3 C.g
 
 	var _value *glib.Variant // out
 
-	_value = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg1)))
-	C.g_variant_ref(arg1)
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_value)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_variant_unref((*C.GVariant)(intern.C))
-		},
-	)
+	if arg1 != nil {
+		_value = (*glib.Variant)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+		C.g_variant_ref(arg1)
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_value)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_variant_unref((*C.GVariant)(intern.C))
+			},
+		)
+	}
 
 	result, ok := fn(_value)
 
@@ -579,8 +591,10 @@ func _gotk4_gio2_VFSFileLookupFunc(arg1 *C.GVfs, arg2 *C.char, arg3 C.gpointer) 
 
 	var _ *File
 
-	cret = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
-	C.g_object_ref(C.gpointer(coreglib.InternObject(file).Native()))
+	if file != nil {
+		cret = (*C.GFile)(unsafe.Pointer(coreglib.InternObject(file).Native()))
+		C.g_object_ref(C.gpointer(coreglib.InternObject(file).Native()))
+	}
 
 	return cret
 }
@@ -1276,46 +1290,47 @@ func _gotk4_gio2_AppLaunchContextClass_get_startup_notify_id(arg0 *C.GAppLaunchC
 	var _info AppInfor // out
 	var _files []Filer // out
 
-	{
-		objptr := unsafe.Pointer(arg1)
-		if objptr == nil {
-			panic("object of type gio.AppInfor is nil")
-		}
-
-		object := coreglib.Take(objptr)
-		casted := object.WalkCast(func(obj coreglib.Objector) bool {
-			_, ok := obj.(AppInfor)
-			return ok
-		})
-		rv, ok := casted.(AppInfor)
-		if !ok {
-			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
-		}
-		_info = rv
-	}
-	_files = make([]Filer, 0, gextras.ListSize(unsafe.Pointer(arg2)))
-	gextras.MoveList(unsafe.Pointer(arg2), false, func(v unsafe.Pointer) {
-		src := (*C.GFile)(v)
-		var dst Filer // out
+	if arg1 != nil {
 		{
-			objptr := unsafe.Pointer(src)
-			if objptr == nil {
-				panic("object of type gio.Filer is nil")
-			}
+			objptr := unsafe.Pointer(arg1)
 
 			object := coreglib.Take(objptr)
 			casted := object.WalkCast(func(obj coreglib.Objector) bool {
-				_, ok := obj.(Filer)
+				_, ok := obj.(AppInfor)
 				return ok
 			})
-			rv, ok := casted.(Filer)
+			rv, ok := casted.(AppInfor)
 			if !ok {
-				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
+				panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.AppInfor")
 			}
-			dst = rv
+			_info = rv
 		}
-		_files = append(_files, dst)
-	})
+	}
+	if arg2 != nil {
+		_files = make([]Filer, 0, gextras.ListSize(unsafe.Pointer(arg2)))
+		gextras.MoveList(unsafe.Pointer(arg2), false, func(v unsafe.Pointer) {
+			src := (*C.GFile)(v)
+			var dst Filer // out
+			{
+				objptr := unsafe.Pointer(src)
+				if objptr == nil {
+					panic("object of type gio.Filer is nil")
+				}
+
+				object := coreglib.Take(objptr)
+				casted := object.WalkCast(func(obj coreglib.Objector) bool {
+					_, ok := obj.(Filer)
+					return ok
+				})
+				rv, ok := casted.(Filer)
+				if !ok {
+					panic("no marshaler for " + object.TypeFromInstance().String() + " matching gio.Filer")
+				}
+				dst = rv
+			}
+			_files = append(_files, dst)
+		})
+	}
 
 	utf8 := overrides.StartupNotifyID(_info, _files)
 

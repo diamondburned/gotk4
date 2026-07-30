@@ -1,7 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-gotk4.url = "github:NixOS/nixpkgs?ref=nixos-24.05";
+    nixpkgs-gotk4.url = "github:NixOS/nixpkgs/nixos-26.05";
     flake-utils.url = "github:numtide/flake-utils";
     flake-compat.url = "https://flakehub.com/f/edolstra/flake-compat/1.tar.gz";
 
@@ -19,7 +19,7 @@
       nixpkgs-gotk4,
       gotk4-nix,
       flake-utils,
-      flake-compat,
+      ...
     }:
 
     flake-utils.lib.eachDefaultSystem (
@@ -37,7 +37,7 @@
               gotk4-nix.overlays.patchelf
             ];
           };
-          go = pkgs.go_1_24;
+          go = pkgs.go;
           inherit (pkgs) gopls gotools;
         };
         packages.dockerEnv = pkgs.buildEnv {

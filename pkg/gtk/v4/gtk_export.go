@@ -760,6 +760,30 @@ func _gotk4_gtk4_ShortcutFunc(arg1 *C.GtkWidget, arg2 *C.GVariant, arg3 C.gpoint
 	return cret
 }
 
+//export _gotk4_gtk4_TextBufferCommitNotify
+func _gotk4_gtk4_TextBufferCommitNotify(arg1 *C.GtkTextBuffer, arg2 C.GtkTextBufferNotifyFlags, arg3 C.guint, arg4 C.guint, arg5 C.gpointer) {
+	var fn TextBufferCommitNotify
+	{
+		v := gbox.Get(uintptr(arg5))
+		if v == nil {
+			panic(`callback not found`)
+		}
+		fn = v.(TextBufferCommitNotify)
+	}
+
+	var _buffer *TextBuffer          // out
+	var _flags TextBufferNotifyFlags // out
+	var _position uint               // out
+	var _length uint                 // out
+
+	_buffer = wrapTextBuffer(coreglib.Take(unsafe.Pointer(arg1)))
+	_flags = TextBufferNotifyFlags(arg2)
+	_position = uint(arg3)
+	_length = uint(arg4)
+
+	fn(_buffer, _flags, _position, _length)
+}
+
 //export _gotk4_gtk4_TextCharPredicate
 func _gotk4_gtk4_TextCharPredicate(arg1 C.gunichar, arg2 C.gpointer) (cret C.gboolean) {
 	var fn TextCharPredicate
@@ -6712,6 +6736,29 @@ func _gotk4_gtk4_IMContextClass_get_surrounding_with_selection(arg0 *C.GtkIMCont
 	return cret
 }
 
+//export _gotk4_gtk4_IMContextClass_invalid_composition
+func _gotk4_gtk4_IMContextClass_invalid_composition(arg0 *C.GtkIMContext, arg1 *C.char) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[IMContextOverrides](instance0)
+	if overrides.InvalidComposition == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected IMContextOverrides.InvalidComposition, got none")
+	}
+
+	var _str string // out
+
+	_str = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	ok := overrides.InvalidComposition(_str)
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 //export _gotk4_gtk4_IMContextClass_preedit_changed
 func _gotk4_gtk4_IMContextClass_preedit_changed(arg0 *C.GtkIMContext) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
@@ -6913,6 +6960,34 @@ func _gotk4_gtk4_IMContext_ConnectDeleteSurrounding(arg0 C.gpointer, arg1 C.gint
 	_nChars = int(arg2)
 
 	ok := f(_offset, _nChars)
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_gtk4_IMContext_ConnectInvalidComposition
+func _gotk4_gtk4_IMContext_ConnectInvalidComposition(arg0 C.gpointer, arg1 *C.gchar, arg2 C.guintptr) (cret C.gboolean) {
+	var f func(str string) (ok bool)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(str string) (ok bool))
+	}
+
+	var _str string // out
+
+	_str = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	ok := f(_str)
 
 	var _ bool
 
@@ -7554,7 +7629,7 @@ func _gotk4_gtk4_ListBox_ConnectActivateCursorRow(arg0 C.gpointer, arg1 C.guintp
 
 //export _gotk4_gtk4_ListBox_ConnectMoveCursor
 func _gotk4_gtk4_ListBox_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementStep, arg2 C.gint, arg3 C.gboolean, arg4 C.gboolean, arg5 C.guintptr) {
-	var f func(object MovementStep, p0 int, p1, p2 bool)
+	var f func(step MovementStep, count int, extend, modify bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg5))
 		if closure == nil {
@@ -7562,24 +7637,24 @@ func _gotk4_gtk4_ListBox_ConnectMoveCursor(arg0 C.gpointer, arg1 C.GtkMovementSt
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(object MovementStep, p0 int, p1, p2 bool))
+		f = closure.Func.(func(step MovementStep, count int, extend, modify bool))
 	}
 
-	var _object MovementStep // out
-	var _p0 int              // out
-	var _p1 bool             // out
-	var _p2 bool             // out
+	var _step MovementStep // out
+	var _count int         // out
+	var _extend bool       // out
+	var _modify bool       // out
 
-	_object = MovementStep(arg1)
-	_p0 = int(arg2)
+	_step = MovementStep(arg1)
+	_count = int(arg2)
 	if arg3 != 0 {
-		_p1 = true
+		_extend = true
 	}
 	if arg4 != 0 {
-		_p2 = true
+		_modify = true
 	}
 
-	f(_object, _p0, _p1, _p2)
+	f(_step, _count, _extend, _modify)
 }
 
 //export _gotk4_gtk4_ListBox_ConnectRowActivated
@@ -7958,7 +8033,7 @@ func _gotk4_gtk4_NativeDialog_ConnectResponse(arg0 C.gpointer, arg1 C.gint, arg2
 
 //export _gotk4_gtk4_Notebook_ConnectChangeCurrentPage
 func _gotk4_gtk4_Notebook_ConnectChangeCurrentPage(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) (cret C.gboolean) {
-	var f func(object int) (ok bool)
+	var f func(page int) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -7966,14 +8041,14 @@ func _gotk4_gtk4_Notebook_ConnectChangeCurrentPage(arg0 C.gpointer, arg1 C.gint,
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(object int) (ok bool))
+		f = closure.Func.(func(page int) (ok bool))
 	}
 
-	var _object int // out
+	var _page int // out
 
-	_object = int(arg1)
+	_page = int(arg1)
 
-	ok := f(_object)
+	ok := f(_page)
 
 	var _ bool
 
@@ -8030,7 +8105,7 @@ func _gotk4_gtk4_Notebook_ConnectCreateWindow(arg0 C.gpointer, arg1 *C.GtkWidget
 
 //export _gotk4_gtk4_Notebook_ConnectFocusTab
 func _gotk4_gtk4_Notebook_ConnectFocusTab(arg0 C.gpointer, arg1 C.GtkNotebookTab, arg2 C.guintptr) (cret C.gboolean) {
-	var f func(object NotebookTab) (ok bool)
+	var f func(tab NotebookTab) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -8038,14 +8113,14 @@ func _gotk4_gtk4_Notebook_ConnectFocusTab(arg0 C.gpointer, arg1 C.GtkNotebookTab
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(object NotebookTab) (ok bool))
+		f = closure.Func.(func(tab NotebookTab) (ok bool))
 	}
 
-	var _object NotebookTab // out
+	var _tab NotebookTab // out
 
-	_object = NotebookTab(arg1)
+	_tab = NotebookTab(arg1)
 
-	ok := f(_object)
+	ok := f(_tab)
 
 	var _ bool
 
@@ -8058,7 +8133,7 @@ func _gotk4_gtk4_Notebook_ConnectFocusTab(arg0 C.gpointer, arg1 C.GtkNotebookTab
 
 //export _gotk4_gtk4_Notebook_ConnectMoveFocusOut
 func _gotk4_gtk4_Notebook_ConnectMoveFocusOut(arg0 C.gpointer, arg1 C.GtkDirectionType, arg2 C.guintptr) {
-	var f func(object DirectionType)
+	var f func(direction DirectionType)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -8066,14 +8141,14 @@ func _gotk4_gtk4_Notebook_ConnectMoveFocusOut(arg0 C.gpointer, arg1 C.GtkDirecti
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(object DirectionType))
+		f = closure.Func.(func(direction DirectionType))
 	}
 
-	var _object DirectionType // out
+	var _direction DirectionType // out
 
-	_object = DirectionType(arg1)
+	_direction = DirectionType(arg1)
 
-	f(_object)
+	f(_direction)
 }
 
 //export _gotk4_gtk4_Notebook_ConnectPageAdded
@@ -8192,7 +8267,7 @@ func _gotk4_gtk4_Notebook_ConnectPageReordered(arg0 C.gpointer, arg1 *C.GtkWidge
 
 //export _gotk4_gtk4_Notebook_ConnectReorderTab
 func _gotk4_gtk4_Notebook_ConnectReorderTab(arg0 C.gpointer, arg1 C.GtkDirectionType, arg2 C.gboolean, arg3 C.guintptr) (cret C.gboolean) {
-	var f func(object DirectionType, p0 bool) (ok bool)
+	var f func(direction DirectionType, moveToLast bool) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
@@ -8200,18 +8275,18 @@ func _gotk4_gtk4_Notebook_ConnectReorderTab(arg0 C.gpointer, arg1 C.GtkDirection
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(object DirectionType, p0 bool) (ok bool))
+		f = closure.Func.(func(direction DirectionType, moveToLast bool) (ok bool))
 	}
 
-	var _object DirectionType // out
-	var _p0 bool              // out
+	var _direction DirectionType // out
+	var _moveToLast bool         // out
 
-	_object = DirectionType(arg1)
+	_direction = DirectionType(arg1)
 	if arg2 != 0 {
-		_p0 = true
+		_moveToLast = true
 	}
 
-	ok := f(_object, _p0)
+	ok := f(_direction, _moveToLast)
 
 	var _ bool
 
@@ -8224,7 +8299,7 @@ func _gotk4_gtk4_Notebook_ConnectReorderTab(arg0 C.gpointer, arg1 C.GtkDirection
 
 //export _gotk4_gtk4_Notebook_ConnectSelectPage
 func _gotk4_gtk4_Notebook_ConnectSelectPage(arg0 C.gpointer, arg1 C.gboolean, arg2 C.guintptr) (cret C.gboolean) {
-	var f func(object bool) (ok bool)
+	var f func(moveFocus bool) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -8232,16 +8307,16 @@ func _gotk4_gtk4_Notebook_ConnectSelectPage(arg0 C.gpointer, arg1 C.gboolean, ar
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(object bool) (ok bool))
+		f = closure.Func.(func(moveFocus bool) (ok bool))
 	}
 
-	var _object bool // out
+	var _moveFocus bool // out
 
 	if arg1 != 0 {
-		_object = true
+		_moveFocus = true
 	}
 
-	ok := f(_object)
+	ok := f(_moveFocus)
 
 	var _ bool
 
@@ -9558,7 +9633,7 @@ func _gotk4_gtk4_SearchEntry_ConnectStopSearch(arg0 C.gpointer, arg1 C.guintptr)
 
 //export _gotk4_gtk4_ShortcutsSection_ConnectChangeCurrentPage
 func _gotk4_gtk4_ShortcutsSection_ConnectChangeCurrentPage(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) (cret C.gboolean) {
-	var f func(object int) (ok bool)
+	var f func(offset int) (ok bool)
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
@@ -9566,14 +9641,14 @@ func _gotk4_gtk4_ShortcutsSection_ConnectChangeCurrentPage(arg0 C.gpointer, arg1
 		}
 		defer closure.TryRepanic()
 
-		f = closure.Func.(func(object int) (ok bool))
+		f = closure.Func.(func(offset int) (ok bool))
 	}
 
-	var _object int // out
+	var _offset int // out
 
-	_object = int(arg1)
+	_offset = int(arg1)
 
-	ok := f(_object)
+	ok := f(_offset)
 
 	var _ bool
 
@@ -9901,6 +9976,26 @@ func _gotk4_gtk4_StyleContextClass_changed(arg0 *C.GtkStyleContext) {
 	}
 
 	overrides.Changed()
+}
+
+//export _gotk4_gtk4_Svg_ConnectError
+func _gotk4_gtk4_Svg_ConnectError(arg0 C.gpointer, arg1 *C.GError, arg2 C.guintptr) {
+	var f func(err error)
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func(err error))
+	}
+
+	var _err error // out
+
+	_err = gerror.Take(unsafe.Pointer(arg1))
+
+	f(_err)
 }
 
 //export _gotk4_gtk4_Switch_ConnectActivate

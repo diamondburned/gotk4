@@ -155,7 +155,11 @@ func (conv *Converter) cgoArrayConverter(value *ValueConverted) bool {
 
 		// Direct cast is not possible; make a temporary array with the CGo type
 		// so we can loop over it easily.
-		value.p.Linef("src := &%s", value.In.Name)
+		if strings.HasPrefix(value.In.Type, "*") {
+			value.p.Linef("src := unsafe.Slice(%s, %d)", value.In.Name, array.FixedSize)
+		} else {
+			value.p.Linef("src := unsafe.Slice(&(%s)[0], %d)", value.In.Name, array.FixedSize)
+		}
 		value.p.Linef("for i := 0; i < %d; i++ {", array.FixedSize)
 		value.p.Linef("  %s", inner.Conversion)
 		value.p.Linef("}")

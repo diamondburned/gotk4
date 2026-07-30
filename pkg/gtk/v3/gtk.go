@@ -550,6 +550,7 @@ import (
 // extern void _gotk4_gtk3_EventControllerKey_ConnectFocusOut(gpointer, guintptr);
 // extern void _gotk4_gtk3_EventControllerKey_ConnectFocusIn(gpointer, guintptr);
 // extern void _gotk4_gtk3_Entry_ConnectToggleOverwrite(gpointer, guintptr);
+// extern void _gotk4_gtk3_Entry_ConnectToggleDirection(gpointer, guintptr);
 // extern void _gotk4_gtk3_Entry_ConnectPreeditChanged(gpointer, gchar*, guintptr);
 // extern void _gotk4_gtk3_Entry_ConnectPopulatePopup(gpointer, GtkWidget*, guintptr);
 // extern void _gotk4_gtk3_Entry_ConnectPasteClipboard(gpointer, guintptr);
@@ -568,6 +569,7 @@ import (
 // extern void _gotk4_gtk3_EntryCompletionClass_no_matches(GtkEntryCompletion*);
 // extern void _gotk4_gtk3_EntryCompletionClass_action_activated(GtkEntryCompletion*, gint);
 // extern void _gotk4_gtk3_EntryClass_toggle_overwrite(GtkEntry*);
+// extern void _gotk4_gtk3_EntryClass_toggle_direction(GtkEntry*);
 // extern void _gotk4_gtk3_EntryClass_populate_popup(GtkEntry*, GtkWidget*);
 // extern void _gotk4_gtk3_EntryClass_paste_clipboard(GtkEntry*);
 // extern void _gotk4_gtk3_EntryClass_move_cursor(GtkEntry*, GtkMovementStep, gint, gboolean);
@@ -1900,6 +1902,9 @@ import (
 // };
 // void _gotk4_gtk3_Entry_virtual_populate_popup(void* fnptr, GtkEntry* arg0, GtkWidget* arg1) {
 //   ((void (*)(GtkEntry*, GtkWidget*))(fnptr))(arg0, arg1);
+// };
+// void _gotk4_gtk3_Entry_virtual_toggle_direction(void* fnptr, GtkEntry* arg0) {
+//   ((void (*)(GtkEntry*))(fnptr))(arg0);
 // };
 // void _gotk4_gtk3_Entry_virtual_toggle_overwrite(void* fnptr, GtkEntry* arg0) {
 //   ((void (*)(GtkEntry*))(fnptr))(arg0);
@@ -3594,7 +3599,7 @@ func init() {
 // BINARY_AGE: like gtk_get_binary_age(), but from the headers used at
 // application compile time, rather than from the library linked against at
 // application run time.
-const BINARY_AGE = 2442
+const BINARY_AGE = 2452
 
 // INPUT_ERROR: constant to return from a signal handler for the
 // SpinButton::input signal in case of conversion failure.
@@ -3628,7 +3633,7 @@ const MAX_COMPOSE_LEN = 7
 // MICRO_VERSION: like gtk_get_micro_version(), but from the headers used at
 // application compile time, rather than from the library linked against at
 // application run time.
-const MICRO_VERSION = 42
+const MICRO_VERSION = 52
 
 // MINOR_VERSION: like gtk_get_minor_version(), but from the headers used at
 // application compile time, rather than from the library linked against at
@@ -6557,10 +6562,10 @@ const (
 	LicenseGPL20
 	// LicenseGPL30: GNU General Public License, version 3.0 or later.
 	LicenseGPL30
-	// LicenseLGPL21: GNU Lesser General Public License, version 2.1 or later.
-	LicenseLGPL21
-	// LicenseLGPL30: GNU Lesser General Public License, version 3.0 or later.
-	LicenseLGPL30
+	// LicenseLgpl21: GNU Lesser General Public License, version 2.1 or later.
+	LicenseLgpl21
+	// LicenseLgpl30: GNU Lesser General Public License, version 3.0 or later.
+	LicenseLgpl30
 	// LicenseBSD: BSD standard license.
 	LicenseBSD
 	// LicenseMITX11: MIT/X11 standard license.
@@ -6573,18 +6578,18 @@ const (
 	// LicenseGPL30_Only: GNU General Public License, version 3.0 only. Since
 	// 3.12.
 	LicenseGPL30_Only
-	// LicenseLGPL21_Only: GNU Lesser General Public License, version 2.1 only.
+	// LicenseLgpl21_Only: GNU Lesser General Public License, version 2.1 only.
 	// Since 3.12.
-	LicenseLGPL21_Only
-	// LicenseLGPL30_Only: GNU Lesser General Public License, version 3.0 only.
+	LicenseLgpl21_Only
+	// LicenseLgpl30_Only: GNU Lesser General Public License, version 3.0 only.
 	// Since 3.12.
-	LicenseLGPL30_Only
-	// LicenseAGPL30: GNU Affero General Public License, version 3.0 or later.
+	LicenseLgpl30_Only
+	// LicenseAgpl30: GNU Affero General Public License, version 3.0 or later.
 	// Since: 3.22.
-	LicenseAGPL30
-	// LicenseAGPL30_Only: GNU Affero General Public License, version 3.0 only.
+	LicenseAgpl30
+	// LicenseAgpl30_Only: GNU Affero General Public License, version 3.0 only.
 	// Since: 3.22.27.
-	LicenseAGPL30_Only
+	LicenseAgpl30_Only
 	// LicenseBSD3: 3-clause BSD licence. Since: 3.24.20.
 	LicenseBSD3
 	// LicenseApache20: apache License, version 2.0. Since: 3.24.20.
@@ -6608,10 +6613,10 @@ func (l License) String() string {
 		return "GPL20"
 	case LicenseGPL30:
 		return "GPL30"
-	case LicenseLGPL21:
-		return "LGPL21"
-	case LicenseLGPL30:
-		return "LGPL30"
+	case LicenseLgpl21:
+		return "Lgpl21"
+	case LicenseLgpl30:
+		return "Lgpl30"
 	case LicenseBSD:
 		return "BSD"
 	case LicenseMITX11:
@@ -6622,14 +6627,14 @@ func (l License) String() string {
 		return "GPL20_Only"
 	case LicenseGPL30_Only:
 		return "GPL30_Only"
-	case LicenseLGPL21_Only:
-		return "LGPL21_Only"
-	case LicenseLGPL30_Only:
-		return "LGPL30_Only"
-	case LicenseAGPL30:
-		return "AGPL30"
-	case LicenseAGPL30_Only:
-		return "AGPL30_Only"
+	case LicenseLgpl21_Only:
+		return "Lgpl21_Only"
+	case LicenseLgpl30_Only:
+		return "Lgpl30_Only"
+	case LicenseAgpl30:
+		return "Agpl30"
+	case LicenseAgpl30_Only:
+		return "Agpl30_Only"
 	case LicenseBSD3:
 		return "BSD3"
 	case LicenseApache20:
@@ -11399,13 +11404,13 @@ func AcceleratorNameWithKeycode(display *gdk.Display, acceleratorKey, keycode ui
 }
 
 // AcceleratorParse parses a string representing an accelerator. The format
-// looks like “<Control>a” or “<Shift><Alt>F1” or “<Release>z” (the last one is
-// for key release).
+// looks like <Control>a or <Shift><Alt>F1 or <Release>z (the last one is for
+// key release).
 //
 // The parser is fairly liberal and allows lower or upper case, and also
-// abbreviations such as “<Ctl>” and “<Ctrl>”. Key names are parsed using
-// gdk_keyval_from_name(). For character keys the name is not the symbol, but
-// the lowercase name, e.g. one would use “<Ctrl>minus” instead of “<Ctrl>-”.
+// abbreviations such as <Ctl> and <Ctrl>. Key names are parsed using
+// gdk_keyval_from_name(). For character keys the name is not the symbol,
+// but the lowercase name, e.g. one would use <Ctrl>minus instead of <Ctrl>-.
 //
 // If the parse fails, accelerator_key and accelerator_mods will be set to 0
 // (zero).
@@ -53839,7 +53844,8 @@ type EntryOverrides struct {
 	// PopulatePopup class handler for the Entry::populate-popup signal.
 	// If non-NULL, this will be called to add additional entries to the context
 	// menu when it is displayed.
-	PopulatePopup func(popup Widgetter)
+	PopulatePopup   func(popup Widgetter)
+	ToggleDirection func()
 	// ToggleOverwrite class handler for the Entry::toggle-overwrite signal.
 	// The default implementation toggles overwrite mode and blinks the cursor.
 	ToggleOverwrite func()
@@ -53859,6 +53865,7 @@ func defaultEntryOverrides(v *Entry) EntryOverrides {
 		MoveCursor:       v.moveCursor,
 		PasteClipboard:   v.pasteClipboard,
 		PopulatePopup:    v.populatePopup,
+		ToggleDirection:  v.toggleDirection,
 		ToggleOverwrite:  v.toggleOverwrite,
 	}
 }
@@ -54002,6 +54009,10 @@ func initEntryClass(gclass unsafe.Pointer, overrides EntryOverrides, classInitFu
 
 	if overrides.PopulatePopup != nil {
 		pclass.populate_popup = (*[0]byte)(C._gotk4_gtk3_EntryClass_populate_popup)
+	}
+
+	if overrides.ToggleDirection != nil {
+		pclass.toggle_direction = (*[0]byte)(C._gotk4_gtk3_EntryClass_toggle_direction)
 	}
 
 	if overrides.ToggleOverwrite != nil {
@@ -54174,6 +54185,10 @@ func (entry *Entry) ConnectPopulatePopup(f func(widget Widgetter)) coreglib.Sign
 // connect to this signal.
 func (entry *Entry) ConnectPreeditChanged(f func(preedit string)) coreglib.SignalHandle {
 	return coreglib.ConnectGeneratedClosure(entry, "preedit-changed", false, unsafe.Pointer(C._gotk4_gtk3_Entry_ConnectPreeditChanged), f)
+}
+
+func (entry *Entry) ConnectToggleDirection(f func()) coreglib.SignalHandle {
+	return coreglib.ConnectGeneratedClosure(entry, "toggle-direction", false, unsafe.Pointer(C._gotk4_gtk3_Entry_ConnectToggleDirection), f)
 }
 
 // ConnectToggleOverwrite signal is a [keybinding signal][GtkBindingSignal]
@@ -56347,6 +56362,18 @@ func (entry *Entry) populatePopup(popup Widgetter) {
 	C._gotk4_gtk3_Entry_virtual_populate_popup(unsafe.Pointer(fnarg), _arg0, _arg1)
 	runtime.KeepAlive(entry)
 	runtime.KeepAlive(popup)
+}
+
+func (entry *Entry) toggleDirection() {
+	gclass := (*C.GtkEntryClass)(coreglib.PeekParentClass(entry))
+	fnarg := gclass.toggle_direction
+
+	var _arg0 *C.GtkEntry // out
+
+	_arg0 = (*C.GtkEntry)(unsafe.Pointer(coreglib.InternObject(entry).Native()))
+
+	C._gotk4_gtk3_Entry_virtual_toggle_direction(unsafe.Pointer(fnarg), _arg0)
+	runtime.KeepAlive(entry)
 }
 
 // toggleOverwrite class handler for the Entry::toggle-overwrite signal.
@@ -148076,8 +148103,8 @@ func (window *Window) MnemonicActivate(keyval uint, modifier gdk.ModifierType) b
 // multi-head scenarios into account).
 //
 // The Extended Window Manager Hints Specification
-// (http://www.freedesktop.org/Standards/wm-spec) has a nice table of gravities
-// in the “implementation notes” section.
+// (https://specifications.freedesktop.org/wm/latest/) has a nice table of
+// gravities in the “implementation notes” section.
 //
 // The gtk_window_get_position() documentation may also be relevant.
 //
@@ -149043,8 +149070,8 @@ func (window *Window) SetIconName(name string) {
 // You can track the above state via the “window-state-event” signal on Widget.
 //
 // Note that, according to the Extended Window Manager Hints Specification
-// (http://www.freedesktop.org/Standards/wm-spec), the above state is mainly
-// meant for user preferences and should not be used by applications e.g.
+// (https://specifications.freedesktop.org/wm/latest/), the above state is
+// mainly meant for user preferences and should not be used by applications e.g.
 // for drawing attention to their dialogs.
 //
 // The function takes the following parameters:
@@ -149077,8 +149104,8 @@ func (window *Window) SetKeepAbove(setting bool) {
 // You can track the below state via the “window-state-event” signal on Widget.
 //
 // Note that, according to the Extended Window Manager Hints Specification
-// (http://www.freedesktop.org/Standards/wm-spec), the above state is mainly
-// meant for user preferences and should not be used by applications e.g.
+// (https://specifications.freedesktop.org/wm/latest/), the above state is
+// mainly meant for user preferences and should not be used by applications e.g.
 // for drawing attention to their dialogs.
 //
 // The function takes the following parameters:
@@ -151646,7 +151673,7 @@ func (c *ColorChooserInterface) Padding() [12]unsafe.Pointer {
 	valptr := &c.native.padding
 	var _v [12]unsafe.Pointer // out
 	{
-		src := &*valptr
+		src := unsafe.Slice(&(*valptr)[0], 12)
 		for i := 0; i < 12; i++ {
 			_v[i] = (unsafe.Pointer)(unsafe.Pointer(src[i]))
 		}
@@ -152518,7 +152545,7 @@ func (f *FontChooserIface) Padding() [10]unsafe.Pointer {
 	valptr := &f.native.padding
 	var _v [10]unsafe.Pointer // out
 	{
-		src := &*valptr
+		src := unsafe.Slice(&(*valptr)[0], 10)
 		for i := 0; i < 10; i++ {
 			_v[i] = (unsafe.Pointer)(unsafe.Pointer(src[i]))
 		}
@@ -154667,7 +154694,7 @@ func (n *NumerableIconClass) Padding() [16]unsafe.Pointer {
 	valptr := &n.native.padding
 	var _v [16]unsafe.Pointer // out
 	{
-		src := &*valptr
+		src := unsafe.Slice(&(*valptr)[0], 16)
 		for i := 0; i < 16; i++ {
 			_v[i] = (unsafe.Pointer)(unsafe.Pointer(src[i]))
 		}

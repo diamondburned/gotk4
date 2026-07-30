@@ -2533,7 +2533,7 @@ const KEY_zerosuperior = 16785520
 const KEY_zstroke = 16777654
 const MAJOR_VERSION = 3
 const MAX_TIMECOORD_AXES = 128
-const MICRO_VERSION = 42
+const MICRO_VERSION = 52
 const MINOR_VERSION = 24
 
 // PARENT_RELATIVE: special value, indicating that the background for a window
@@ -3680,7 +3680,7 @@ func (g GrabStatus) String() string {
 // Gravity defines the reference point of a window and the meaning of
 // coordinates passed to gtk_window_move(). See gtk_window_move() and the
 // "implementation notes" section of the Extended Window Manager Hints
-// (http://www.freedesktop.org/Standards/wm-spec) specification for more
+// (https://specifications.freedesktop.org/wm/latest/) specification for more
 // details.
 type Gravity C.gint
 
@@ -4426,8 +4426,8 @@ func (w WindowType) String() string {
 // before mapping the window.
 //
 // See the Extended Window Manager Hints
-// (http://www.freedesktop.org/Standards/wm-spec) specification for more details
-// about window types.
+// (https://specifications.freedesktop.org/wm/latest/) specification for more
+// details about window types.
 type WindowTypeHint C.gint
 
 const (
@@ -8399,7 +8399,7 @@ func NewAppLaunchContext() *AppLaunchContext {
 // SetDesktop sets the workspace on which applications will be launched when
 // using this context when running under a window manager that supports
 // multiple workspaces, as described in the Extended Window Manager Hints
-// (http://www.freedesktop.org/Standards/wm-spec).
+// (https://specifications.freedesktop.org/wm/latest/).
 //
 // When the workspace is not specified or desktop is set to -1, it is up to the
 // window manager to pick one, typically it will be the current workspace.
@@ -8711,7 +8711,14 @@ func NewCursorForDisplay(display *Display, cursorType CursorType) *Cursor {
 //
 // - ! (zoom_in_cursor.png) "zoom-in"
 //
-// - ! (zoom_out_cursor.png) "zoom-out".
+// - ! (zoom_out_cursor.png) "zoom-out"
+//
+// Additionally, the following cursor names are supported, which are not in the
+// CSS specification:
+//
+// - ! (dnd_ask_cursor.png) "dnd-ask"
+//
+// - ! (all_resize_cursor.png) "all-resize".
 //
 // The function takes the following parameters:
 //
@@ -14082,8 +14089,8 @@ func (screen *Screen) ConnectSizeChanged(f func()) coreglib.SignalHandle {
 //
 // On X11, this is done by inspecting the _NET_ACTIVE_WINDOW property
 // on the root window, as described in the Extended Window Manager Hints
-// (http://www.freedesktop.org/Standards/wm-spec). If there is no currently
-// currently active window, or the window manager does not support the
+// (https://specifications.freedesktop.org/wm/latest/). If there is no
+// currently currently active window, or the window manager does not support the
 // _NET_ACTIVE_WINDOW hint, this function returns NULL.
 //
 // On other platforms, this function may return NULL, depending on whether it is
@@ -14850,8 +14857,9 @@ func (screen *Screen) WidthMm() int {
 //
 // On X11, this is done by inspecting the _NET_CLIENT_LIST_STACKING property
 // on the root window, as described in the Extended Window Manager Hints
-// (http://www.freedesktop.org/Standards/wm-spec). If the window manager does
-// not support the _NET_CLIENT_LIST_STACKING hint, this function returns NULL.
+// (https://specifications.freedesktop.org/wm/latest/). If the window manager
+// does not support the _NET_CLIENT_LIST_STACKING hint, this function returns
+// NULL.
 //
 // On other platforms, this function may return NULL, depending on whether it is
 // implementable on that platform.
@@ -16186,11 +16194,12 @@ func (window *Window) BeginMoveDrag(button, rootX, rootY int, timestamp uint32) 
 	runtime.KeepAlive(timestamp)
 }
 
-// BeginMoveDragForDevice begins a window move operation (for a toplevel
-// window). You might use this function to implement a “window move grip,”
-// for example. The function works best with window managers that support the
-// Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
-// but has a fallback implementation for other window managers.
+// BeginMoveDragForDevice begins a window move operation (for a
+// toplevel window). You might use this function to implement a
+// “window move grip,” for example. The function works best with
+// window managers that support the Extended Window Manager Hints
+// (https://specifications.freedesktop.org/wm/latest/) but has a fallback
+// implementation for other window managers.
 //
 // The function takes the following parameters:
 //
@@ -16337,7 +16346,7 @@ func (window *Window) BeginResizeDrag(edge WindowEdge, button, rootX, rootY int,
 // window). You might use this function to implement a “window resize
 // grip,” for example; in fact Statusbar uses it. The function works best
 // with window managers that support the Extended Window Manager Hints
-// (http://www.freedesktop.org/Standards/wm-spec) but has a fallback
+// (https://specifications.freedesktop.org/wm/latest/) but has a fallback
 // implementation for other window managers.
 //
 // The function takes the following parameters:

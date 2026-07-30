@@ -135,78 +135,78 @@ const (
 	// EulerOrderZYX: rotate in the Z, Y, and X order. Deprecated in Graphene
 	// 1.10, it's an alias for GRAPHENE_EULER_ORDER_SZYX.
 	EulerOrderZYX EulerOrder = 5
-	// EulerOrderSXYZ defines a static rotation along the X, Y, and Z axes
+	// EulerOrderSxyz defines a static rotation along the X, Y, and Z axes
 	// (Since: 1.10).
-	EulerOrderSXYZ EulerOrder = 6
-	// EulerOrderSXYX defines a static rotation along the X, Y, and X axes
+	EulerOrderSxyz EulerOrder = 6
+	// EulerOrderSxyx defines a static rotation along the X, Y, and X axes
 	// (Since: 1.10).
-	EulerOrderSXYX EulerOrder = 7
-	// EulerOrderSXZY defines a static rotation along the X, Z, and Y axes
+	EulerOrderSxyx EulerOrder = 7
+	// EulerOrderSxzy defines a static rotation along the X, Z, and Y axes
 	// (Since: 1.10).
-	EulerOrderSXZY EulerOrder = 8
-	// EulerOrderSXZX defines a static rotation along the X, Z, and X axes
+	EulerOrderSxzy EulerOrder = 8
+	// EulerOrderSxzx defines a static rotation along the X, Z, and X axes
 	// (Since: 1.10).
-	EulerOrderSXZX EulerOrder = 9
-	// EulerOrderSYZX defines a static rotation along the Y, Z, and X axes
+	EulerOrderSxzx EulerOrder = 9
+	// EulerOrderSyzx defines a static rotation along the Y, Z, and X axes
 	// (Since: 1.10).
-	EulerOrderSYZX EulerOrder = 10
-	// EulerOrderSYZY defines a static rotation along the Y, Z, and Y axes
+	EulerOrderSyzx EulerOrder = 10
+	// EulerOrderSyzy defines a static rotation along the Y, Z, and Y axes
 	// (Since: 1.10).
-	EulerOrderSYZY EulerOrder = 11
-	// EulerOrderSYXZ defines a static rotation along the Y, X, and Z axes
+	EulerOrderSyzy EulerOrder = 11
+	// EulerOrderSyxz defines a static rotation along the Y, X, and Z axes
 	// (Since: 1.10).
-	EulerOrderSYXZ EulerOrder = 12
-	// EulerOrderSYXY defines a static rotation along the Y, X, and Y axes
+	EulerOrderSyxz EulerOrder = 12
+	// EulerOrderSyxy defines a static rotation along the Y, X, and Y axes
 	// (Since: 1.10).
-	EulerOrderSYXY EulerOrder = 13
-	// EulerOrderSZXY defines a static rotation along the Z, X, and Y axes
+	EulerOrderSyxy EulerOrder = 13
+	// EulerOrderSzxy defines a static rotation along the Z, X, and Y axes
 	// (Since: 1.10).
-	EulerOrderSZXY EulerOrder = 14
-	// EulerOrderSZXZ defines a static rotation along the Z, X, and Z axes
+	EulerOrderSzxy EulerOrder = 14
+	// EulerOrderSzxz defines a static rotation along the Z, X, and Z axes
 	// (Since: 1.10).
-	EulerOrderSZXZ EulerOrder = 15
-	// EulerOrderSZYX defines a static rotation along the Z, Y, and X axes
+	EulerOrderSzxz EulerOrder = 15
+	// EulerOrderSzyx defines a static rotation along the Z, Y, and X axes
 	// (Since: 1.10).
-	EulerOrderSZYX EulerOrder = 16
-	// EulerOrderSZYZ defines a static rotation along the Z, Y, and Z axes
+	EulerOrderSzyx EulerOrder = 16
+	// EulerOrderSzyz defines a static rotation along the Z, Y, and Z axes
 	// (Since: 1.10).
-	EulerOrderSZYZ EulerOrder = 17
-	// EulerOrderRZYX defines a relative rotation along the Z, Y, and X axes
+	EulerOrderSzyz EulerOrder = 17
+	// EulerOrderRzyx defines a relative rotation along the Z, Y, and X axes
 	// (Since: 1.10).
-	EulerOrderRZYX EulerOrder = 18
-	// EulerOrderRXYX defines a relative rotation along the X, Y, and X axes
+	EulerOrderRzyx EulerOrder = 18
+	// EulerOrderRxyx defines a relative rotation along the X, Y, and X axes
 	// (Since: 1.10).
-	EulerOrderRXYX EulerOrder = 19
-	// EulerOrderRYZX defines a relative rotation along the Y, Z, and X axes
+	EulerOrderRxyx EulerOrder = 19
+	// EulerOrderRyzx defines a relative rotation along the Y, Z, and X axes
 	// (Since: 1.10).
-	EulerOrderRYZX EulerOrder = 20
-	// EulerOrderRXZX defines a relative rotation along the X, Z, and X axes
+	EulerOrderRyzx EulerOrder = 20
+	// EulerOrderRxzx defines a relative rotation along the X, Z, and X axes
 	// (Since: 1.10).
-	EulerOrderRXZX EulerOrder = 21
-	// EulerOrderRXZY defines a relative rotation along the X, Z, and Y axes
+	EulerOrderRxzx EulerOrder = 21
+	// EulerOrderRxzy defines a relative rotation along the X, Z, and Y axes
 	// (Since: 1.10).
-	EulerOrderRXZY EulerOrder = 22
-	// EulerOrderRYZY defines a relative rotation along the Y, Z, and Y axes
+	EulerOrderRxzy EulerOrder = 22
+	// EulerOrderRyzy defines a relative rotation along the Y, Z, and Y axes
 	// (Since: 1.10).
-	EulerOrderRYZY EulerOrder = 23
-	// EulerOrderRZXY defines a relative rotation along the Z, X, and Y axes
+	EulerOrderRyzy EulerOrder = 23
+	// EulerOrderRzxy defines a relative rotation along the Z, X, and Y axes
 	// (Since: 1.10).
-	EulerOrderRZXY EulerOrder = 24
-	// EulerOrderRYXY defines a relative rotation along the Y, X, and Y axes
+	EulerOrderRzxy EulerOrder = 24
+	// EulerOrderRyxy defines a relative rotation along the Y, X, and Y axes
 	// (Since: 1.10).
-	EulerOrderRYXY EulerOrder = 25
-	// EulerOrderRYXZ defines a relative rotation along the Y, X, and Z axes
+	EulerOrderRyxy EulerOrder = 25
+	// EulerOrderRyxz defines a relative rotation along the Y, X, and Z axes
 	// (Since: 1.10).
-	EulerOrderRYXZ EulerOrder = 26
-	// EulerOrderRZXZ defines a relative rotation along the Z, X, and Z axes
+	EulerOrderRyxz EulerOrder = 26
+	// EulerOrderRzxz defines a relative rotation along the Z, X, and Z axes
 	// (Since: 1.10).
-	EulerOrderRZXZ EulerOrder = 27
-	// EulerOrderRXYZ defines a relative rotation along the X, Y, and Z axes
+	EulerOrderRzxz EulerOrder = 27
+	// EulerOrderRxyz defines a relative rotation along the X, Y, and Z axes
 	// (Since: 1.10).
-	EulerOrderRXYZ EulerOrder = 28
-	// EulerOrderRZYZ defines a relative rotation along the Z, Y, and Z axes
+	EulerOrderRxyz EulerOrder = 28
+	// EulerOrderRzyz defines a relative rotation along the Z, Y, and Z axes
 	// (Since: 1.10).
-	EulerOrderRZYZ EulerOrder = 29
+	EulerOrderRzyz EulerOrder = 29
 )
 
 // String returns the name in string for EulerOrder.
@@ -226,54 +226,54 @@ func (e EulerOrder) String() string {
 		return "YXZ"
 	case EulerOrderZYX:
 		return "ZYX"
-	case EulerOrderSXYZ:
-		return "SXYZ"
-	case EulerOrderSXYX:
-		return "SXYX"
-	case EulerOrderSXZY:
-		return "SXZY"
-	case EulerOrderSXZX:
-		return "SXZX"
-	case EulerOrderSYZX:
-		return "SYZX"
-	case EulerOrderSYZY:
-		return "SYZY"
-	case EulerOrderSYXZ:
-		return "SYXZ"
-	case EulerOrderSYXY:
-		return "SYXY"
-	case EulerOrderSZXY:
-		return "SZXY"
-	case EulerOrderSZXZ:
-		return "SZXZ"
-	case EulerOrderSZYX:
-		return "SZYX"
-	case EulerOrderSZYZ:
-		return "SZYZ"
-	case EulerOrderRZYX:
-		return "RZYX"
-	case EulerOrderRXYX:
-		return "RXYX"
-	case EulerOrderRYZX:
-		return "RYZX"
-	case EulerOrderRXZX:
-		return "RXZX"
-	case EulerOrderRXZY:
-		return "RXZY"
-	case EulerOrderRYZY:
-		return "RYZY"
-	case EulerOrderRZXY:
-		return "RZXY"
-	case EulerOrderRYXY:
-		return "RYXY"
-	case EulerOrderRYXZ:
-		return "RYXZ"
-	case EulerOrderRZXZ:
-		return "RZXZ"
-	case EulerOrderRXYZ:
-		return "RXYZ"
-	case EulerOrderRZYZ:
-		return "RZYZ"
+	case EulerOrderSxyz:
+		return "Sxyz"
+	case EulerOrderSxyx:
+		return "Sxyx"
+	case EulerOrderSxzy:
+		return "Sxzy"
+	case EulerOrderSxzx:
+		return "Sxzx"
+	case EulerOrderSyzx:
+		return "Syzx"
+	case EulerOrderSyzy:
+		return "Syzy"
+	case EulerOrderSyxz:
+		return "Syxz"
+	case EulerOrderSyxy:
+		return "Syxy"
+	case EulerOrderSzxy:
+		return "Szxy"
+	case EulerOrderSzxz:
+		return "Szxz"
+	case EulerOrderSzyx:
+		return "Szyx"
+	case EulerOrderSzyz:
+		return "Szyz"
+	case EulerOrderRzyx:
+		return "Rzyx"
+	case EulerOrderRxyx:
+		return "Rxyx"
+	case EulerOrderRyzx:
+		return "Ryzx"
+	case EulerOrderRxzx:
+		return "Rxzx"
+	case EulerOrderRxzy:
+		return "Rxzy"
+	case EulerOrderRyzy:
+		return "Ryzy"
+	case EulerOrderRzxy:
+		return "Rzxy"
+	case EulerOrderRyxy:
+		return "Ryxy"
+	case EulerOrderRyxz:
+		return "Ryxz"
+	case EulerOrderRzxz:
+		return "Rzxz"
+	case EulerOrderRxyz:
+		return "Rxyz"
+	case EulerOrderRzyz:
+		return "Rzyz"
 	default:
 		return fmt.Sprintf("EulerOrder(%d)", e)
 	}
@@ -355,7 +355,7 @@ func NewBoxAlloc() *Box {
 func (a *Box) ContainsBox(b *Box) bool {
 	var _arg0 *C.graphene_box_t // out
 	var _arg1 *C.graphene_box_t // out
-	var _cret C._Bool           // in
+	var _cret C.bool            // in
 
 	_arg0 = (*C.graphene_box_t)(gextras.StructNative(unsafe.Pointer(a)))
 	_arg1 = (*C.graphene_box_t)(gextras.StructNative(unsafe.Pointer(b)))
@@ -385,7 +385,7 @@ func (a *Box) ContainsBox(b *Box) bool {
 func (box *Box) ContainsPoint(point *Point3D) bool {
 	var _arg0 *C.graphene_box_t     // out
 	var _arg1 *C.graphene_point3d_t // out
-	var _cret C._Bool               // in
+	var _cret C.bool                // in
 
 	_arg0 = (*C.graphene_box_t)(gextras.StructNative(unsafe.Pointer(box)))
 	_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(point)))
@@ -415,7 +415,7 @@ func (box *Box) ContainsPoint(point *Point3D) bool {
 func (a *Box) Equal(b *Box) bool {
 	var _arg0 *C.graphene_box_t // out
 	var _arg1 *C.graphene_box_t // out
-	var _cret C._Bool           // in
+	var _cret C.bool            // in
 
 	_arg0 = (*C.graphene_box_t)(gextras.StructNative(unsafe.Pointer(a)))
 	_arg1 = (*C.graphene_box_t)(gextras.StructNative(unsafe.Pointer(b)))
@@ -689,7 +689,7 @@ func (box *Box) Vertices() [8]Vec3 {
 	var _vertices [8]Vec3 // out
 
 	{
-		src := &_arg1
+		src := unsafe.Slice(&(_arg1)[0], 8)
 		for i := 0; i < 8; i++ {
 			_vertices[i] = *(*Vec3)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
 		}
@@ -918,7 +918,7 @@ func (a *Box) Intersection(b *Box) (*Box, bool) {
 	var _arg0 *C.graphene_box_t // out
 	var _arg1 *C.graphene_box_t // out
 	var _arg2 C.graphene_box_t  // in
-	var _cret C._Bool           // in
+	var _cret C.bool            // in
 
 	_arg0 = (*C.graphene_box_t)(gextras.StructNative(unsafe.Pointer(a)))
 	_arg1 = (*C.graphene_box_t)(gextras.StructNative(unsafe.Pointer(b)))
@@ -1134,7 +1134,7 @@ func NewEulerAlloc() *Euler {
 func (a *Euler) Equal(b *Euler) bool {
 	var _arg0 *C.graphene_euler_t // out
 	var _arg1 *C.graphene_euler_t // out
-	var _cret C._Bool             // in
+	var _cret C.bool              // in
 
 	_arg0 = (*C.graphene_euler_t)(gextras.StructNative(unsafe.Pointer(a)))
 	_arg1 = (*C.graphene_euler_t)(gextras.StructNative(unsafe.Pointer(b)))
@@ -1741,7 +1741,7 @@ func NewFrustumAlloc() *Frustum {
 func (f *Frustum) ContainsPoint(point *Point3D) bool {
 	var _arg0 *C.graphene_frustum_t // out
 	var _arg1 *C.graphene_point3d_t // out
-	var _cret C._Bool               // in
+	var _cret C.bool                // in
 
 	_arg0 = (*C.graphene_frustum_t)(gextras.StructNative(unsafe.Pointer(f)))
 	_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(point)))
@@ -1771,7 +1771,7 @@ func (f *Frustum) ContainsPoint(point *Point3D) bool {
 func (a *Frustum) Equal(b *Frustum) bool {
 	var _arg0 *C.graphene_frustum_t // out
 	var _arg1 *C.graphene_frustum_t // out
-	var _cret C._Bool               // in
+	var _cret C.bool                // in
 
 	_arg0 = (*C.graphene_frustum_t)(gextras.StructNative(unsafe.Pointer(a)))
 	_arg1 = (*C.graphene_frustum_t)(gextras.StructNative(unsafe.Pointer(b)))
@@ -1806,7 +1806,7 @@ func (f *Frustum) Planes() [6]Plane {
 	var _planes [6]Plane // out
 
 	{
-		src := &_arg1
+		src := unsafe.Slice(&(_arg1)[0], 6)
 		for i := 0; i < 6; i++ {
 			_planes[i] = *(*Plane)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
 		}
@@ -1934,7 +1934,7 @@ func (f *Frustum) InitFromMatrix(matrix *Matrix) *Frustum {
 func (f *Frustum) IntersectsBox(box *Box) bool {
 	var _arg0 *C.graphene_frustum_t // out
 	var _arg1 *C.graphene_box_t     // out
-	var _cret C._Bool               // in
+	var _cret C.bool                // in
 
 	_arg0 = (*C.graphene_frustum_t)(gextras.StructNative(unsafe.Pointer(f)))
 	_arg1 = (*C.graphene_box_t)(gextras.StructNative(unsafe.Pointer(box)))
@@ -1965,7 +1965,7 @@ func (f *Frustum) IntersectsBox(box *Box) bool {
 func (f *Frustum) IntersectsSphere(sphere *Sphere) bool {
 	var _arg0 *C.graphene_frustum_t // out
 	var _arg1 *C.graphene_sphere_t  // out
-	var _cret C._Bool               // in
+	var _cret C.bool                // in
 
 	_arg0 = (*C.graphene_frustum_t)(gextras.StructNative(unsafe.Pointer(f)))
 	_arg1 = (*C.graphene_sphere_t)(gextras.StructNative(unsafe.Pointer(sphere)))
@@ -2046,7 +2046,7 @@ func (m *Matrix) Decompose() (translate *Vec3, scale *Vec3, rotate *Quaternion, 
 	var _arg3 C.graphene_quaternion_t // in
 	var _arg4 C.graphene_vec3_t       // in
 	var _arg5 C.graphene_vec4_t       // in
-	var _cret C._Bool                 // in
+	var _cret C.bool                  // in
 
 	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 
@@ -2105,7 +2105,7 @@ func (m *Matrix) Determinant() float32 {
 func (a *Matrix) Equal(b *Matrix) bool {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_matrix_t // out
-	var _cret C._Bool              // in
+	var _cret C.bool               // in
 
 	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(a)))
 	_arg1 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(b)))
@@ -2154,7 +2154,7 @@ func (a *Matrix) Equal(b *Matrix) bool {
 func (a *Matrix) EqualFast(b *Matrix) bool {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_matrix_t // out
-	var _cret C._Bool              // in
+	var _cret C.bool               // in
 
 	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(a)))
 	_arg1 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(b)))
@@ -2904,7 +2904,7 @@ func (a *Matrix) Interpolate(b *Matrix, factor float64) *Matrix {
 func (m *Matrix) Inverse() (*Matrix, bool) {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 C.graphene_matrix_t  // in
-	var _cret C._Bool              // in
+	var _cret C.bool               // in
 
 	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 
@@ -2931,7 +2931,7 @@ func (m *Matrix) Inverse() (*Matrix, bool) {
 //     matrix.
 func (m *Matrix) Is2D() bool {
 	var _arg0 *C.graphene_matrix_t // out
-	var _cret C._Bool              // in
+	var _cret C.bool               // in
 
 	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 
@@ -2955,7 +2955,7 @@ func (m *Matrix) Is2D() bool {
 //   - ok: true if the back face of the matrix is visible.
 func (m *Matrix) IsBackfaceVisible() bool {
 	var _arg0 *C.graphene_matrix_t // out
-	var _cret C._Bool              // in
+	var _cret C.bool               // in
 
 	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 
@@ -2979,7 +2979,7 @@ func (m *Matrix) IsBackfaceVisible() bool {
 //   - ok: true if the matrix is the identity matrix.
 func (m *Matrix) IsIdentity() bool {
 	var _arg0 *C.graphene_matrix_t // out
-	var _cret C._Bool              // in
+	var _cret C.bool               // in
 
 	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 
@@ -3002,7 +3002,7 @@ func (m *Matrix) IsIdentity() bool {
 //   - ok: true if the matrix is singular.
 func (m *Matrix) IsSingular() bool {
 	var _arg0 *C.graphene_matrix_t // out
-	var _cret C._Bool              // in
+	var _cret C.bool               // in
 
 	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 
@@ -3064,7 +3064,7 @@ func (a *Matrix) Near(b *Matrix, epsilon float32) bool {
 	var _arg0 *C.graphene_matrix_t // out
 	var _arg1 *C.graphene_matrix_t // out
 	var _arg2 C.float              // out
-	var _cret C._Bool              // in
+	var _cret C.bool               // in
 
 	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(a)))
 	_arg1 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(b)))
@@ -3469,7 +3469,7 @@ func (m *Matrix) To2D() (xx float64, yx float64, xy float64, yy float64, x0 floa
 	var _arg4 C.double             // in
 	var _arg5 C.double             // in
 	var _arg6 C.double             // in
-	var _cret C._Bool              // in
+	var _cret C.bool               // in
 
 	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 
@@ -3934,7 +3934,7 @@ func (m *Matrix) UntransformPoint(p *Point, bounds *Rect) (*Point, bool) {
 	var _arg1 *C.graphene_point_t  // out
 	var _arg2 *C.graphene_rect_t   // out
 	var _arg3 C.graphene_point_t   // in
-	var _cret C._Bool              // in
+	var _cret C.bool               // in
 
 	_arg0 = (*C.graphene_matrix_t)(gextras.StructNative(unsafe.Pointer(m)))
 	_arg1 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(p)))
@@ -4035,7 +4035,7 @@ func (p *Plane) Distance(point *Point3D) float32 {
 func (a *Plane) Equal(b *Plane) bool {
 	var _arg0 *C.graphene_plane_t // out
 	var _arg1 *C.graphene_plane_t // out
-	var _cret C._Bool             // in
+	var _cret C.bool              // in
 
 	_arg0 = (*C.graphene_plane_t)(gextras.StructNative(unsafe.Pointer(a)))
 	_arg1 = (*C.graphene_plane_t)(gextras.StructNative(unsafe.Pointer(b)))
@@ -4466,7 +4466,7 @@ func (a *Point) Distance(b *Point) (dX float32, dY float32, gfloat float32) {
 func (a *Point) Equal(b *Point) bool {
 	var _arg0 *C.graphene_point_t // out
 	var _arg1 *C.graphene_point_t // out
-	var _cret C._Bool             // in
+	var _cret C.bool              // in
 
 	_arg0 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(a)))
 	_arg1 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(b)))
@@ -4623,7 +4623,7 @@ func (a *Point) Near(b *Point, epsilon float32) bool {
 	var _arg0 *C.graphene_point_t // out
 	var _arg1 *C.graphene_point_t // out
 	var _arg2 C.float             // out
-	var _cret C._Bool             // in
+	var _cret C.bool              // in
 
 	_arg0 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(a)))
 	_arg1 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(b)))
@@ -4861,7 +4861,7 @@ func (a *Point3D) Dot(b *Point3D) float32 {
 func (a *Point3D) Equal(b *Point3D) bool {
 	var _arg0 *C.graphene_point3d_t // out
 	var _arg1 *C.graphene_point3d_t // out
-	var _cret C._Bool               // in
+	var _cret C.bool                // in
 
 	_arg0 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(a)))
 	_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(b)))
@@ -5043,7 +5043,7 @@ func (a *Point3D) Near(b *Point3D, epsilon float32) bool {
 	var _arg0 *C.graphene_point3d_t // out
 	var _arg1 *C.graphene_point3d_t // out
 	var _arg2 C.float               // out
-	var _cret C._Bool               // in
+	var _cret C.bool                // in
 
 	_arg0 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(a)))
 	_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(b)))
@@ -5268,7 +5268,7 @@ func (q *Quad) Bounds() *Rect {
 func (q *Quad) Contains(p *Point) bool {
 	var _arg0 *C.graphene_quad_t  // out
 	var _arg1 *C.graphene_point_t // out
-	var _cret C._Bool             // in
+	var _cret C.bool              // in
 
 	_arg0 = (*C.graphene_quad_t)(gextras.StructNative(unsafe.Pointer(q)))
 	_arg1 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(p)))
@@ -5524,7 +5524,7 @@ func (a *Quaternion) Dot(b *Quaternion) float32 {
 func (a *Quaternion) Equal(b *Quaternion) bool {
 	var _arg0 *C.graphene_quaternion_t // out
 	var _arg1 *C.graphene_quaternion_t // out
-	var _cret C._Bool                  // in
+	var _cret C.bool                   // in
 
 	_arg0 = (*C.graphene_quaternion_t)(gextras.StructNative(unsafe.Pointer(a)))
 	_arg1 = (*C.graphene_quaternion_t)(gextras.StructNative(unsafe.Pointer(b)))
@@ -6150,7 +6150,7 @@ func NewRayAlloc() *Ray {
 func (a *Ray) Equal(b *Ray) bool {
 	var _arg0 *C.graphene_ray_t // out
 	var _arg1 *C.graphene_ray_t // out
-	var _cret C._Bool           // in
+	var _cret C.bool            // in
 
 	_arg0 = (*C.graphene_ray_t)(gextras.StructNative(unsafe.Pointer(a)))
 	_arg1 = (*C.graphene_ray_t)(gextras.StructNative(unsafe.Pointer(b)))
@@ -6547,7 +6547,7 @@ func (r *Ray) IntersectTriangle(t *Triangle) (float32, RayIntersectionKind) {
 func (r *Ray) IntersectsBox(b *Box) bool {
 	var _arg0 *C.graphene_ray_t // out
 	var _arg1 *C.graphene_box_t // out
-	var _cret C._Bool           // in
+	var _cret C.bool            // in
 
 	_arg0 = (*C.graphene_ray_t)(gextras.StructNative(unsafe.Pointer(r)))
 	_arg1 = (*C.graphene_box_t)(gextras.StructNative(unsafe.Pointer(b)))
@@ -6580,7 +6580,7 @@ func (r *Ray) IntersectsBox(b *Box) bool {
 func (r *Ray) IntersectsSphere(s *Sphere) bool {
 	var _arg0 *C.graphene_ray_t    // out
 	var _arg1 *C.graphene_sphere_t // out
-	var _cret C._Bool              // in
+	var _cret C.bool               // in
 
 	_arg0 = (*C.graphene_ray_t)(gextras.StructNative(unsafe.Pointer(r)))
 	_arg1 = (*C.graphene_sphere_t)(gextras.StructNative(unsafe.Pointer(s)))
@@ -6613,7 +6613,7 @@ func (r *Ray) IntersectsSphere(s *Sphere) bool {
 func (r *Ray) IntersectsTriangle(t *Triangle) bool {
 	var _arg0 *C.graphene_ray_t      // out
 	var _arg1 *C.graphene_triangle_t // out
-	var _cret C._Bool                // in
+	var _cret C.bool                 // in
 
 	_arg0 = (*C.graphene_ray_t)(gextras.StructNative(unsafe.Pointer(r)))
 	_arg1 = (*C.graphene_triangle_t)(gextras.StructNative(unsafe.Pointer(t)))
@@ -6688,7 +6688,7 @@ func (r *Rect) Size() *Size {
 func (r *Rect) ContainsPoint(p *Point) bool {
 	var _arg0 *C.graphene_rect_t  // out
 	var _arg1 *C.graphene_point_t // out
-	var _cret C._Bool             // in
+	var _cret C.bool              // in
 
 	_arg0 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(r)))
 	_arg1 = (*C.graphene_point_t)(gextras.StructNative(unsafe.Pointer(p)))
@@ -6719,7 +6719,7 @@ func (r *Rect) ContainsPoint(p *Point) bool {
 func (a *Rect) ContainsRect(b *Rect) bool {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 *C.graphene_rect_t // out
-	var _cret C._Bool            // in
+	var _cret C.bool             // in
 
 	_arg0 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(a)))
 	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(b)))
@@ -6749,7 +6749,7 @@ func (a *Rect) ContainsRect(b *Rect) bool {
 func (a *Rect) Equal(b *Rect) bool {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 *C.graphene_rect_t // out
-	var _cret C._Bool            // in
+	var _cret C.bool             // in
 
 	_arg0 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(a)))
 	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(b)))
@@ -6963,7 +6963,7 @@ func (r *Rect) Vertices() [4]Vec2 {
 	var _vertices [4]Vec2 // out
 
 	{
-		src := &_arg1
+		src := unsafe.Slice(&(_arg1)[0], 4)
 		for i := 0; i < 4; i++ {
 			_vertices[i] = *(*Vec2)(gextras.NewStructNative(unsafe.Pointer((&src[i]))))
 		}
@@ -7251,7 +7251,7 @@ func (a *Rect) Intersection(b *Rect) (*Rect, bool) {
 	var _arg0 *C.graphene_rect_t // out
 	var _arg1 *C.graphene_rect_t // out
 	var _arg2 C.graphene_rect_t  // in
-	var _cret C._Bool            // in
+	var _cret C.bool             // in
 
 	_arg0 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(a)))
 	_arg1 = (*C.graphene_rect_t)(gextras.StructNative(unsafe.Pointer(b)))
@@ -7683,7 +7683,7 @@ func (s *Size) SetHeight(height float32) {
 func (a *Size) Equal(b *Size) bool {
 	var _arg0 *C.graphene_size_t // out
 	var _arg1 *C.graphene_size_t // out
-	var _cret C._Bool            // in
+	var _cret C.bool             // in
 
 	_arg0 = (*C.graphene_size_t)(gextras.StructNative(unsafe.Pointer(a)))
 	_arg1 = (*C.graphene_size_t)(gextras.StructNative(unsafe.Pointer(b)))
@@ -7890,7 +7890,7 @@ func NewSphereAlloc() *Sphere {
 func (s *Sphere) ContainsPoint(point *Point3D) bool {
 	var _arg0 *C.graphene_sphere_t  // out
 	var _arg1 *C.graphene_point3d_t // out
-	var _cret C._Bool               // in
+	var _cret C.bool                // in
 
 	_arg0 = (*C.graphene_sphere_t)(gextras.StructNative(unsafe.Pointer(s)))
 	_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(point)))
@@ -7949,7 +7949,7 @@ func (s *Sphere) Distance(point *Point3D) float32 {
 func (a *Sphere) Equal(b *Sphere) bool {
 	var _arg0 *C.graphene_sphere_t // out
 	var _arg1 *C.graphene_sphere_t // out
-	var _cret C._Bool              // in
+	var _cret C.bool               // in
 
 	_arg0 = (*C.graphene_sphere_t)(gextras.StructNative(unsafe.Pointer(a)))
 	_arg1 = (*C.graphene_sphere_t)(gextras.StructNative(unsafe.Pointer(b)))
@@ -8164,7 +8164,7 @@ func (s *Sphere) InitFromVectors(vectors []Vec3, center *Point3D) *Sphere {
 //   - ok: true if the sphere is empty.
 func (s *Sphere) IsEmpty() bool {
 	var _arg0 *C.graphene_sphere_t // out
-	var _cret C._Bool              // in
+	var _cret C.bool               // in
 
 	_arg0 = (*C.graphene_sphere_t)(gextras.StructNative(unsafe.Pointer(s)))
 
@@ -8257,7 +8257,7 @@ func NewTriangleAlloc() *Triangle {
 func (t *Triangle) ContainsPoint(p *Point3D) bool {
 	var _arg0 *C.graphene_triangle_t // out
 	var _arg1 *C.graphene_point3d_t  // out
-	var _cret C._Bool                // in
+	var _cret C.bool                 // in
 
 	_arg0 = (*C.graphene_triangle_t)(gextras.StructNative(unsafe.Pointer(t)))
 	_arg1 = (*C.graphene_point3d_t)(gextras.StructNative(unsafe.Pointer(p)))
@@ -8287,7 +8287,7 @@ func (t *Triangle) ContainsPoint(p *Point3D) bool {
 func (a *Triangle) Equal(b *Triangle) bool {
 	var _arg0 *C.graphene_triangle_t // out
 	var _arg1 *C.graphene_triangle_t // out
-	var _cret C._Bool                // in
+	var _cret C.bool                 // in
 
 	_arg0 = (*C.graphene_triangle_t)(gextras.StructNative(unsafe.Pointer(a)))
 	_arg1 = (*C.graphene_triangle_t)(gextras.StructNative(unsafe.Pointer(b)))
@@ -8356,7 +8356,7 @@ func (t *Triangle) Barycoords(p *Point3D) (*Vec2, bool) {
 	var _arg0 *C.graphene_triangle_t // out
 	var _arg1 *C.graphene_point3d_t  // out
 	var _arg2 C.graphene_vec2_t      // in
-	var _cret C._Bool                // in
+	var _cret C.bool                 // in
 
 	_arg0 = (*C.graphene_triangle_t)(gextras.StructNative(unsafe.Pointer(t)))
 	if p != nil {
@@ -8529,7 +8529,7 @@ func (t *Triangle) Uv(p *Point3D, uvA *Vec2, uvB *Vec2, uvC *Vec2) (*Vec2, bool)
 	var _arg3 *C.graphene_vec2_t     // out
 	var _arg4 *C.graphene_vec2_t     // out
 	var _arg5 C.graphene_vec2_t      // in
-	var _cret C._Bool                // in
+	var _cret C.bool                 // in
 
 	_arg0 = (*C.graphene_triangle_t)(gextras.StructNative(unsafe.Pointer(t)))
 	if p != nil {
@@ -8848,7 +8848,7 @@ func (a *Vec2) Dot(b *Vec2) float32 {
 func (v1 *Vec2) Equal(v2 *Vec2) bool {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
-	var _cret C._Bool            // in
+	var _cret C.bool             // in
 
 	_arg0 = (*C.graphene_vec2_t)(gextras.StructNative(unsafe.Pointer(v1)))
 	_arg1 = (*C.graphene_vec2_t)(gextras.StructNative(unsafe.Pointer(v2)))
@@ -9153,7 +9153,7 @@ func (v1 *Vec2) Near(v2 *Vec2, epsilon float32) bool {
 	var _arg0 *C.graphene_vec2_t // out
 	var _arg1 *C.graphene_vec2_t // out
 	var _arg2 C.float            // out
-	var _cret C._Bool            // in
+	var _cret C.bool             // in
 
 	_arg0 = (*C.graphene_vec2_t)(gextras.StructNative(unsafe.Pointer(v1)))
 	_arg1 = (*C.graphene_vec2_t)(gextras.StructNative(unsafe.Pointer(v2)))
@@ -9530,7 +9530,7 @@ func (a *Vec3) Dot(b *Vec3) float32 {
 func (v1 *Vec3) Equal(v2 *Vec3) bool {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
-	var _cret C._Bool            // in
+	var _cret C.bool             // in
 
 	_arg0 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(v1)))
 	_arg1 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(v2)))
@@ -9977,7 +9977,7 @@ func (v1 *Vec3) Near(v2 *Vec3, epsilon float32) bool {
 	var _arg0 *C.graphene_vec3_t // out
 	var _arg1 *C.graphene_vec3_t // out
 	var _arg2 C.float            // out
-	var _cret C._Bool            // in
+	var _cret C.bool             // in
 
 	_arg0 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(v1)))
 	_arg1 = (*C.graphene_vec3_t)(gextras.StructNative(unsafe.Pointer(v2)))
@@ -10347,7 +10347,7 @@ func (a *Vec4) Dot(b *Vec4) float32 {
 func (v1 *Vec4) Equal(v2 *Vec4) bool {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 *C.graphene_vec4_t // out
-	var _cret C._Bool            // in
+	var _cret C.bool             // in
 
 	_arg0 = (*C.graphene_vec4_t)(gextras.StructNative(unsafe.Pointer(v1)))
 	_arg1 = (*C.graphene_vec4_t)(gextras.StructNative(unsafe.Pointer(v2)))
@@ -10817,7 +10817,7 @@ func (v1 *Vec4) Near(v2 *Vec4, epsilon float32) bool {
 	var _arg0 *C.graphene_vec4_t // out
 	var _arg1 *C.graphene_vec4_t // out
 	var _arg2 C.float            // out
-	var _cret C._Bool            // in
+	var _cret C.bool             // in
 
 	_arg0 = (*C.graphene_vec4_t)(gextras.StructNative(unsafe.Pointer(v1)))
 	_arg1 = (*C.graphene_vec4_t)(gextras.StructNative(unsafe.Pointer(v2)))

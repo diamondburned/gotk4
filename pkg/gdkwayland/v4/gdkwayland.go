@@ -190,7 +190,7 @@ func (display *WaylandDisplay) StartupNotificationID() string {
 	return _utf8
 }
 
-// QueryRegistry returns TRUE if the interface was found in the display
+// QueryRegistry returns true if the interface was found in the display
 // wl_registry.global handler.
 //
 // The function takes the following parameters:
@@ -199,7 +199,7 @@ func (display *WaylandDisplay) StartupNotificationID() string {
 //
 // The function returns the following values:
 //
-//   - ok: TRUE if the global is offered by the compositor.
+//   - ok: true if the global is offered by the compositor.
 func (display *WaylandDisplay) QueryRegistry(global string) bool {
 	var _arg0 *C.GdkDisplay // out
 	var _arg1 *C.char       // out
@@ -223,6 +223,9 @@ func (display *WaylandDisplay) QueryRegistry(global string) bool {
 }
 
 // SetCursorTheme sets the cursor theme for the given display.
+//
+// Deprecated: Use the cursor-related properties of GtkSettings
+// (../gtk4/class.Settings.html) to set the cursor theme.
 //
 // The function takes the following parameters:
 //
@@ -407,6 +410,16 @@ func wrapWaylandSurface(obj *coreglib.Object) *WaylandSurface {
 
 func marshalWaylandSurface(p uintptr) (interface{}, error) {
 	return wrapWaylandSurface(coreglib.ValueFromNative(unsafe.Pointer(p)).Object()), nil
+}
+
+// ForceNextCommit forces next commit.
+func (surface *WaylandSurface) ForceNextCommit() {
+	var _arg0 *C.GdkSurface // out
+
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(coreglib.InternObject(surface).Native()))
+
+	C.gdk_wayland_surface_force_next_commit(_arg0)
+	runtime.KeepAlive(surface)
 }
 
 // WaylandToplevel: wayland implementation of GdkToplevel.

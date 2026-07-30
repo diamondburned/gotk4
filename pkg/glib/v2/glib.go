@@ -103,10 +103,19 @@ func init() {
 	})
 }
 
+// ALLOCATOR_LIST: deprecated: since version 2.10.
 const ALLOCATOR_LIST = 1
+
+// ALLOCATOR_NODE: deprecated: since version 2.10.
 const ALLOCATOR_NODE = 3
+
+// ALLOCATOR_SLIST: deprecated: since version 2.10.
 const ALLOCATOR_SLIST = 2
+
+// ALLOC_AND_FREE: deprecated: since version 2.10.
 const ALLOC_AND_FREE = 2
+
+// ALLOC_ONLY: deprecated: since version 2.10.
 const ALLOC_ONLY = 1
 const ANALYZER_ANALYZING = 1
 
@@ -139,6 +148,9 @@ const ASCII_DTOSTR_BUF_SIZE = 39
 //	  .address = "Default address",
 //	};.
 const ATOMIC_REF_COUNT_INIT = 1
+
+// BIG_ENDIAN specifies one of the possible types of byte order. See
+// G_BYTE_ORDER.
 const BIG_ENDIAN = 4321
 
 // CSET_A_2_Z: set of uppercase ASCII alphabet characters. Used for specifying
@@ -152,6 +164,15 @@ const CSET_DIGITS = "0123456789"
 // CSET_a_2_z: set of lowercase ASCII alphabet characters. Used for specifying
 // valid identifier characters in Config.
 const CSET_a_2_z = "abcdefghijklmnopqrstuvwxyz"
+
+// C_STD_VERSION: c standard version the code is compiling against, it's
+// normally defined with the same value of __STDC_VERSION__ for C standard
+// compatible compilers, while it uses the lowest standard version in pure MSVC,
+// given that in such compiler the definition depends on a compilation flag.
+//
+// This is granted to be undefined when compiling with a C++ compiler.
+//
+// See also: G_C_STD_CHECK_VERSION and G_CXX_STD_VERSION.
 const C_STD_VERSION = 199000
 
 // DATALIST_FLAGS_MASK: bitmask that restricts the possible flags
@@ -167,8 +188,18 @@ const DATE_BAD_JULIAN = 0
 
 // DATE_BAD_YEAR represents an invalid year.
 const DATE_BAD_YEAR = 0
+
+// DIR_SEPARATOR: directory separator character.
+//
+// This is '/' on UNIX machines and '\' under Windows.
 const DIR_SEPARATOR = 47
+
+// DIR_SEPARATOR_S: directory separator as a string.
+//
+// This is "/" on UNIX machines and "\" under Windows.
 const DIR_SEPARATOR_S = "/"
+
+// E: base of natural logarithms.
 const E = 2.718282
 const GINT16_FORMAT = "hi"
 const GINT16_MODIFIER = "h"
@@ -200,6 +231,9 @@ const GUINT64_FORMAT = "lu"
 const GUINTPTR_FORMAT = "lu"
 const HAVE_GINT64 = 1
 const HAVE_GNUC_VARARGS = 1
+
+// HAVE_GNUC_VISIBILITY: defined to 1 if gcc-style visibility handling is
+// supported.
 const HAVE_GNUC_VISIBILITY = 1
 const HAVE_GROWING_STACK = 0
 const HAVE_ISO_VARARGS = 1
@@ -208,135 +242,159 @@ const HAVE_ISO_VARARGS = 1
 // internal use be the #GHook implementation, i.e. 1 << G_HOOK_FLAG_USER_SHIFT
 // is the first bit which can be used for application-defined flags.
 const HOOK_FLAG_USER_SHIFT = 4
+
+// IEEE754_DOUBLE_BIAS bias by which exponents in double-precision floats are
+// offset.
 const IEEE754_DOUBLE_BIAS = 1023
+
+// IEEE754_FLOAT_BIAS bias by which exponents in single-precision floats are
+// offset.
 const IEEE754_FLOAT_BIAS = 127
 
 // KEY_FILE_DESKTOP_GROUP: name of the main group of a desktop
 // entry file, as defined in the Desktop Entry Specification
-// (http://freedesktop.org/Standards/desktop-entry-spec). Consult the
-// specification for more details about the meanings of the keys below.
+// (https://specifications.freedesktop.org/desktop-entry-spec/latest/).
+//
+// Consult the specification for more details about the meanings of the keys
+// below.
 const KEY_FILE_DESKTOP_GROUP = "Desktop Entry"
 
-// KEY_FILE_DESKTOP_KEY_ACTIONS: key under G_KEY_FILE_DESKTOP_GROUP, whose value
+// KEY_FILE_DESKTOP_KEY_ACTIONS: key under glib.KEYFILEDESKTOPGROUP, whose value
 // is a string list giving the available application actions.
 const KEY_FILE_DESKTOP_KEY_ACTIONS = "Actions"
 
-// KEY_FILE_DESKTOP_KEY_CATEGORIES: key under G_KEY_FILE_DESKTOP_GROUP, whose
+// KEY_FILE_DESKTOP_KEY_CATEGORIES: key under glib.KEYFILEDESKTOPGROUP, whose
 // value is a list of strings giving the categories in which the desktop entry
 // should be shown in a menu.
 const KEY_FILE_DESKTOP_KEY_CATEGORIES = "Categories"
 
-// KEY_FILE_DESKTOP_KEY_COMMENT: key under G_KEY_FILE_DESKTOP_GROUP, whose value
+// KEY_FILE_DESKTOP_KEY_COMMENT: key under glib.KEYFILEDESKTOPGROUP, whose value
 // is a localized string giving the tooltip for the desktop entry.
 const KEY_FILE_DESKTOP_KEY_COMMENT = "Comment"
 
-// KEY_FILE_DESKTOP_KEY_DBUS_ACTIVATABLE: key under G_KEY_FILE_DESKTOP_GROUP,
+// KEY_FILE_DESKTOP_KEY_DBUS_ACTIVATABLE: key under glib.KEYFILEDESKTOPGROUP,
 // whose value is a boolean set to true if the application is D-Bus activatable.
 const KEY_FILE_DESKTOP_KEY_DBUS_ACTIVATABLE = "DBusActivatable"
 
-// KEY_FILE_DESKTOP_KEY_EXEC: key under G_KEY_FILE_DESKTOP_GROUP, whose value
-// is a string giving the command line to execute. It is only valid for desktop
-// entries with the Application type.
+// KEY_FILE_DESKTOP_KEY_EXEC: key under glib.KEYFILEDESKTOPGROUP, whose value is
+// a string giving the command line to execute.
+//
+// It is only valid for desktop entries with the Application type.
 const KEY_FILE_DESKTOP_KEY_EXEC = "Exec"
 
-// KEY_FILE_DESKTOP_KEY_GENERIC_NAME: key under G_KEY_FILE_DESKTOP_GROUP, whose
+// KEY_FILE_DESKTOP_KEY_GENERIC_NAME: key under glib.KEYFILEDESKTOPGROUP, whose
 // value is a localized string giving the generic name of the desktop entry.
 const KEY_FILE_DESKTOP_KEY_GENERIC_NAME = "GenericName"
 
-// KEY_FILE_DESKTOP_KEY_HIDDEN: key under G_KEY_FILE_DESKTOP_GROUP, whose value
+// KEY_FILE_DESKTOP_KEY_HIDDEN: key under glib.KEYFILEDESKTOPGROUP, whose value
 // is a boolean stating whether the desktop entry has been deleted by the user.
 const KEY_FILE_DESKTOP_KEY_HIDDEN = "Hidden"
 
-// KEY_FILE_DESKTOP_KEY_ICON: key under G_KEY_FILE_DESKTOP_GROUP, whose value
+// KEY_FILE_DESKTOP_KEY_ICON: key under glib.KEYFILEDESKTOPGROUP, whose value
 // is a localized string giving the name of the icon to be displayed for the
 // desktop entry.
 const KEY_FILE_DESKTOP_KEY_ICON = "Icon"
 
-// KEY_FILE_DESKTOP_KEY_MIME_TYPE: key under G_KEY_FILE_DESKTOP_GROUP, whose
+// KEY_FILE_DESKTOP_KEY_MIME_TYPE: key under glib.KEYFILEDESKTOPGROUP, whose
 // value is a list of strings giving the MIME types supported by this desktop
 // entry.
 const KEY_FILE_DESKTOP_KEY_MIME_TYPE = "MimeType"
 
-// KEY_FILE_DESKTOP_KEY_NAME: key under G_KEY_FILE_DESKTOP_GROUP, whose value is
+// KEY_FILE_DESKTOP_KEY_NAME: key under glib.KEYFILEDESKTOPGROUP, whose value is
 // a localized string giving the specific name of the desktop entry.
 const KEY_FILE_DESKTOP_KEY_NAME = "Name"
 
-// KEY_FILE_DESKTOP_KEY_NOT_SHOW_IN: key under G_KEY_FILE_DESKTOP_GROUP,
+// KEY_FILE_DESKTOP_KEY_NOT_SHOW_IN: key under glib.KEYFILEDESKTOPGROUP,
 // whose value is a list of strings identifying the environments that should not
 // display the desktop entry.
 const KEY_FILE_DESKTOP_KEY_NOT_SHOW_IN = "NotShowIn"
 
-// KEY_FILE_DESKTOP_KEY_NO_DISPLAY: key under G_KEY_FILE_DESKTOP_GROUP,
+// KEY_FILE_DESKTOP_KEY_NO_DISPLAY: key under glib.KEYFILEDESKTOPGROUP,
 // whose value is a boolean stating whether the desktop entry should be shown in
 // menus.
 const KEY_FILE_DESKTOP_KEY_NO_DISPLAY = "NoDisplay"
 
-// KEY_FILE_DESKTOP_KEY_ONLY_SHOW_IN: key under G_KEY_FILE_DESKTOP_GROUP,
+// KEY_FILE_DESKTOP_KEY_ONLY_SHOW_IN: key under glib.KEYFILEDESKTOPGROUP,
 // whose value is a list of strings identifying the environments that should
 // display the desktop entry.
 const KEY_FILE_DESKTOP_KEY_ONLY_SHOW_IN = "OnlyShowIn"
 
-// KEY_FILE_DESKTOP_KEY_PATH: key under G_KEY_FILE_DESKTOP_GROUP, whose value is
-// a string containing the working directory to run the program in. It is only
-// valid for desktop entries with the Application type.
+// KEY_FILE_DESKTOP_KEY_PATH: key under glib.KEYFILEDESKTOPGROUP, whose value is
+// a string containing the working directory to run the program in.
+//
+// It is only valid for desktop entries with the Application type.
 const KEY_FILE_DESKTOP_KEY_PATH = "Path"
 
-// KEY_FILE_DESKTOP_KEY_STARTUP_NOTIFY: key under G_KEY_FILE_DESKTOP_GROUP,
+// KEY_FILE_DESKTOP_KEY_STARTUP_NOTIFY: key under glib.KEYFILEDESKTOPGROUP,
 // whose value is a boolean stating whether the application
 // supports the Startup Notification Protocol Specification
-// (http://www.freedesktop.org/Standards/startup-notification-spec).
+// (https://specifications.freedesktop.org/startup-notification-spec/latest/).
 const KEY_FILE_DESKTOP_KEY_STARTUP_NOTIFY = "StartupNotify"
 
-// KEY_FILE_DESKTOP_KEY_STARTUP_WM_CLASS: key under G_KEY_FILE_DESKTOP_GROUP,
-// whose value is string identifying the WM class or name hint of a window
-// that the application will create, which can be used to emulate Startup
-// Notification with older applications.
+// KEY_FILE_DESKTOP_KEY_STARTUP_WM_CLASS: key under
+// glib.KEYFILEDESKTOPGROUP, whose value is string identifying
+// the WM class or name hint of a window that the application
+// will create, which can be used to emulate Startup Notification
+// (https://specifications.freedesktop.org/startup-notification-spec/latest/)
+// with older applications.
 const KEY_FILE_DESKTOP_KEY_STARTUP_WM_CLASS = "StartupWMClass"
 
-// KEY_FILE_DESKTOP_KEY_TERMINAL: key under G_KEY_FILE_DESKTOP_GROUP, whose
+// KEY_FILE_DESKTOP_KEY_TERMINAL: key under glib.KEYFILEDESKTOPGROUP, whose
 // value is a boolean stating whether the program should be run in a terminal
 // window.
 //
 // It is only valid for desktop entries with the Application type.
 const KEY_FILE_DESKTOP_KEY_TERMINAL = "Terminal"
 
-// KEY_FILE_DESKTOP_KEY_TRY_EXEC: key under G_KEY_FILE_DESKTOP_GROUP, whose
+// KEY_FILE_DESKTOP_KEY_TRY_EXEC: key under glib.KEYFILEDESKTOPGROUP, whose
 // value is a string giving the file name of a binary on disk used to determine
-// if the program is actually installed. It is only valid for desktop entries
-// with the Application type.
+// if the program is actually installed.
+//
+// It is only valid for desktop entries with the Application type.
 const KEY_FILE_DESKTOP_KEY_TRY_EXEC = "TryExec"
 
-// KEY_FILE_DESKTOP_KEY_TYPE: key under G_KEY_FILE_DESKTOP_GROUP, whose value is
+// KEY_FILE_DESKTOP_KEY_TYPE: key under glib.KEYFILEDESKTOPGROUP, whose value is
 // a string giving the type of the desktop entry.
 //
-// Usually G_KEY_FILE_DESKTOP_TYPE_APPLICATION, G_KEY_FILE_DESKTOP_TYPE_LINK,
-// or G_KEY_FILE_DESKTOP_TYPE_DIRECTORY.
+// Usually glib.KEYFILEDESKTOPTYPEAPPLICATION, glib.KEYFILEDESKTOPTYPELINK,
+// or glib.KEYFILEDESKTOPTYPEDIRECTORY.
 const KEY_FILE_DESKTOP_KEY_TYPE = "Type"
 
-// KEY_FILE_DESKTOP_KEY_URL: key under G_KEY_FILE_DESKTOP_GROUP, whose value is
-// a string giving the URL to access. It is only valid for desktop entries with
-// the Link type.
+// KEY_FILE_DESKTOP_KEY_URL: key under glib.KEYFILEDESKTOPGROUP, whose value is
+// a string giving the URL to access.
+//
+// It is only valid for desktop entries with the Link type.
 const KEY_FILE_DESKTOP_KEY_URL = "URL"
 
-// KEY_FILE_DESKTOP_KEY_VERSION: key under G_KEY_FILE_DESKTOP_GROUP, whose value
+// KEY_FILE_DESKTOP_KEY_VERSION: key under glib.KEYFILEDESKTOPGROUP, whose value
 // is a string giving the version of the Desktop Entry Specification used for
 // the desktop entry file.
 const KEY_FILE_DESKTOP_KEY_VERSION = "Version"
 
-// KEY_FILE_DESKTOP_TYPE_APPLICATION: value of the G_KEY_FILE_DESKTOP_KEY_TYPE,
+// KEY_FILE_DESKTOP_TYPE_APPLICATION: value of the glib.KEYFILEDESKTOPKEYTYPE,
 // key for desktop entries representing applications.
 const KEY_FILE_DESKTOP_TYPE_APPLICATION = "Application"
 
-// KEY_FILE_DESKTOP_TYPE_DIRECTORY: value of the G_KEY_FILE_DESKTOP_KEY_TYPE,
+// KEY_FILE_DESKTOP_TYPE_DIRECTORY: value of the glib.KEYFILEDESKTOPKEYTYPE,
 // key for desktop entries representing directories.
 const KEY_FILE_DESKTOP_TYPE_DIRECTORY = "Directory"
 
-// KEY_FILE_DESKTOP_TYPE_LINK: value of the G_KEY_FILE_DESKTOP_KEY_TYPE,
-// key for desktop entries representing links to documents.
+// KEY_FILE_DESKTOP_TYPE_LINK: value of the glib.KEYFILEDESKTOPKEYTYPE, key for
+// desktop entries representing links to documents.
 const KEY_FILE_DESKTOP_TYPE_LINK = "Link"
+
+// LITTLE_ENDIAN specifies one of the possible types of byte order. See
+// G_BYTE_ORDER.
 const LITTLE_ENDIAN = 1234
+
+// LN10: natural logarithm of 10.
 const LN10 = 2.302585
+
+// LN2: natural logarithm of 2.
 const LN2 = 0.693147
+
+// LOG_2_BASE_10: multiplying the base 2 exponent by this number yields the base
+// 10 exponent.
 const LOG_2_BASE_10 = 0.301030
 
 // LOG_DOMAIN defines the log domain. See Log Domains (#log-domains).
@@ -389,7 +447,7 @@ const MAXUINT8 = 255
 //
 // Like #gtk_micro_version, but from the headers used at application compile
 // time, rather than from the library linked against at application run time.
-const MICRO_VERSION = 2
+const MICRO_VERSION = 1
 
 // MININT16: minimum value which can be held in a #gint16.
 const MININT16 = -32768
@@ -407,8 +465,12 @@ const MININT8 = -128
 //
 // Like #gtk_minor_version, but from the headers used at application compile
 // time, rather than from the library linked against at application run time.
-const MINOR_VERSION = 80
+const MINOR_VERSION = 88
 const MODULE_SUFFIX = "so"
+
+// NSEC_PER_SEC: number of nanoseconds in one second (1 billion). This macro is
+// provided for code readability.
+const NSEC_PER_SEC = 1000000000
 
 // OPTION_REMAINING: if a long option in the main group has this name,
 // it is not treated as a regular option. Instead it collects all
@@ -418,13 +480,22 @@ const MODULE_SUFFIX = "so"
 //
 //	Using G_OPTION_REMAINING instead of simply scanning argv for leftover arguments has the advantage that GOption takes care of necessary encoding conversions for strings or filenames.
 const OPTION_REMAINING = ""
+
+// PDP_ENDIAN specifies one of the possible types of byte order (currently
+// unused). See G_BYTE_ORDER.
 const PDP_ENDIAN = 3412
+
+// PI: value of pi (ratio of circle's circumference to its diameter).
 const PI = 3.141593
 
 // PID_FORMAT: format specifier that can be used in printf()-style format
 // strings when printing a #GPid.
 const PID_FORMAT = "i"
+
+// PI_2: pi divided by 2.
 const PI_2 = 1.570796
+
+// PI_4: pi divided by 4.
 const PI_4 = 0.785398
 
 // POLLFD_FORMAT: format specifier that can be used in printf()-style format
@@ -434,12 +505,12 @@ const POLLFD_FORMAT = "%d"
 // PRIORITY_DEFAULT: use this for default priority event sources.
 //
 // In GLib this priority is used when adding timeout functions with
-// g_timeout_add(). In GDK this priority is used for events from the X server.
+// glib.TimeoutAdd(). In GDK this priority is used for events from the X server.
 const PRIORITY_DEFAULT = 0
 
 // PRIORITY_DEFAULT_IDLE: use this for default priority idle functions.
 //
-// In GLib this priority is used when adding idle functions with g_idle_add().
+// In GLib this priority is used when adding idle functions with glib.IdleAdd().
 const PRIORITY_DEFAULT_IDLE = 200
 
 // PRIORITY_HIGH: use this for high priority event sources.
@@ -477,20 +548,28 @@ const PRIORITY_LOW = 300
 //	  .address = "Default address",
 //	};.
 const REF_COUNT_INIT = -1
+
+// SEARCHPATH_SEPARATOR: search path separator character. This is ':' on UNIX
+// machines and ';' under Windows.
 const SEARCHPATH_SEPARATOR = 58
+
+// SEARCHPATH_SEPARATOR_S: search path separator as a string. This is ":" on
+// UNIX machines and ";" under Windows.
 const SEARCHPATH_SEPARATOR_S = ":"
 const SIZEOF_LONG = 8
 const SIZEOF_SIZE_T = 8
 const SIZEOF_SSIZE_T = 8
 const SIZEOF_VOID_P = 8
 
-// SOURCE_CONTINUE: use this macro as the return value of a Func to leave the
-// #GSource in the main loop.
+// SOURCE_CONTINUE: use this macro as the return value of a glib.SourceFunc to
+// leave the glib.Source in the main loop.
 const SOURCE_CONTINUE = true
 
-// SOURCE_REMOVE: use this macro as the return value of a Func to remove the
-// #GSource from the main loop.
+// SOURCE_REMOVE: use this macro as the return value of a glib.SourceFunc to
+// remove the glib.Source from the main loop.
 const SOURCE_REMOVE = false
+
+// SQRT2: square root of two.
 const SQRT2 = 1.414214
 
 // STR_DELIMITERS: standard delimiters, used in glib.Strdelimit().
@@ -502,31 +581,47 @@ const SYSDEF_MSG_DONTROUTE = 4
 const SYSDEF_MSG_OOB = 1
 const SYSDEF_MSG_PEEK = 2
 
-// TEST_OPTION_ISOLATE_DIRS creates a unique temporary directory for each
-// unit test and uses g_set_user_dirs() to set XDG directories to point into
-// subdirectories of it for the duration of the unit test. The directory
-// tree is cleaned up after the test finishes successfully. Note that this
-// doesn’t take effect until g_test_run() is called, so calls to (for example)
-// g_get_user_home_dir() will return the system-wide value when made in a test
-// program’s main() function.
+// TEST_OPTION_ISOLATE_DIRS: value that can be passed as an option to
+// glib.TestInit().
+//
+// Creates a unique temporary directory for each unit test and uses sets XDG
+// directories to point into subdirectories of it for the duration of the unit
+// test. The directory tree is cleaned up after the test finishes successfully.
+//
+// Note that this doesn’t take effect until glib.TestRun() is called, so calls
+// to (for example) glib.GetHomeDir() will return the system-wide value when
+// made in a test program’s main() function.
 //
 // The following functions will return subdirectories of the temporary directory
 // when this option is used. The specific subdirectory paths in use are not
 // guaranteed to be stable API — always use a getter function to retrieve them.
 //
-//   - g_get_home_dir()
-//   - g_get_user_cache_dir()
-//   - g_get_system_config_dirs()
-//   - g_get_user_config_dir()
-//   - g_get_system_data_dirs()
-//   - g_get_user_data_dir()
-//   - g_get_user_state_dir()
-//   - g_get_user_runtime_dir()
+//   - glib.GetHomeDir()
+//   - glib.GetUserCacheDir()
+//   - glib.GetSystemConfigDirs()
+//   - glib.GetUserConfigDir()
+//   - glib.GetSystemDataDirs()
+//   - glib.GetUserDataDir()
+//   - glib.GetUserStateDir()
+//   - glib.GetUserRuntimeDir()
 //
 // The subdirectories may not be created by the test harness; as with normal
-// calls to functions like g_get_user_cache_dir(), the caller must be prepared
+// calls to functions like glib.GetUserCacheDir(), the caller must be prepared
 // to create the directory if it doesn’t exist.
 const TEST_OPTION_ISOLATE_DIRS = "isolate_dirs"
+
+// TEST_OPTION_NONFATAL_ASSERTIONS: value that can be passed as an option to
+// glib.TestInit().
+//
+// If this option is given, assertions will not abort the process, but call
+// glib.TestFail(). Equivalent to glib.TestSetNonfatalAssertions().
+const TEST_OPTION_NONFATAL_ASSERTIONS = "nonfatal-assertions"
+
+// TEST_OPTION_NO_PRGNAME: value that can be passed as an option to
+// glib.TestInit().
+//
+// If this option is given, glib.TestInit() will not call glib.SetPrgname().
+const TEST_OPTION_NO_PRGNAME = "no_g_set_prgname"
 
 // TIME_SPAN_DAY evaluates to a time span of one day.
 const TIME_SPAN_DAY = 86400000000
@@ -576,6 +671,8 @@ const USEC_PER_SEC = 1000000
 const VERSION_MIN_REQUIRED = 2
 const WIN32_MSG_HANDLE = 19981206
 const macro__has_attribute___noreturn__ = 0
+const macro__has_attribute_ifunc = 0
+const macro__has_attribute_no_sanitize_address = 0
 
 // Quark is a non-zero integer which uniquely identifies a particular string.
 //
@@ -1890,21 +1987,34 @@ func (t TokenType) String() string {
 }
 
 // TraverseType specifies the type of traversal performed by g_tree_traverse(),
-// g_node_traverse() and g_node_find(). The different orders are illustrated
-// here:
+// g_node_traverse() and g_node_find().
 //
-// - In order: A, B, C, D, E, F, G, H, I ! (Sorted_binary_tree_inorder.svg)
+// The different orders are illustrated here:
 //
-// - Pre order: F, B, A, D, C, E, G, I, H ! (Sorted_binary_tree_preorder.svg)
+// - In order: A, B, C, D, E, F, G, H, I <picture> <source
+// srcset="Sorted_binary_tree_inorder-dark.svg" media="(prefers-color-scheme:
+// dark)"> <img src="Sorted_binary_tree_inorder.svg" alt="Sorted binary tree,
+// in-order traversal"> </picture>
 //
-// - Post order: A, C, E, D, B, H, I, G, F ! (Sorted_binary_tree_postorder.svg)
+// - Pre order: F, B, A, D, C, E, G, I, H <picture> <source
+// srcset="Sorted_binary_tree_preorder-dark.svg" media="(prefers-color-scheme:
+// dark)"> <img src="Sorted_binary_tree_preorder.svg" alt="Sorted binary tree,
+// pre-order traversal"> </picture>
 //
-// - Level order: F, B, G, A, D, I, C, E, H !
-// (Sorted_binary_tree_breadth-first_traversal.svg).
+// - Post order: A, C, E, D, B, H, I, G, F <picture> <source
+// srcset="Sorted_binary_tree_postorder-dark.svg" media="(prefers-color-scheme:
+// dark)"> <img src="Sorted_binary_tree_postorder.svg" alt="Sorted binary tree,
+// post-order traversal"> </picture>
+//
+// - Level order: F, B, G, A, D, I, C, E, H <picture> <source
+// srcset="Sorted_binary_tree_breadth-first_traversal-dark.svg"
+// media="(prefers-color-scheme: dark)"> <img
+// src="Sorted_binary_tree_breadth-first_traversal.svg" alt="Sorted binary tree,
+// breadth-first level order traversal"> </picture>.
 type TraverseType C.gint
 
 const (
-	// InOrder vists a node's left child first, then the node itself, then
+	// InOrder visits a node's left child first, then the node itself, then
 	// its right child. This is the one to use if you want the output sorted
 	// according to the compare function.
 	InOrder TraverseType = iota
@@ -1912,10 +2022,11 @@ const (
 	PreOrder
 	// PostOrder visits the node's children, then the node itself.
 	PostOrder
-	// LevelOrder is not implemented for [balanced binary
-	// trees][glib-Balanced-Binary-Trees]. For [n-ary trees][glib-N-ary-Trees],
-	// it vists the root node first, then its children, then its grandchildren,
-	// and so on. Note that this is less efficient than the other orders.
+	// LevelOrder is not implemented for balanced binary trees
+	// (data-structures.html#binary-trees). For n-ary trees
+	// (data-structures.html#n-ary-trees), it visits the root node first,
+	// then its children, then its grandchildren, and so on. Note that this is
+	// less efficient than the other orders.
 	LevelOrder
 )
 
@@ -2036,16 +2147,18 @@ const (
 	UnicodeBreakEmojiModifier UnicodeBreakType = 41
 	// UnicodeBreakZeroWidthJoiner: zero Width Joiner (ZWJ). Since: 2.50.
 	UnicodeBreakZeroWidthJoiner UnicodeBreakType = 42
-	// UnicodeBreakAksara: aksara (AK). Since:
-	// 2.80 G_UNICODE_BREAK_AKSARA_PRE_BASE (AP). Since:
-	// 2.80 G_UNICODE_BREAK_AKSARA_START (AS). Since: 2.80
-	// G_UNICODE_BREAK_VIRAMA_FINAL (VF). Since: 2.80 G_UNICODE_BREAK_VIRAMA
-	// (VI). Since: 2.80.
-	UnicodeBreakAksara        UnicodeBreakType = 43
+	// UnicodeBreakAksara: aksara (AK). Since: 2.80.
+	UnicodeBreakAksara UnicodeBreakType = 43
+	// UnicodeBreakAksaraPreBase: aksara Pre-Base (AP). Since: 2.80.
 	UnicodeBreakAksaraPreBase UnicodeBreakType = 44
-	UnicodeBreakAksaraStart   UnicodeBreakType = 45
-	UnicodeBreakViramaFinal   UnicodeBreakType = 46
-	UnicodeBreakVirama        UnicodeBreakType = 47
+	// UnicodeBreakAksaraStart: aksara Start (AS). Since: 2.80.
+	UnicodeBreakAksaraStart UnicodeBreakType = 45
+	// UnicodeBreakViramaFinal: virama Final (VF). Since: 2.80.
+	UnicodeBreakViramaFinal UnicodeBreakType = 46
+	// UnicodeBreakVirama: virama (VI). Since: 2.80.
+	UnicodeBreakVirama UnicodeBreakType = 47
+	// UnicodeBreakUnambiguousHyphen unambiguous Hyphen (HH). Since: 2.88.
+	UnicodeBreakUnambiguousHyphen UnicodeBreakType = 48
 )
 
 func marshalUnicodeBreakType(p uintptr) (interface{}, error) {
@@ -2151,6 +2264,8 @@ func (u UnicodeBreakType) String() string {
 		return "ViramaFinal"
 	case UnicodeBreakVirama:
 		return "Virama"
+	case UnicodeBreakUnambiguousHyphen:
+		return "UnambiguousHyphen"
 	default:
 		return fmt.Sprintf("UnicodeBreakType(%d)", u)
 	}
@@ -2500,6 +2615,28 @@ const (
 	UnicodeScriptKawi UnicodeScript = 163
 	// UnicodeScriptNagMundari: nag Mundari. Since 2.74.
 	UnicodeScriptNagMundari UnicodeScript = 164
+	// UnicodeScriptTodhri: todhri. Since: 2.84.
+	UnicodeScriptTodhri UnicodeScript = 165
+	// UnicodeScriptGaray: garay. Since: 2.84.
+	UnicodeScriptGaray UnicodeScript = 166
+	// UnicodeScriptTuluTigalari: tulu-Tigalari. Since: 2.84.
+	UnicodeScriptTuluTigalari UnicodeScript = 167
+	// UnicodeScriptSunuwar: sunuwar. Since: 2.84.
+	UnicodeScriptSunuwar UnicodeScript = 168
+	// UnicodeScriptGurungKhema: gurung Khema. Since: 2.84.
+	UnicodeScriptGurungKhema UnicodeScript = 169
+	// UnicodeScriptKiratRai: kirat Rai. Since: 2.84.
+	UnicodeScriptKiratRai UnicodeScript = 170
+	// UnicodeScriptOlOnal: ol Onal. Since: 2.84.
+	UnicodeScriptOlOnal UnicodeScript = 171
+	// UnicodeScriptSidetic: sidetic. Since: 2.88.
+	UnicodeScriptSidetic UnicodeScript = 172
+	// UnicodeScriptTolongSiki: tolong Siki. Since: 2.88.
+	UnicodeScriptTolongSiki UnicodeScript = 173
+	// UnicodeScriptTaiYo: tai Yo. Since: 2.88.
+	UnicodeScriptTaiYo UnicodeScript = 174
+	// UnicodeScriptBeriaErfe: beria Erfe. Since: 2.88.
+	UnicodeScriptBeriaErfe UnicodeScript = 175
 )
 
 func marshalUnicodeScript(p uintptr) (interface{}, error) {
@@ -2841,6 +2978,28 @@ func (u UnicodeScript) String() string {
 		return "Kawi"
 	case UnicodeScriptNagMundari:
 		return "NagMundari"
+	case UnicodeScriptTodhri:
+		return "Todhri"
+	case UnicodeScriptGaray:
+		return "Garay"
+	case UnicodeScriptTuluTigalari:
+		return "TuluTigalari"
+	case UnicodeScriptSunuwar:
+		return "Sunuwar"
+	case UnicodeScriptGurungKhema:
+		return "GurungKhema"
+	case UnicodeScriptKiratRai:
+		return "KiratRai"
+	case UnicodeScriptOlOnal:
+		return "OlOnal"
+	case UnicodeScriptSidetic:
+		return "Sidetic"
+	case UnicodeScriptTolongSiki:
+		return "TolongSiki"
+	case UnicodeScriptTaiYo:
+		return "TaiYo"
+	case UnicodeScriptBeriaErfe:
+		return "BeriaErfe"
 	default:
 		return fmt.Sprintf("UnicodeScript(%d)", u)
 	}
@@ -3818,8 +3977,8 @@ func (l LogLevelFlags) Has(other LogLevelFlags) bool {
 	return (l & other) == other
 }
 
-// MainContextFlags flags to pass to g_main_context_new_with_flags() which
-// affect the behaviour of a Context.
+// MainContextFlags flags to pass to glib.MainContext.NewWithFlags which affect
+// the behaviour of a glib.MainContext.
 type MainContextFlags C.guint
 
 const (
@@ -4009,7 +4168,7 @@ func (m MarkupParseFlags) Has(other MarkupParseFlags) bool {
 type OptionFlags C.guint
 
 const (
-	// OptionFlagNone: no flags. Since: 2.42.
+	// OptionFlagNone: no flags.
 	OptionFlagNone OptionFlags = 0b0
 	// OptionFlagHidden: option doesn't appear in --help output.
 	OptionFlagHidden OptionFlags = 0b1
@@ -4039,6 +4198,13 @@ const (
 	// this option, unless all option groups are under your direct control.
 	// Since 2.8.
 	OptionFlagNoalias OptionFlags = 0b1000000
+	// OptionFlagDeprecated: this flag marks the option as deprecated in the
+	// --help.
+	//
+	// You should update the description of the option to describe what the
+	// user should do in response to the deprecation, for instance: remove the
+	// option, or replace it with another one.
+	OptionFlagDeprecated OptionFlags = 0b10000000
 )
 
 // String returns the names in string for OptionFlags.
@@ -4048,7 +4214,7 @@ func (o OptionFlags) String() string {
 	}
 
 	var builder strings.Builder
-	builder.Grow(141)
+	builder.Grow(162)
 
 	for o != 0 {
 		next := o & (o - 1)
@@ -4071,6 +4237,8 @@ func (o OptionFlags) String() string {
 			builder.WriteString("OptionalArg|")
 		case OptionFlagNoalias:
 			builder.WriteString("Noalias|")
+		case OptionFlagDeprecated:
+			builder.WriteString("Deprecated|")
 		default:
 			builder.WriteString(fmt.Sprintf("OptionFlags(0b%b)|", bit))
 		}
@@ -4162,23 +4330,8 @@ const (
 	// RegexNewlineLf: usually any newline character or character sequence is
 	// recognized. If this option is set, the only recognized newline character
 	// is '\n'.
-	RegexNewlineLf RegexCompileFlags = 0b1000000000000000000000
-	// RegexNewlineCrlf: usually any newline character or character sequence is
-	// recognized. If this option is set, the only recognized newline character
-	// sequence is '\r\n'.
-	RegexNewlineCrlf RegexCompileFlags = 0b1100000000000000000000
-	// RegexNewlineAnycrlf: usually any newline character or character sequence
-	// is recognized. If this option is set, the only recognized newline
-	// character sequences are '\r', '\n', and '\r\n'. Since: 2.34.
-	RegexNewlineAnycrlf RegexCompileFlags = 0b10100000000000000000000
-	// RegexBsrAnycrlf: usually any newline character or character sequence is
-	// recognised. If this option is set, then "\R" only recognizes the newline
-	// characters '\r', '\n' and '\r\n'. Since: 2.34.
-	RegexBsrAnycrlf RegexCompileFlags = 0b100000000000000000000000
-	// RegexJavascriptCompat changes behaviour so that it is compatible with
-	// JavaScript rather than PCRE. Since GLib 2.74 this is no longer supported,
-	// as libpcre2 does not support it. Since: 2.34 Deprecated: 2.74.
-	RegexJavascriptCompat RegexCompileFlags = 0b10000000000000000000000000
+	RegexNewlineLf        RegexCompileFlags = 0b1000000000000000000000
+	RegexNewlineReserved1 RegexCompileFlags = 0b10000000000000000000000
 )
 
 // String returns the names in string for RegexCompileFlags.
@@ -4188,7 +4341,7 @@ func (r RegexCompileFlags) String() string {
 	}
 
 	var builder strings.Builder
-	builder.Grow(256)
+	builder.Grow(237)
 
 	for r != 0 {
 		next := r & (r - 1)
@@ -4225,14 +4378,8 @@ func (r RegexCompileFlags) String() string {
 			builder.WriteString("NewlineCr|")
 		case RegexNewlineLf:
 			builder.WriteString("NewlineLf|")
-		case RegexNewlineCrlf:
-			builder.WriteString("NewlineCrlf|")
-		case RegexNewlineAnycrlf:
-			builder.WriteString("NewlineAnycrlf|")
-		case RegexBsrAnycrlf:
-			builder.WriteString("BsrAnycrlf|")
-		case RegexJavascriptCompat:
-			builder.WriteString("JavascriptCompat|")
+		case RegexNewlineReserved1:
+			builder.WriteString("NewlineReserved1|")
 		default:
 			builder.WriteString(fmt.Sprintf("RegexCompileFlags(0b%b)|", bit))
 		}
@@ -4777,11 +4924,15 @@ type Func func(data unsafe.Pointer)
 // which is passed to g_hash_table_foreach().
 type HFunc func(key, value unsafe.Pointer)
 
-// HRFunc specifies the type of the function passed to
-// g_hash_table_foreach_remove(). It is called with each
-// key/value pair, together with the user_data parameter passed to
-// g_hash_table_foreach_remove(). It should return TRUE if the key/value pair
-// should be removed from the Table.
+// HRFunc specifies the type of the function passed to glib.HashTable().Find,
+// glib.HashTable().ForEachRemove, and glib.HashTable().ForEachSteal.
+//
+// The function is called with each key/value pair, together with the user_data
+// parameter passed to the calling function.
+//
+// The function should return true if the key/value pair should be selected,
+// meaning it has been found or it should be removed from the glib.HashTable,
+// depending on the calling function.
 type HRFunc func(key, value unsafe.Pointer) (ok bool)
 
 // LogFunc specifies the prototype of log handler functions.
@@ -4791,6 +4942,9 @@ type HRFunc func(key, value unsafe.Pointer) (ok bool)
 // log handler functions behave similarly, so that logging calls in user code
 // do not need modifying to add a new-line character to the message if the log
 // handler is changed.
+//
+// The log_domain parameter can be set to NULL or an empty string to use the
+// default application domain.
 //
 // This is not used if structured logging is enabled; see Using Structured
 // Logging (logging.html#using-structured-logging).
@@ -4816,18 +4970,18 @@ type LogFunc func(logDomain string, logLevel LogLevelFlags, message string)
 // chained and fall back to simpler handlers in case of failure.
 type LogWriterFunc func(logLevel LogLevelFlags, fields []LogField) (logWriterOutput LogWriterOutput)
 
-// SourceFunc specifies the type of function passed to g_timeout_add(),
-// g_timeout_add_full(), g_idle_add(), and g_idle_add_full().
+// SourceFunc specifies the type of function passed to glib.TimeoutAdd(),
+// glib.TimeoutAddFull(), glib.IdleAdd(), and glib.IdleAddFull().
 //
-// When calling g_source_set_callback(), you may need to cast a function of a
-// different type to this type. Use G_SOURCE_FUNC() to avoid warnings about
+// When calling glib.Source.SetCallback(), you may need to cast a function of a
+// different type to this type. Use glib.SOURCEFUNC() to avoid warnings about
 // incompatible function types.
 type SourceFunc func() (ok bool)
 
 // SourceOnceFunc: source function that is only called once before being removed
 // from the main context automatically.
 //
-// See: g_idle_add_once(), g_timeout_add_once().
+// See: glib.IdleAddOnce(), glib.TimeoutAddOnce().
 type SourceOnceFunc func()
 
 // The function takes the following parameters:
@@ -4985,6 +5139,7 @@ func BitStorage(number uint32) uint {
 	return _guint
 }
 
+// BlowChunks: deprecated: since version 2.10.
 func BlowChunks() {
 	C.g_blow_chunks()
 }
@@ -5041,7 +5196,7 @@ func BuildFilenamev(args []string) string {
 //
 // The function takes the following parameters:
 //
-//   - separator: string used to separator the elements of the path.
+//   - separator: string used to separate the elements of the path.
 //   - args: NULL-terminated array of strings containing the path elements.
 //
 // The function returns the following values:
@@ -6425,8 +6580,8 @@ func FileSetContents(filename, contents string) error {
 // characters to filename.
 //
 // If the file didn’t exist before and is created, it will be given the
-// permissions from mode. Otherwise, the permissions of the existing file may be
-// changed to mode depending on flags, or they may remain unchanged.
+// permissions from mode. Otherwise, the permissions of the existing file will
+// remain unchanged.
 //
 // The function takes the following parameters:
 //
@@ -6689,8 +6844,8 @@ func FilenameFromURI(uri string) (hostname, filename string, goerr error) {
 
 // FilenameFromUTF8 converts a string from UTF-8 to the encoding GLib uses
 // for filenames. Note that on Windows GLib uses UTF-8 for filenames;
-// on other platforms, this function indirectly depends on the [current
-// locale][setlocale].
+// on other platforms, this function indirectly depends on the current locale
+// (running.html#locale).
 //
 // The input string shall not contain nul characters even if the len argument
 // is positive. A nul character found inside the string will result in
@@ -6790,7 +6945,7 @@ func FilenameToURI(filename, hostname string) (string, error) {
 // FilenameToUTF8 converts a string which is in the encoding used by GLib
 // for filenames into a UTF-8 string. Note that on Windows GLib uses UTF-8
 // for filenames; on other platforms, this function indirectly depends on the
-// [current locale][setlocale].
+// current locale (running.html#locale).
 //
 // The input string shall not contain nul characters even if the len argument
 // is positive. A nul character found inside the string will result in
@@ -7023,10 +7178,11 @@ func GetApplicationName() string {
 	return _utf8
 }
 
-// GetCharset obtains the character set for the [current locale][setlocale];
-// you might use this character set as an argument to g_convert(), to convert
-// from the current locale's encoding to some other encoding. (Frequently
-// g_locale_to_utf8() and g_locale_from_utf8() are nice shortcuts, though.)
+// GetCharset obtains the character set for the current locale
+// (running.html#locale); you might use this character set as an argument to
+// g_convert(), to convert from the current locale's encoding to some other
+// encoding. (Frequently g_locale_to_utf8() and g_locale_from_utf8() are nice
+// shortcuts, though.)
 //
 // On Windows the character set returned by this function is the so-called
 // system default ANSI code-page. That is the character set used by the "narrow"
@@ -7151,15 +7307,19 @@ func GetCurrentDir() string {
 	return _filename
 }
 
-// GetCurrentTime: equivalent to the UNIX gettimeofday() function, but portable.
+// GetCurrentTime queries the system wall-clock time.
 //
-// You may find g_get_real_time() to be more convenient.
+// This is equivalent to the UNIX gettimeofday() (man:gettimeofday(2)) function,
+// but portable.
 //
-// Deprecated: Val is not year-2038-safe. Use g_get_real_time() instead.
+// You may find glib.GetRealTime() to be more convenient.
+//
+// Deprecated: glib.TimeVal is not year-2038-safe. Use glib.GetRealTime()
+// instead.
 //
 // The function takes the following parameters:
 //
-//   - result structure in which to store current time.
+//   - result: glib.TimeVal structure in which to store current time.
 func GetCurrentTime(result *TimeVal) {
 	var _arg1 *C.GTimeVal // out
 
@@ -7220,8 +7380,8 @@ func GetEnviron() []string {
 // variables have no effect.
 //
 // G_FILENAME_ENCODING may be set to a comma-separated list of character set
-// names. The special token "\locale" is taken to mean the character set
-// for the [current locale][setlocale]. If G_FILENAME_ENCODING is not set,
+// names. The special token locale is taken to mean the character set for the
+// current locale (running.html#locale). If G_FILENAME_ENCODING is not set,
 // but G_BROKEN_FILENAMES is, the character set of the current locale is taken
 // as the filename encoding. If neither environment variable is set, UTF-8 is
 // taken as the filename encoding, but the character set of the current locale
@@ -7474,15 +7634,18 @@ func GetLocaleVariants(locale string) []string {
 	return _utf8s
 }
 
-// GetMonotonicTime queries the system monotonic time.
+// GetMonotonicTime queries the system monotonic time in microseconds.
 //
-// The monotonic clock will always increase and doesn't suffer discontinuities
+// The monotonic clock will always increase and doesn’t suffer discontinuities
 // when the user (or NTP) changes the system time. It may or may not continue to
 // tick during times where the machine is suspended.
 //
 // We try to use the clock that corresponds as closely as possible to the
-// passage of time as measured by system calls such as poll() but it may not
-// always be possible to do this.
+// passage of time as measured by system calls such as poll() (man:poll(2)) but
+// it may not always be possible to do this.
+//
+// A more accurate version of this function exists. glib.GetMonotonicTimeNs()
+// returns the time in nanoseconds.
 //
 // The function returns the following values:
 //
@@ -7497,6 +7660,35 @@ func GetMonotonicTime() int64 {
 	_gint64 = int64(_cret)
 
 	return _gint64
+}
+
+// GetMonotonicTimeNs queries the system monotonic time in nanoseconds.
+//
+// The monotonic clock will always increase and doesn’t suffer discontinuities
+// when the user (or NTP) changes the system time. It may or may not continue to
+// tick during times where the machine is suspended.
+//
+// We try to use the clock that corresponds as closely as possible to the
+// passage of time as measured by system calls such as poll() (man:poll(2)) but
+// it may not always be possible to do this.
+//
+// Another version of this function exists. glib.GetMonotonicTime() returns the
+// time in microseconds. If you want to support older GLib versions, it is an
+// alternative.
+//
+// The function returns the following values:
+//
+//   - guint64: monotonic time, in nanoseconds.
+func GetMonotonicTimeNs() uint64 {
+	var _cret C.uint64_t // in
+
+	_cret = C.g_get_monotonic_time_ns()
+
+	var _guint64 uint64 // out
+
+	_guint64 = uint64(_cret)
+
+	return _guint64
 }
 
 // GetOsInfo: get information about the operating system.
@@ -7585,16 +7777,17 @@ func GetRealName() string {
 
 // GetRealTime queries the system wall-clock time.
 //
-// This call is functionally equivalent to g_get_current_time() except that the
-// return value is often more convenient than dealing with a Val.
+// This is equivalent to the UNIX gettimeofday() (man:gettimeofday(2)) function,
+// but portable.
 //
 // You should only use this call if you are actually interested in the real
-// wall-clock time. g_get_monotonic_time() is probably more useful for measuring
-// intervals.
+// wall-clock time. glib.GetMonotonicTime() is probably more useful for
+// measuring intervals.
 //
 // The function returns the following values:
 //
-//   - gint64: number of microseconds since January 1, 1970 UTC.
+//   - gint64: number of microseconds since January 1, 1970 UTC
+//     (https://en.wikipedia.org/wiki/Unix_time).
 func GetRealTime() int64 {
 	var _cret C.gint64 // in
 
@@ -8168,11 +8361,11 @@ func HostnameToUnicode(hostname string) string {
 //
 // The function takes the following parameters:
 //
-//   - data (optional) for the idle source's callback.
+//   - data (optional) for the idle source’s callback.
 //
 // The function returns the following values:
 //
-//   - ok: TRUE if an idle source was found and removed.
+//   - ok: true if an idle source was found and removed, false otherwise.
 func IdleRemoveByData(data unsafe.Pointer) bool {
 	var _arg1 C.gpointer // out
 	var _cret C.gboolean // in
@@ -8193,10 +8386,11 @@ func IdleRemoveByData(data unsafe.Pointer) bool {
 
 // NewIdleSource creates a new idle source.
 //
-// The source will not initially be associated with any Context and must be
-// added to one with g_source_attach() before it will be executed. Note that the
-// default priority for idle sources is G_PRIORITY_DEFAULT_IDLE, as compared to
-// other sources which have a default priority of G_PRIORITY_DEFAULT.
+// The source will not initially be associated with any glib.MainContext and
+// must be added to one with glib.Source.Attach() before it will be executed.
+// Note that the default priority for idle sources is glib.PRIORITYDEFAULTIDLE,
+// as compared to other sources which have a default priority of
+// glib.PRIORITYDEFAULT.
 //
 // The function returns the following values:
 //
@@ -8507,7 +8701,8 @@ func Listenv() []string {
 
 // LocaleFromUTF8 converts a string from UTF-8 to the encoding used for strings
 // by the C runtime (usually the same as that used by the operating system) in
-// the [current locale][setlocale]. On Windows this means the system codepage.
+// the current locale (running.html#locale). On Windows this means the system
+// codepage.
 //
 // The input string shall not contain nul characters even if the len argument
 // is positive. A nul character found inside the string will result in error
@@ -8561,7 +8756,7 @@ func LocaleFromUTF8(utf8String string) (uint, []byte, error) {
 
 // LocaleToUTF8 converts a string which is in the encoding used for strings by
 // the C runtime (usually the same as that used by the operating system) in the
-// [current locale][setlocale] into a UTF-8 string.
+// current locale (running.html#locale) into a UTF-8 string.
 //
 // If the source encoding is not UTF-8 and the conversion output contains a nul
 // character, the error G_CONVERT_ERROR_EMBEDDED_NUL is set and the function
@@ -8637,6 +8832,9 @@ func LocaleToUTF8(opsysstring string) (bytesRead, bytesWritten uint, utf8 string
 //     and informational messages are printed. By default these messages
 //     are not printed. If you need to set the allowed domains at runtime,
 //     use glib.LogWriterDefaultSetDebugDomains().
+//   - DEBUG_INVOCATION: If set to 1, this is equivalent to
+//     G_MESSAGES_DEBUG=all. DEBUG_INVOCATION is a standard environment variable
+//     set by systemd to prompt debug output. (Since: 2.84)
 //
 // stderr is used for levels glib.LogLevelFlags.LEVELERROR,
 // glib.LogLevelFlags.LEVELCRITICAL, glib.LogLevelFlags.LEVELWARNING and
@@ -8677,6 +8875,48 @@ func LogDefaultHandler(logDomain string, logLevel LogLevelFlags, message string,
 	runtime.KeepAlive(unusedData)
 }
 
+// LogGetAlwaysFatal gets the current fatal mask.
+//
+// This is mostly used by custom log writers to make fatal messages
+// (fatal-warnings, fatal-criticals) work as expected, when using the G_DEBUG
+// environment variable (see Running GLib Applications (running.html)).
+//
+// An example usage is shown below:
+//
+//	static GLogWriterOutput
+//	my_custom_log_writer_fn (GLogLevelFlags log_level,
+//	                         const GLogField *fields,
+//	                         gsize n_fields,
+//	                         gpointer user_data)
+//	{
+//
+//	   // abort if the message was fatal
+//	   if (log_level & g_log_get_always_fatal ())
+//	     g_abort ();
+//
+//	   // custom log handling code
+//	   ...
+//	   ...
+//
+//	   // success
+//	   return G_LOG_WRITER_HANDLED;
+//	}.
+//
+// The function returns the following values:
+//
+//   - logLevelFlags: current fatal mask.
+func LogGetAlwaysFatal() LogLevelFlags {
+	var _cret C.GLogLevelFlags // in
+
+	_cret = C.g_log_get_always_fatal()
+
+	var _logLevelFlags LogLevelFlags // out
+
+	_logLevelFlags = LogLevelFlags(_cret)
+
+	return _logLevelFlags
+}
+
 // LogGetDebugEnabled: return whether debug output from the GLib logging system
 // is enabled.
 //
@@ -8685,8 +8925,8 @@ func LogDefaultHandler(logDomain string, logLevel LogLevelFlags, message string,
 // implementations.
 //
 // Note also that the value of this does not depend on G_MESSAGES_DEBUG,
-// nor glib.LogWriterDefaultSetDebugDomains(); see the docs for
-// glib.LogSetDebugEnabled().
+// nor DEBUG_INVOCATION, nor glib.LogWriterDefaultSetDebugDomains(); see the
+// docs for glib.LogSetDebugEnabled().
 //
 // The function returns the following values:
 //
@@ -8735,7 +8975,7 @@ func LogRemoveHandler(logDomain string, handlerId uint) {
 // glib.LogLevelFlags.LEVELERROR is always fatal.
 //
 // You can also make some message levels fatal at runtime by setting the G_DEBUG
-// environment variable (see Running GLib Applications (glib-running.html)).
+// environment variable (see Running GLib Applications (running.html)).
 //
 // Libraries should not call this function, as it affects all messages logged by
 // a process, including those from other libraries.
@@ -8772,9 +9012,9 @@ func LogSetAlwaysFatal(fatalMask LogLevelFlags) LogLevelFlags {
 // LogSetDebugEnabled: enable or disable debug output from the GLib logging
 // system for all domains.
 //
-// This value interacts disjunctively with G_MESSAGES_DEBUG and
-// glib.LogWriterDefaultSetDebugDomains() — if any of them would allow a debug
-// message to be outputted, it will be.
+// This value interacts disjunctively with G_MESSAGES_DEBUG, DEBUG_INVOCATION
+// and glib.LogWriterDefaultSetDebugDomains() — if any of them would allow a
+// debug message to be outputted, it will be.
 //
 // Note that this should not be used from within library code to enable debug
 // output — it is intended for external use.
@@ -8934,10 +9174,10 @@ func LogVariant(logDomain string, logLevel LogLevelFlags, fields *Variant) {
 // This is suitable for use as a glib.LogWriterFunc, and is the default writer
 // used if no other is set using glib.LogSetWriterFunc().
 //
-// As with glib.LogDefaultHandler(), this function drops debug and
-// informational messages unless their log domain (or all) is listed in the
-// space-separated G_MESSAGES_DEBUG environment variable, or set at runtime by
-// glib.LogWriterDefaultSetDebugDomains().
+// As with glib.LogDefaultHandler(), this function drops debug and informational
+// messages unless their log domain (or all) is listed in the space-separated
+// G_MESSAGES_DEBUG environment variable, or DEBUG_INVOCATION=1 is set in the
+// environment, or set at runtime by glib.LogWriterDefaultSetDebugDomains().
 //
 // glib.LogWriterDefault() uses the mask set by glib.LogSetAlwaysFatal() to
 // determine which messages are fatal. When using a custom writer function
@@ -9021,10 +9261,10 @@ func LogWriterDefaultSetUseStderr(useStderr bool) {
 // glib.LogDefaultHandler() would ignore a message with the given domain and
 // level.
 //
-// As with glib.LogDefaultHandler(), this function drops debug and
-// informational messages unless their log domain (or all) is listed
-// in the space-separated G_MESSAGES_DEBUG environment variable, or by
-// glib.LogWriterDefaultSetDebugDomains().
+// As with glib.LogDefaultHandler(), this function drops debug and informational
+// messages unless their log domain (or all) is listed in the space-separated
+// G_MESSAGES_DEBUG environment variable, or DEBUG_INVOCATION=1 is set in the
+// environment, or by glib.LogWriterDefaultSetDebugDomains().
 //
 // This can be used when implementing log writers with the same filtering
 // behaviour as the default, but a different destination or output format:
@@ -9034,7 +9274,7 @@ func LogWriterDefaultSetUseStderr(useStderr bool) {
 //	]|
 //
 //	or to skip an expensive computation if it is only needed for a debugging
-//	message, and G_MESSAGES_DEBUG is not set:
+//	message, and G_MESSAGES_DEBUG and DEBUG_INVOCATION are not set:
 //
 // c if (!g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, G_LOG_DOMAIN)) {
 // g_autofree gchar *result = expensive_computation (my_object);
@@ -9372,7 +9612,7 @@ func LogWriterSyslog(logLevel LogLevelFlags, fields []LogField, userData unsafe.
 //
 // The function returns the following values:
 //
-//   - source (optional): currently firing source or NULL.
+//   - source (optional): currently firing source, or NULL if none is firing.
 func MainCurrentSource() *Source {
 	var _cret *C.GSource // in
 
@@ -9395,14 +9635,50 @@ func MainCurrentSource() *Source {
 }
 
 // MainDepth returns the depth of the stack of calls to
-// g_main_context_dispatch() on any Context in the current thread. That is,
-// when called from the toplevel, it gives 0. When called from within a
-// callback from g_main_context_iteration() (or g_main_loop_run(), etc.)
-// it returns 1. When called from within a callback to a recursive call to
-// g_main_context_iteration(), it returns 2. And so forth.
+// glib.MainContext.Dispatch() on any Context in the current thread.
+//
+// That is, when called from the top level, it gives 0. When called from within
+// a callback from glib.MainContext.Iteration() (or glib.MainLoop.Run(),
+// etc.) it returns 1. When called from within a callback to a recursive call to
+// glib.MainContext.Iteration(), it returns 2. And so forth.
 //
 // This function is useful in a situation like the following: Imagine an
-// extremely simple "garbage collected" system.
+// extremely simple ‘garbage collected’ system.
+//
+//	static GList *free_list;
+//
+//	gpointer
+//	allocate_memory (gsize size)
+//	{
+//	  gpointer result = g_malloc (size);
+//	  free_list = g_list_prepend (free_list, result);
+//	  return result;
+//	}
+//
+//	void
+//	free_allocated_memory (void)
+//	{
+//	  GList *l;
+//	  for (l = free_list; l; l = l->next);
+//	    g_free (l->data);
+//	  g_list_free (free_list);
+//	  free_list = NULL;
+//	 }
+//
+//	[...]
+//
+//	while (TRUE);
+//	 {
+//	   g_main_context_iteration (NULL, TRUE);
+//	   free_allocated_memory();
+//	  }
+//
+// This works from an application, however, if you want to do the same thing
+// from a library, it gets more difficult, since you no longer control the main
+// loop. You might think you can simply use an idle function to make the call
+// to free_allocated_memory(), but that doesn’t work, since the idle function
+// could be called from a recursive callback. This can be fixed by using
+// glib.MainDepth()
 //
 //	gpointer
 //	allocate_memory (gsize size)
@@ -9435,20 +9711,20 @@ func MainCurrentSource() *Source {
 //	    }
 //	  }
 //
-// There is a temptation to use g_main_depth() to solve problems with
+// There is a temptation to use glib.MainDepth() to solve problems with
 // reentrancy. For instance, while waiting for data to be received from the
 // network in response to a menu item, the menu item might be selected again.
-// It might seem that one could make the menu item's callback return immediately
-// and do nothing if g_main_depth() returns a value greater than 1. However,
+// It might seem that one could make the menu item’s callback return immediately
+// and do nothing if glib.MainDepth() returns a value greater than 1. However,
 // this should be avoided since the user then sees selecting the menu item do
-// nothing. Furthermore, you'll find yourself adding these checks all over your
+// nothing. Furthermore, you’ll find yourself adding these checks all over your
 // code, since there are doubtless many, many things that the user could do.
 // Instead, you can use the following techniques:
 //
 // 1. Use gtk_widget_set_sensitive() or modal dialogs to prevent the user from
 // interacting with elements while the main loop is recursing.
 //
-// 2. Avoid main loop recursion in situations where you can't handle arbitrary
+// 2. Avoid main loop recursion in situations where you can’t handle arbitrary
 // callbacks. Instead, structure your code so that you simply return to the main
 // loop and then get called again when there is more work to do.
 //
@@ -9773,9 +10049,10 @@ func PathSkipRoot(fileName string) string {
 }
 
 // PatternMatchSimple matches a string against a pattern given as a string.
-// If this function is to be called in a loop, it's more efficient to compile
-// the pattern once with g_pattern_spec_new() and call g_pattern_match_string()
-// repeatedly.
+//
+// If this function is to be called in a loop, it’s more efficient
+// to compile the pattern once with glib.PatternSpec.New and call
+// glib.PatternSpec.MatchString() repeatedly.
 //
 // The function takes the following parameters:
 //
@@ -9808,10 +10085,14 @@ func PatternMatchSimple(pattern, str string) bool {
 	return _ok
 }
 
-// QsortWithData: this is just like the standard C qsort() function, but the
-// comparison routine accepts a user data argument.
+// QsortWithData: this is just like the standard C qsort() (man:qsort(3))
+// function, but the comparison routine accepts a user data argument (like
+// qsort_r() (man:qsort_r(3))).
 //
-// This is guaranteed to be a stable sort since version 2.32.
+// Unlike qsort(), this is guaranteed to be a stable sort (since GLib 2.32).
+//
+// Deprecated: total_elems is too small to represent larger arrays; use
+// glib.SortArray() instead.
 //
 // The function takes the following parameters:
 //
@@ -10128,13 +10409,17 @@ func SetApplicationName(applicationName string) {
 // in contrast to g_set_application_name().
 //
 // If you are using #GApplication the program name is set in
-// g_application_run(). In case of GDK or GTK it is set in gdk_init(), which is
-// called by gtk_init() and the Application::startup handler. The program name
-// is found by taking the last component of argv[0].
+// g_application_run(). In case of GDK or GTK it is set in gdk_init(), which
+// is called by gtk_init() and the Application::startup handler. By default,
+// the program name is found by taking the last component of argv[0].
 //
 // Since GLib 2.72, this function can be called multiple times and is fully
 // thread safe. Prior to GLib 2.72, this function could only be called once per
 // process.
+//
+// See the GTK documentation
+// (https://docs.gtk.org/gtk4/migrating-3to4.html#set-a-proper-application-id)
+// for requirements on integrating g_set_prgname() with GTK applications.
 //
 // The function takes the following parameters:
 //
@@ -10765,11 +11050,11 @@ func StrvGetType() coreglib.Type {
 
 // NewTimeoutSource creates a new timeout source.
 //
-// The source will not initially be associated with any Context and must be
-// added to one with g_source_attach() before it will be executed.
+// The source will not initially be associated with any glib.MainContext and
+// must be added to one with glib.Source.Attach() before it will be executed.
 //
 // The interval given is in terms of monotonic time, not wall clock time.
-// See g_get_monotonic_time().
+// See glib.GetMonotonicTime().
 //
 // The function takes the following parameters:
 //
@@ -10802,14 +11087,14 @@ func NewTimeoutSource(interval uint) *Source {
 
 // TimeoutSourceNewSeconds creates a new timeout source.
 //
-// The source will not initially be associated with any Context and must be
-// added to one with g_source_attach() before it will be executed.
+// The source will not initially be associated with any glib.MainContext and
+// must be added to one with glib.Source.Attach() before it will be executed.
 //
 // The scheduling granularity/accuracy of this timeout source will be in
 // seconds.
 //
 // The interval given is in terms of monotonic time, not wall clock time.
-// See g_get_monotonic_time().
+// See glib.GetMonotonicTime().
 //
 // The function takes the following parameters:
 //
@@ -10840,8 +11125,10 @@ func TimeoutSourceNewSeconds(interval uint) *Source {
 	return _source
 }
 
-// UCS4ToUTF16: convert a string from UCS-4 to UTF-16. A 0 character will be
-// added to the result after the converted text.
+// UCS4ToUTF16: convert a string from UCS-4 to UTF-16.
+//
+// A nul character (U+0000) will be added to the result after the converted
+// text.
 //
 // The function takes the following parameters:
 //
@@ -10849,13 +11136,14 @@ func TimeoutSourceNewSeconds(interval uint) *Source {
 //
 // The function returns the following values:
 //
-//   - itemsRead (optional): location to store number of bytes read, or NULL.
-//     If an error occurs then the index of the invalid input is stored here.
-//   - itemsWritten (optional): location to store number of #gunichar2 written,
-//     or NULL. The value stored here does not include the trailing 0.
+//   - itemsRead (optional): location to store number of bytes read, or NULL to
+//     ignore. If an error occurs then the index of the invalid input is stored
+//     here. The value stored here will never be negative.
+//   - itemsWritten (optional): location to store number of gunichar2 written,
+//     or NULL to ignore. The value stored here does not include the trailing
+//     nul, and will never be negative.
 //   - guint16: pointer to a newly allocated UTF-16 string. This value must be
-//     freed with g_free(). If an error occurs, NULL will be returned and error
-//     set.
+//     freed with glib.Free().
 func UCS4ToUTF16(str []uint32) (itemsRead, itemsWritten int32, guint16 *uint16, goerr error) {
 	var _arg1 *C.gunichar // out
 	var _arg2 C.glong
@@ -10888,7 +11176,9 @@ func UCS4ToUTF16(str []uint32) (itemsRead, itemsWritten int32, guint16 *uint16, 
 }
 
 // UCS4ToUTF8: convert a string from a 32-bit fixed width representation as
-// UCS-4. to UTF-8. The result will be terminated with a 0 byte.
+// UCS-4. to UTF-8.
+//
+// The result will be terminated with a nul byte.
 //
 // The function takes the following parameters:
 //
@@ -10897,13 +11187,13 @@ func UCS4ToUTF16(str []uint32) (itemsRead, itemsWritten int32, guint16 *uint16, 
 // The function returns the following values:
 //
 //   - itemsRead (optional): location to store number of characters read,
-//     or NULL.
-//   - itemsWritten (optional): location to store number of bytes written or
-//     NULL. The value here stored does not include the trailing 0 byte.
+//     or NULL to ignore. If an error occurs then the index of the invalid input
+//     is stored here. The value stored here will never be negative.
+//   - itemsWritten (optional): location to store number of bytes written, or
+//     NULL to ignore. The value stored here does not include the trailing nul,
+//     and will never be negative.
 //   - utf8: pointer to a newly allocated UTF-8 string. This value must be freed
-//     with g_free(). If an error occurs, NULL will be returned and error set.
-//     In that case, items_read will be set to the position of the first invalid
-//     input character.
+//     with glib.Free().
 func UCS4ToUTF8(str []uint32) (itemsRead, itemsWritten int32, utf8 string, goerr error) {
 	var _arg1 *C.gunichar // out
 	var _arg2 C.glong
@@ -11846,9 +12136,10 @@ func UnicharType(c uint32) UnicodeType {
 	return _unicodeType
 }
 
-// UnicharValidate checks whether ch is a valid Unicode character. Some possible
-// integer values of ch will not be valid. 0 is considered a valid character,
-// though it's normally a string terminator.
+// UnicharValidate checks whether ch is a valid Unicode character.
+//
+// Some possible integer values of ch will not be valid. U+0000 is considered a
+// valid character, though it’s normally a string terminator.
 //
 // The function takes the following parameters:
 //
@@ -12003,8 +12294,9 @@ func Usleep(microseconds uint32) {
 	runtime.KeepAlive(microseconds)
 }
 
-// UTF16ToUCS4: convert a string from UTF-16 to UCS-4. The result will be
-// nul-terminated.
+// UTF16ToUCS4: convert a string from UTF-16 to UCS-4.
+//
+// The result will be nul-terminated.
 //
 // The function takes the following parameters:
 //
@@ -12012,15 +12304,16 @@ func Usleep(microseconds uint32) {
 //
 // The function returns the following values:
 //
-//   - itemsRead (optional): location to store number of words read, or NULL.
-//     If NULL, then G_CONVERT_ERROR_PARTIAL_INPUT will be returned in case str
-//     contains a trailing partial character. If an error occurs then the index
-//     of the invalid input is stored here.
+//   - itemsRead (optional): location to store number of gunichar2 read, or NULL
+//     to ignore. If NULL, then glib.ConvertError.PARTIALINPUT will be returned
+//     in case str contains a trailing partial character. If an error occurs
+//     then the index of the invalid input is stored here. The value stored here
+//     will never be negative.
 //   - itemsWritten (optional): location to store number of characters written,
-//     or NULL. The value stored here does not include the trailing 0 character.
+//     or NULL to ignore. The value stored here does not include the trailing
+//     nul, and will never be negative.
 //   - gunichar: pointer to a newly allocated UCS-4 string. This value must be
-//     freed with g_free(). If an error occurs, NULL will be returned and error
-//     set.
+//     freed with glib.Free().
 func UTF16ToUCS4(str []uint16) (itemsRead, itemsWritten int32, gunichar *uint32, goerr error) {
 	var _arg1 *C.gunichar2 // out
 	var _arg2 C.glong
@@ -12052,17 +12345,19 @@ func UTF16ToUCS4(str []uint16) (itemsRead, itemsWritten int32, gunichar *uint32,
 	return _itemsRead, _itemsWritten, _gunichar, _goerr
 }
 
-// UTF16ToUTF8: convert a string from UTF-16 to UTF-8. The result will be
-// terminated with a 0 byte.
+// UTF16ToUTF8: convert a string from UTF-16 to UTF-8.
+//
+// The result will be terminated with a nul byte.
 //
 // Note that the input is expected to be already in native endianness,
-// an initial byte-order-mark character is not handled specially. g_convert()
+// an initial byte-order-mark character is not handled specially. glib.Convert()
 // can be used to convert a byte buffer of UTF-16 data of ambiguous endianness.
 //
-// Further note that this function does not validate the result string;
-// it may e.g. include embedded NUL characters. The only validation done by this
-// function is to ensure that the input can be correctly interpreted as UTF-16,
-// i.e. it doesn't contain unpaired surrogates or partial character sequences.
+// Further note that this function does not validate the result string; it may
+// (for example) include embedded nul characters. The only validation done by
+// this function is to ensure that the input can be correctly interpreted as
+// UTF-16, i.e. it doesn’t contain unpaired surrogates or partial character
+// sequences.
 //
 // The function takes the following parameters:
 //
@@ -12070,15 +12365,16 @@ func UTF16ToUCS4(str []uint16) (itemsRead, itemsWritten int32, gunichar *uint32,
 //
 // The function returns the following values:
 //
-//   - itemsRead (optional): location to store number of words read, or NULL.
-//     If NULL, then G_CONVERT_ERROR_PARTIAL_INPUT will be returned in case str
-//     contains a trailing partial character. If an error occurs then the index
-//     of the invalid input is stored here. It’s guaranteed to be non-negative.
-//   - itemsWritten (optional): location to store number of bytes written,
-//     or NULL. The value stored here does not include the trailing 0 byte.
-//     It’s guaranteed to be non-negative.
+//   - itemsRead (optional): location to store number of gunichar2 read, or NULL
+//     to ignore. If NULL, then glib.ConvertError.PARTIALINPUT will be returned
+//     in case str contains a trailing partial character. If an error occurs
+//     then the index of the invalid input is stored here. The value stored here
+//     will never be negative.
+//   - itemsWritten (optional): location to store number of bytes written, or
+//     NULL to ignore. The value stored here does not include the trailing nul,
+//     and will never be negative.
 //   - utf8: pointer to a newly allocated UTF-8 string. This value must be freed
-//     with g_free(). If an error occurs, NULL will be returned and error set.
+//     with glib.Free().
 func UTF16ToUTF8(str []uint16) (itemsRead, itemsWritten int32, utf8 string, goerr error) {
 	var _arg1 *C.gunichar2 // out
 	var _arg2 C.glong
@@ -12151,10 +12447,10 @@ func UTF8Casefold(str string) string {
 }
 
 // UTF8Collate compares two strings for ordering using the linguistically
-// correct rules for the [current locale][setlocale]. When sorting a large
-// number of strings, it will be significantly faster to obtain collation keys
-// with g_utf8_collate_key() and compare the keys with strcmp() when sorting
-// instead of sorting the original strings.
+// correct rules for the current locale (running.html#locale). When sorting a
+// large number of strings, it will be significantly faster to obtain collation
+// keys with g_utf8_collate_key() and compare the keys with strcmp() when
+// sorting instead of sorting the original strings.
 //
 // If the two strings are not comparable due to being in different collation
 // sequences, the result is undefined. This can happen if the strings are in
@@ -12196,7 +12492,11 @@ func UTF8Collate(str1, str2 string) int {
 // The results of comparing the collation keys of two strings with strcmp() will
 // always be the same as comparing the two original keys with g_utf8_collate().
 //
-// Note that this function depends on the [current locale][setlocale].
+// Note that this function depends on the current locale (running.html#locale).
+//
+// Note that the returned string is not guaranteed to be in any encoding,
+// especially UTF-8. The returned value is meant to be used only for
+// comparisons.
 //
 // The function takes the following parameters:
 //
@@ -12204,7 +12504,8 @@ func UTF8Collate(str1, str2 string) int {
 //
 // The function returns the following values:
 //
-//   - utf8: newly allocated string. This string should be freed with g_free()
+//   - filename: newly allocated string. The contents of the string are only
+//     meant to be used when sorting. This string should be freed with g_free()
 //     when you are done with it.
 func UTF8CollateKey(str string) string {
 	var _arg1 *C.gchar // out
@@ -12219,12 +12520,12 @@ func UTF8CollateKey(str string) string {
 	_cret = C.g_utf8_collate_key(_arg1, _arg2)
 	runtime.KeepAlive(str)
 
-	var _utf8 string // out
+	var _filename string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
-	return _utf8
+	return _filename
 }
 
 // UTF8CollateKeyForFilename converts a string into a collation key that can
@@ -12238,7 +12539,11 @@ func UTF8CollateKey(str string) string {
 // intelligently so that "file1" "file10" "file5" is sorted as "file1" "file5"
 // "file10".
 //
-// Note that this function depends on the [current locale][setlocale].
+// Note that this function depends on the current locale (running.html#locale).
+//
+// Note that the returned string is not guaranteed to be in any encoding,
+// especially UTF-8. The returned value is meant to be used only for
+// comparisons.
 //
 // The function takes the following parameters:
 //
@@ -12246,7 +12551,8 @@ func UTF8CollateKey(str string) string {
 //
 // The function returns the following values:
 //
-//   - utf8: newly allocated string. This string should be freed with g_free()
+//   - filename: newly allocated string. The contents of the string are only
+//     meant to be used when sorting. This string should be freed with g_free()
 //     when you are done with it.
 func UTF8CollateKeyForFilename(str string) string {
 	var _arg1 *C.gchar // out
@@ -12261,12 +12567,12 @@ func UTF8CollateKeyForFilename(str string) string {
 	_cret = C.g_utf8_collate_key_for_filename(_arg1, _arg2)
 	runtime.KeepAlive(str)
 
-	var _utf8 string // out
+	var _filename string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	_filename = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
 	defer C.free(unsafe.Pointer(_cret))
 
-	return _utf8
+	return _filename
 }
 
 // UTF8FindNextChar finds the start of the next UTF-8 character in the string
@@ -12330,7 +12636,7 @@ func UTF8FindNextChar(p, end string) string {
 //
 // The function returns the following values:
 //
-//   - utf8 (optional): pointer to the found character or NULL.
+//   - utf8 (optional): pointer to the found character.
 func UTF8FindPrevChar(str, p string) string {
 	var _arg1 *C.gchar // out
 	var _arg2 *C.gchar // out
@@ -12359,7 +12665,7 @@ func UTF8FindPrevChar(str, p string) string {
 //
 // If p does not point to a valid UTF-8 encoded character, results are
 // undefined. If you are not sure that the bytes are complete valid Unicode
-// characters, you should use g_utf8_get_char_validated() instead.
+// characters, you should use glib.UTF8GetCharValidated() instead.
 //
 // The function takes the following parameters:
 //
@@ -12386,11 +12692,13 @@ func UTF8GetChar(p string) uint32 {
 }
 
 // UTF8GetCharValidated: convert a sequence of bytes encoded as UTF-8 to a
-// Unicode character. This function checks for incomplete characters, for
-// invalid characters such as characters that are out of the range of Unicode,
-// and for overlong encodings of valid characters.
+// Unicode character.
 //
-// Note that g_utf8_get_char_validated() returns (gunichar)-2 if max_len is
+// This function checks for incomplete characters, for invalid characters
+// such as characters that are out of the range of Unicode, and for overlong
+// encodings of valid characters.
+//
+// Note that glib.UTF8GetCharValidated() returns (gunichar)-2 if max_len is
 // positive and any of the bytes in the first UTF-8 character sequence are nul.
 //
 // The function takes the following parameters:
@@ -12523,9 +12831,9 @@ func UTF8Normalize(str string, mode NormalizeMode) string {
 // offset is in the last fourth of the string, since moving forward is about 3
 // times faster than moving backward.
 //
-// Note that this function doesn't abort when reaching the end of str. Therefore
+// Note that this function doesn’t abort when reaching the end of str. Therefore
 // you should be sure that offset is within string boundaries before calling
-// that function. Call g_utf8_strlen() when unsure. This limitation exists as
+// that function. Call glib.UTF8Strlen() when unsure. This limitation exists as
 // this function is called frequently during text rendering and therefore has to
 // be as fast as possible.
 //
@@ -12597,7 +12905,7 @@ func UTF8PointerToOffset(str, pos string) int32 {
 // p does not have to be at the beginning of a UTF-8 character. No check is
 // made to see if the character found is actually valid other than it starts
 // with an appropriate byte. If p might be the first character of the string,
-// you must use g_utf8_find_prev_char() instead.
+// you must use glib.UTF8FindPrevChar() instead.
 //
 // The function takes the following parameters:
 //
@@ -12624,8 +12932,9 @@ func UTF8PrevChar(p string) string {
 }
 
 // UTF8Strchr finds the leftmost occurrence of the given Unicode character in a
-// UTF-8 encoded string, while limiting the search to len bytes. If len is -1,
-// allow unbounded search.
+// UTF-8 encoded string, while limiting the search to len bytes.
+//
+// If len is -1, allow unbounded search.
 //
 // The function takes the following parameters:
 //
@@ -12695,7 +13004,7 @@ func UTF8Strdown(str string) string {
 }
 
 // UTF8Strlen computes the length of the string in characters, not including
-// the terminating nul character. If the max'th byte falls in the middle of a
+// the terminating nul character. If the max’th byte falls in the middle of a
 // character, the last (partial) character is not counted.
 //
 // The function takes the following parameters:
@@ -12729,10 +13038,11 @@ func UTF8Strlen(p string, max int) int32 {
 	return _glong
 }
 
-// UTF8Strncpy: like the standard C strncpy() function, but copies a given
-// number of characters instead of a given number of bytes. The src string must
-// be valid UTF-8 encoded text. (Use g_utf8_validate() on all text before trying
-// to use UTF-8 utility functions with it.)
+// UTF8Strncpy: like the standard C strncpy() (man:strncpy) function, but copies
+// a given number of characters instead of a given number of bytes.
+//
+// The src string must be valid UTF-8 encoded text. (Use glib.UTF8Validate() on
+// all text before trying to use UTF-8 utility functions with it.)
 //
 // Note you must ensure dest is at least 4 * n + 1 to fit the largest possible
 // UTF-8 characters.
@@ -12771,8 +13081,9 @@ func UTF8Strncpy(dest, src string, n uint) string {
 }
 
 // UTF8Strrchr: find the rightmost occurrence of the given Unicode character in
-// a UTF-8 encoded string, while limiting the search to len bytes. If len is -1,
-// allow unbounded search.
+// a UTF-8 encoded string, while limiting the search to len bytes.
+//
+// If len is -1, allow unbounded search.
 //
 // The function takes the following parameters:
 //
@@ -12809,17 +13120,18 @@ func UTF8Strrchr(p string, c uint32) string {
 	return _utf8
 }
 
-// UTF8Strreverse reverses a UTF-8 string. str must be valid UTF-8 encoded text.
-// (Use g_utf8_validate() on all text before trying to use UTF-8 utility
-// functions with it.)
+// UTF8Strreverse reverses a UTF-8 string.
+//
+// str must be valid UTF-8 encoded text. (Use glib.UTF8Validate() on all text
+// before trying to use UTF-8 utility functions with it.)
 //
 // This function is intended for programmatic uses of reversed strings. It pays
 // no attention to decomposed characters, combining marks, byte order marks,
 // directional indicators (LRM, LRO, etc) and similar characters which might
 // need special handling when reversing a string for display purposes.
 //
-// Note that unlike g_strreverse(), this function returns newly-allocated
-// memory, which should be freed with g_free() when no longer needed.
+// Note that unlike glib.Strreverse(), this function returns newly-allocated
+// memory, which should be freed with glib.Free() when no longer needed.
 //
 // The function takes the following parameters:
 //
@@ -12897,8 +13209,8 @@ func UTF8Strup(str string) string {
 //
 // The function returns the following values:
 //
-//   - utf8: newly allocated copy of the requested substring. Free with g_free()
-//     when no longer needed.
+//   - utf8: newly allocated copy of the requested substring. Free with
+//     glib.Free() when no longer needed.
 func UTF8Substring(str string, startPos, endPos int32) string {
 	var _arg1 *C.gchar // out
 	var _arg2 C.glong  // out
@@ -12924,8 +13236,10 @@ func UTF8Substring(str string, startPos, endPos int32) string {
 }
 
 // UTF8ToUCS4: convert a string from UTF-8 to a 32-bit fixed width
-// representation as UCS-4. A trailing 0 character will be added to the string
-// after the converted text.
+// representation as UCS-4.
+//
+// A trailing nul character (U+0000) will be added to the string after the
+// converted text.
 //
 // The function takes the following parameters:
 //
@@ -12933,15 +13247,16 @@ func UTF8Substring(str string, startPos, endPos int32) string {
 //
 // The function returns the following values:
 //
-//   - itemsRead (optional): location to store number of bytes read, or NULL.
-//     If NULL, then G_CONVERT_ERROR_PARTIAL_INPUT will be returned in case str
-//     contains a trailing partial character. If an error occurs then the index
-//     of the invalid input is stored here.
-//   - itemsWritten (optional): location to store number of characters written
-//     or NULL. The value here stored does not include the trailing 0 character.
+//   - itemsRead (optional): location to store number of bytes read, or NULL to
+//     ignore. If NULL, then glib.ConvertError.PARTIALINPUT will be returned in
+//     case str contains a trailing partial character. If an error occurs then
+//     the index of the invalid input is stored here. The value stored here will
+//     never be negative.
+//   - itemsWritten (optional): location to store number of characters written,
+//     or NULL to ignore. The value stored here does not include the trailing
+//     nul, and will never be negative.
 //   - gunichar: pointer to a newly allocated UCS-4 string. This value must be
-//     freed with g_free(). If an error occurs, NULL will be returned and error
-//     set.
+//     freed with glib.Free().
 func UTF8ToUCS4(str string) (itemsRead, itemsWritten int32, gunichar *uint32, goerr error) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.glong
@@ -12974,9 +13289,11 @@ func UTF8ToUCS4(str string) (itemsRead, itemsWritten int32, gunichar *uint32, go
 }
 
 // UTF8ToUCS4Fast: convert a string from UTF-8 to a 32-bit fixed width
-// representation as UCS-4, assuming valid UTF-8 input. This function is roughly
-// twice as fast as g_utf8_to_ucs4() but does no error checking on the input.
-// A trailing 0 character will be added to the string after the converted text.
+// representation as UCS-4, assuming valid UTF-8 input.
+//
+// This function is roughly twice as fast as glib.UTF8ToUCS4() but does no error
+// checking on the input. A trailing nul character (U+0000) will be added to the
+// string after the converted text.
 //
 // The function takes the following parameters:
 //
@@ -12987,7 +13304,7 @@ func UTF8ToUCS4(str string) (itemsRead, itemsWritten int32, gunichar *uint32, go
 //   - itemsWritten (optional): location to store the number of characters in
 //     the result, or NULL.
 //   - gunichar: pointer to a newly allocated UCS-4 string. This value must be
-//     freed with g_free().
+//     freed with glib.Free().
 func UTF8ToUCS4Fast(str string) (int32, *uint32) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.glong
@@ -13011,8 +13328,10 @@ func UTF8ToUCS4Fast(str string) (int32, *uint32) {
 	return _itemsWritten, _gunichar
 }
 
-// UTF8ToUTF16: convert a string from UTF-8 to UTF-16. A 0 character will be
-// added to the result after the converted text.
+// UTF8ToUTF16: convert a string from UTF-8 to UTF-16.
+//
+// A nul character (U+0000) will be added to the result after the converted
+// text.
 //
 // The function takes the following parameters:
 //
@@ -13020,15 +13339,16 @@ func UTF8ToUCS4Fast(str string) (int32, *uint32) {
 //
 // The function returns the following values:
 //
-//   - itemsRead (optional): location to store number of bytes read, or NULL.
-//     If NULL, then G_CONVERT_ERROR_PARTIAL_INPUT will be returned in case str
-//     contains a trailing partial character. If an error occurs then the index
-//     of the invalid input is stored here.
-//   - itemsWritten (optional): location to store number of #gunichar2 written,
-//     or NULL. The value stored here does not include the trailing 0.
+//   - itemsRead (optional): location to store number of bytes read, or NULL to
+//     ignore. If NULL, then glib.ConvertError.PARTIALINPUT will be returned in
+//     case str contains a trailing partial character. If an error occurs then
+//     the index of the invalid input is stored here. The value stored here will
+//     never be negative.
+//   - itemsWritten (optional): location to store number of gunichar2 written,
+//     or NULL to ignore. The value stored here does not include the trailing
+//     nul, and will never be negative.
 //   - guint16: pointer to a newly allocated UTF-16 string. This value must be
-//     freed with g_free(). If an error occurs, NULL will be returned and error
-//     set.
+//     freed with glib.Free().
 func UTF8ToUTF16(str string) (itemsRead, itemsWritten int32, guint16 *uint16, goerr error) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.glong
@@ -13096,12 +13416,15 @@ func UTF8TruncateMiddle(str string, truncateLength uint) string {
 	return _utf8
 }
 
-// UTF8Validate validates UTF-8 encoded text. str is the text to validate;
-// if str is nul-terminated, then max_len can be -1, otherwise max_len should
-// be the number of bytes to validate. If end is non-NULL, then the end of
-// the valid range will be stored there (i.e. the start of the first invalid
-// character if some bytes were invalid, or the end of the text being validated
-// otherwise).
+// UTF8Validate validates UTF-8 encoded text.
+//
+// str is the text to validate; if str is nul-terminated, then max_len can be
+// -1, otherwise max_len should be the number of bytes to validate.
+//
+// If end is non-NULL, then the end of the valid range will be stored there.
+// This is the first byte of the first invalid character if some bytes were
+// invalid, or the end of the text being validated otherwise — either the
+// trailing nul byte, or the first byte beyond max_len (if it’s positive).
 //
 // Note that g_utf8_validate() returns FALSE if max_len is positive and any of
 // the max_len bytes are nul.
@@ -13118,7 +13441,7 @@ func UTF8TruncateMiddle(str string, truncateLength uint) string {
 //
 //   - end (optional): return location for end of valid data.
 //   - ok: TRUE if the text was valid UTF-8.
-func UTF8Validate(str string) (string, bool) {
+func UTF8Validate(str string) ([]byte, bool) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gssize
 	var _arg3 *C.gchar   // in
@@ -13132,11 +13455,23 @@ func UTF8Validate(str string) (string, bool) {
 	_cret = C.g_utf8_validate(_arg1, _arg2, &_arg3)
 	runtime.KeepAlive(str)
 
-	var _end string // out
+	var _end []byte // out
 	var _ok bool    // out
 
 	if _arg3 != nil {
-		_end = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
+		{
+			var i int
+			var z C.gchar
+			for p := _arg3; *p != z; p = &unsafe.Slice(p, 2)[1] {
+				i++
+			}
+
+			src := unsafe.Slice(_arg3, i)
+			_end = make([]byte, i)
+			for i := range src {
+				_end[i] = byte(src[i])
+			}
+		}
 	}
 	if _cret != 0 {
 		_ok = true
@@ -13147,7 +13482,7 @@ func UTF8Validate(str string) (string, bool) {
 
 // UTF8ValidateLen validates UTF-8 encoded text.
 //
-// As with g_utf8_validate(), but max_len must be set, and hence this function
+// As with glib.UTF8Validate(), but max_len must be set, and hence this function
 // will always return FALSE if any of the bytes of str are nul.
 //
 // The function takes the following parameters:
@@ -13158,7 +13493,7 @@ func UTF8Validate(str string) (string, bool) {
 //
 //   - end (optional): return location for end of valid data.
 //   - ok: TRUE if the text was valid UTF-8.
-func UTF8ValidateLen(str string) (string, bool) {
+func UTF8ValidateLen(str string) ([]byte, bool) {
 	var _arg1 *C.gchar // out
 	var _arg2 C.gsize
 	var _arg3 *C.gchar   // in
@@ -13172,11 +13507,23 @@ func UTF8ValidateLen(str string) (string, bool) {
 	_cret = C.g_utf8_validate_len(_arg1, _arg2, &_arg3)
 	runtime.KeepAlive(str)
 
-	var _end string // out
+	var _end []byte // out
 	var _ok bool    // out
 
 	if _arg3 != nil {
-		_end = C.GoString((*C.gchar)(unsafe.Pointer(_arg3)))
+		{
+			var i int
+			var z C.gchar
+			for p := _arg3; *p != z; p = &unsafe.Slice(p, 2)[1] {
+				i++
+			}
+
+			src := unsafe.Slice(_arg3, i)
+			_end = make([]byte, i)
+			for i := range src {
+				_end[i] = byte(src[i])
+			}
+		}
 	}
 	if _cret != 0 {
 		_ok = true
@@ -13266,7 +13613,7 @@ type array struct {
 }
 
 // Data: pointer to the element data. The data may be moved as elements are
-// added to the #GArray.
+// added to the GArray.
 func (a *Array) Data() string {
 	valptr := &a.native.data
 	var _v string // out
@@ -13274,7 +13621,7 @@ func (a *Array) Data() string {
 	return _v
 }
 
-// Len: number of elements in the #GArray not including the possible terminating
+// Len: number of elements in the GArray not including the possible terminating
 // zero element.
 func (a *Array) Len() uint {
 	valptr := &a.native.len
@@ -13283,7 +13630,7 @@ func (a *Array) Len() uint {
 	return _v
 }
 
-// Len: number of elements in the #GArray not including the possible terminating
+// Len: number of elements in the GArray not including the possible terminating
 // zero element.
 func (a *Array) SetLen(len uint) {
 	valptr := &a.native.len
@@ -13297,7 +13644,7 @@ func (a *Array) SetLen(len uint) {
 // pointed by the URI like its MIME type, the application that is
 // registering the bookmark and the icon that should be used to represent
 // the bookmark. The data is stored using the Desktop Bookmark Specification
-// (http://www.gnome.org/~ebassi/bookmark-spec).
+// (https://www.freedesktop.org/wiki/Specifications/desktop-bookmark-spec/).
 //
 // The syntax of the bookmark files is described in detail inside the Desktop
 // Bookmark Specification, here is a quick summary: bookmark files use a
@@ -14783,7 +15130,7 @@ type byteArray struct {
 }
 
 // Data: pointer to the element data. The data may be moved as elements are
-// added to the Array.
+// added to the GByteArray.
 func (b *ByteArray) Data() *byte {
 	valptr := &b.native.data
 	var _v *byte // out
@@ -14791,7 +15138,7 @@ func (b *ByteArray) Data() *byte {
 	return _v
 }
 
-// Len: number of elements in the Array.
+// Len: number of elements in the GByteArray.
 func (b *ByteArray) Len() uint {
 	valptr := &b.native.len
 	var _v uint // out
@@ -14799,35 +15146,36 @@ func (b *ByteArray) Len() uint {
 	return _v
 }
 
-// Len: number of elements in the Array.
+// Len: number of elements in the GByteArray.
 func (b *ByteArray) SetLen(len uint) {
 	valptr := &b.native.len
 	*valptr = C.guint(len)
 }
 
-// Bytes: simple refcounted data type representing an immutable sequence of zero
-// or more bytes from an unspecified origin.
+// Bytes: simple reference counted data type representing an immutable sequence
+// of zero or more bytes from an unspecified origin.
 //
-// The purpose of a #GBytes is to keep the memory region that it holds alive for
+// The purpose of a GBytes is to keep the memory region that it holds alive for
 // as long as anyone holds a reference to the bytes. When the last reference
 // count is dropped, the memory is released. Multiple unrelated callers
-// can use byte data in the #GBytes without coordinating their activities,
+// can use byte data in the GBytes without coordinating their activities,
 // resting assured that the byte data will not change or move while they hold a
 // reference.
 //
-// A #GBytes can come from many different origins that may have different
+// A GBytes can come from many different origins that may have different
 // procedures for freeing the memory region. Examples are memory from
-// g_malloc(), from memory slices, from a File or memory from other allocators.
+// glib.Malloc(), from memory slices, from a glib.MappedFile or memory from
+// other allocators.
 //
-// #GBytes work well as keys in Table. Use g_bytes_equal() and g_bytes_hash()
-// as parameters to g_hash_table_new() or g_hash_table_new_full(). #GBytes can
-// also be used as keys in a #GTree by passing the g_bytes_compare() function to
-// g_tree_new().
+// GBytes work well as keys in glib.HashTable. Use glib.Bytes.Equal()
+// and glib.Bytes.Hash() as parameters to glib.HashTable().New or
+// glib.HashTable().NewFull. GBytes can also be used as keys in a glib.Tree by
+// passing the glib.Bytes.Compare() function to glib.Tree.New.
 //
 // The data pointed to by this bytes must not be modified. For a mutable array
-// of bytes see Array. Use g_bytes_unref_to_array() to create a mutable array
-// for a #GBytes sequence. To create an immutable #GBytes from a mutable Array,
-// use the g_byte_array_free_to_bytes() function.
+// of bytes see glib.ByteArray. Use glib.Bytes.UnrefToArray() to create a
+// mutable array for a GBytes sequence. To create an immutable GBytes from a
+// mutable glib.ByteArray, use the glib.ByteArray().FreeToBytes function.
 //
 // An instance of this type is always passed by reference.
 type Bytes struct {
@@ -14866,7 +15214,36 @@ func NewBytes(data []byte) *Bytes {
 	return _bytes
 }
 
-// Compare compares the two #GBytes values.
+// NewBytesFromBytes constructs a struct Bytes.
+func NewBytesFromBytes(bytes *Bytes, offset uint, length uint) *Bytes {
+	var _arg1 *C.GBytes // out
+	var _arg2 C.gsize   // out
+	var _arg3 C.gsize   // out
+	var _cret *C.GBytes // in
+
+	_arg1 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(bytes)))
+	_arg2 = C.gsize(offset)
+	_arg3 = C.gsize(length)
+
+	_cret = C.g_bytes_new_from_bytes(_arg1, _arg2, _arg3)
+	runtime.KeepAlive(bytes)
+	runtime.KeepAlive(offset)
+	runtime.KeepAlive(length)
+
+	var _ret *Bytes // out
+
+	_ret = (*Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	runtime.SetFinalizer(
+		gextras.StructIntern(unsafe.Pointer(_ret)),
+		func(intern *struct{ C unsafe.Pointer }) {
+			C.g_bytes_unref((*C.GBytes)(intern.C))
+		},
+	)
+
+	return _ret
+}
+
+// Compare compares the two glib.Bytes values.
 //
 // This function can be used to sort GBytes instances in lexicographical order.
 //
@@ -14878,7 +15255,7 @@ func NewBytes(data []byte) *Bytes {
 //
 // The function takes the following parameters:
 //
-//   - bytes2: pointer to a #GBytes to compare with bytes1.
+//   - bytes2: pointer to a glib.Bytes to compare with bytes1.
 //
 // The function returns the following values:
 //
@@ -14903,15 +15280,15 @@ func (bytes1 *Bytes) Compare(bytes2 *Bytes) int {
 	return _gint
 }
 
-// Equal compares the two #GBytes values being pointed to and returns TRUE if
+// Equal compares the two glib.Bytes values being pointed to and returns TRUE if
 // they are equal.
 //
-// This function can be passed to g_hash_table_new() as the key_equal_func
-// parameter, when using non-NULL #GBytes pointers as keys in a Table.
+// This function can be passed to glib.HashTable().New as the key_equal_func
+// parameter, when using non-NULL GBytes pointers as keys in a glib.HashTable.
 //
 // The function takes the following parameters:
 //
-//   - bytes2: pointer to a #GBytes to compare with bytes1.
+//   - bytes2: pointer to a glib.Bytes to compare with bytes1.
 //
 // The function returns the following values:
 //
@@ -14937,17 +15314,19 @@ func (bytes1 *Bytes) Equal(bytes2 *Bytes) bool {
 	return _ok
 }
 
-// Data: get the byte data in the #GBytes. This data should not be modified.
+// Data: get the byte data in the glib.Bytes.
 //
-// This function will always return the same pointer for a given #GBytes.
+// This data should not be modified.
 //
-// NULL may be returned if size is 0. This is not guaranteed, as the #GBytes may
+// This function will always return the same pointer for a given GBytes.
+//
+// NULL may be returned if size is 0. This is not guaranteed, as the GBytes may
 // represent an empty string with data non-NULL and size as 0. NULL will not be
 // returned if size is non-zero.
 //
 // The function returns the following values:
 //
-//   - guint8s (optional): a pointer to the byte data, or NULL.
+//   - guint8s (optional): a pointer to the byte data.
 func (bytes *Bytes) Data() []byte {
 	var _arg0 *C.GBytes       // out
 	var _cret C.gconstpointer // in
@@ -14984,7 +15363,7 @@ func (bytes *Bytes) Data() []byte {
 // plus offset. This will be non-NULL except for the case where bytes itself
 // was a zero-sized region. Since it is unlikely that you will be using this
 // function to check for a zero-sized region in a zero-sized bytes, NULL
-// effectively always means "error".
+// effectively always means ‘error’.
 //
 // The function takes the following parameters:
 //
@@ -15020,9 +15399,9 @@ func (bytes *Bytes) Region(elementSize uint, offset uint, nElements uint) unsafe
 	return _gpointer
 }
 
-// Size: get the size of the byte data in the #GBytes.
+// Size: get the size of the byte data in the glib.Bytes.
 //
-// This function will always return the same value for a given #GBytes.
+// This function will always return the same value for a given GBytes.
 //
 // The function returns the following values:
 //
@@ -15043,10 +15422,10 @@ func (bytes *Bytes) Size() uint {
 	return _gsize
 }
 
-// Hash creates an integer hash code for the byte data in the #GBytes.
+// Hash creates an integer hash code for the byte data in the glib.Bytes.
 //
-// This function can be passed to g_hash_table_new() as the key_hash_func
-// parameter, when using non-NULL #GBytes pointers as keys in a Table.
+// This function can be passed to glib.HashTable().New as the key_hash_func
+// parameter, when using non-NULL GBytes pointers as keys in a glib.HashTable.
 //
 // The function returns the following values:
 //
@@ -15065,54 +15444,6 @@ func (bytes *Bytes) Hash() uint {
 	_guint = uint(_cret)
 
 	return _guint
-}
-
-// NewFromBytes creates a #GBytes which is a subsection of another #GBytes.
-// The offset + length may not be longer than the size of bytes.
-//
-// A reference to bytes will be held by the newly created #GBytes until the byte
-// data is no longer needed.
-//
-// Since 2.56, if offset is 0 and length matches the size of bytes, then bytes
-// will be returned with the reference count incremented by 1. If bytes is a
-// slice of another #GBytes, then the resulting #GBytes will reference the same
-// #GBytes instead of bytes. This allows consumers to simplify the usage of
-// #GBytes when asynchronously writing to streams.
-//
-// The function takes the following parameters:
-//
-//   - offset which subsection starts at.
-//   - length of subsection.
-//
-// The function returns the following values:
-//
-//   - ret: new #GBytes.
-func (bytes *Bytes) NewFromBytes(offset uint, length uint) *Bytes {
-	var _arg0 *C.GBytes // out
-	var _arg1 C.gsize   // out
-	var _arg2 C.gsize   // out
-	var _cret *C.GBytes // in
-
-	_arg0 = (*C.GBytes)(gextras.StructNative(unsafe.Pointer(bytes)))
-	_arg1 = C.gsize(offset)
-	_arg2 = C.gsize(length)
-
-	_cret = C.g_bytes_new_from_bytes(_arg0, _arg1, _arg2)
-	runtime.KeepAlive(bytes)
-	runtime.KeepAlive(offset)
-	runtime.KeepAlive(length)
-
-	var _ret *Bytes // out
-
-	_ret = (*Bytes)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_ret)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_bytes_unref((*C.GBytes)(intern.C))
-		},
-	)
-
-	return _ret
 }
 
 // Checksum: GLib provides a generic API for computing checksums (or ‘digests’)
@@ -17289,9 +17620,9 @@ func DirMakeTmp(tmpl string) (string, error) {
 	return _filename, _goerr
 }
 
-// HashTable struct is an opaque data structure to represent a [Hash
-// Table][glib-Hash-Tables]. It should only be accessed via the following
-// functions.
+// HashTable struct is an opaque data structure to represent a Hash Table
+// (data-structures.html#hash-tables). It should only be accessed via the
+// following functions.
 //
 // An instance of this type is always passed by reference.
 type HashTable struct {
@@ -17892,8 +18223,9 @@ func (channel *IOChannel) Flags() IOFlags {
 	return _ioFlags
 }
 
-// LineTerm: this returns the string that OChannel uses to determine where in
-// the file a line break occurs. A value of NULL indicates autodetection.
+// LineTerm: this returns the string that OChannel uses to determine where
+// in the file a line break occurs. A value of NULL indicates autodetection.
+// Since 2.84, the return value is always nul-terminated.
 //
 // The function returns the following values:
 //
@@ -18580,14 +18912,17 @@ type ioFuncs struct {
 
 // KeyFile: GKeyFile parses .ini-like config files.
 //
-// GKeyFile lets you parse, edit or create files containing groups of key-value
-// pairs, which we call "key files" for lack of a better name. Several
-// freedesktop.org specifications use key files now, e.g the Desktop Entry
-// Specification (http://freedesktop.org/Standards/desktop-entry-spec) and the
-// Icon Theme Specification (http://freedesktop.org/Standards/icon-theme-spec).
+// GKeyFile lets you parse, edit or create files containing
+// groups of key-value pairs, which we call ‘key files’ for lack
+// of a better name. Several freedesktop.org specifications
+// use key files. For example, the Desktop Entry Specification
+// (https://specifications.freedesktop.org/desktop-entry-spec/latest/)
+// and the Icon Theme Specification
+// (https://specifications.freedesktop.org/icon-theme-spec/latest/).
 //
-// The syntax of key files is described in detail in the Desktop Entry
-// Specification (http://freedesktop.org/Standards/desktop-entry-spec),
+// The syntax of key files is described in
+// detail in the Desktop Entry Specification
+// (https://specifications.freedesktop.org/desktop-entry-spec/latest/),
 // here is a quick summary: Key files consists of groups of key-value pairs,
 // interspersed with comments.
 //
@@ -18612,29 +18947,30 @@ type ioFuncs struct {
 //
 //	Booleans=true;false;true;true
 //
-// Lines beginning with a '#' and blank lines are considered comments.
+// Lines beginning with a # and blank lines are considered comments.
 //
-// Groups are started by a header line containing the group name enclosed in '['
-// and ']', and ended implicitly by the start of the next group or the end of
-// the file. Each key-value pair must be contained in a group.
+// Groups are started by a header line containing the group name enclosed in [
+// and ], and ended implicitly by the start of the next group or the end of the
+// file. Each key-value pair must be contained in a group.
 //
 // Key-value pairs generally have the form key=value, with the exception of
 // localized strings, which have the form key[locale]=value, with a locale
 // identifier of the form lang_COUNTRYMODIFIER where COUNTRY and MODIFIER are
-// optional. Space before and after the '=' character are ignored. Newline, tab,
-// carriage return and backslash characters in value are escaped as \n, \t, \r,
-// and \\\\, respectively. To preserve leading spaces in values, these can also
-// be escaped as \s.
+// optional. As a special case, the locale C is associated with the untranslated
+// pair key=value (since GLib 2.84). Space before and after the = character is
+// ignored. Newline, tab, carriage return and backslash characters in value are
+// escaped as \n, \t, \r, and \\\\, respectively. To preserve leading spaces in
+// values, these can also be escaped as \s.
 //
 // Key files can store strings (possibly with localized variants), integers,
 // booleans and lists of these. Lists are separated by a separator character,
-// typically ';' or ','. To use the list separator character in a value in a
-// list, it has to be escaped by prefixing it with a backslash.
+// typically ; or ,. To use the list separator character in a value in a list,
+// it has to be escaped by prefixing it with a backslash.
 //
 // This syntax is obviously inspired by the .ini files commonly met on Windows,
 // but there are some important differences:
 //
-// - .ini files use the ';' character to begin comments, key files use the '#'
+// - .ini files use the ; character to begin comments, key files use the #
 // character.
 //
 // - Key files do not allow for ungrouped keys meaning only comments can precede
@@ -18645,16 +18981,16 @@ type ioFuncs struct {
 // - Key and Group names are case-sensitive. For example, a group called [GROUP]
 // is a different from [group].
 //
-// - .ini files don't have a strongly typed boolean entry type, they only
+// - .ini files don’t have a strongly typed boolean entry type, they only
 // have GetProfileInt(). In key files, only true and false (in lower case) are
 // allowed.
 //
 // Note that in contrast to the Desktop Entry Specification
-// (http://freedesktop.org/Standards/desktop-entry-spec), groups in key files
-// may contain the same key multiple times; the last entry wins. Key files may
-// also contain multiple groups with the same name; they are merged together.
-// Another difference is that keys and group names in key files are not
-// restricted to ASCII characters.
+// (https://specifications.freedesktop.org/desktop-entry-spec/latest/), groups
+// in key files may contain the same key multiple times; the last entry wins.
+// Key files may also contain multiple groups with the same name; they are
+// merged together. Another difference is that keys and group names in key files
+// are not restricted to ASCII characters.
 //
 // Here is an example of loading a key file and reading a value:
 //
@@ -18742,10 +19078,9 @@ func NewKeyFile() *KeyFile {
 
 // Boolean returns the value associated with key under group_name as a boolean.
 //
-// If key cannot be found then FALSE is returned and error is set to
-// G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the value associated with key
-// cannot be interpreted as a boolean then FALSE is returned and error is set to
-// G_KEY_FILE_ERROR_INVALID_VALUE.
+// If key cannot be found then glib.KeyFileError.KEYNOTFOUND is returned.
+// Likewise, if the value associated with key cannot be interpreted as a boolean
+// then glib.KeyFileError.INVALIDVALUE is returned.
 //
 // The function takes the following parameters:
 //
@@ -18780,10 +19115,9 @@ func (keyFile *KeyFile) Boolean(groupName string, key string) error {
 // BooleanList returns the values associated with key under group_name as
 // booleans.
 //
-// If key cannot be found then NULL is returned and error is set to
-// G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the values associated with key
-// cannot be interpreted as booleans then NULL is returned and error is set to
-// G_KEY_FILE_ERROR_INVALID_VALUE.
+// If key cannot be found then glib.KeyFileError.KEYNOTFOUND is returned.
+// Likewise, if the values associated with key cannot be interpreted as booleans
+// then glib.KeyFileError.INVALIDVALUE is returned.
 //
 // The function takes the following parameters:
 //
@@ -18794,7 +19128,7 @@ func (keyFile *KeyFile) Boolean(groupName string, key string) error {
 //
 //   - oks: the values associated with the key as a list of booleans, or NULL
 //     if the key was not found or could not be parsed. The returned list of
-//     booleans should be freed with g_free() when no longer needed.
+//     booleans should be freed with glib.Free() when no longer needed.
 func (keyFile *KeyFile) BooleanList(groupName string, key string) ([]bool, error) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -18827,22 +19161,24 @@ func (keyFile *KeyFile) BooleanList(groupName string, key string) ([]bool, error
 	return _oks, _goerr
 }
 
-// Comment retrieves a comment above key from group_name. If key is NULL then
-// comment will be read from above group_name. If both key and group_name are
-// NULL, then comment will be read from above the first group in the file.
+// Comment retrieves a comment above key from group_name.
 //
-// Note that the returned string does not include the '#' comment markers,
+// If key is NULL then comment will be read from above group_name. If both key
+// and group_name are NULL, then comment will be read from above the first group
+// in the file.
+//
+// Note that the returned string does not include the # comment markers,
 // but does include any whitespace after them (on each line). It includes the
 // line breaks between lines, but does not include the final line break.
 //
 // The function takes the following parameters:
 //
-//   - groupName (optional): group name, or NULL.
-//   - key (optional): key.
+//   - groupName (optional): group name, or NULL to get a top-level comment.
+//   - key (optional): key, or NULL to get a group comment.
 //
 // The function returns the following values:
 //
-//   - utf8: comment that should be freed with g_free().
+//   - utf8: comment that should be freed with glib.Free().
 func (keyFile *KeyFile) Comment(groupName string, key string) (string, error) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -18878,12 +19214,10 @@ func (keyFile *KeyFile) Comment(groupName string, key string) (string, error) {
 }
 
 // Double returns the value associated with key under group_name as a double.
-// If group_name is NULL, the start_group is used.
 //
-// If key cannot be found then 0.0 is returned and error is set to
-// G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the value associated with key
-// cannot be interpreted as a double then 0.0 is returned and error is set to
-// G_KEY_FILE_ERROR_INVALID_VALUE.
+// If key cannot be found then glib.KeyFileError.KEYNOTFOUND is returned.
+// Likewise, if the value associated with key cannot be interpreted as a double
+// then glib.KeyFileError.INVALIDVALUE is returned.
 //
 // The function takes the following parameters:
 //
@@ -18926,10 +19260,9 @@ func (keyFile *KeyFile) Double(groupName string, key string) (float64, error) {
 // DoubleList returns the values associated with key under group_name as
 // doubles.
 //
-// If key cannot be found then NULL is returned and error is set to
-// G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the values associated with key
-// cannot be interpreted as doubles then NULL is returned and error is set to
-// G_KEY_FILE_ERROR_INVALID_VALUE.
+// If key cannot be found then glib.KeyFileError.KEYNOTFOUND is returned.
+// Likewise, if the values associated with key cannot be interpreted as doubles
+// then glib.KeyFileError.INVALIDVALUE is returned.
 //
 // The function takes the following parameters:
 //
@@ -18940,7 +19273,7 @@ func (keyFile *KeyFile) Double(groupName string, key string) (float64, error) {
 //
 //   - gdoubles: the values associated with the key as a list of doubles,
 //     or NULL if the key was not found or could not be parsed. The returned
-//     list of doubles should be freed with g_free() when no longer needed.
+//     list of doubles should be freed with glib.Free() when no longer needed.
 func (keyFile *KeyFile) DoubleList(groupName string, key string) ([]float64, error) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -18973,15 +19306,17 @@ func (keyFile *KeyFile) DoubleList(groupName string, key string) ([]float64, err
 	return _gdoubles, _goerr
 }
 
-// Groups returns all groups in the key file loaded with key_file. The array of
-// returned groups will be NULL-terminated, so length may optionally be NULL.
+// Groups returns all groups in the key file loaded with key_file.
+//
+// The array of returned groups will be NULL-terminated, so length may
+// optionally be NULL.
 //
 // The function returns the following values:
 //
 //   - length (optional): return location for the number of returned groups,
-//     or NULL.
-//   - utf8s: newly-allocated NULL-terminated array of strings. Use g_strfreev()
-//     to free it.
+//     or NULL to ignore.
+//   - utf8s: newly-allocated NULL-terminated array of strings. Use
+//     glib.Strfreev() to free it.
 func (keyFile *KeyFile) Groups() (uint, []string) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 C.gsize     // in
@@ -19016,13 +19351,15 @@ func (keyFile *KeyFile) Groups() (uint, []string) {
 }
 
 // Int64 returns the value associated with key under group_name as a signed
-// 64-bit integer. This is similar to g_key_file_get_integer() but can return
-// 64-bit results without truncation.
+// 64-bit integer.
+//
+// This is similar to glib.KeyFile.GetInteger() but can return 64-bit results
+// without truncation.
 //
 // The function takes the following parameters:
 //
-//   - groupName: non-NULL group name.
-//   - key: non-NULL key.
+//   - groupName: group name.
+//   - key: key.
 //
 // The function returns the following values:
 //
@@ -19059,10 +19396,10 @@ func (keyFile *KeyFile) Int64(groupName string, key string) (int64, error) {
 
 // Integer returns the value associated with key under group_name as an integer.
 //
-// If key cannot be found then 0 is returned and error is set to
-// G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the value associated with
-// key cannot be interpreted as an integer, or is out of range for a #gint,
-// then 0 is returned and error is set to G_KEY_FILE_ERROR_INVALID_VALUE.
+// If key cannot be found then glib.KeyFileError.KEYNOTFOUND is returned.
+// Likewise, if the value associated with key cannot be interpreted as an
+// integer, or is out of range for a gint, then glib.KeyFileError.INVALIDVALUE
+// is returned.
 //
 // The function takes the following parameters:
 //
@@ -19105,10 +19442,10 @@ func (keyFile *KeyFile) Integer(groupName string, key string) (int, error) {
 // IntegerList returns the values associated with key under group_name as
 // integers.
 //
-// If key cannot be found then NULL is returned and error is set to
-// G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the values associated with key
-// cannot be interpreted as integers, or are out of range for #gint, then NULL
-// is returned and error is set to G_KEY_FILE_ERROR_INVALID_VALUE.
+// If key cannot be found then glib.KeyFileError.KEYNOTFOUND is returned.
+// Likewise, if the values associated with key cannot be interpreted as
+// integers, or are out of range for gint, then glib.KeyFileError.INVALIDVALUE
+// is returned.
 //
 // The function takes the following parameters:
 //
@@ -19119,7 +19456,7 @@ func (keyFile *KeyFile) Integer(groupName string, key string) (int, error) {
 //
 //   - gints: the values associated with the key as a list of integers, or NULL
 //     if the key was not found or could not be parsed. The returned list of
-//     integers should be freed with g_free() when no longer needed.
+//     integers should be freed with glib.Free() when no longer needed.
 func (keyFile *KeyFile) IntegerList(groupName string, key string) ([]int, error) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -19157,10 +19494,11 @@ func (keyFile *KeyFile) IntegerList(groupName string, key string) ([]int, error)
 	return _gints, _goerr
 }
 
-// Keys returns all keys for the group name group_name. The array of returned
-// keys will be NULL-terminated, so length may optionally be NULL. In the event
-// that the group_name cannot be found, NULL is returned and error is set to
-// G_KEY_FILE_ERROR_GROUP_NOT_FOUND.
+// Keys returns all keys for the group name group_name.
+//
+// The array of returned keys will be NULL-terminated, so length may optionally
+// be NULL. If the group_name cannot be found, glib.KeyFileError.GROUPNOTFOUND
+// is returned.
 //
 // The function takes the following parameters:
 //
@@ -19169,9 +19507,9 @@ func (keyFile *KeyFile) IntegerList(groupName string, key string) ([]int, error)
 // The function returns the following values:
 //
 //   - length (optional): return location for the number of keys returned,
-//     or NULL.
-//   - utf8s: newly-allocated NULL-terminated array of strings. Use g_strfreev()
-//     to free it.
+//     or NULL to ignore.
+//   - utf8s: newly-allocated NULL-terminated array of strings. Use
+//     glib.Strfreev() to free it.
 func (keyFile *KeyFile) Keys(groupName string) (uint, []string, error) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -19215,11 +19553,11 @@ func (keyFile *KeyFile) Keys(groupName string) (uint, []string, error) {
 }
 
 // LocaleForKey returns the actual locale which the result of
-// g_key_file_get_locale_string() or g_key_file_get_locale_string_list() came
+// glib.KeyFile.GetLocaleString() or glib.KeyFile.GetLocaleStringList() came
 // from.
 //
-// If calling g_key_file_get_locale_string() or
-// g_key_file_get_locale_string_list() with exactly the same key_file,
+// If calling glib.KeyFile.GetLocaleString() or
+// glib.KeyFile.GetLocaleStringList() with exactly the same key_file,
 // group_name, key and locale, the result of those functions will have
 // originally been tagged with the locale that is the result of this function.
 //
@@ -19227,7 +19565,7 @@ func (keyFile *KeyFile) Keys(groupName string) (uint, []string, error) {
 //
 //   - groupName: group name.
 //   - key: key.
-//   - locale (optional) identifier or NULL.
+//   - locale (optional) identifier or NULL to use the current locale.
 //
 // The function returns the following values:
 //
@@ -19267,23 +19605,25 @@ func (keyFile *KeyFile) LocaleForKey(groupName string, key string, locale string
 }
 
 // LocaleString returns the value associated with key under group_name
-// translated in the given locale if available. If locale is NULL then the
-// current locale is assumed.
+// translated in the given locale if available.
 //
-// If locale is to be non-NULL, or if the current locale will change over the
-// lifetime of the File, it must be loaded with G_KEY_FILE_KEEP_TRANSLATIONS in
-// order to load strings for all locales.
+// If locale is C then the untranslated value is returned (since GLib 2.84).
 //
-// If key cannot be found then NULL is returned and error is set to
-// G_KEY_FILE_ERROR_KEY_NOT_FOUND. If the value associated with key cannot be
-// interpreted or no suitable translation can be found then the untranslated
-// value is returned.
+// If locale is NULL then the current locale is assumed.
+//
+// If locale is to be non-NULL, or if the current locale will change
+// over the lifetime of the glib.KeyFile, it must be loaded with
+// glib.KeyFileFlags.KEEPTRANSLATIONS in order to load strings for all locales.
+//
+// If key cannot be found then glib.KeyFileError.KEYNOTFOUND is returned. If the
+// value associated with key cannot be interpreted or no suitable translation
+// can be found then the untranslated value is returned.
 //
 // The function takes the following parameters:
 //
 //   - groupName: group name.
 //   - key: key.
-//   - locale (optional) identifier or NULL.
+//   - locale (optional) identifier or NULL to use the current locale.
 //
 // The function returns the following values:
 //
@@ -19326,29 +19666,31 @@ func (keyFile *KeyFile) LocaleString(groupName string, key string, locale string
 }
 
 // LocaleStringList returns the values associated with key under group_name
-// translated in the given locale if available. If locale is NULL then the
-// current locale is assumed.
+// translated in the given locale if available.
 //
-// If locale is to be non-NULL, or if the current locale will change over the
-// lifetime of the File, it must be loaded with G_KEY_FILE_KEEP_TRANSLATIONS in
-// order to load strings for all locales.
+// If locale is C then the untranslated value is returned (since GLib 2.84).
 //
-// If key cannot be found then NULL is returned and error is set to
-// G_KEY_FILE_ERROR_KEY_NOT_FOUND. If the values associated with key cannot be
-// interpreted or no suitable translations can be found then the untranslated
-// values are returned. The returned array is NULL-terminated, so length may
-// optionally be NULL.
+// If locale is NULL then the current locale is assumed.
+//
+// If locale is to be non-NULL, or if the current locale will change
+// over the lifetime of the glib.KeyFile, it must be loaded with
+// glib.KeyFileFlags.KEEPTRANSLATIONS in order to load strings for all locales.
+//
+// If key cannot be found then glib.KeyFileError.KEYNOTFOUND is returned. If the
+// values associated with key cannot be interpreted or no suitable translations
+// can be found then the untranslated values are returned. The returned array is
+// NULL-terminated, so length may optionally be NULL.
 //
 // The function takes the following parameters:
 //
 //   - groupName: group name.
 //   - key: key.
-//   - locale (optional) identifier or NULL.
+//   - locale (optional) identifier or NULL to use the current locale.
 //
 // The function returns the following values:
 //
-//   - utf8s: newly allocated NULL-terminated string array or NULL if the key
-//     isn't found. The string array should be freed with g_strfreev().
+//   - utf8s: a newly allocated NULL-terminated string array or NULL if the key
+//     isn’t found. The string array should be freed with glib.Strfreev().
 func (keyFile *KeyFile) LocaleStringList(groupName string, key string, locale string) ([]string, error) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -19417,12 +19759,13 @@ func (keyFile *KeyFile) StartGroup() string {
 	return _utf8
 }
 
-// String returns the string value associated with key under group_name. Unlike
-// g_key_file_get_value(), this function handles escape sequences like \s.
+// String returns the string value associated with key under group_name.
 //
-// In the event the key cannot be found, NULL is returned and error is set to
-// G_KEY_FILE_ERROR_KEY_NOT_FOUND. In the event that the group_name cannot be
-// found, NULL is returned and error is set to G_KEY_FILE_ERROR_GROUP_NOT_FOUND.
+// Unlike glib.KeyFile.GetValue(), this function handles escape sequences like
+// \s.
+//
+// If the key cannot be found, glib.KeyFileError.KEYNOTFOUND is returned. If the
+// group_name cannot be found, glib.KeyFileError.GROUPNOTFOUND is returned.
 //
 // The function takes the following parameters:
 //
@@ -19465,9 +19808,8 @@ func (keyFile *KeyFile) String(groupName string, key string) (string, error) {
 
 // StringList returns the values associated with key under group_name.
 //
-// In the event the key cannot be found, NULL is returned and error is set to
-// G_KEY_FILE_ERROR_KEY_NOT_FOUND. In the event that the group_name cannot be
-// found, NULL is returned and error is set to G_KEY_FILE_ERROR_GROUP_NOT_FOUND.
+// If the key cannot be found, glib.KeyFileError.KEYNOTFOUND is returned. If the
+// group_name cannot be found, glib.KeyFileError.GROUPNOTFOUND is returned.
 //
 // The function takes the following parameters:
 //
@@ -19477,7 +19819,7 @@ func (keyFile *KeyFile) String(groupName string, key string) (string, error) {
 // The function returns the following values:
 //
 //   - utf8s: a NULL-terminated string array or NULL if the specified key cannot
-//     be found. The array should be freed with g_strfreev().
+//     be found. The array should be freed with glib.Strfreev().
 func (keyFile *KeyFile) StringList(groupName string, key string) ([]string, error) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -19517,13 +19859,15 @@ func (keyFile *KeyFile) StringList(groupName string, key string) ([]string, erro
 }
 
 // Uint64 returns the value associated with key under group_name as an unsigned
-// 64-bit integer. This is similar to g_key_file_get_integer() but can return
-// large positive results without truncation.
+// 64-bit integer.
+//
+// This is similar to glib.KeyFile.GetInteger() but can return large positive
+// results without truncation.
 //
 // The function takes the following parameters:
 //
-//   - groupName: non-NULL group name.
-//   - key: non-NULL key.
+//   - groupName: group name.
+//   - key: key.
 //
 // The function returns the following values:
 //
@@ -19558,12 +19902,12 @@ func (keyFile *KeyFile) Uint64(groupName string, key string) (uint64, error) {
 	return _guint64, _goerr
 }
 
-// Value returns the raw value associated with key under group_name. Use
-// g_key_file_get_string() to retrieve an unescaped UTF-8 string.
+// Value returns the raw value associated with key under group_name.
 //
-// In the event the key cannot be found, NULL is returned and error is set to
-// G_KEY_FILE_ERROR_KEY_NOT_FOUND. In the event that the group_name cannot be
-// found, NULL is returned and error is set to G_KEY_FILE_ERROR_GROUP_NOT_FOUND.
+// Use glib.KeyFile.GetString() to retrieve an unescaped UTF-8 string.
+//
+// If the key cannot be found, glib.KeyFileError.KEYNOTFOUND is returned. If the
+// group_name cannot be found, glib.KeyFileError.GROUPNOTFOUND is returned.
 //
 // The function takes the following parameters:
 //
@@ -19612,7 +19956,7 @@ func (keyFile *KeyFile) Value(groupName string, key string) (string, error) {
 //
 // The function returns the following values:
 //
-//   - ok: TRUE if group_name is a part of key_file, FALSE otherwise.
+//   - ok: true if group_name is a part of key_file, false otherwise.
 func (keyFile *KeyFile) HasGroup(groupName string) bool {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -19635,13 +19979,15 @@ func (keyFile *KeyFile) HasGroup(groupName string) bool {
 	return _ok
 }
 
-// LoadFromBytes loads a key file from the data in bytes into an empty File
-// structure. If the object cannot be created then error is set to a FileError.
+// LoadFromBytes loads a key file from the data in bytes into an empty
+// glib.KeyFile structure.
+//
+// If the object cannot be created then a glib.KeyFileError is returned.
 //
 // The function takes the following parameters:
 //
-//   - bytes: #GBytes.
-//   - flags from FileFlags.
+//   - bytes: glib.Bytes.
+//   - flags from glib.KeyFileFlags.
 func (keyFile *KeyFile) LoadFromBytes(bytes *Bytes, flags KeyFileFlags) error {
 	var _arg0 *C.GKeyFile     // out
 	var _arg1 *C.GBytes       // out
@@ -19666,13 +20012,15 @@ func (keyFile *KeyFile) LoadFromBytes(bytes *Bytes, flags KeyFileFlags) error {
 	return _goerr
 }
 
-// LoadFromData loads a key file from memory into an empty File structure.
-// If the object cannot be created then error is set to a FileError.
+// LoadFromData loads a key file from memory into an empty glib.KeyFile
+// structure.
+//
+// If the object cannot be created then a [errorGLib.KeyFileError is returned.
 //
 // The function takes the following parameters:
 //
 //   - data: key file loaded in memory.
-//   - flags from FileFlags.
+//   - flags from glib.KeyFileFlags.
 func (keyFile *KeyFile) LoadFromData(data string, flags KeyFileFlags) error {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -19701,20 +20049,24 @@ func (keyFile *KeyFile) LoadFromData(data string, flags KeyFileFlags) error {
 	return _goerr
 }
 
-// LoadFromDataDirs: this function looks for a key file named file in the paths
-// returned from g_get_user_data_dir() and g_get_system_data_dirs(), loads the
-// file into key_file and returns the file's full path in full_path. If the file
-// could not be loaded then an error is set to either a Error or FileError.
+// LoadFromDataDirs looks for a key file named file in the paths returned from
+// glib.GetUserDataDir() and glib.GetSystemDataDirs().
+//
+// The search algorithm from glib.KeyFile.LoadFromDirs() is used. If file is
+// found, it’s loaded into key_file and its full path is returned in full_path.
+//
+// If the file could not be loaded then either a glib.FileError or
+// glib.KeyFileError is returned.
 //
 // The function takes the following parameters:
 //
 //   - file: relative path to a filename to open and parse.
-//   - flags from FileFlags.
+//   - flags from glib.KeyFileFlags.
 //
 // The function returns the following values:
 //
 //   - fullPath (optional): return location for a string containing the full
-//     path of the file, or NULL.
+//     path of the file, or NULL to ignore.
 func (keyFile *KeyFile) LoadFromDataDirs(file string, flags KeyFileFlags) (string, error) {
 	var _arg0 *C.GKeyFile     // out
 	var _arg1 *C.gchar        // out
@@ -19746,26 +20098,33 @@ func (keyFile *KeyFile) LoadFromDataDirs(file string, flags KeyFileFlags) (strin
 	return _fullPath, _goerr
 }
 
-// LoadFromDirs: this function looks for a key file named file in the paths
-// specified in search_dirs, loads the file into key_file and returns the file's
-// full path in full_path.
+// LoadFromDirs looks for a key file named file in the paths specified in
+// search_dirs, loads the file into key_file and returns the file’s full path in
+// full_path.
+//
+// search_dirs are checked in the order listed in the array, with the highest
+// priority directory listed first. Within each directory, file is looked for.
+// If it’s not found, - characters in file are progressively replaced with
+// directory separators to search subdirectories of the search directory.
+// If the file has not been found after all - characters have been replaced,
+// the next search directory in search_dirs is checked.
 //
 // If the file could not be found in any of the search_dirs,
-// G_KEY_FILE_ERROR_NOT_FOUND is returned. If the file is found but the
-// OS returns an error when opening or reading the file, a G_FILE_ERROR is
-// returned. If there is a problem parsing the file, a G_KEY_FILE_ERROR is
+// glib.KeyFileError.NOTFOUND is returned. If the file is found but the OS
+// returns an error when opening or reading the file, a glib.FileError is
+// returned. If there is a problem parsing the file, a glib.KeyFileError is
 // returned.
 //
 // The function takes the following parameters:
 //
 //   - file: relative path to a filename to open and parse.
 //   - searchDirs: NULL-terminated array of directories to search.
-//   - flags from FileFlags.
+//   - flags from glib.KeyFileFlags.
 //
 // The function returns the following values:
 //
 //   - fullPath (optional): return location for a string containing the full
-//     path of the file, or NULL.
+//     path of the file, or NULL to ignore.
 func (keyFile *KeyFile) LoadFromDirs(file string, searchDirs []string, flags KeyFileFlags) (string, error) {
 	var _arg0 *C.GKeyFile     // out
 	var _arg1 *C.gchar        // out
@@ -19812,19 +20171,19 @@ func (keyFile *KeyFile) LoadFromDirs(file string, searchDirs []string, flags Key
 	return _fullPath, _goerr
 }
 
-// LoadFromFile loads a key file into an empty File structure.
+// LoadFromFile loads a key file into an empty glib.KeyFile structure.
 //
-// If the OS returns an error when opening or reading the file, a G_FILE_ERROR
-// is returned. If there is a problem parsing the file, a G_KEY_FILE_ERROR is
+// If the OS returns an error when opening or reading the file, a glib.FileError
+// is returned. If there is a problem parsing the file, a glib.KeyFileError is
 // returned.
 //
-// This function will never return a G_KEY_FILE_ERROR_NOT_FOUND error. If the
-// file is not found, G_FILE_ERROR_NOENT is returned.
+// This function will never return a glib.KeyFileError.NOTFOUND error. If the
+// file is not found, glib.FileError.NOENT is returned.
 //
 // The function takes the following parameters:
 //
 //   - file: path of a filename to load, in the GLib filename encoding.
-//   - flags from FileFlags.
+//   - flags from glib.KeyFileFlags.
 func (keyFile *KeyFile) LoadFromFile(file string, flags KeyFileFlags) error {
 	var _arg0 *C.GKeyFile     // out
 	var _arg1 *C.gchar        // out
@@ -19850,14 +20209,16 @@ func (keyFile *KeyFile) LoadFromFile(file string, flags KeyFileFlags) error {
 	return _goerr
 }
 
-// RemoveComment removes a comment above key from group_name. If key is NULL
-// then comment will be removed above group_name. If both key and group_name are
-// NULL, then comment will be removed above the first group in the file.
+// RemoveComment removes a comment above key from group_name.
+//
+// If key is NULL then comment will be removed above group_name. If both key and
+// group_name are NULL, then comment will be removed above the first group in
+// the file.
 //
 // The function takes the following parameters:
 //
-//   - groupName (optional): group name, or NULL.
-//   - key (optional): key.
+//   - groupName (optional): group name, or NULL to get a top-level comment.
+//   - key (optional): key, or NULL to get a group comment.
 func (keyFile *KeyFile) RemoveComment(groupName string, key string) error {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -19948,11 +20309,13 @@ func (keyFile *KeyFile) RemoveKey(groupName string, key string) error {
 }
 
 // SaveToFile writes the contents of key_file to filename using
-// g_file_set_contents(). If you need stricter guarantees about durability
-// of the written file than are provided by g_file_set_contents(), use
-// g_file_set_contents_full() with the return value of g_key_file_to_data().
+// glib.FileSetContents().
 //
-// This function can fail for any of the reasons that g_file_set_contents() may
+// If you need stricter guarantees about durability of the written file than are
+// provided by glib.FileSetContents(), use glib.FileSetContentsFull() with the
+// return value of glib.KeyFile.ToData().
+//
+// This function can fail for any of the reasons that glib.FileSetContents() may
 // fail.
 //
 // The function takes the following parameters:
@@ -19980,14 +20343,15 @@ func (keyFile *KeyFile) SaveToFile(filename string) error {
 	return _goerr
 }
 
-// SetBoolean associates a new boolean value with key under group_name. If key
-// cannot be found then it is created.
+// SetBoolean associates a new boolean value with key under group_name.
+//
+// If key cannot be found then it is created.
 //
 // The function takes the following parameters:
 //
 //   - groupName: group name.
 //   - key: key.
-//   - value: TRUE or FALSE.
+//   - value: true or false.
 func (keyFile *KeyFile) SetBoolean(groupName string, key string, value bool) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 *C.gchar    // out
@@ -20011,8 +20375,8 @@ func (keyFile *KeyFile) SetBoolean(groupName string, key string, value bool) {
 }
 
 // SetBooleanList associates a list of boolean values with key under group_name.
-// If key cannot be found then it is created. If group_name is NULL, the
-// start_group is used.
+//
+// If key cannot be found then it is created.
 //
 // The function takes the following parameters:
 //
@@ -20049,13 +20413,16 @@ func (keyFile *KeyFile) SetBooleanList(groupName string, key string, list []bool
 // group_name are NULL, then comment will be written above the first group in
 // the file.
 //
-// Note that this function prepends a '#' comment marker to each line of
-// comment.
+// Passing a non-existent group_name or key to this function returns false and
+// populates error. (In contrast, passing a non-existent group_name or key to
+// glib.KeyFile.SetString() creates the associated group name and key.)
+//
+// Note that this function prepends a # comment marker to each line of comment.
 //
 // The function takes the following parameters:
 //
-//   - groupName (optional): group name, or NULL.
-//   - key (optional): key.
+//   - groupName (optional): group name, or NULL to write a top-level comment.
+//   - key (optional): key, or NULL to write a group comment.
 //   - comment: comment.
 func (keyFile *KeyFile) SetComment(groupName string, key string, comment string) error {
 	var _arg0 *C.GKeyFile // out
@@ -20091,8 +20458,9 @@ func (keyFile *KeyFile) SetComment(groupName string, key string, comment string)
 	return _goerr
 }
 
-// SetDouble associates a new double value with key under group_name. If key
-// cannot be found then it is created.
+// SetDouble associates a new double value with key under group_name.
+//
+// If key cannot be found then it is created.
 //
 // The function takes the following parameters:
 //
@@ -20120,6 +20488,7 @@ func (keyFile *KeyFile) SetDouble(groupName string, key string, value float64) {
 }
 
 // SetDoubleList associates a list of double values with key under group_name.
+//
 // If key cannot be found then it is created.
 //
 // The function takes the following parameters:
@@ -20151,8 +20520,9 @@ func (keyFile *KeyFile) SetDoubleList(groupName string, key string, list []float
 	runtime.KeepAlive(list)
 }
 
-// SetInt64 associates a new integer value with key under group_name. If key
-// cannot be found then it is created.
+// SetInt64 associates a new integer value with key under group_name.
+//
+// If key cannot be found then it is created.
 //
 // The function takes the following parameters:
 //
@@ -20179,8 +20549,9 @@ func (keyFile *KeyFile) SetInt64(groupName string, key string, value int64) {
 	runtime.KeepAlive(value)
 }
 
-// SetInteger associates a new integer value with key under group_name. If key
-// cannot be found then it is created.
+// SetInteger associates a new integer value with key under group_name.
+//
+// If key cannot be found then it is created.
 //
 // The function takes the following parameters:
 //
@@ -20208,6 +20579,7 @@ func (keyFile *KeyFile) SetInteger(groupName string, key string, value int) {
 }
 
 // SetIntegerList associates a list of integer values with key under group_name.
+//
 // If key cannot be found then it is created.
 //
 // The function takes the following parameters:
@@ -20244,9 +20616,10 @@ func (keyFile *KeyFile) SetIntegerList(groupName string, key string, list []int)
 	runtime.KeepAlive(list)
 }
 
-// SetListSeparator sets the character which is used to separate values
-// in lists. Typically ';' or ',' are used as separators. The default list
-// separator is ';'.
+// SetListSeparator sets the character which is used to separate values in
+// lists.
+//
+// Typically ; or , are used as separators. The default list separator is ;.
 //
 // The function takes the following parameters:
 //
@@ -20264,7 +20637,11 @@ func (keyFile *KeyFile) SetListSeparator(separator byte) {
 }
 
 // SetLocaleString associates a string value for key and locale under
-// group_name. If the translation for key cannot be found then it is created.
+// group_name.
+//
+// If the translation for key cannot be found then it is created.
+//
+// If locale is C then the untranslated value is set (since GLib 2.84).
 //
 // The function takes the following parameters:
 //
@@ -20298,8 +20675,11 @@ func (keyFile *KeyFile) SetLocaleString(groupName string, key string, locale str
 }
 
 // SetLocaleStringList associates a list of string values for key and locale
-// under group_name. If the translation for key cannot be found then it is
-// created.
+// under group_name.
+//
+// If locale is C then the untranslated value is set (since GLib 2.84).
+//
+// If the translation for key cannot be found then it is created.
 //
 // The function takes the following parameters:
 //
@@ -20341,10 +20721,11 @@ func (keyFile *KeyFile) SetLocaleStringList(groupName string, key string, locale
 	runtime.KeepAlive(list)
 }
 
-// SetString associates a new string value with key under group_name. If key
-// cannot be found then it is created. If group_name cannot be found then it is
-// created. Unlike g_key_file_set_value(), this function handles characters that
-// need escaping, such as newlines.
+// SetString associates a new string value with key under group_name.
+//
+// If key cannot be found then it is created. If group_name cannot be found
+// then it is created. Unlike glib.KeyFile.SetValue(), this function handles
+// characters that need escaping, such as newlines.
 //
 // The function takes the following parameters:
 //
@@ -20373,6 +20754,7 @@ func (keyFile *KeyFile) SetString(groupName string, key string, str string) {
 }
 
 // SetStringList associates a list of string values for key under group_name.
+//
 // If key cannot be found then it is created. If group_name cannot be found then
 // it is created.
 //
@@ -20411,8 +20793,9 @@ func (keyFile *KeyFile) SetStringList(groupName string, key string, list []strin
 	runtime.KeepAlive(list)
 }
 
-// SetUint64 associates a new integer value with key under group_name. If key
-// cannot be found then it is created.
+// SetUint64 associates a new integer value with key under group_name.
+//
+// If key cannot be found then it is created.
 //
 // The function takes the following parameters:
 //
@@ -20443,7 +20826,7 @@ func (keyFile *KeyFile) SetUint64(groupName string, key string, value uint64) {
 //
 // If key cannot be found then it is created. If group_name cannot be found then
 // it is created. To set an UTF-8 string which may contain characters that need
-// escaping (such as newlines or spaces), use g_key_file_set_string().
+// escaping (such as newlines or spaces), use glib.KeyFile.SetString().
 //
 // The function takes the following parameters:
 //
@@ -20471,16 +20854,15 @@ func (keyFile *KeyFile) SetValue(groupName string, key string, value string) {
 	runtime.KeepAlive(value)
 }
 
-// ToData: this function outputs key_file as a string.
+// ToData outputs key_file as a string.
 //
-// Note that this function never reports an error, so it is safe to pass NULL as
-// error.
+// Note that this function never reports an error.
 //
 // The function returns the following values:
 //
 //   - length (optional): return location for the length of the returned string,
-//     or NULL.
-//   - utf8: newly allocated string holding the contents of the File.
+//     or NULL to ignore.
+//   - utf8: newly allocated string holding the contents of the key file.
 func (keyFile *KeyFile) ToData() (uint, string, error) {
 	var _arg0 *C.GKeyFile // out
 	var _arg1 C.gsize     // in
@@ -20604,22 +20986,23 @@ func NewMainContextWithFlags(flags MainContextFlags) *MainContext {
 	return _mainContext
 }
 
-// Acquire tries to become the owner of the specified context. If some other
-// thread is the owner of the context, returns FALSE immediately. Ownership
-// is properly recursive: the owner can require ownership again and will
-// release ownership when g_main_context_release() is called as many times as
-// g_main_context_acquire().
+// Acquire tries to become the owner of the specified context.
+//
+// If some other thread is the owner of the context, returns false immediately.
+// Ownership is properly recursive: the owner can require ownership again and
+// will release ownership when glib.MainContext.Release() is called as many
+// times as glib.MainContext.Acquire().
 //
 // You must be the owner of a context before you can call
-// g_main_context_prepare(), g_main_context_query(), g_main_context_check(),
-// g_main_context_dispatch(), g_main_context_release().
+// glib.MainContext.Prepare(), glib.MainContext.Query(),
+// glib.MainContext.Check(), glib.MainContext.Dispatch(),
+// glib.MainContext.Release().
 //
 // Since 2.76 context can be NULL to use the global-default main context.
 //
 // The function returns the following values:
 //
-//   - ok: TRUE if the operation succeeded, and this thread is now the owner of
-//     context.
+//   - ok: true if this thread is now the owner of context, false otherwise.
 func (context *MainContext) Acquire() bool {
 	var _arg0 *C.GMainContext // out
 	var _cret C.gboolean      // in
@@ -20642,8 +21025,8 @@ func (context *MainContext) Acquire() bool {
 
 // Dispatch dispatches all pending sources.
 //
-// You must have successfully acquired the context with g_main_context_acquire()
-// before you may call this function.
+// You must have successfully acquired the context with
+// glib.MainContext.Acquire() before you may call this function.
 //
 // Since 2.76 context can be NULL to use the global-default main context.
 func (context *MainContext) Dispatch() {
@@ -20658,17 +21041,19 @@ func (context *MainContext) Dispatch() {
 }
 
 // FindSourceByFuncsUserData finds a source with the given source functions and
-// user data. If multiple sources exist with the same source function and user
-// data, the first one found will be returned.
+// user data.
+//
+// If multiple sources exist with the same source function and user data,
+// the first one found will be returned.
 //
 // The function takes the following parameters:
 //
-//   - funcs passed to g_source_new().
+//   - funcs passed to glib.Source.New.
 //   - userData (optional): user data from the callback.
 //
 // The function returns the following values:
 //
-//   - source: source, if one was found, otherwise NULL.
+//   - source (optional): source, if one was found, otherwise NULL.
 func (context *MainContext) FindSourceByFuncsUserData(funcs *SourceFuncs, userData unsafe.Pointer) *Source {
 	var _arg0 *C.GMainContext // out
 	var _arg1 *C.GSourceFuncs // out
@@ -20688,37 +21073,39 @@ func (context *MainContext) FindSourceByFuncsUserData(funcs *SourceFuncs, userDa
 
 	var _source *Source // out
 
-	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_source_ref(_cret)
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_source)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_source_unref((*C.GSource)(intern.C))
-		},
-	)
+	if _cret != nil {
+		_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_source_ref(_cret)
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_source)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_source_unref((*C.GSource)(intern.C))
+			},
+		)
+	}
 
 	return _source
 }
 
-// FindSourceByID finds a #GSource given a pair of context and ID.
+// FindSourceByID finds a glib.Source given a pair of context and ID.
 //
 // It is a programmer error to attempt to look up a non-existent source.
 //
 // More specifically: source IDs can be reissued after a source has been
 // destroyed and therefore it is never valid to use this function with a source
 // ID which may have already been removed. An example is when scheduling an idle
-// to run in another thread with g_idle_add(): the idle may already have run and
-// been removed by the time this function is called on its (now invalid) source
-// ID. This source ID may have been reissued, leading to the operation being
-// performed against the wrong source.
+// to run in another thread with glib.IdleAdd(): the idle may already have run
+// and been removed by the time this function is called on its (now invalid)
+// source ID. This source ID may have been reissued, leading to the operation
+// being performed against the wrong source.
 //
 // The function takes the following parameters:
 //
-//   - sourceId: source ID, as returned by g_source_get_id().
+//   - sourceId: source ID, as returned by glib.Source.GetID().
 //
 // The function returns the following values:
 //
-//   - source: #GSource.
+//   - source: source.
 func (context *MainContext) FindSourceByID(sourceId uint) *Source {
 	var _arg0 *C.GMainContext // out
 	var _arg1 C.guint         // out
@@ -20748,8 +21135,10 @@ func (context *MainContext) FindSourceByID(sourceId uint) *Source {
 }
 
 // FindSourceByUserData finds a source with the given user data for the
-// callback. If multiple sources exist with the same user data, the first one
-// found will be returned.
+// callback.
+//
+// If multiple sources exist with the same user data, the first one found will
+// be returned.
 //
 // The function takes the following parameters:
 //
@@ -20757,7 +21146,7 @@ func (context *MainContext) FindSourceByID(sourceId uint) *Source {
 //
 // The function returns the following values:
 //
-//   - source: source, if one was found, otherwise NULL.
+//   - source (optional): source, if one was found, otherwise NULL.
 func (context *MainContext) FindSourceByUserData(userData unsafe.Pointer) *Source {
 	var _arg0 *C.GMainContext // out
 	var _arg1 C.gpointer      // out
@@ -20774,14 +21163,16 @@ func (context *MainContext) FindSourceByUserData(userData unsafe.Pointer) *Sourc
 
 	var _source *Source // out
 
-	_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
-	C.g_source_ref(_cret)
-	runtime.SetFinalizer(
-		gextras.StructIntern(unsafe.Pointer(_source)),
-		func(intern *struct{ C unsafe.Pointer }) {
-			C.g_source_unref((*C.GSource)(intern.C))
-		},
-	)
+	if _cret != nil {
+		_source = (*Source)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		C.g_source_ref(_cret)
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_source)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_source_unref((*C.GSource)(intern.C))
+			},
+		)
+	}
 
 	return _source
 }
@@ -20789,12 +21180,12 @@ func (context *MainContext) FindSourceByUserData(userData unsafe.Pointer) *Sourc
 // InvokeFull invokes a function in such a way that context is owned during the
 // invocation of function.
 //
-// This function is the same as g_main_context_invoke() except that it lets you
-// specify the priority in case function ends up being scheduled as an idle and
-// also lets you give a Notify for data.
+// This function is the same as glib.MainContext.Invoke() except that it lets
+// you specify the priority in case function ends up being scheduled as an idle
+// and also lets you give a glib.DestroyNotify for data.
 //
-// notify should not assume that it is called from any particular thread or with
-// any particular context acquired.
+// The notify function should not assume that it is called from any particular
+// thread or with any particular context acquired.
 //
 // The function takes the following parameters:
 //
@@ -20822,12 +21213,14 @@ func (context *MainContext) InvokeFull(priority int, function SourceFunc) {
 }
 
 // IsOwner determines whether this thread holds the (recursive) ownership of
-// this Context. This is useful to know before waiting on another thread that
-// may be blocking to get ownership of context.
+// this glib.MainContext.
+//
+// This is useful to know before waiting on another thread that may be blocking
+// to get ownership of context.
 //
 // The function returns the following values:
 //
-//   - ok: TRUE if current thread is owner of context.
+//   - ok: true if current thread is owner of context, false otherwise.
 func (context *MainContext) IsOwner() bool {
 	var _arg0 *C.GMainContext // out
 	var _cret C.gboolean      // in
@@ -20848,17 +21241,18 @@ func (context *MainContext) IsOwner() bool {
 	return _ok
 }
 
-// Iteration runs a single iteration for the given main loop. This involves
-// checking to see if any event sources are ready to be processed, then if
-// no events sources are ready and may_block is TRUE, waiting for a source to
-// become ready, then dispatching the highest priority events sources that are
-// ready. Otherwise, if may_block is FALSE sources are not waited to become
-// ready, only those highest priority events sources will be dispatched (if
-// any), that are ready at this given moment without further waiting.
+// Iteration runs a single iteration for the given main loop.
 //
-// Note that even when may_block is TRUE, it is still possible for
-// g_main_context_iteration() to return FALSE, since the wait may be interrupted
-// for other reasons than an event source becoming ready.
+// This involves checking to see if any event sources are ready to be processed,
+// then if no events sources are ready and may_block is true, waiting for a
+// source to become ready, then dispatching the highest priority events sources
+// that are ready. Otherwise, if may_block is false, this function does not wait
+// for sources to become ready, and only the highest priority sources which are
+// already ready (if any) will be dispatched.
+//
+// Note that even when may_block is true, it is still possible for
+// glib.MainContext.Iteration() to return false, since the wait may be
+// interrupted for other reasons than an event source becoming ready.
 //
 // The function takes the following parameters:
 //
@@ -20866,7 +21260,7 @@ func (context *MainContext) IsOwner() bool {
 //
 // The function returns the following values:
 //
-//   - ok: TRUE if events were dispatched.
+//   - ok: true if events were dispatched, false otherwise.
 func (context *MainContext) Iteration(mayBlock bool) bool {
 	var _arg0 *C.GMainContext // out
 	var _arg1 C.gboolean      // out
@@ -20896,7 +21290,7 @@ func (context *MainContext) Iteration(mayBlock bool) bool {
 //
 // The function returns the following values:
 //
-//   - ok: TRUE if events are pending.
+//   - ok: true if events are pending, false otherwise.
 func (context *MainContext) Pending() bool {
 	var _arg0 *C.GMainContext // out
 	var _cret C.gboolean      // in
@@ -20930,17 +21324,20 @@ func (context *MainContext) PopThreadDefault() {
 	runtime.KeepAlive(context)
 }
 
-// Prepare prepares to poll sources within a main loop. The resulting
-// information for polling is determined by calling g_main_context_query ().
+// Prepare prepares to poll sources within a main loop.
 //
-// You must have successfully acquired the context with g_main_context_acquire()
-// before you may call this function.
+// The resulting information for polling is determined by calling
+// glib.MainContext.Query().
+//
+// You must have successfully acquired the context with
+// glib.MainContext.Acquire() before you may call this function.
 //
 // The function returns the following values:
 //
 //   - priority (optional): location to store priority of highest priority
 //     source already ready.
-//   - ok: TRUE if some source is ready to be dispatched prior to polling.
+//   - ok: true if some source is ready to be dispatched prior to polling,
+//     false otherwise.
 func (context *MainContext) Prepare() (int, bool) {
 	var _arg0 *C.GMainContext // out
 	var _arg1 C.gint          // in
@@ -20964,38 +21361,41 @@ func (context *MainContext) Prepare() (int, bool) {
 	return _priority, _ok
 }
 
-// PushThreadDefault acquires context and sets it as the thread-default context
-// for the current thread. This will cause certain asynchronous operations (such
-// as most [gio][gio]-based I/O) which are started in this thread to run under
-// context and deliver their results to its main loop, rather than running under
-// the global default main context in the main thread. Note that calling this
-// function changes the context returned by g_main_context_get_thread_default(),
-// not the one returned by g_main_context_default(), so it does not affect the
-// context used by functions like g_idle_add().
+// PushThreadDefault acquires context and sets it as the thread-default
+// context for the current thread. This will cause certain asynchronous
+// operations (such as most Gio (../gio/index.html)-based I/O) which are
+// started in this thread to run under context and deliver their results to
+// its main loop, rather than running under the global default main context
+// in the main thread. Note that calling this function changes the context
+// returned by glib.MainContext().GetThreadDefault, not the one returned
+// by glib.MainContext().Default, so it does not affect the context used by
+// functions like glib.IdleAdd().
 //
-// Normally you would call this function shortly after creating a new thread,
-// passing it a Context which will be run by a Loop in that thread, to set a new
-// default context for all async operations in that thread. In this case you may
-// not need to ever call g_main_context_pop_thread_default(), assuming you want
-// the new Context to be the default for the whole lifecycle of the thread.
+// Normally you would call this function shortly after creating a
+// new thread, passing it a glib.MainContext which will be run by a
+// glib.MainLoop in that thread, to set a new default context for all
+// async operations in that thread. In this case you may not need to ever
+// call glib.MainContext.PopThreadDefault(), assuming you want the new
+// glib.MainContext to be the default for the whole lifecycle of the thread.
 //
-// If you don't have control over how the new thread was created (e.g.
-// in the new thread isn't newly created, or if the thread life cycle is
-// managed by a Pool), it is always suggested to wrap the logic that needs
-// to use the new Context inside a g_main_context_push_thread_default() /
-// g_main_context_pop_thread_default() pair, otherwise threads that are re-used
-// will end up never explicitly releasing the Context reference they hold.
+// If you don’t have control over how the new thread was created (e.g.
+// in the new thread isn’t newly created, or if the thread life cycle is
+// managed by a Pool), it is always suggested to wrap the logic that needs to
+// use the new glib.MainContext inside a glib.MainContext.PushThreadDefault() /
+// glib.MainContext.PopThreadDefault() pair, otherwise threads that are re-used
+// will end up never explicitly releasing the glib.MainContext reference they
+// hold.
 //
 // In some cases you may want to schedule a single operation in a non-default
 // context, or temporarily use a non-default context in the main thread.
 // In that case, you can wrap the call to the asynchronous operation inside a
-// g_main_context_push_thread_default() / g_main_context_pop_thread_default()
+// glib.MainContext.PushThreadDefault() / glib.MainContext.PopThreadDefault()
 // pair, but it is up to you to ensure that no other asynchronous operations
 // accidentally get started while the non-default context is active.
 //
-// Beware that libraries that predate this function may not correctly
-// handle being used from a thread with a thread-default context. Eg, see
-// g_file_supports_thread_contexts().
+// Beware that libraries that predate this function may not correctly handle
+// being used from a thread with a thread-default context. For example,
+// see g_file_supports_thread_contexts().
 func (context *MainContext) PushThreadDefault() {
 	var _arg0 *C.GMainContext // out
 
@@ -21008,12 +21408,14 @@ func (context *MainContext) PushThreadDefault() {
 }
 
 // Release releases ownership of a context previously acquired by this thread
-// with g_main_context_acquire(). If the context was acquired multiple times,
-// the ownership will be released only when g_main_context_release() is called
-// as many times as it was acquired.
+// with glib.MainContext.Acquire().
 //
-// You must have successfully acquired the context with g_main_context_acquire()
-// before you may call this function.
+// If the context was acquired multiple times, the ownership will be released
+// only when glib.MainContext.Release() is called as many times as it was
+// acquired.
+//
+// You must have successfully acquired the context with
+// glib.MainContext.Acquire() before you may call this function.
 func (context *MainContext) Release() {
 	var _arg0 *C.GMainContext // out
 
@@ -21025,18 +21427,29 @@ func (context *MainContext) Release() {
 	runtime.KeepAlive(context)
 }
 
-// Wakeup: if context is currently blocking in g_main_context_iteration()
-// waiting for a source to become ready, cause it to stop blocking and return.
-// Otherwise, cause the next invocation of g_main_context_iteration() to return
-// without blocking.
+// Wakeup: wake up context if it’s currently blocking in
+// glib.MainContext.Iteration(), causing it to stop blocking.
 //
-// This API is useful for low-level control over Context; for example,
-// integrating it with main loop implementations such as Loop.
+// The context could be blocking waiting for a source to become ready.
+// Otherwise, if context is not currently blocking, this function causes the
+// next invocation of glib.MainContext.Iteration() to return without blocking.
+//
+// This API is useful for low-level control over glib.MainContext; for example,
+// integrating it with main loop implementations such as glib.MainLoop.
 //
 // Another related use for this function is when implementing a main loop with a
 // termination condition, computed from multiple threads:
 //
-//	perform_work();
+//	#define NUM_TASKS 10
+//	static gint tasks_remaining = NUM_TASKS;  // (atomic)
+//	...
+//
+//	while (g_atomic_int_get (&tasks_remaining) != 0)
+//	  g_main_context_iteration (NULL, TRUE);
+//
+// Then in a thread:
+//
+//	perform_work ();
 //
 //	if (g_atomic_int_dec_and_test (&tasks_remaining))
 //	  g_main_context_wakeup (NULL);.
@@ -21051,10 +21464,11 @@ func (context *MainContext) Wakeup() {
 	runtime.KeepAlive(context)
 }
 
-// MainContextDefault returns the global-default main context. This is
-// the main context used for main loop functions when a main loop is not
-// explicitly specified, and corresponds to the "main" main loop. See also
-// g_main_context_get_thread_default().
+// MainContextDefault returns the global-default main context.
+//
+// This is the main context used for main loop functions when a main loop is
+// not explicitly specified, and corresponds to the ‘main’ main loop. See also
+// glib.MainContext().GetThreadDefault.
 //
 // The function returns the following values:
 //
@@ -21078,20 +21492,23 @@ func MainContextDefault() *MainContext {
 	return _mainContext
 }
 
-// MainContextGetThreadDefault gets the thread-default Context for
-// this thread. Asynchronous operations that want to be able to be run
-// in contexts other than the default one should call this method or
-// g_main_context_ref_thread_default() to get a Context to add their #GSources
-// to. (Note that even in single-threaded programs applications may sometimes
-// want to temporarily push a non-default context, so it is not safe to assume
-// that this will always return NULL if you are running in the default thread.)
+// MainContextGetThreadDefault gets the thread-default main context for this
+// thread.
+//
+// Asynchronous operations that want to be able to be run in
+// contexts other than the default one should call this method or
+// glib.MainContext().RefThreadDefault to get a glib.MainContext to add their
+// glib.Sources to. (Note that even in single-threaded programs applications may
+// sometimes want to temporarily push a non-default context, so it is not safe
+// to assume that this will always return NULL if you are running in the default
+// thread.)
 //
 // If you need to hold a reference on the context, use
-// g_main_context_ref_thread_default() instead.
+// glib.MainContext().RefThreadDefault instead.
 //
 // The function returns the following values:
 //
-//   - mainContext (optional): thread-default Context, or NULL if the
+//   - mainContext (optional): thread-default main context, or NULL if the
 //     thread-default context is the global-default main context.
 func MainContextGetThreadDefault() *MainContext {
 	var _cret *C.GMainContext // in
@@ -21114,17 +21531,18 @@ func MainContextGetThreadDefault() *MainContext {
 	return _mainContext
 }
 
-// MainContextRefThreadDefault gets the thread-default Context for this
-// thread, as with g_main_context_get_thread_default(), but also adds
-// a reference to it with g_main_context_ref(). In addition, unlike
-// g_main_context_get_thread_default(), if the thread-default context is the
-// global-default context, this will return that Context (with a ref added to
-// it) rather than returning NULL.
+// MainContextRefThreadDefault gets a reference to the thread-default
+// glib.MainContext for this thread
+//
+// This is the same as glib.MainContext().GetThreadDefault, but it also adds
+// a reference to the returned main context with glib.MainContext.Ref(). In
+// addition, unlike glib.MainContext().GetThreadDefault, if the thread-default
+// context is the global-default context, this will return that glib.MainContext
+// (with a ref added to it) rather than returning NULL.
 //
 // The function returns the following values:
 //
-//   - mainContext: thread-default Context. Unref with g_main_context_unref()
-//     when you are done with it.
+//   - mainContext: thread-default main context.
 func MainContextRefThreadDefault() *MainContext {
 	var _cret *C.GMainContext // in
 
@@ -21191,11 +21609,11 @@ func NewMainLoop(context *MainContext, isRunning bool) *MainLoop {
 	return _mainLoop
 }
 
-// Context returns the Context of loop.
+// Context returns the glib.MainContext of loop.
 //
 // The function returns the following values:
 //
-//   - mainContext of loop.
+//   - mainContext: glib.MainContext of loop.
 func (loop *MainLoop) Context() *MainContext {
 	var _arg0 *C.GMainLoop    // out
 	var _cret *C.GMainContext // in
@@ -21220,11 +21638,11 @@ func (loop *MainLoop) Context() *MainContext {
 }
 
 // IsRunning checks to see if the main loop is currently being run via
-// g_main_loop_run().
+// glib.MainLoop.Run().
 //
 // The function returns the following values:
 //
-//   - ok: TRUE if the mainloop is currently being run.
+//   - ok: true if the main loop is currently being run, false otherwise.
 func (loop *MainLoop) IsRunning() bool {
 	var _arg0 *C.GMainLoop // out
 	var _cret C.gboolean   // in
@@ -21243,10 +21661,10 @@ func (loop *MainLoop) IsRunning() bool {
 	return _ok
 }
 
-// Quit stops a Loop from running. Any calls to g_main_loop_run() for the loop
-// will return.
+// Quit stops a glib.MainLoop from running. Any calls to glib.MainLoop.Run() for
+// the loop will return.
 //
-// Note that sources that have already been dispatched when g_main_loop_quit()
+// Note that sources that have already been dispatched when glib.MainLoop.Quit()
 // is called will still be executed.
 func (loop *MainLoop) Quit() {
 	var _arg0 *C.GMainLoop // out
@@ -21257,9 +21675,10 @@ func (loop *MainLoop) Quit() {
 	runtime.KeepAlive(loop)
 }
 
-// Run runs a main loop until g_main_loop_quit() is called on the loop. If this
-// is called for the thread of the loop's Context, it will process events from
-// the loop, otherwise it will simply wait.
+// Run runs a main loop until glib.MainLoop.Quit() is called on the loop.
+//
+// If this is called from the thread of the loop’s glib.MainContext, it will
+// process events from the loop, otherwise it will simply wait.
 func (loop *MainLoop) Run() {
 	var _arg0 *C.GMainLoop // out
 
@@ -21392,7 +21811,7 @@ func (file *MappedFile) Bytes() *Bytes {
 //
 // The function returns the following values:
 //
-//   - utf8 contents of file, or NULL.
+//   - utf8 (optional) contents of file, or NULL.
 func (file *MappedFile) Contents() string {
 	var _arg0 *C.GMappedFile // out
 	var _cret *C.gchar       // in
@@ -21404,8 +21823,9 @@ func (file *MappedFile) Contents() string {
 
 	var _utf8 string // out
 
-	_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
-	defer C.free(unsafe.Pointer(_cret))
+	if _cret != nil {
+		_utf8 = C.GoString((*C.gchar)(unsafe.Pointer(_cret)))
+	}
 
 	return _utf8
 }
@@ -21535,6 +21955,32 @@ func (context *MarkupParseContext) ElementStack() []string {
 	return _sList
 }
 
+// Offset retrieves the current offset from the beginning of the document,
+// in bytes.
+//
+// The information is meant to accompany the values returned by
+// glib.MarkupParseContext.GetPosition(), and comes with the same accuracy
+// guarantees.
+//
+// The function returns the following values:
+//
+//   - gsize: offset.
+func (context *MarkupParseContext) Offset() uint {
+	var _arg0 *C.GMarkupParseContext // out
+	var _cret C.gsize                // in
+
+	_arg0 = (*C.GMarkupParseContext)(gextras.StructNative(unsafe.Pointer(context)))
+
+	_cret = C.g_markup_parse_context_get_offset(_arg0)
+	runtime.KeepAlive(context)
+
+	var _gsize uint // out
+
+	_gsize = uint(_cret)
+
+	return _gsize
+}
+
 // Position retrieves the current line number and the number of the character on
 // that line. Intended for use in error messages; there are no strict semantics
 // for what constitutes the "current" line number other than "the best number we
@@ -21562,6 +22008,46 @@ func (context *MarkupParseContext) Position() (lineNumber int, charNumber int) {
 	_charNumber = int(_arg2)
 
 	return _lineNumber, _charNumber
+}
+
+// TagStart retrieves the start position of the current start or end tag.
+//
+// This function can be used in the start_element or end_element callbacks to
+// obtain location information for error reporting.
+//
+// Note that line_number and char_number are intended for human readable error
+// messages and are therefore 1-based and in Unicode characters. offset on the
+// other hand is meant for programmatic use, and thus is 0-based and in bytes.
+//
+// The information is meant to accompany the values returned by
+// glib.MarkupParseContext.GetPosition(), and comes with the same accuracy
+// guarantees.
+//
+// The function returns the following values:
+//
+//   - lineNumber: return location for the line number.
+//   - charNumber: return location for the character number.
+//   - offset: return location for offset from the beginning of the document.
+func (context *MarkupParseContext) TagStart() (lineNumber uint, charNumber uint, offset uint) {
+	var _arg0 *C.GMarkupParseContext // out
+	var _arg1 C.gsize                // in
+	var _arg2 C.gsize                // in
+	var _arg3 C.gsize                // in
+
+	_arg0 = (*C.GMarkupParseContext)(gextras.StructNative(unsafe.Pointer(context)))
+
+	C.g_markup_parse_context_get_tag_start(_arg0, &_arg1, &_arg2, &_arg3)
+	runtime.KeepAlive(context)
+
+	var _lineNumber uint // out
+	var _charNumber uint // out
+	var _offset uint     // out
+
+	_lineNumber = uint(_arg1)
+	_charNumber = uint(_arg2)
+	_offset = uint(_arg3)
+
+	return _lineNumber, _charNumber, _offset
 }
 
 // UserData returns the user_data associated with context.
@@ -21731,6 +22217,10 @@ func (context *MarkupParseContext) Push(parser *MarkupParser, userData unsafe.Po
 // are intended to be set from these callbacks. If you set an error from a
 // callback, g_markup_parse_context_parse() will report that error back to its
 // caller.
+//
+// Refer to the GMarkup (../glib/markup.html) documentation to understand the
+// scope and limitations of GMarkupParser. In particular, it is not a full XML
+// parser and it must not be used to process untrusted data.
 //
 // An instance of this type is always passed by reference.
 type MarkupParser struct {
@@ -21955,6 +22445,9 @@ func (matchInfo *MatchInfo) FetchNamed(name string) string {
 // pattern "X", matching "b" against "(?P<X>a)?b") then start_pos and end_pos
 // are set to -1 and TRUE is returned.
 //
+// As end_pos is set to the byte after the final byte of the match (on success),
+// the length of the match can be calculated as end_pos - start_pos.
+//
 // The function takes the following parameters:
 //
 //   - name of the subexpression.
@@ -21963,8 +22456,8 @@ func (matchInfo *MatchInfo) FetchNamed(name string) string {
 //
 //   - startPos (optional): pointer to location where to store the start
 //     position, or NULL.
-//   - endPos (optional): pointer to location where to store the end position,
-//     or NULL.
+//   - endPos (optional): pointer to location where to store the end position
+//     (the byte after the final byte of the match), or NULL.
 //   - ok: TRUE if the position was fetched, FALSE otherwise. If the position
 //     cannot be fetched, start_pos and end_pos are left unchanged.
 func (matchInfo *MatchInfo) FetchNamedPos(name string) (startPos int, endPos int, ok bool) {
@@ -21995,31 +22488,205 @@ func (matchInfo *MatchInfo) FetchNamedPos(name string) (startPos int, endPos int
 	return _startPos, _endPos, _ok
 }
 
-// FetchPos retrieves the position in bytes of the match_num'th capturing
-// parentheses. 0 is the full text of the match, 1 is the first paren set,
-// 2 the second, and so on.
+// FetchPos returns the start and end positions (in bytes) of a successfully
+// matching capture parenthesis.
 //
-// If match_num is a valid sub pattern but it didn't match anything (e.g.
-// sub pattern 1, matching "b" against "(a)?b") then start_pos and end_pos are
-// set to -1 and TRUE is returned.
+// Valid values for match_num are 0 for the full text of the match, 1 for the
+// first paren set, 2 for the second, and so on.
 //
-// If the match was obtained using the DFA algorithm, that is using
-// g_regex_match_all() or g_regex_match_all_full(), the retrieved position is
-// not that of a set of parentheses but that of a matched substring. Substrings
-// are matched in reverse order of length, so 0 is the longest match.
+// As end_pos is set to the byte after the final byte of the match (on success),
+// the length of the match can be calculated as end_pos - start_pos.
+//
+// As a best practice, initialize start_pos and end_pos to identifiable values,
+// such as G_MAXINT, so that you can test if g_match_info_fetch_pos() actually
+// changed the value for a given capture parenthesis.
+//
+// The parameter match_num corresponds to a matched capture parenthesis.
+// The actual value you use for match_num depends on the method used to generate
+// match_info. The following sections describe those methods.
+//
+// # Methods Using Non-deterministic Finite Automata Matching
+//
+// The methods glib.Regex.Match() and glib.Regex.MatchFull()
+// return a glib.MatchInfo using traditional (greedy) pattern
+// matching, also known as Non-deterministic Finite Automaton
+// (https://en.wikipedia.org/wiki/Nondeterministic_finite_automaton)
+// (NFA) matching. You pass the returned GMatchInfo from these methods to
+// g_match_info_fetch_pos() to determine the start and end positions of capture
+// parentheses. The values for match_num correspond to the capture parentheses
+// in order, with 0 corresponding to the entire matched string.
+//
+// match_num can refer to a capture parenthesis with no match. For example,
+// the string b matches against the pattern (a)?b, but the capture parenthesis
+// (a) has no match. In this case, g_match_info_fetch_pos() returns true and
+// sets start_pos and end_pos to -1 when called with match_num as 1 (for (a)).
+//
+// For an expanded example, a regex pattern is (a)?(.*?)the (.*), and a
+// candidate string is glib regexes are the best. In this scenario there are
+// four capture parentheses numbered 0–3: an implicit one for the entire string,
+// and three explicitly declared in the regex pattern.
+//
+// Given this example, the following table describes the return values from
+// g_match_info_fetch_pos() for various values of match_num.
+//
+// match_num | Contents | Return value | Returned start_pos | Returned
+// end_pos ----------- | -------- | ------------ | -------------------- |
+// ------------------ 0 | Matches entire string | True | 0 | 25 1 | Does not
+// match first character | True | -1 | -1 2 | All text before the | True | 0 |
+// 17 3 | All text after the | True | 21 | 25 4 | Capture paren out of range |
+// False | Unchanged | Unchanged
+//
+// The following code sample and output implements this example.
+//
+// ` { .c } #include <glib.h>
+//
+// int main (int argc, char *argv[]) { g_autoptr(GError) local_error = NULL;
+// const char *regex_pattern = "(a)?(.*?)the (.*)"; const char *test_string =
+// "glib regexes are the best"; g_autoptr(GRegex) regex = NULL;
+//
+//	  regex = g_regex_new (regex_pattern,
+//	                       G_REGEX_DEFAULT,
+//	                       G_REGEX_MATCH_DEFAULT,
+//	                       &local_error);
+//	  if (regex == NULL)
+//	    {
+//	      g_printerr ("Error creating regex: s\n", local_error->message);
+//	      return 1;
+//	    }
+//
+//	  g_autoptr(GMatchInfo) match_info = NULL;
+//	  g_regex_match (regex, test_string, G_REGEX_MATCH_DEFAULT, &match_info);
+//
+//	  int n_matched_strings = g_match_info_get_match_count (match_info);
+//
+//	  // Print header line
+//	  g_print ("match_num Contents                  Return value returned start_pos returned end_pos\n");
+//
+//	  // Iterate over each capture paren, including one that is out of range as a demonstration.
+//	  for (int match_num = 0; match_num <= n_matched_strings; match_num++)
+//	    {
+//	      gboolean found_match;
+//	      g_autofree char *paren_string = NULL;
+//	      int start_pos = G_MAXINT;
+//	      int end_pos = G_MAXINT;
+//
+//	      found_match = g_match_info_fetch_pos (match_info,
+//	                                            match_num,
+//	                                            &start_pos,
+//	                                            &end_pos);
+//
+//	      // If no match, display N/A as the found string.
+//	      if (start_pos == G_MAXINT || start_pos == -1)
+//	        paren_string = g_strdup ("N/A");
+//	      else
+//	        paren_string = g_strndup (test_string + start_pos, end_pos - start_pos);
+//
+//	      g_print ("%-9d %-25s %-12d %-18d d\n", match_num, paren_string, found_match, start_pos, end_pos);
+//	    }
+//
+//	  return 0;
+//	}
+//
+// match_num Contents Return value returned start_pos returned end_pos 0 glib
+// regexes are the best 1 0 25 1 N/A 1 -1 -1 2 glib regexes are 1 0 17 3 best 1
+// 21 25 4 N/A 0 2147483647 2147483647
+//
+// # Methods Using Deterministic Finite Automata Matching
+//
+//	  The methods glib.Regex.MatchAll() and
+//	  glib.Regex.MatchAllFull()
+//	  return a GMatchInfo using
+//	  Deterministic Finite Automaton (https://en.wikipedia.org/wiki/Deterministic_finite_automaton)
+//	  (DFA) pattern matching. This algorithm detects overlapping matches. You pass
+//	  the returned GMatchInfo from these methods to g_match_info_fetch_pos()
+//	  to determine the start and end positions of each overlapping match. Use the
+//	  method glib.MatchInfo.GetMatchCount() to determine the number
+//	  of overlapping matches.
+//
+//	  For example, a regex pattern is <.*>, and a candidate string is
+//	  <a> <b> <c>. In this scenario there are three implicit capture
+//	  parentheses: one for the entire string, one for <a> <b>, and one for <a>.
+//
+//	  Given this example, the following table describes the return values from
+//	  g_match_info_fetch_pos() for various values of match_num.
+//
+//	  match_num | Contents | Return value | Returned start_pos | Returned end_pos
+//	  ----------- | -------- | ------------ | -------------------- | ------------------
+//	  0 | Matches entire string | True | 0 | 11
+//	  1 | Matches <a> <b> | True | 0 | 7
+//	  2 | Matches <a> | True | 0 | 3
+//	  3 | Capture paren out of range | False | Unchanged | Unchanged
+//
+//	  The following code sample and output implements this example.
+//
+//
+//
+//	{ .c }
+//
+// #include <glib.h>
+//
+// int main (int argc, char *argv[]) { g_autoptr(GError) local_error = NULL;
+// const char *regex_pattern = "<.*>"; const char *test_string = "<a> <b> <c>";
+// g_autoptr(GRegex) regex = NULL;
+//
+//	  regex = g_regex_new (regex_pattern,
+//	                       G_REGEX_DEFAULT,
+//	                       G_REGEX_MATCH_DEFAULT,
+//	                       &local_error);
+//	  if (regex == NULL)
+//	    {
+//	      g_printerr ("Error creating regex: s\n", local_error->message);
+//	      return -1;
+//	    }
+//
+//	  g_autoptr(GMatchInfo) match_info = NULL;
+//	  g_regex_match_all (regex, test_string, G_REGEX_MATCH_DEFAULT, &match_info);
+//
+//	  int n_matched_strings = g_match_info_get_match_count (match_info);
+//
+//	  // Print header line
+//	  g_print ("match_num Contents                  Return value returned start_pos returned end_pos\n");
+//
+//	  // Iterate over each capture paren, including one that is out of range as a demonstration.
+//	  for (int match_num = 0; match_num <= n_matched_strings; match_num++)
+//	    {
+//	      gboolean found_match;
+//	      g_autofree char *paren_string = NULL;
+//	      int start_pos = G_MAXINT;
+//	      int end_pos = G_MAXINT;
+//
+//	      found_match = g_match_info_fetch_pos (match_info, match_num, &start_pos, &end_pos);
+//
+//	      // If no match, display N/A as the found string.
+//	      if (start_pos == G_MAXINT || start_pos == -1)
+//	        paren_string = g_strdup ("N/A");
+//	      else
+//	        paren_string = g_strndup (test_string + start_pos, end_pos - start_pos);
+//
+//	      g_print ("%-9d %-25s %-12d %-18d d\n", match_num, paren_string, found_match, start_pos, end_pos);
+//	    }
+//
+//	  return 0;
+//	}
+//
+// match_num Contents Return value returned start_pos returned end_pos 0 <a> <b>
+// <c> 1 0 11 1 <a> <b> 1 0 7 2 <a> 1 0 3 3 N/A 0 2147483647 2147483647. `
 //
 // The function takes the following parameters:
 //
-//   - matchNum: number of the sub expression.
+//   - matchNum: number of the capture parenthesis.
 //
 // The function returns the following values:
 //
 //   - startPos (optional): pointer to location where to store the start
 //     position, or NULL.
-//   - endPos (optional): pointer to location where to store the end position,
-//     or NULL.
-//   - ok: TRUE if the position was fetched, FALSE otherwise. If the position
-//     cannot be fetched, start_pos and end_pos are left unchanged.
+//   - endPos (optional): pointer to location where to store the end position
+//     (the byte after the final byte of the match), or NULL.
+//   - ok: true if match_num is within range, false otherwise. If the capture
+//     paren has a match, start_pos and end_pos contain the start and end
+//     positions (in bytes) of the matching substring. If the capture paren has
+//     no match, start_pos and end_pos are -1. If match_num is out of range,
+//     start_pos and end_pos are left unchanged.
 func (matchInfo *MatchInfo) FetchPos(matchNum int) (startPos int, endPos int, ok bool) {
 	var _arg0 *C.GMatchInfo // out
 	var _arg1 C.gint        // out
@@ -22227,7 +22894,8 @@ func (matchInfo *MatchInfo) Next() error {
 	return _goerr
 }
 
-// Node struct represents one node in a [n-ary tree][glib-N-ary-Trees].
+// Node struct represents one node in a n-ary tree
+// (data-structures.html#n-ary-trees).
 //
 // An instance of this type is always passed by reference.
 type Node struct {
@@ -22505,11 +23173,23 @@ func (node *Node) Unlink() {
 	runtime.KeepAlive(node)
 }
 
+// NodePopAllocator: deprecated: since version 2.10.
 func NodePopAllocator() {
 	C.g_node_pop_allocator()
 }
 
-// OptionEntry struct defines a single option. To have an effect,
+// OptionEntry: - G_OPTION_ARG_NONE: gboolean - G_OPTION_ARG_STRING:
+// gchar* - G_OPTION_ARG_INT: gint - G_OPTION_ARG_FILENAME: gchar* -
+// G_OPTION_ARG_STRING_ARRAY: gchar** - G_OPTION_ARG_FILENAME_ARRAY: gchar** -
+// G_OPTION_ARG_DOUBLE: gdouble
+//
+//	If arg type is G_OPTION_ARG_STRING or G_OPTION_ARG_FILENAME,
+//	the location will contain a newly allocated string if the option
+//	was given. That string needs to be freed by the callee using g_free().
+//	Likewise if arg type is G_OPTION_ARG_STRING_ARRAY or
+//	G_OPTION_ARG_FILENAME_ARRAY, the data should be freed using g_strfreev().
+//
+// A GOptionEntry struct defines a single option. To have an effect,
 // they must be added to a Group with g_option_context_add_main_entries() or
 // g_option_group_add_entries().
 //
@@ -22560,18 +23240,10 @@ func (o *OptionEntry) Arg() OptionArg {
 	return _v
 }
 
-// ArgData: if the arg type is G_OPTION_ARG_CALLBACK, then arg_data must
-// point to a ArgFunc callback function, which will be called to handle the
-// extra argument. Otherwise, arg_data is a pointer to a location to store
-// the value, the required type of the location depends on the arg type: -
-// G_OPTION_ARG_NONE: gboolean - G_OPTION_ARG_STRING: gchar* - G_OPTION_ARG_INT:
-// gint - G_OPTION_ARG_FILENAME: gchar* - G_OPTION_ARG_STRING_ARRAY:
-// gchar** - G_OPTION_ARG_FILENAME_ARRAY: gchar** - G_OPTION_ARG_DOUBLE:
-// gdouble If arg type is G_OPTION_ARG_STRING or G_OPTION_ARG_FILENAME,
-// the location will contain a newly allocated string if the option was given.
-// That string needs to be freed by the callee using g_free(). Likewise if arg
-// type is G_OPTION_ARG_STRING_ARRAY or G_OPTION_ARG_FILENAME_ARRAY, the data
-// should be freed using g_strfreev().
+// ArgData: if the arg type is G_OPTION_ARG_CALLBACK, then arg_data must point
+// to a ArgFunc callback function, which will be called to handle the extra
+// argument. Otherwise, arg_data is a pointer to a location to store the value,
+// the required type of the location depends on the arg type:.
 func (o *OptionEntry) ArgData() unsafe.Pointer {
 	valptr := &o.native.arg_data
 	var _v unsafe.Pointer // out
@@ -23067,7 +23739,7 @@ func (buf *PathBuf) ToPath() string {
 // PathBufEqual compares two path buffers for equality and returns TRUE if they
 // are equal.
 //
-// The path inside the paths buffers are not going to be normalized,
+// The paths inside the path buffers are not going to be normalized,
 // so X/Y/Z/A/.., X/./Y/Z and X/Y/Z are not going to be considered equal.
 //
 // This function can be passed to g_hash_table_new() as the key_equal_func
@@ -23102,16 +23774,16 @@ func PathBufEqual(v1, v2 unsafe.Pointer) bool {
 	return _ok
 }
 
-// PatternSpec: GPatternSpec struct is the 'compiled' form of a glob-style
+// PatternSpec: GPatternSpec struct is the ‘compiled’ form of a glob-style
 // pattern.
 //
-// The glib.PatternMatchSimple() and glib.PatternSpec.Match() functions match
-// a string against a pattern containing '*' and '?' wildcards with similar
-// semantics as the standard glob() function: '*' matches an arbitrary, possibly
-// empty, string, '?' matches an arbitrary character.
+// The glib.PatternMatchSimple() and glib.PatternSpec.Match() functions match a
+// string against a pattern containing * and ? wildcards with similar semantics
+// as the standard glob() function: * matches an arbitrary, possibly empty,
+// string, ? matches an arbitrary character.
 //
-// Note that in contrast to glob(), the '/' character can be matched by the
-// wildcards, there are no '[...]' character ranges and '*' and '?' can not be
+// Note that in contrast to glob() (man:glob(3)), the / character can be matched
+// by the wildcards, there are no […] character ranges and * and ? can not be
 // escaped to include them literally in a pattern.
 //
 // When multiple strings must be matched against the same pattern, it is better
@@ -23158,7 +23830,7 @@ func NewPatternSpec(pattern string) *PatternSpec {
 	return _patternSpec
 }
 
-// Copy copies pspec in a new Spec.
+// Copy copies pspec in a new glib.PatternSpec.
 //
 // The function returns the following values:
 //
@@ -23216,29 +23888,31 @@ func (pspec1 *PatternSpec) Equal(pspec2 *PatternSpec) bool {
 	return _ok
 }
 
-// Match matches a string against a compiled pattern. Passing the correct length
-// of the string given is mandatory. The reversed string can be omitted by
-// passing NULL, this is more efficient if the reversed version of the string to
-// be matched is not at hand, as g_pattern_match() will only construct it if the
-// compiled pattern requires reverse matches.
+// Match matches a string against a compiled pattern.
+//
+// Passing the correct length of the string given is mandatory. The
+// reversed string can be omitted by passing NULL, this is more efficient
+// if the reversed version of the string to be matched is not at hand,
+// as glib.PatternSpec.Match() will only construct it if the compiled pattern
+// requires reverse matches.
 //
 // Note that, if the user code will (possibly) match a string against a
 // multitude of patterns containing wildcards, chances are high that some
-// patterns will require a reversed string. In this case, it's more efficient
+// patterns will require a reversed string. In this case, it’s more efficient
 // to provide the reversed string to avoid multiple constructions thereof in the
-// various calls to g_pattern_match().
+// various calls to glib.PatternSpec.Match().
 //
 // Note also that the reverse of a UTF-8 encoded string can in general not be
-// obtained by g_strreverse(). This works only if the string does not contain
-// any multibyte characters. GLib offers the g_utf8_strreverse() function to
+// obtained by glib.Strreverse(). This works only if the string does not contain
+// any multibyte characters. GLib offers the glib.UTF8Strreverse() function to
 // reverse UTF-8 encoded strings.
 //
 // The function takes the following parameters:
 //
 //   - stringLength: length of string (in bytes, i.e. strlen(), not
-//     g_utf8_strlen()).
+//     glib.UTF8Strlen()).
 //   - str: UTF-8 encoded string to match.
-//   - stringReversed (optional): reverse of string or NULL.
+//   - stringReversed (optional): reverse of string.
 //
 // The function returns the following values:
 //
@@ -23274,9 +23948,10 @@ func (pspec *PatternSpec) Match(stringLength uint, str string, stringReversed st
 	return _ok
 }
 
-// MatchString matches a string against a compiled pattern. If the string is to
-// be matched against more than one pattern, consider using g_pattern_match()
-// instead while supplying the reversed string.
+// MatchString matches a string against a compiled pattern.
+//
+// If the string is to be matched against more than one pattern, consider using
+// glib.PatternSpec.Match() instead while supplying the reversed string.
 //
 // The function takes the following parameters:
 //
@@ -23307,7 +23982,7 @@ func (pspec *PatternSpec) MatchString(str string) bool {
 	return _ok
 }
 
-// PtrArray contains the public fields of a pointer array.
+// PtrArray contains the public fields of a GPtrArray.
 //
 // An instance of this type is always passed by reference.
 type PtrArray struct {
@@ -23319,7 +23994,7 @@ type ptrArray struct {
 	native *C.GPtrArray
 }
 
-// Pdata points to the array of pointers, which may be moved when the array
+// Pdata: pointer to the array of pointers, which may be moved when the array
 // grows.
 func (p *PtrArray) Pdata() *unsafe.Pointer {
 	valptr := &p.native.pdata
@@ -23342,7 +24017,8 @@ func (p *PtrArray) SetLen(len uint) {
 	*valptr = C.guint(len)
 }
 
-// Queue contains the public fields of a [Queue][glib-Double-ended-Queues].
+// Queue contains the public fields of a Queue
+// (data-structures.html#double-ended-queues).
 //
 // An instance of this type is always passed by reference.
 type Queue struct {
@@ -24060,55 +24736,113 @@ func (rand_ *Rand) SetSeedArray(seed *uint32, seedLength uint) {
 	runtime.KeepAlive(seedLength)
 }
 
-// Regex: GRegex is the "compiled" form of a regular expression pattern.
+// Regex: GRegex is a compiled form of a regular expression.
 //
-// GRegex implements regular expression pattern matching using syntax and
-// semantics similar to Perl regular expression. See the PCRE documentation
-// (man:pcrepattern(3)) for the syntax definition.
+// After instantiating a GRegex, you can use its methods to find matches in a
+// string, replace matches within a string, or split the string at matches.
 //
-// Some functions accept a start_position argument, setting it differs from just
-// passing over a shortened string and setting G_REGEX_MATCH_NOTBOL in the case
-// of a pattern that begins with any kind of lookbehind assertion. For example,
-// consider the pattern "\Biss\B" which finds occurrences of "iss" in the middle
-// of words. ("\B" matches only if the current position in the subject is not a
-// word boundary.) When applied to the string "Mississipi" from the fourth byte,
-// namely "issipi", it does not match, because "\B" is always false at the start
-// of the subject, which is deemed to be a word boundary. However, if the entire
-// string is passed , but with start_position set to 4, it finds the second
-// occurrence of "iss" because it is able to look behind the starting point to
-// discover that it is preceded by a letter.
+// GRegex implements regular expression pattern matching using syntax
+// and semantics (such as character classes, quantifiers, and capture
+// groups) similar to Perl regular expression. See the PCRE documentation
+// (man:pcre2pattern(3)) for details.
 //
-// Note that, unless you set the G_REGEX_RAW flag, all the strings passed to
-// these functions must be encoded in UTF-8. The lengths and the positions
-// inside the strings are in bytes and not in characters, so, for instance,
-// "\xc3\xa0" (i.e. "à") is two bytes long but it is treated as a single
-// character. If you set G_REGEX_RAW the strings can be non-valid UTF-8 strings
-// and a byte is treated as a character, so "\xc3\xa0" is two bytes and two
-// characters long.
+// A typical scenario for regex pattern matching is to check if a string matches
+// a pattern. The following statements implement this scenario.
 //
-// When matching a pattern, "\n" matches only against a "\n" character in the
-// string, and "\r" matches only a "\r" character. To match any newline sequence
-// use "\R". This particular group matches either the two-character sequence CR
-// + LF ("\r\n"), or one of the single characters LF (linefeed, U+000A, "\n"),
-// VT vertical tab, U+000B, "\v"), FF (formfeed, U+000C, "\f"), CR (carriage
-// return, U+000D, "\r"), NEL (next line, U+0085), LS (line separator, U+2028),
-// or PS (paragraph separator, U+2029).
+// ` { .c } const char *regex_pattern = ".*GLib.*"; const char *string_to_search
+// = "You will love the GLib implementation of regex"; g_autoptr(GMatchInfo)
+// match_info = NULL; g_autoptr(GRegex) regex = NULL;
 //
-// The behaviour of the dot, circumflex, and dollar metacharacters are
-// affected by newline characters, the default is to recognize any newline
-// character (the same characters recognized by "\R"). This can be changed
-// with G_REGEX_NEWLINE_CR, G_REGEX_NEWLINE_LF and G_REGEX_NEWLINE_CRLF compile
-// options, and with G_REGEX_MATCH_NEWLINE_ANY, G_REGEX_MATCH_NEWLINE_CR,
-// G_REGEX_MATCH_NEWLINE_LF and G_REGEX_MATCH_NEWLINE_CRLF match options.
-// These settings are also relevant when compiling a pattern if G_REGEX_EXTENDED
-// is set, and an unescaped "#" outside a character class is encountered.
-// This indicates a comment that lasts until after the next newline.
+// regex = g_regex_new (regex_pattern, G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT,
+// NULL); g_assert (regex != NULL);
 //
-// Creating and manipulating the same GRegex structure from different threads is
-// not a problem as GRegex does not modify its internal state between creation
-// and destruction, on the other hand GMatchInfo is not threadsafe.
+// if (g_regex_match (regex, string_to_search, G_REGEX_MATCH_DEFAULT,
+// &match_info)) { int start_pos, end_pos; g_match_info_fetch_pos (match_info,
+// 0, &start_pos, &end_pos); g_print ("Match successful! Overall pattern matches
+// bytes d to d\n", start_pos, end_pos); } else { g_print ("No match!\n"); }
 //
-// The regular expressions low-level functionalities are obtained through the
+//	  The constructor for GRegex includes two sets of bitmapped flags:
+//
+//	  * glib.RegexCompileFlags—These flags
+//	  control how GLib compiles the regex. There are options for case
+//	  sensitivity, multiline, ignoring whitespace, etc.
+//	  * glib.RegexMatchFlags—These flags control
+//	  GRegex’s matching behavior, such as anchoring and customizing definitions
+//	  for newline characters.
+//
+//	  Some regex patterns include backslash assertions, such as \d (digit) or
+//	  \D (non-digit). The regex pattern must escape those backslashes. For
+//	  example, the pattern "\\d\\D" matches a digit followed by a non-digit.
+//
+//	  GLib’s implementation of pattern matching includes a start_position
+//	  argument for some of the match, replace, and split methods. Specifying
+//	  a start position provides flexibility when you want to ignore the first
+//	  _n_ characters of a string, but want to incorporate backslash assertions
+//	  at character _n_ - 1. For example, a database field contains inconsistent
+//	  spelling for a job title: healthcare provider and health-care provider.
+//	  The database manager wants to make the spelling consistent by adding a
+//	  hyphen when it is missing. The following regex pattern tests for the string
+//	  care preceded by a non-word boundary character (instead of a hyphen)
+//	  and followed by a space.
+//
+//
+//
+//	{ .c }
+//
+// const char *regex_pattern = "\\Bcare\\s";
+//
+//	  An efficient way to match with this pattern is to start examining at
+//	  start_position 6 in the string healthcare or health-care.
+//
+//
+//
+//	{ .c }
+//
+// const char *regex_pattern = "\\Bcare\\s"; const char *string_to_search
+// = "healthcare provider"; g_autoptr(GMatchInfo) match_info = NULL;
+// g_autoptr(GRegex) regex = NULL;
+//
+// regex = g_regex_new ( regex_pattern, G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT,
+// NULL); g_assert (regex != NULL);
+//
+// g_regex_match_full ( regex, string_to_search, -1, 6, // position of 'c' in
+// the test string. G_REGEX_MATCH_DEFAULT, &match_info, NULL); `
+//
+// The method glib.Regex.MatchFull() (and other methods implementing start_pos)
+// allow for lookback before the start position to determine if the previous
+// character satisfies an assertion.
+//
+// Unless you set the glib.RegexCompileFlags.RAW as one of the
+// GRegexCompileFlags, all the strings passed to GRegex methods must be encoded
+// in UTF-8. The lengths and the positions inside the strings are in bytes and
+// not in characters, so, for instance, \xc3\xa0 (i.e., à) is two bytes long but
+// it is treated as a single character. If you set G_REGEX_RAW, the strings can
+// be non-valid UTF-8 strings and a byte is treated as a character, so \xc3\xa0
+// is two bytes and two characters long.
+//
+// Regarding line endings, \n matches a \n character, and \r matches a
+// \r character. More generally, \R matches all typical line endings:
+// CR + LF (\r\n), LF (linefeed, U+000A, \n), VT (vertical tab, U+000B, \v),
+// FF (formfeed, U+000C, \f), CR (carriage return, U+000D, \r), NEL (next line,
+// U+0085), LS (line separator, U+2028), and PS (paragraph separator, U+2029).
+//
+// The behaviour of the dot, circumflex, and dollar metacharacters are affected
+// by newline characters. By default, GRegex matches any newline character
+// matched by \R. You can limit the matched newline characters by specifying
+// the glib.RegexMatchFlags.NEWLINECR, glib.RegexMatchFlags.NEWLINELF,
+// and glib.RegexMatchFlags.NEWLINECRLF compile options, and with
+// glib.RegexMatchFlags.NEWLINEANY, glib.RegexMatchFlags.NEWLINECR,
+// glib.RegexMatchFlags.NEWLINELF and glib.RegexMatchFlags.NEWLINECRLF match
+// options. These settings are also relevant when compiling a pattern if
+// glib.RegexCompileFlags.EXTENDED is set and an unescaped # outside a character
+// class is encountered. This indicates a comment that lasts until after the
+// next newline.
+//
+// Because GRegex does not modify its internal state between creation and
+// destruction, you can create and modify the same GRegex instance from
+// different threads. In contrast, glib.MatchInfo is not thread safe.
+//
+// The regular expression low-level functionalities are obtained through the
 // excellent PCRE (http://www.pcre.org/) library written by Philip Hazel.
 //
 // An instance of this type is always passed by reference.
@@ -25345,26 +26079,29 @@ func NewSource(sourceFuncs *SourceFuncs, structSize uint) *Source {
 	return _source
 }
 
-// AddChildSource adds child_source to source as a "polled" source; when source
-// is added to a Context, child_source will be automatically added with the same
-// priority, when child_source is triggered, it will cause source to dispatch
-// (in addition to calling its own callback), and when source is destroyed,
-// it will destroy child_source as well. (source will also still be dispatched
-// if its own prepare/check functions indicate that it is ready.)
+// AddChildSource adds child_source to source as a ‘polled’ source.
 //
-// If you don't need child_source to do anything on its own when it triggers,
+// When source is added to a glib.MainContext, child_source will be
+// automatically added with the same priority. When child_source is triggered,
+// it will cause source to dispatch (in addition to calling its own callback),
+// and when source is destroyed, it will destroy child_source as well.
+//
+// The source will also still be dispatched if its own prepare/check functions
+// indicate that it is ready.
+//
+// If you don’t need child_source to do anything on its own when it triggers,
 // you can call g_source_set_dummy_callback() on it to set a callback that does
-// nothing (except return TRUE if appropriate).
+// nothing (except return true if appropriate).
 //
-// source will hold a reference on child_source while child_source is attached
-// to it.
+// The source will hold a reference on child_source while child_source is
+// attached to it.
 //
-// This API is only intended to be used by implementations of #GSource. Do not
-// call this API on a #GSource that you did not create.
+// This API is only intended to be used by implementations of glib.Source.
+// Do not call this API on a glib.Source that you did not create.
 //
 // The function takes the following parameters:
 //
-//   - childSource: second #GSource that source should "poll".
+//   - childSource: second source that source should ‘poll’.
 func (source *Source) AddChildSource(childSource *Source) {
 	var _arg0 *C.GSource // out
 	var _arg1 *C.GSource // out
@@ -25377,20 +26114,22 @@ func (source *Source) AddChildSource(childSource *Source) {
 	runtime.KeepAlive(childSource)
 }
 
-// Attach adds a #GSource to a context so that it will be executed within that
-// context. Remove it by calling g_source_destroy().
+// Attach adds a glib.Source to a context so that it will be executed within
+// that context.
+//
+// Remove it by calling glib.Source.Destroy().
 //
 // This function is safe to call from any thread, regardless of which thread the
 // context is running in.
 //
 // The function takes the following parameters:
 //
-//   - context (optional) (if NULL, the global-default main context will be
-//     used).
+//   - context (optional): main context (if NULL, the global-default main
+//     context will be used).
 //
 // The function returns the following values:
 //
-//   - guint: ID (greater than 0) for the source within the Context.
+//   - guint: ID (greater than 0) for the source within the glib.MainContext.
 func (source *Source) Attach(context *MainContext) uint {
 	var _arg0 *C.GSource      // out
 	var _arg1 *C.GMainContext // out
@@ -25412,19 +26151,21 @@ func (source *Source) Attach(context *MainContext) uint {
 	return _guint
 }
 
-// Destroy removes a source from its Context, if any, and mark it as destroyed.
+// Destroy removes a source from its glib.MainContext, if any, and marks it as
+// destroyed.
+//
 // The source cannot be subsequently added to another context. It is safe to
 // call this on sources which have already been removed from their context.
 //
-// This does not unref the #GSource: if you still hold a reference, use
-// g_source_unref() to drop it.
+// This does not unref the glib.Source: if you still hold a reference, use
+// glib.Source.Unref() to drop it.
 //
 // This function is safe to call from any thread, regardless of which thread the
-// Context is running in.
+// glib.MainContext is running in.
 //
-// If the source is currently attached to a Context, destroying it will
-// effectively unset the callback similar to calling g_source_set_callback().
-// This can mean, that the data's Notify gets called right away.
+// If the source is currently attached to a glib.MainContext, destroying it will
+// effectively unset the callback similar to calling glib.Source.SetCallback().
+// This can mean, that the data’s glib.DestroyNotify gets called right away.
 func (source *Source) Destroy() {
 	var _arg0 *C.GSource // out
 
@@ -25434,8 +26175,43 @@ func (source *Source) Destroy() {
 	runtime.KeepAlive(source)
 }
 
+// DupContext gets a reference to the glib.MainContext with which the source is
+// associated.
+//
+// You can call this on a source that has been destroyed. You can always call
+// this function on the source returned from glib.MainCurrentSource().
+//
+// The function returns the following values:
+//
+//   - mainContext (optional): glib.MainContext with which the source is
+//     associated, or NULL if the context has not yet been added to a source.
+func (source *Source) DupContext() *MainContext {
+	var _arg0 *C.GSource      // out
+	var _cret *C.GMainContext // in
+
+	_arg0 = (*C.GSource)(gextras.StructNative(unsafe.Pointer(source)))
+
+	_cret = C.g_source_dup_context(_arg0)
+	runtime.KeepAlive(source)
+
+	var _mainContext *MainContext // out
+
+	if _cret != nil {
+		_mainContext = (*MainContext)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+		runtime.SetFinalizer(
+			gextras.StructIntern(unsafe.Pointer(_mainContext)),
+			func(intern *struct{ C unsafe.Pointer }) {
+				C.g_main_context_unref((*C.GMainContext)(intern.C))
+			},
+		)
+	}
+
+	return _mainContext
+}
+
 // CanRecurse checks whether a source is allowed to be called recursively.
-// see g_source_set_can_recurse().
+//
+// See glib.Source.SetCanRecurse().
 //
 // The function returns the following values:
 //
@@ -25458,18 +26234,23 @@ func (source *Source) CanRecurse() bool {
 	return _ok
 }
 
-// Context gets the Context with which the source is associated.
+// Context gets the glib.MainContext with which the source is associated.
 //
 // You can call this on a source that has been destroyed, provided that the
-// Context it was attached to still exists (in which case it will return that
-// Context). In particular, you can always call this function on the source
-// returned from g_main_current_source(). But calling this function on a source
-// whose Context has been destroyed is an error.
+// glib.MainContext it was attached to still exists (in which case it will
+// return that glib.MainContext). In particular, you can always call this
+// function on the source returned from glib.MainCurrentSource(). But calling
+// this function on a source whose glib.MainContext has been destroyed is an
+// error.
+//
+// If the associated glib.MainContext could be destroy concurrently
+// from a different thread, then this function is not safe to call and
+// glib.Source.DupContext() should be used instead.
 //
 // The function returns the following values:
 //
-//   - mainContext (optional) with which the source is associated, or NULL if
-//     the context has not yet been added to a source.
+//   - mainContext (optional): main context with which the source is associated,
+//     or NULL if the context has not yet been added to a source.
 func (source *Source) Context() *MainContext {
 	var _arg0 *C.GSource      // out
 	var _cret *C.GMainContext // in
@@ -25496,13 +26277,13 @@ func (source *Source) Context() *MainContext {
 }
 
 // CurrentTime: this function ignores source and is otherwise the same as
-// g_get_current_time().
+// glib.GetCurrentTime().
 //
-// Deprecated: use g_source_get_time() instead.
+// Deprecated: use glib.Source.GetTime() instead.
 //
 // The function takes the following parameters:
 //
-//   - timeval structure in which to store current time.
+//   - timeval: glib.TimeVal structure in which to store current time.
 func (source *Source) CurrentTime(timeval *TimeVal) {
 	var _arg0 *C.GSource  // out
 	var _arg1 *C.GTimeVal // out
@@ -25515,15 +26296,16 @@ func (source *Source) CurrentTime(timeval *TimeVal) {
 	runtime.KeepAlive(timeval)
 }
 
-// ID returns the numeric ID for a particular source. The ID of a
-// source is a positive integer which is unique within a particular
+// ID returns the numeric ID for a particular source.
+//
+// The ID of a source is a positive integer which is unique within a particular
 // main loop context. The reverse mapping from ID to source is done by
-// g_main_context_find_source_by_id().
+// glib.MainContext.FindSourceByID().
 //
 // You can only call this function while the source is associated to a
-// Context instance; calling this function before g_source_attach() or after
-// g_source_destroy() yields undefined behavior. The ID returned is unique
-// within the Context instance passed to g_source_attach().
+// glib.MainContext instance; calling this function before glib.Source.Attach()
+// or after glib.Source.Destroy() yields undefined behavior. The ID returned is
+// unique within the glib.MainContext instance passed to glib.Source.Attach().
 //
 // The function returns the following values:
 //
@@ -25544,8 +26326,9 @@ func (source *Source) ID() uint {
 	return _guint
 }
 
-// Name gets a name for the source, used in debugging and profiling. The name
-// may be LL if it has never been set with g_source_set_name().
+// Name gets a name for the source, used in debugging and profiling.
+//
+// The name may be NULL if it has never been set with glib.Source.SetName().
 //
 // The function returns the following values:
 //
@@ -25589,15 +26372,15 @@ func (source *Source) Priority() int {
 	return _gint
 }
 
-// ReadyTime gets the "ready time" of source, as set by
-// g_source_set_ready_time().
+// ReadyTime gets the ‘ready time’ of source, as set by
+// glib.Source.SetReadyTime().
 //
-// Any time before or equal to the current monotonic time (including 0) is an
+// Any time before or equal to the current monotonic time (including zero) is an
 // indication that the source will fire immediately.
 //
 // The function returns the following values:
 //
-//   - gint64: monotonic ready time, -1 for "never".
+//   - gint64: monotonic ready time, -1 for ‘never’.
 func (source *Source) ReadyTime() int64 {
 	var _arg0 *C.GSource // out
 	var _cret C.gint64   // in
@@ -25614,13 +26397,14 @@ func (source *Source) ReadyTime() int64 {
 	return _gint64
 }
 
-// Time gets the time to be used when checking this source. The advantage of
-// calling this function over calling g_get_monotonic_time() directly is that
-// when checking multiple sources, GLib can cache a single value instead of
-// having to repeatedly get the system monotonic time.
+// Time gets the time to be used when checking this source.
+//
+// The advantage of calling this function over calling glib.GetMonotonicTime()
+// directly is that when checking multiple sources, GLib can cache a single
+// value instead of having to repeatedly get the system monotonic time.
 //
 // The time here is the system monotonic time, if available, or some other
-// reasonable alternative otherwise. See g_get_monotonic_time().
+// reasonable alternative otherwise. See glib.GetMonotonicTime().
 //
 // The function returns the following values:
 //
@@ -25653,6 +26437,53 @@ func (source *Source) Time() int64 {
 //	  SomeWidget *self = data;
 //
 //	  g_mutex_lock (&self->idle_id_mutex);
+//	  // do stuff with self
+//	  self->idle_id = 0;
+//	  g_mutex_unlock (&self->idle_id_mutex);
+//
+//	  return G_SOURCE_REMOVE;
+//	}
+//
+//	static void
+//	some_widget_do_stuff_later (SomeWidget *self)
+//	{
+//	  g_mutex_lock (&self->idle_id_mutex);
+//	  self->idle_id = g_idle_add (idle_callback, self);
+//	  g_mutex_unlock (&self->idle_id_mutex);
+//	}
+//
+//	static void
+//	some_widget_init (SomeWidget *self)
+//	{
+//	  g_mutex_init (&self->idle_id_mutex);
+//
+//	  // ...
+//	}
+//
+//	static void
+//	some_widget_finalize (GObject *object)
+//	{
+//	  SomeWidget *self = SOME_WIDGET (object);
+//
+//	  if (self->idle_id)
+//	    g_source_remove (self->idle_id);
+//
+//	  g_mutex_clear (&self->idle_id_mutex);
+//
+//	  G_OBJECT_CLASS (parent_class)->finalize (object);
+//	}
+//
+// This will fail in a multi-threaded application if the widget is destroyed
+// before the idle handler fires due to the use after free in the callback.
+// A solution, to this particular problem, is to check to if the source has
+// already been destroy within the callback.
+//
+//	static gboolean
+//	idle_callback (gpointer data)
+//	{
+//	  SomeWidget *self = data;
+//
+//	  g_mutex_lock (&self->idle_id_mutex);
 //	  if (!g_source_is_destroyed (g_main_current_source ()))
 //	    {
 //	      // do stuff with self
@@ -25663,14 +26494,14 @@ func (source *Source) Time() int64 {
 //	}
 //
 // Calls to this function from a thread other than the one acquired by the
-// Context the #GSource is attached to are typically redundant, as the source
-// could be destroyed immediately after this function returns. However, once a
-// source is destroyed it cannot be un-destroyed, so this function can be used
-// for opportunistic checks from any thread.
+// glib.MainContext the glib.Source is attached to are typically redundant,
+// as the source could be destroyed immediately after this function returns.
+// However, once a source is destroyed it cannot be un-destroyed, so this
+// function can be used for opportunistic checks from any thread.
 //
 // The function returns the following values:
 //
-//   - ok: TRUE if the source has been destroyed.
+//   - ok: true if the source has been destroyed, false otherwise.
 func (source *Source) IsDestroyed() bool {
 	var _arg0 *C.GSource // out
 	var _cret C.gboolean // in
@@ -25691,12 +26522,12 @@ func (source *Source) IsDestroyed() bool {
 
 // RemoveChildSource detaches child_source from source and destroys it.
 //
-// This API is only intended to be used by implementations of #GSource. Do not
-// call this API on a #GSource that you did not create.
+// This API is only intended to be used by implementations of glib.Source.
+// Do not call this API on a glib.Source that you did not create.
 //
 // The function takes the following parameters:
 //
-//   - childSource previously passed to g_source_add_child_source().
+//   - childSource: source previously passed to glib.Source.AddChildSource().
 func (source *Source) RemoveChildSource(childSource *Source) {
 	var _arg0 *C.GSource // out
 	var _arg1 *C.GSource // out
@@ -25710,24 +26541,24 @@ func (source *Source) RemoveChildSource(childSource *Source) {
 }
 
 // SetCallback sets the callback function for a source. The callback for a
-// source is called from the source's dispatch function.
+// source is called from the source’s dispatch function.
 //
 // The exact type of func depends on the type of source; ie. you should not
 // count on func being called with data as its first parameter. Cast func with
-// G_SOURCE_FUNC() to avoid warnings about incompatible function types.
+// glib.SOURCEFUNC() to avoid warnings about incompatible function types.
 //
-// See [memory management of sources][mainloop-memory-management] for details on
-// how to handle memory management of data.
+// See main loop memory management (main-loop.html#memory-management-of-sources)
+// for details on how to handle memory management of data.
 //
-// Typically, you won't use this function. Instead use functions specific to the
-// type of source you are using, such as g_idle_add() or g_timeout_add().
+// Typically, you won’t use this function. Instead use functions specific to the
+// type of source you are using, such as glib.IdleAdd() or glib.TimeoutAdd().
 //
 // It is safe to call this function multiple times on a source which has already
 // been attached to a context. The changes will take effect for the next time
 // the source is dispatched after this call returns.
 //
-// Note that g_source_destroy() for a currently attached source has the effect
-// of also unsetting the callback.
+// Note that glib.Source.Destroy() for a currently attached source has the
+// effect of also unsetting the callback.
 //
 // The function takes the following parameters:
 //
@@ -25749,10 +26580,12 @@ func (source *Source) SetCallback(fn SourceFunc) {
 }
 
 // SetCallbackIndirect sets the callback function storing the data as a
-// refcounted callback "object". This is used internally. Note that calling
-// g_source_set_callback_indirect() assumes an initial reference count on
-// callback_data, and thus callback_funcs->unref will eventually be called once
-// more than callback_funcs->ref.
+// reference counted callback ‘object’.
+//
+// This is used internally. Note that calling glib.Source.SetCallbackIndirect()
+// assumes an initial reference count on callback_data, and thus
+// callback_funcs->unref will eventually be called once more than
+// callback_funcs->ref.
 //
 // It is safe to call this function multiple times on a source which has already
 // been attached to a context. The changes will take effect for the next time
@@ -25760,7 +26593,7 @@ func (source *Source) SetCallback(fn SourceFunc) {
 //
 // The function takes the following parameters:
 //
-//   - callbackData (optional): pointer to callback data "object".
+//   - callbackData (optional): pointer to callback data ‘object’.
 //   - callbackFuncs functions for reference counting callback_data and getting
 //     the callback and data.
 func (source *Source) SetCallbackIndirect(callbackData unsafe.Pointer, callbackFuncs *SourceCallbackFuncs) {
@@ -25778,10 +26611,11 @@ func (source *Source) SetCallbackIndirect(callbackData unsafe.Pointer, callbackF
 	runtime.KeepAlive(callbackFuncs)
 }
 
-// SetCanRecurse sets whether a source can be called recursively. If can_recurse
-// is TRUE, then while the source is being dispatched then this source will be
-// processed normally. Otherwise, all processing of this source is blocked until
-// the dispatch function returns.
+// SetCanRecurse sets whether a source can be called recursively.
+//
+// If can_recurse is true, then while the source is being dispatched then this
+// source will be processed normally. Otherwise, all processing of this source
+// is blocked until the dispatch function returns.
 //
 // The function takes the following parameters:
 //
@@ -25800,12 +26634,14 @@ func (source *Source) SetCanRecurse(canRecurse bool) {
 	runtime.KeepAlive(canRecurse)
 }
 
-// SetFuncs sets the source functions (can be used to override default
-// implementations) of an unattached source.
+// SetFuncs sets the source functions of an unattached source.
+//
+// These can be used to override the default implementations for the type of
+// source.
 //
 // The function takes the following parameters:
 //
-//   - funcs: new Funcs.
+//   - funcs: new source functions.
 func (source *Source) SetFuncs(funcs *SourceFuncs) {
 	var _arg0 *C.GSource      // out
 	var _arg1 *C.GSourceFuncs // out
@@ -25818,23 +26654,24 @@ func (source *Source) SetFuncs(funcs *SourceFuncs) {
 	runtime.KeepAlive(funcs)
 }
 
-// SetName sets a name for the source, used in debugging and profiling. The name
-// defaults to LL.
+// SetName sets a name for the source, used in debugging and profiling.
+//
+// The name defaults to NULL.
 //
 // The source name should describe in a human-readable way what the source does.
-// For example, "X11 event queue" or "GTK repaint idle handler" or whatever it
-// is.
+// For example, ‘X11 event queue’ or ‘GTK repaint idle handler’.
 //
 // It is permitted to call this function multiple times, but is not recommended
 // due to the potential performance impact. For example, one could change the
-// name in the "check" function of a Funcs to include details like the event
-// type in the source name.
+// name in the check function of a glib.SourceFuncs to include details like the
+// event type in the source name.
 //
-// Use caution if changing the name while another thread may be accessing it
-// with g_source_get_name(); that function does not copy the value, and changing
-// the value will free it while the other thread may be attempting to use it.
+// Use caution if changing the name while another thread may be accessing
+// it with glib.Source.GetName(); that function does not copy the value,
+// and changing the value will free it while the other thread may be attempting
+// to use it.
 //
-// Also see g_source_set_static_name().
+// Also see glib.Source.SetStaticName().
 //
 // The function takes the following parameters:
 //
@@ -25852,9 +26689,11 @@ func (source *Source) SetName(name string) {
 	runtime.KeepAlive(name)
 }
 
-// SetPriority sets the priority of a source. While the main loop is being run,
-// a source will be dispatched if it is ready to be dispatched and no sources at
-// a higher (numerically smaller) priority are ready to be dispatched.
+// SetPriority sets the priority of a source.
+//
+// While the main loop is being run, a source will be dispatched if it is ready
+// to be dispatched and no sources at a higher (numerically smaller) priority
+// are ready to be dispatched.
 //
 // A child source always has the same priority as its parent. It is not
 // permitted to change the priority of a source once it has been added as a
@@ -25875,9 +26714,11 @@ func (source *Source) SetPriority(priority int) {
 	runtime.KeepAlive(priority)
 }
 
-// SetReadyTime sets a #GSource to be dispatched when the given monotonic time
-// is reached (or passed). If the monotonic time is in the past (as it always
-// will be if ready_time is 0) then the source will be dispatched immediately.
+// SetReadyTime sets a source to be dispatched when the given monotonic time is
+// reached (or passed).
+//
+// If the monotonic time is in the past (as it always will be if ready_time is
+// 0) then the source will be dispatched immediately.
 //
 // If ready_time is -1 then the source is never woken up on the basis of the
 // passage of time.
@@ -25891,16 +26732,16 @@ func (source *Source) SetPriority(priority int) {
 // reached during the same main context iteration, then the order of dispatch is
 // undefined.
 //
-// It is a no-op to call this function on a #GSource which has already been
-// destroyed with g_source_destroy().
+// It is a no-op to call this function on a glib.Source which has already been
+// destroyed with glib.Source.Destroy().
 //
-// This API is only intended to be used by implementations of #GSource. Do not
-// call this API on a #GSource that you did not create.
+// This API is only intended to be used by implementations of glib.Source.
+// Do not call this API on a glib.Source that you did not create.
 //
 // The function takes the following parameters:
 //
-//   - readyTime: monotonic time at which the source will be ready, 0 for
-//     "immediately", -1 for "never".
+//   - readyTime: monotonic time at which the source will be ready; 0 for
+//     ‘immediately’, -1 for ‘never’.
 func (source *Source) SetReadyTime(readyTime int64) {
 	var _arg0 *C.GSource // out
 	var _arg1 C.gint64   // out
@@ -25913,7 +26754,7 @@ func (source *Source) SetReadyTime(readyTime int64) {
 	runtime.KeepAlive(readyTime)
 }
 
-// SetStaticName: variant of g_source_set_name() that does not duplicate the
+// SetStaticName: variant of glib.Source.SetName() that does not duplicate the
 // name, and can only be used with string literals.
 //
 // The function takes the following parameters:
@@ -25933,17 +26774,19 @@ func (source *Source) SetStaticName(name string) {
 }
 
 // SourceRemoveByFuncsUserData removes a source from the default main loop
-// context given the source functions and user data. If multiple sources exist
-// with the same source functions and user data, only one will be destroyed.
+// context given the source functions and user data.
+//
+// If multiple sources exist with the same source functions and user data,
+// only one will be destroyed.
 //
 // The function takes the following parameters:
 //
-//   - funcs passed to g_source_new().
+//   - funcs passed to glib.Source.New.
 //   - userData (optional): user data for the callback.
 //
 // The function returns the following values:
 //
-//   - ok: TRUE if a source was found and removed.
+//   - ok: true if a source was found and removed, false otherwise.
 func SourceRemoveByFuncsUserData(funcs *SourceFuncs, userData unsafe.Pointer) bool {
 	var _arg1 *C.GSourceFuncs // out
 	var _arg2 C.gpointer      // out
@@ -25966,8 +26809,10 @@ func SourceRemoveByFuncsUserData(funcs *SourceFuncs, userData unsafe.Pointer) bo
 }
 
 // SourceRemoveByUserData removes a source from the default main loop context
-// given the user data for the callback. If multiple sources exist with the same
-// user data, only one will be destroyed.
+// given the user data for the callback.
+//
+// If multiple sources exist with the same user data, only one will be
+// destroyed.
 //
 // The function takes the following parameters:
 //
@@ -25975,7 +26820,7 @@ func SourceRemoveByFuncsUserData(funcs *SourceFuncs, userData unsafe.Pointer) bo
 //
 // The function returns the following values:
 //
-//   - ok: TRUE if a source was found and removed.
+//   - ok: true if a source was found and removed, false otherwise.
 func SourceRemoveByUserData(userData unsafe.Pointer) bool {
 	var _arg1 C.gpointer // out
 	var _cret C.gboolean // in
@@ -25997,21 +26842,21 @@ func SourceRemoveByUserData(userData unsafe.Pointer) bool {
 // SourceSetNameByID sets the name of a source using its ID.
 //
 // This is a convenience utility to set source names from the return value of
-// g_idle_add(), g_timeout_add(), etc.
+// glib.IdleAdd(), glib.TimeoutAdd(), etc.
 //
 // It is a programmer error to attempt to set the name of a non-existent source.
 //
 // More specifically: source IDs can be reissued after a source has been
 // destroyed and therefore it is never valid to use this function with a source
 // ID which may have already been removed. An example is when scheduling an idle
-// to run in another thread with g_idle_add(): the idle may already have run and
-// been removed by the time this function is called on its (now invalid) source
-// ID. This source ID may have been reissued, leading to the operation being
-// performed against the wrong source.
+// to run in another thread with glib.IdleAdd(): the idle may already have run
+// and been removed by the time this function is called on its (now invalid)
+// source ID. This source ID may have been reissued, leading to the operation
+// being performed against the wrong source.
 //
 // The function takes the following parameters:
 //
-//   - tag: #GSource ID.
+//   - tag: source ID.
 //   - name: debug name for the source.
 func SourceSetNameByID(tag uint, name string) {
 	var _arg1 C.guint // out
@@ -26594,8 +27439,8 @@ func (tz *TimeZone) IsDst(interval int) bool {
 	return _ok
 }
 
-// Tree struct is an opaque data structure representing a [balanced binary
-// tree][glib-Balanced-Binary-Trees]. It should be accessed only by using the
+// Tree struct is an opaque data structure representing a balanced binary tree
+// (data-structures.html#binary-trees). It should be accessed only by using the
 // following functions.
 //
 // An instance of this type is always passed by reference.
@@ -27036,7 +27881,7 @@ func (tuples *Tuples) Index(index_ int, field int) unsafe.Pointer {
 // the hierarchical nature of URIs means that they can either
 // be ‘relative references’ (sometimes referred to as ‘relative
 // URIs’) or ‘URIs’ (for clarity, ‘URIs’ are referred to in this
-// documentation as ‘absolute URIs’ — although in constrast to RFC 3986
+// documentation as ‘absolute URIs’ — although in contrast to RFC 3986
 // (https://tools.ietf.org/html/rfc3986#section-4.3), fragment identifiers are
 // always allowed).
 //
@@ -31000,7 +31845,7 @@ func (value *Variant) IsOfType(typ *VariantType) bool {
 // LookupValue looks up a value in a dictionary #GVariant.
 //
 // This function works with dictionaries of the type a{s*} (and equally well
-// with type a{o*}, but we only further discuss the string case for sake of
+// with type a{o*}), but we only further discuss the string case for sake of
 // clarity).
 //
 // In the event that dictionary has the type a{sv}, the expected_type string
@@ -31017,7 +31862,7 @@ func (value *Variant) IsOfType(typ *VariantType) bool {
 // type.
 //
 // This function is currently implemented with a linear scan. If you plan to do
-// many lookups then Dict may be more efficient.
+// many lookups then variantdict may be more efficient.
 //
 // The function takes the following parameters:
 //
@@ -31092,7 +31937,7 @@ func (value *Variant) NChildren() uint {
 
 // Print pretty-prints value in the format understood by g_variant_parse().
 //
-// The format is described [here][gvariant-text].
+// The format is described here (gvariant-text-format.html).
 //
 // If type_annotate is TRUE, then type information is included in the output.
 //
@@ -31825,6 +32670,18 @@ func (dict *VariantDict) Remove(key string) bool {
 
 // VariantType: type in the glib.Variant type system.
 //
+// glib.Variant types are represented as strings, but have a strict syntax
+// described below. All glib.VariantTypes passed to GLib must be valid, and they
+// are typically expected to be static (i.e. not provided by user input) as they
+// determine how binary glib.Variant data is interpreted.
+//
+// To convert a static string to a glib.VariantType in C, use the
+// glib.VARIANTTYPE() casting macro. When GLib is compiled with checks enabled,
+// it will validate the type. To check if an arbitrary string is a valid
+// glib.VariantType, use glib.VariantType().StringIsValid.
+//
+// # GVariant Type System
+//
 // This section introduces the glib.Variant type system. It is based,
 // in large part, on the D-Bus type system, with two major changes
 // and some minor lifting of restrictions. The D-Bus specification
@@ -32133,14 +32990,14 @@ func NewVariantTypeTuple(items []*VariantType) *VariantType {
 	return _variantType
 }
 
-// Copy makes a copy of a Type. It is appropriate to call g_variant_type_free()
-// on the return value. type may not be NULL.
+// Copy makes a copy of a glib.VariantType.
+//
+// It is appropriate to call glib.VariantType.Free() on the return value.
+// type may not be NULL.
 //
 // The function returns the following values:
 //
-//   - variantType: new Type
-//
-//     Since 2.24.
+//   - variantType: new glib.VariantType Since 2.24.
 func (typ *VariantType) Copy() *VariantType {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.GVariantType // in
@@ -32163,15 +33020,15 @@ func (typ *VariantType) Copy() *VariantType {
 	return _variantType
 }
 
-// DupString returns a newly-allocated copy of the type string corresponding
-// to type. The returned string is nul-terminated. It is appropriate to call
-// g_free() on the return value.
+// DupString returns a newly-allocated copy of the type string corresponding to
+// type.
+//
+// The returned string is nul-terminated. It is appropriate to call glib.Free()
+// on the return value.
 //
 // The function returns the following values:
 //
-//   - utf8: corresponding type string
-//
-//     Since 2.24.
+//   - utf8: corresponding type string Since 2.24.
 func (typ *VariantType) DupString() string {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.gchar        // in
@@ -32189,15 +33046,13 @@ func (typ *VariantType) DupString() string {
 	return _utf8
 }
 
-// Element determines the element type of an array or maybe type.
+// Element determines the element type of an array or ‘maybe’ type.
 //
-// This function may only be used with array or maybe types.
+// This function may only be used with array or ‘maybe’ types.
 //
 // The function returns the following values:
 //
-//   - variantType: element type of type
-//
-//     Since 2.24.
+//   - variantType: element type of type Since 2.24.
 func (typ *VariantType) Element() *VariantType {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.GVariantType // in
@@ -32216,24 +33071,22 @@ func (typ *VariantType) Element() *VariantType {
 
 // Equal compares type1 and type2 for equality.
 //
-// Only returns TRUE if the types are exactly equal. Even if one type is an
-// indefinite type and the other is a subtype of it, FALSE will be returned
+// Only returns true if the types are exactly equal. Even if one type is an
+// indefinite type and the other is a subtype of it, false will be returned
 // if they are not exactly equal. If you want to check for subtypes, use
-// g_variant_type_is_subtype_of().
+// glib.VariantType.IsSubtypeOf().
 //
-// The argument types of type1 and type2 are only #gconstpointer to allow use
-// with Table without function pointer casting. For both arguments, a valid Type
-// must be provided.
+// The argument types of type1 and type2 are only gconstpointer to allow use
+// with glib.HashTable without function pointer casting. For both arguments,
+// a valid glib.VariantType must be provided.
 //
 // The function takes the following parameters:
 //
-//   - type2: Type.
+//   - type2: another type to compare.
 //
 // The function returns the following values:
 //
-//   - ok: TRUE if type1 and type2 are exactly equal
-//
-//     Since 2.24.
+//   - ok: true if type1 and type2 are exactly equal Since 2.24.
 func (type1 *VariantType) Equal(type2 *VariantType) bool {
 	var _arg0 C.gconstpointer // out
 	var _arg1 C.gconstpointer // out
@@ -32264,14 +33117,13 @@ func (type1 *VariantType) Equal(type2 *VariantType) bool {
 //
 // NULL is returned in case of type being G_VARIANT_TYPE_UNIT.
 //
-// This call, together with g_variant_type_next() provides an iterator interface
-// over tuple and dictionary entry types.
+// This call, together with glib.VariantType.Next() provides an iterator
+// interface over tuple and dictionary entry types.
 //
 // The function returns the following values:
 //
-//   - variantType: first item type of type, or NULL
-//
-//     Since 2.24.
+//   - variantType (optional): first item type of type, or NULL if the type has
+//     no item types Since 2.24.
 func (typ *VariantType) First() *VariantType {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.GVariantType // in
@@ -32283,20 +33135,22 @@ func (typ *VariantType) First() *VariantType {
 
 	var _variantType *VariantType // out
 
-	_variantType = (*VariantType)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_variantType = (*VariantType)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
 
 	return _variantType
 }
 
 // StringLength returns the length of the type string corresponding to the given
-// type. This function must be used to determine the valid extent of the memory
-// region returned by g_variant_type_peek_string().
+// type.
+//
+// This function must be used to determine the valid extent of the memory region
+// returned by glib.VariantType.PeekString().
 //
 // The function returns the following values:
 //
-//   - gsize: length of the corresponding type string
-//
-//     Since 2.24.
+//   - gsize: length of the corresponding type string Since 2.24.
 func (typ *VariantType) StringLength() uint {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gsize         // in
@@ -32315,14 +33169,13 @@ func (typ *VariantType) StringLength() uint {
 
 // Hash hashes type.
 //
-// The argument type of type is only #gconstpointer to allow use with Table
-// without function pointer casting. A valid Type must be provided.
+// The argument type of type is only gconstpointer to allow use with
+// glib.HashTable without function pointer casting. A valid glib.VariantType
+// must be provided.
 //
 // The function returns the following values:
 //
-//   - guint: hash value
-//
-//     Since 2.24.
+//   - guint: hash value Since 2.24.
 func (typ *VariantType) Hash() uint {
 	var _arg0 C.gconstpointer // out
 	var _cret C.guint         // in
@@ -32339,17 +33192,16 @@ func (typ *VariantType) Hash() uint {
 	return _guint
 }
 
-// IsArray determines if the given type is an array type. This is true if the
-// type string for type starts with an 'a'.
+// IsArray determines if the given type is an array type.
 //
-// This function returns TRUE for any indefinite type for which every definite
-// subtype is an array type -- G_VARIANT_TYPE_ARRAY, for example.
+// This is true if the type string for type starts with an a.
+//
+// This function returns true for any indefinite type for which every definite
+// subtype is an array type — G_VARIANT_TYPE_ARRAY, for example.
 //
 // The function returns the following values:
 //
-//   - ok: TRUE if type is an array type
-//
-//     Since 2.24.
+//   - ok: true if type is an array type Since 2.24.
 func (typ *VariantType) IsArray() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
@@ -32380,9 +33232,7 @@ func (typ *VariantType) IsArray() bool {
 //
 // The function returns the following values:
 //
-//   - ok: TRUE if type is a basic type
-//
-//     Since 2.24.
+//   - ok: true if type is a basic type Since 2.24.
 func (typ *VariantType) IsBasic() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
@@ -32406,14 +33256,12 @@ func (typ *VariantType) IsBasic() bool {
 // Container types are any array, maybe, tuple, or dictionary entry types plus
 // the variant type.
 //
-// This function returns TRUE for any indefinite type for which every definite
-// subtype is a container -- G_VARIANT_TYPE_ARRAY, for example.
+// This function returns true for any indefinite type for which every definite
+// subtype is a container — G_VARIANT_TYPE_ARRAY, for example.
 //
 // The function returns the following values:
 //
-//   - ok: TRUE if type is a container type
-//
-//     Since 2.24.
+//   - ok: true if type is a container type Since 2.24.
 func (typ *VariantType) IsContainer() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
@@ -32435,18 +33283,16 @@ func (typ *VariantType) IsContainer() bool {
 // IsDefinite determines if the given type is definite (ie: not indefinite).
 //
 // A type is definite if its type string does not contain any indefinite type
-// characters ('*', '?', or 'r').
+// characters (*, ?, or r).
 //
-// A #GVariant instance may not have an indefinite type, so calling this
-// function on the result of g_variant_get_type() will always result in
-// TRUE being returned. Calling this function on an indefinite type like
+// A glib.Variant instance may not have an indefinite type, so calling this
+// function on the result of glib.Variant.GetType() will always result in
+// true being returned. Calling this function on an indefinite type like
 // G_VARIANT_TYPE_ARRAY, however, will result in FALSE being returned.
 //
 // The function returns the following values:
 //
-//   - ok: TRUE if type is definite
-//
-//     Since 2.24.
+//   - ok: true if type is definite Since 2.24.
 func (typ *VariantType) IsDefinite() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
@@ -32465,17 +33311,16 @@ func (typ *VariantType) IsDefinite() bool {
 	return _ok
 }
 
-// IsDictEntry determines if the given type is a dictionary entry type. This is
-// true if the type string for type starts with a '{'.
+// IsDictEntry determines if the given type is a dictionary entry type.
 //
-// This function returns TRUE for any indefinite type for which every definite
-// subtype is a dictionary entry type -- G_VARIANT_TYPE_DICT_ENTRY, for example.
+// This is true if the type string for type starts with a {.
+//
+// This function returns true for any indefinite type for which every definite
+// subtype is a dictionary entry type — G_VARIANT_TYPE_DICT_ENTRY, for example.
 //
 // The function returns the following values:
 //
-//   - ok: TRUE if type is a dictionary entry type
-//
-//     Since 2.24.
+//   - ok: true if type is a dictionary entry type Since 2.24.
 func (typ *VariantType) IsDictEntry() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
@@ -32494,17 +33339,16 @@ func (typ *VariantType) IsDictEntry() bool {
 	return _ok
 }
 
-// IsMaybe determines if the given type is a maybe type. This is true if the
-// type string for type starts with an 'm'.
+// IsMaybe determines if the given type is a ‘maybe’ type.
 //
-// This function returns TRUE for any indefinite type for which every definite
-// subtype is a maybe type -- G_VARIANT_TYPE_MAYBE, for example.
+// This is true if the type string for type starts with an m.
+//
+// This function returns true for any indefinite type for which every definite
+// subtype is a ‘maybe’ type — G_VARIANT_TYPE_MAYBE, for example.
 //
 // The function returns the following values:
 //
-//   - ok: TRUE if type is a maybe type
-//
-//     Since 2.24.
+//   - ok: true if type is a ‘maybe’ type Since 2.24.
 func (typ *VariantType) IsMaybe() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
@@ -32525,19 +33369,17 @@ func (typ *VariantType) IsMaybe() bool {
 
 // IsSubtypeOf checks if type is a subtype of supertype.
 //
-// This function returns TRUE if type is a subtype of supertype. All types are
+// This function returns true if type is a subtype of supertype. All types are
 // considered to be subtypes of themselves. Aside from that, only indefinite
 // types can have subtypes.
 //
 // The function takes the following parameters:
 //
-//   - supertype: Type.
+//   - supertype: type of potential supertype.
 //
 // The function returns the following values:
 //
-//   - ok: TRUE if type is a subtype of supertype
-//
-//     Since 2.24.
+//   - ok: true if type is a subtype of supertype Since 2.24.
 func (typ *VariantType) IsSubtypeOf(supertype *VariantType) bool {
 	var _arg0 *C.GVariantType // out
 	var _arg1 *C.GVariantType // out
@@ -32559,17 +33401,17 @@ func (typ *VariantType) IsSubtypeOf(supertype *VariantType) bool {
 	return _ok
 }
 
-// IsTuple determines if the given type is a tuple type. This is true if the
-// type string for type starts with a '(' or if type is G_VARIANT_TYPE_TUPLE.
+// IsTuple determines if the given type is a tuple type.
 //
-// This function returns TRUE for any indefinite type for which every definite
-// subtype is a tuple type -- G_VARIANT_TYPE_TUPLE, for example.
+// This is true if the type string for type starts with a ( or if type is
+// G_VARIANT_TYPE_TUPLE.
+//
+// This function returns true for any indefinite type for which every definite
+// subtype is a tuple type — G_VARIANT_TYPE_TUPLE, for example.
 //
 // The function returns the following values:
 //
-//   - ok: TRUE if type is a tuple type
-//
-//     Since 2.24.
+//   - ok: true if type is a tuple type Since 2.24.
 func (typ *VariantType) IsTuple() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
@@ -32592,9 +33434,7 @@ func (typ *VariantType) IsTuple() bool {
 //
 // The function returns the following values:
 //
-//   - ok: TRUE if type is the variant type
-//
-//     Since 2.24.
+//   - ok: true if type is the variant type Since 2.24.
 func (typ *VariantType) IsVariant() bool {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gboolean      // in
@@ -32616,13 +33456,11 @@ func (typ *VariantType) IsVariant() bool {
 // Key determines the key type of a dictionary entry type.
 //
 // This function may only be used with a dictionary entry type. Other than the
-// additional restriction, this call is equivalent to g_variant_type_first().
+// additional restriction, this call is equivalent to glib.VariantType.First().
 //
 // The function returns the following values:
 //
-//   - variantType: key type of the dictionary entry
-//
-//     Since 2.24.
+//   - variantType: key type of the dictionary entry Since 2.24.
 func (typ *VariantType) Key() *VariantType {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.GVariantType // in
@@ -32649,9 +33487,7 @@ func (typ *VariantType) Key() *VariantType {
 //
 // The function returns the following values:
 //
-//   - gsize: number of items in type
-//
-//     Since 2.24.
+//   - gsize: number of items in type Since 2.24.
 func (typ *VariantType) NItems() uint {
 	var _arg0 *C.GVariantType // out
 	var _cret C.gsize         // in
@@ -32670,20 +33506,19 @@ func (typ *VariantType) NItems() uint {
 
 // Next determines the next item type of a tuple or dictionary entry type.
 //
-// type must be the result of a previous call to g_variant_type_first() or
-// g_variant_type_next().
+// type must be the result of a previous call to glib.VariantType.First() or
+// glib.VariantType.Next().
 //
 // If called on the key type of a dictionary entry then this call returns the
 // value type. If called on the value type of a dictionary entry then this call
 // returns NULL.
 //
-// For tuples, NULL is returned when type is the last item in a tuple.
+// For tuples, NULL is returned when type is the last item in the tuple.
 //
 // The function returns the following values:
 //
-//   - variantType: next Type after type, or NULL
-//
-//     Since 2.24.
+//   - variantType (optional): next type after type, or NULL if there are no
+//     further types Since 2.24.
 func (typ *VariantType) Next() *VariantType {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.GVariantType // in
@@ -32695,7 +33530,9 @@ func (typ *VariantType) Next() *VariantType {
 
 	var _variantType *VariantType // out
 
-	_variantType = (*VariantType)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	if _cret != nil {
+		_variantType = (*VariantType)(gextras.NewStructNative(unsafe.Pointer(_cret)))
+	}
 
 	return _variantType
 }
@@ -32706,9 +33543,7 @@ func (typ *VariantType) Next() *VariantType {
 //
 // The function returns the following values:
 //
-//   - variantType: value type of the dictionary entry
-//
-//     Since 2.24.
+//   - variantType: value type of the dictionary entry Since 2.24.
 func (typ *VariantType) Value() *VariantType {
 	var _arg0 *C.GVariantType // out
 	var _cret *C.GVariantType // in
@@ -32760,7 +33595,9 @@ func VariantTypeStringGetDepth_(typeString string) uint {
 }
 
 // VariantTypeStringIsValid checks if type_string is a valid GVariant type
-// string. This call is equivalent to calling g_variant_type_string_scan() and
+// string (./struct.VariantType.html#gvariant-type-strings).
+//
+// This call is equivalent to calling glib.VariantType().StringScan and
 // confirming that the following character is a nul terminator.
 //
 // The function takes the following parameters:
@@ -32769,9 +33606,7 @@ func VariantTypeStringGetDepth_(typeString string) uint {
 //
 // The function returns the following values:
 //
-//   - ok: TRUE if type_string is exactly one valid type string
-//
-//     Since 2.24.
+//   - ok: true if type_string is exactly one valid type string Since 2.24.
 func VariantTypeStringIsValid(typeString string) bool {
 	var _arg1 *C.gchar   // out
 	var _cret C.gboolean // in
@@ -32792,8 +33627,9 @@ func VariantTypeStringIsValid(typeString string) bool {
 }
 
 // VariantTypeStringScan: scan for a single complete and valid GVariant type
-// string in string. The memory pointed to by limit (or bytes beyond it) is
-// never accessed.
+// string in string.
+//
+// The memory pointed to by limit (or bytes beyond it) is never accessed.
 //
 // If a valid type string is found, endptr is updated to point to the first
 // character past the end of the string that was found and TRUE is returned.
@@ -32802,17 +33638,17 @@ func VariantTypeStringIsValid(typeString string) bool {
 // does not end before limit then FALSE is returned.
 //
 // For the simple case of checking if a string is a valid type string,
-// see g_variant_type_string_is_valid().
+// see glib.VariantType().StringIsValid.
 //
 // The function takes the following parameters:
 //
 //   - str: pointer to any string.
-//   - limit (optional): end of string, or NULL.
+//   - limit (optional): end of string.
 //
 // The function returns the following values:
 //
-//   - endptr (optional): location to store the end pointer, or NULL.
-//   - ok: TRUE if a valid type string was found.
+//   - endptr (optional): location to store the end pointer.
+//   - ok: true if a valid type string was found.
 func VariantTypeStringScan(str, limit string) (string, bool) {
 	var _arg1 *C.gchar   // out
 	var _arg2 *C.gchar   // out

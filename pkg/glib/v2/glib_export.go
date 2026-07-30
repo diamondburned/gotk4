@@ -148,7 +148,9 @@ func _gotk4_glib2_LogFunc(arg1 *C.gchar, arg2 C.GLogLevelFlags, arg3 *C.gchar, a
 	var _logLevel LogLevelFlags // out
 	var _message string         // out
 
-	_logDomain = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	if arg1 != nil {
+		_logDomain = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+	}
 	_logLevel = LogLevelFlags(arg2)
 	_message = C.GoString((*C.gchar)(unsafe.Pointer(arg3)))
 

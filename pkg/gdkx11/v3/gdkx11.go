@@ -869,10 +869,10 @@ func (screen *X11Screen) ConnectWindowManagerChanged(f func()) coreglib.SignalHa
 	return coreglib.ConnectGeneratedClosure(screen, "window-manager-changed", false, unsafe.Pointer(C._gotk4_gdkx113_X11Screen_ConnectWindowManagerChanged), f)
 }
 
-// CurrentDesktop returns the current workspace for screen when running under
-// a window manager that supports multiple workspaces, as described in the
-// Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
-// specification.
+// CurrentDesktop returns the current workspace for screen
+// when running under a window manager that supports multiple
+// workspaces, as described in the Extended Window Manager Hints
+// (https://specifications.freedesktop.org/wm/latest/) specification.
 //
 // The function returns the following values:
 //
@@ -893,10 +893,10 @@ func (screen *X11Screen) CurrentDesktop() uint32 {
 	return _guint32
 }
 
-// NumberOfDesktops returns the number of workspaces for screen when running
-// under a window manager that supports multiple workspaces, as described in the
-// Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
-// specification.
+// NumberOfDesktops returns the number of workspaces for screen
+// when running under a window manager that supports multiple
+// workspaces, as described in the Extended Window Manager Hints
+// (https://specifications.freedesktop.org/wm/latest/) specification.
 //
 // The function returns the following values:
 //
@@ -1024,11 +1024,11 @@ func (window *X11Window) Desktop() uint32 {
 	return _guint32
 }
 
-// MoveToCurrentDesktop moves the window to the correct workspace when running
-// under a window manager that supports multiple workspaces, as described in the
-// Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
-// specification. Will not do anything if the window is already on all
-// workspaces.
+// MoveToCurrentDesktop moves the window to the correct workspace
+// when running under a window manager that supports multiple
+// workspaces, as described in the Extended Window Manager Hints
+// (https://specifications.freedesktop.org/wm/latest/) specification. Will not
+// do anything if the window is already on all workspaces.
 func (window *X11Window) MoveToCurrentDesktop() {
 	var _arg0 *C.GdkWindow // out
 
@@ -1038,10 +1038,10 @@ func (window *X11Window) MoveToCurrentDesktop() {
 	runtime.KeepAlive(window)
 }
 
-// MoveToDesktop moves the window to the given workspace when running unde
-// a window manager that supports multiple workspaces, as described in the
-// Extended Window Manager Hints (http://www.freedesktop.org/Standards/wm-spec)
-// specification.
+// MoveToDesktop moves the window to the given workspace
+// when running unde a window manager that supports multiple
+// workspaces, as described in the Extended Window Manager Hints
+// (https://specifications.freedesktop.org/wm/latest/) specification.
 //
 // The function takes the following parameters:
 //

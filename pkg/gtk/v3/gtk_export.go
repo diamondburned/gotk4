@@ -5697,6 +5697,17 @@ func _gotk4_gtk3_EntryClass_populate_popup(arg0 *C.GtkEntry, arg1 *C.GtkWidget) 
 	overrides.PopulatePopup(_popup)
 }
 
+//export _gotk4_gtk3_EntryClass_toggle_direction
+func _gotk4_gtk3_EntryClass_toggle_direction(arg0 *C.GtkEntry) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromObj[EntryOverrides](instance0)
+	if overrides.ToggleDirection == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected EntryOverrides.ToggleDirection, got none")
+	}
+
+	overrides.ToggleDirection()
+}
+
 //export _gotk4_gtk3_EntryClass_toggle_overwrite
 func _gotk4_gtk3_EntryClass_toggle_overwrite(arg0 *C.GtkEntry) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
@@ -5978,6 +5989,22 @@ func _gotk4_gtk3_Entry_ConnectPreeditChanged(arg0 C.gpointer, arg1 *C.gchar, arg
 	_preedit = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
 
 	f(_preedit)
+}
+
+//export _gotk4_gtk3_Entry_ConnectToggleDirection
+func _gotk4_gtk3_Entry_ConnectToggleDirection(arg0 C.gpointer, arg1 C.guintptr) {
+	var f func()
+	{
+		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
+		if closure == nil {
+			panic("given unknown closure user_data")
+		}
+		defer closure.TryRepanic()
+
+		f = closure.Func.(func())
+	}
+
+	f()
 }
 
 //export _gotk4_gtk3_Entry_ConnectToggleOverwrite

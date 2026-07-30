@@ -34,3 +34,6 @@ Certdb -> CertDB
 Gerror -> GError
 ImContext -> IMContext
 Foreach -> ForEach
+Tos -> ToS
+Tclass -> TClass
+Srgb -> SRGB

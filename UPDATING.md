@@ -1,6 +1,6 @@
-# Upgrading gotk4
+# Updating gotk4
 
-This guide details the procedure for upgrading `gotk4` to newer GTK and Nixpkgs
+This guide details the procedure for updating `gotk4` to newer GTK and Nixpkgs
 versions.
 
 ## Updating `gotk4-nix`
@@ -59,7 +59,7 @@ _Assumes `gotk4-nix` is up-to-date and merged, and that you're inside
    - Add a new release section in `CHANGELOG.md` corresponding to the target
      version (e.g., `## [4.22.4] - YYYY-MM-DD`).
    - Include the following sections in each changelog entry:
-     - **Required:** Version upgrades. Record GTK4 version bump, Go toolchain
+      - **Required:** Version updates. Record GTK4 version bump, Go toolchain
        version, Nixpkgs channel/commit, and `gotk4-nix` flake input commit.
      - **Required:** GIR Code Generation & Generator Fixes.
      - Optional: Summarize new widgets, render nodes, color management APIs, and

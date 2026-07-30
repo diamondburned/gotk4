@@ -148,3 +148,18 @@ contributing to this project.
    that they contribute to.
 3. Project-wide refactors are large and will consume a lot of time to review, so
    they should be avoided.
+4. Code produced with AI assistance must follow the [Linux kernel guidelines
+   for coding assistants][kernel-coding-assistants]. Commit messages must
+   always be trailed with an `Assisted-by` header identifying the tool and model
+   (e.g., `Assisted-by: AGENT_NAME:MODEL_VERSION`).
+
+[kernel-coding-assistants]: https://docs.kernel.org/process/coding-assistants.html
+
+## Commit Message Conventions
+
+Git commit messages should follow these conventions:
+
+- **Title:** Keep the subject line short (< 50 characters).
+- **Body:** Wrap body text at under 72 characters per line.
+- **Details:** Prefer putting detailed context and explanations in the commit
+  body rather than overcrowding the title.

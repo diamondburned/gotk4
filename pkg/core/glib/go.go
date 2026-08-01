@@ -564,17 +564,22 @@ func Overrides[OverridesT any](obj Objector) OverridesT {
 	rtype := rtypeElemV(obj)
 
 	if subclass, ok := knownTypes[rtype]; ok {
-		topt, ok := subclass.opts.typeOpts[subclass.parentType]
-		if ok && topt.override != nil {
-			overrides, ok := topt.override(obj).(OverridesT)
-			if ok {
-				return overrides
-			}
+		otype := rtypeElem[OverridesT]()
 
-			var z OverridesT
-			log.Panicf(
-				"gotk4: Overrides: object type %s's parent overrides type is %s, cannot assert to %T",
-				rtype, subclass.parentType.GoOverridesType, z)
+		ptype, ok := classOverridesTypes[otype]
+		if ok {
+			topt, ok := subclass.opts.typeOpts[ptype]
+			if ok && topt.override != nil {
+				overrides, ok := topt.override(obj).(OverridesT)
+				if ok {
+					return overrides
+				}
+
+				var z OverridesT
+				log.Panicf(
+					"gotk4: Overrides: object type %s's parent overrides type is %s, cannot assert to %T",
+					rtype, subclass.parentType.GoOverridesType, z)
+			}
 		}
 
 		var z OverridesT
@@ -713,7 +718,15 @@ func RegisterClassInfo[InstanceT Objector, ClassT, OverridesT any](
 		GoOverridesType: rtypeElem[OverridesT](),
 		InitClass: func(gclass unsafe.Pointer, overridesV, initFuncV any) {
 			overrides, _ := overridesV.(OverridesT)
-			initFunc, _ := initFuncV.(func(ClassT))
+			var initFunc func(ClassT)
+
+			initFuncA, ok := initFuncV.(func(any))
+			if ok {
+				initFunc = func(class ClassT) {
+					initFuncA(class)
+				}
+			}
+
 			initClassFunc(gclass, overrides, initFunc)
 		},
 		WrapClass: func(obj *Object) Objector {
@@ -797,7 +810,9 @@ func _gotk4_gobject_init_class(gclass, data C.gpointer) {
 
 		var overrides any
 		if topt.override != nil {
-			overrides = topt.override(nil)
+			value := reflect.New(subclass.goType)
+			vinf := value.Interface().(Objector)
+			overrides = topt.override(vinf)
 		}
 
 		parentType.InitClass(unsafe.Pointer(gclass), overrides, topt.classInit)

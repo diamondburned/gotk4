@@ -18,7 +18,7 @@ func _gotk4_gdkx114_X11Display_ConnectXevent(arg0 C.gpointer, arg1 C.gpointer, a
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -46,7 +46,7 @@ func _gotk4_gdkx114_X11Screen_ConnectWindowManagerChanged(arg0 C.gpointer, arg1 
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 

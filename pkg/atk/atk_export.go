@@ -66,7 +66,7 @@ func _gotk4_atk1_Component_ConnectBoundsChanged(arg0 C.gpointer, arg1 *C.AtkRect
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -86,7 +86,7 @@ func _gotk4_atk1_Document_ConnectDocumentAttributeChanged(arg0 C.gpointer, arg1 
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -108,7 +108,7 @@ func _gotk4_atk1_Document_ConnectLoadComplete(arg0 C.gpointer, arg1 C.guintptr) 
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -124,7 +124,7 @@ func _gotk4_atk1_Document_ConnectLoadStopped(arg0 C.gpointer, arg1 C.guintptr) {
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -140,7 +140,7 @@ func _gotk4_atk1_Document_ConnectPageChanged(arg0 C.gpointer, arg1 C.gint, arg2 
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -160,7 +160,7 @@ func _gotk4_atk1_Document_ConnectReload(arg0 C.gpointer, arg1 C.guintptr) {
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -176,7 +176,7 @@ func _gotk4_atk1_Hypertext_ConnectLinkSelected(arg0 C.gpointer, arg1 C.gint, arg
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -196,7 +196,7 @@ func _gotk4_atk1_Selection_ConnectSelectionChanged(arg0 C.gpointer, arg1 C.guint
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -212,7 +212,7 @@ func _gotk4_atk1_Table_ConnectColumnDeleted(arg0 C.gpointer, arg1 C.gint, arg2 C
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -234,7 +234,7 @@ func _gotk4_atk1_Table_ConnectColumnInserted(arg0 C.gpointer, arg1 C.gint, arg2 
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -256,7 +256,7 @@ func _gotk4_atk1_Table_ConnectColumnReordered(arg0 C.gpointer, arg1 C.guintptr) 
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -272,7 +272,7 @@ func _gotk4_atk1_Table_ConnectModelChanged(arg0 C.gpointer, arg1 C.guintptr) {
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -288,7 +288,7 @@ func _gotk4_atk1_Table_ConnectRowDeleted(arg0 C.gpointer, arg1 C.gint, arg2 C.gi
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -310,7 +310,7 @@ func _gotk4_atk1_Table_ConnectRowInserted(arg0 C.gpointer, arg1 C.gint, arg2 C.g
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -332,7 +332,7 @@ func _gotk4_atk1_Table_ConnectRowReordered(arg0 C.gpointer, arg1 C.guintptr) {
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -348,7 +348,7 @@ func _gotk4_atk1_Text_ConnectTextAttributesChanged(arg0 C.gpointer, arg1 C.guint
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -364,7 +364,7 @@ func _gotk4_atk1_Text_ConnectTextCaretMoved(arg0 C.gpointer, arg1 C.gint, arg2 C
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -384,7 +384,7 @@ func _gotk4_atk1_Text_ConnectTextChanged(arg0 C.gpointer, arg1 C.gint, arg2 C.gi
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -406,7 +406,7 @@ func _gotk4_atk1_Text_ConnectTextInsert(arg0 C.gpointer, arg1 C.gint, arg2 C.gin
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -430,7 +430,7 @@ func _gotk4_atk1_Text_ConnectTextRemove(arg0 C.gpointer, arg1 C.gint, arg2 C.gin
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg4))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -454,7 +454,7 @@ func _gotk4_atk1_Text_ConnectTextSelectionChanged(arg0 C.gpointer, arg1 C.guintp
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -470,7 +470,7 @@ func _gotk4_atk1_Value_ConnectValueChanged(arg0 C.gpointer, arg1 C.gdouble, arg2
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -492,7 +492,7 @@ func _gotk4_atk1_Window_ConnectActivate(arg0 C.gpointer, arg1 C.guintptr) {
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -508,7 +508,7 @@ func _gotk4_atk1_Window_ConnectCreate(arg0 C.gpointer, arg1 C.guintptr) {
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -524,7 +524,7 @@ func _gotk4_atk1_Window_ConnectDeactivate(arg0 C.gpointer, arg1 C.guintptr) {
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -540,7 +540,7 @@ func _gotk4_atk1_Window_ConnectDestroy(arg0 C.gpointer, arg1 C.guintptr) {
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -556,7 +556,7 @@ func _gotk4_atk1_Window_ConnectMaximize(arg0 C.gpointer, arg1 C.guintptr) {
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -572,7 +572,7 @@ func _gotk4_atk1_Window_ConnectMinimize(arg0 C.gpointer, arg1 C.guintptr) {
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -588,7 +588,7 @@ func _gotk4_atk1_Window_ConnectMove(arg0 C.gpointer, arg1 C.guintptr) {
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -604,7 +604,7 @@ func _gotk4_atk1_Window_ConnectResize(arg0 C.gpointer, arg1 C.guintptr) {
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -620,7 +620,7 @@ func _gotk4_atk1_Window_ConnectRestore(arg0 C.gpointer, arg1 C.guintptr) {
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -795,7 +795,7 @@ func _gotk4_atk1_Hyperlink_ConnectLinkActivated(arg0 C.gpointer, arg1 C.guintptr
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -1211,7 +1211,7 @@ func _gotk4_atk1_Object_ConnectActiveDescendantChanged(arg0 C.gpointer, arg1 *C.
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -1231,7 +1231,7 @@ func _gotk4_atk1_Object_ConnectAnnouncement(arg0 C.gpointer, arg1 *C.gchar, arg2
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -1251,7 +1251,7 @@ func _gotk4_atk1_Object_ConnectAttributeChanged(arg0 C.gpointer, arg1 *C.gchar, 
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -1273,7 +1273,7 @@ func _gotk4_atk1_Object_ConnectChildrenChanged(arg0 C.gpointer, arg1 C.guint, ar
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -1295,7 +1295,7 @@ func _gotk4_atk1_Object_ConnectFocusEvent(arg0 C.gpointer, arg1 C.gboolean, arg2
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -1317,7 +1317,7 @@ func _gotk4_atk1_Object_ConnectNotification(arg0 C.gpointer, arg1 *C.gchar, arg2
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -1339,7 +1339,7 @@ func _gotk4_atk1_Object_ConnectPropertyChange(arg0 C.gpointer, arg1 *C.gpointer,
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg2))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -1359,7 +1359,7 @@ func _gotk4_atk1_Object_ConnectStateChange(arg0 C.gpointer, arg1 *C.gchar, arg2 
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg3))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 
@@ -1383,7 +1383,7 @@ func _gotk4_atk1_Object_ConnectVisibleDataChanged(arg0 C.gpointer, arg1 C.guintp
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 

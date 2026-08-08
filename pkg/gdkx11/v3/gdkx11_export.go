@@ -16,7 +16,7 @@ func _gotk4_gdkx113_X11Screen_ConnectWindowManagerChanged(arg0 C.gpointer, arg1 
 	{
 		closure := coreglib.ConnectedGeneratedClosure(uintptr(arg1))
 		if closure == nil {
-			panic("given unknown closure user_data")
+			return
 		}
 		defer closure.TryRepanic()
 

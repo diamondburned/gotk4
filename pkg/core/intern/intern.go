@@ -14,60 +14,11 @@ import (
 	"sync"
 	"sync/atomic"
 	"unsafe"
+	"weak"
 
-	"github.com/KarpelesLab/weak"
 	"github.com/diamondburned/gotk4/pkg/core/closure"
 	"github.com/diamondburned/gotk4/pkg/core/gdebug"
-
-	// Require a non-moving GC for heap pointers. Current GC is moving only by
-	// the stack. See https://github.com/go4org/intern.
-	_ "go4.org/unsafe/assume-no-moving-gc"
 )
-
-// Box is an opaque type holding extra data.
-type Box struct {
-	dummy    *boxDummy
-	closures atomic.Pointer[closure.Registry]
-	gobject  unsafe.Pointer
-	finalize bool
-}
-
-type boxDummy struct {
-	gobject unsafe.Pointer
-}
-
-// Object returns Box's C GObject pointer.
-func (b *Box) GObject() unsafe.Pointer {
-	return b.gobject
-}
-
-// Closures returns the closure registry for this Box.
-func (b *Box) Closures() *closure.Registry {
-	closures := b.closures.Load()
-	if closures != nil {
-		return closures
-	}
-
-	// If the closures are nil, then we'll have to create a new one.
-	closures = closure.NewRegistry()
-	if !b.closures.CompareAndSwap(nil, closures) {
-		// If the CAS failed, then we'll read the value again.
-		return b.closures.Load()
-	}
-
-	return closures
-}
-
-// Hack to force an object on the heap.
-var never bool
-var sink_ interface{}
-
-//go:nosplit
-func sink(v interface{}) {
-	if never {
-		sink_ = v
-	}
-}
 
 var (
 	traceObjects  = gdebug.HasKey("trace-objects")
@@ -93,308 +44,315 @@ func objRefCount(obj unsafe.Pointer) int {
 	return int(C.g_atomic_int_get((*C.gint)(unsafe.Pointer(&(*C.GObject)(obj).ref_count))))
 }
 
-// newBox creates a zero-value instance of Box.
-func newBox(obj unsafe.Pointer) *Box {
-	box := &Box{}
-	box.gobject = obj
-
-	// Cheat Go's GC by adding a finalizer to a dummy pointer that is inside Box
-	// but is not Box itself.
-	box.dummy = &boxDummy{gobject: obj}
-	sink(box.dummy)
-	runtime.SetFinalizer(box.dummy, finalizeBox)
-
-	if objectProfile != nil {
-		objectProfile.Add(obj, 3)
-	}
-
-	if traceObjects {
-		slog.Debug(
-			"allocating new box for object",
-			"stack", string(debug.Stack()),
-			objInfo(obj))
-	}
-
-	// Force box on the heap. Objects on the stack can move, but not objects on
-	// the heap. At least not for now; the assume-no-moving-gc import will
-	// guard against that.
-	sink(box)
-
-	return box
+// Box is the shared Go state for one generation of a native object.
+type Box struct {
+	dummy      *boxDummy
+	closures   atomic.Pointer[closure.Registry]
+	gobject    unsafe.Pointer
+	token      uintptr
+	generation uint64
+	freed      atomic.Bool
 }
 
-// shared contains shared closure data.
+// boxDummy is kept outside the Go closure cycle. The anchor makes the dummy
+// pointer-scannable so it cannot be placed in the runtime's tiny allocator,
+// whose coalesced allocation slots can suppress individual finalizers.
+type boxDummy struct {
+	anchor     *boxDummyAnchor
+	token      uintptr
+	generation uint64
+}
+
+type boxDummyAnchor struct{ _ byte }
+
+var boxDummyScannedAnchor boxDummyAnchor
+
+type entryPhase uint8
+
+const (
+	entryInitializing entryPhase = iota
+	entryActive
+	entryCleanupQueued
+	entryRemoving
+)
+
+type entry struct {
+	object         unsafe.Pointer
+	token          uintptr
+	phase          entryPhase
+	box            *Box
+	weak           weak.Pointer[Box]
+	generation     uint64
+	finalizerArmed bool
+}
+
 var shared = struct {
-	mu sync.RWMutex
-	// weak stores *Box while the object is in Go's heap. The finalizer will
-	// move *Box to strong if the reference is toggled. This is only the case,
-	// because the finalizer will not run otherwise.
-	weak *weak.Map[unsafe.Pointer, Box]
-	// strong stores *Box while the object is still referenced by C but not Go.
-	strong map[unsafe.Pointer]*Box
+	mu       sync.Mutex
+	byObject map[unsafe.Pointer]*entry
+	byToken  map[uintptr]*entry
 }{
-	weak:   weak.NewMap[unsafe.Pointer, Box](),
-	strong: make(map[unsafe.Pointer]*Box, 1024),
+	byObject: make(map[unsafe.Pointer]*entry, 1024),
+	byToken:  make(map[uintptr]*entry, 1024),
 }
 
-// TryGet gets the Box associated with the GObject or nil if it's gone. The
-// caller must not retain the Box pointer anywhere.
-func TryGet(gobject unsafe.Pointer) *Box {
-	shared.mu.RLock()
-	box, _ := gets(gobject)
-	shared.mu.RUnlock()
+var nextToken atomic.Uintptr
+
+// beforeToggleInstallHook is used by lifecycle tests to pause initialization
+// while the registry mutex is held. It is nil in normal builds.
+var beforeToggleInstallHook func()
+
+func newToken() uintptr { return nextToken.Add(1) }
+
+func newBox(e *entry) *Box {
+	e.generation++
+	box := &Box{
+		gobject:    e.object,
+		token:      e.token,
+		generation: e.generation,
+	}
+	box.dummy = &boxDummy{
+		anchor:     &boxDummyScannedAnchor,
+		token:      e.token,
+		generation: e.generation,
+	}
+	if traceObjects {
+		slog.Debug("allocating new box for object", "stack", string(debug.Stack()), objInfo(e.object))
+	}
 	return box
 }
 
-// Get gets the interned box for the given GObject C pointer. If the object is
-// new or unknown, then a new box is made. If the intern box already exists for
-// a given C pointer, then that box is weakly referenced and returned. The box
-// will be reference-counted; the caller must use ShouldFree to unreference it.
-func Get(gobject unsafe.Pointer, take bool) *Box {
-	// If the registry does not exist, then we'll have to globally register it.
-	// If the registry is currently strongly referenced, then we must move it to
-	// a weak reference.
+// Object returns Box's native GObject pointer.
+func (b *Box) GObject() unsafe.Pointer { return b.gobject }
 
-	box := TryGet(gobject)
-	if box != nil {
-		return box
+// Closures returns the closure registry for this Box.
+func (b *Box) Closures() *closure.Registry {
+	if reg := b.closures.Load(); reg != nil {
+		return reg
 	}
-
-	shared.mu.Lock()
-
-	box, _ = gets(gobject)
-	if box != nil {
-		shared.mu.Unlock()
-		return box
+	reg := closure.NewRegistry()
+	if b.closures.CompareAndSwap(nil, reg) {
+		return reg
 	}
+	return b.closures.Load()
+}
 
-	box = newBox(gobject)
-
-	// add_toggle_ref's documentation states:
-	//
-	//    Since a (normal) reference must be held to the object before
-	//    calling g_object_add_toggle_ref(), the initial state of the
-	//    reverse link is always strong.
-	//
-	shared.strong[gobject] = box
-
-	if toggleRefs {
-		slog.Debug(
-			"Get: will introduce new box for object",
-			objInfo(gobject))
-	}
-
-	shared.mu.Unlock()
-
-	C.g_object_add_toggle_ref(
-		(*C.GObject)(gobject),
-		(*[0]byte)(C.goToggleNotify), nil,
-	)
-
-	if toggleRefs {
-		slog.Debug(
-			"Get: added toggle reference to object",
-			objInfo(gobject))
-	}
-
-	// We should already have a strong reference. Sink the object in case. This
-	// will force the reference to be truly strong.
-	if C.g_object_is_floating(C.gpointer(gobject)) != C.FALSE {
-		// First, we need to ref_sink the object to convert the floating
-		// reference to a strong reference.
-		C.g_object_ref_sink(C.gpointer(gobject))
-		// Then, we need to unref it to balance the ref_sink.
-		C.g_object_unref(C.gpointer(gobject))
-
-		if toggleRefs {
-			slog.Debug(
-				"Get: ref_sink'd the object",
-				objInfo(gobject))
-		}
-	}
-
-	// If we're "not taking," then we can assume our ownership over the object,
-	// meaning the strong reference is now ours. That means we need to replace
-	// it, not add.
+func consumeTransferredRef(gobject unsafe.Pointer, take bool) {
 	if !take {
 		C.g_object_unref(C.gpointer(gobject))
-		if toggleRefs {
-			slog.Debug(
-				"Get: not taking, so unref'd the object",
-				objInfo(gobject))
-		}
 	}
+}
 
-	// Undo the initial ref_sink.
-	// C.g_object_unref(C.gpointer(gobject))
+func boxForEntry(e *entry) *Box {
+	if e == nil {
+		return nil
+	}
+	if e.box != nil {
+		return e.box
+	}
+	return e.weak.Value()
+}
 
+// TryGet gets the currently interned box, or nil if no safe wrapper exists.
+func TryGet(gobject unsafe.Pointer) *Box {
+	if gobject == nil {
+		return nil
+	}
+	shared.mu.Lock()
+	e := shared.byObject[gobject]
+	if e == nil || e.phase != entryActive {
+		shared.mu.Unlock()
+		return nil
+	}
+	box := boxForEntry(e)
+	shared.mu.Unlock()
 	return box
 }
 
-// Free explicitly frees the box permanently. It must not be resurrected after
-// this.
-//
-// Deprecated: this function is no longer needed.
-func Free(box *Box) {
-	panic("not implemented")
-}
-
-// finalizeBox only delays its finalization until GLib notifies us a toggle. It
-// does so for as long as an object is stored only in the Go heap. Once the
-// object is also shared, the toggle notifier will strongly reference the Box.
-func finalizeBox(dummy *boxDummy) {
-	if dummy == nil {
-		panic("bug: finalizeBox called with nil dummy")
+// Get interns a GObject. take=true means transfer-none; take=false consumes
+// one caller-owned transfer-full reference on every outcome.
+func Get(gobject unsafe.Pointer, take bool) *Box {
+	if gobject == nil {
+		return nil
 	}
 
 	shared.mu.Lock()
-	defer shared.mu.Unlock()
-
-	box, strong := gets(dummy.gobject)
-	if box == nil {
-		// Silently ignore unknown objects.
-		//
-		// This is a trick to make sure that the box is really finalized. Turns
-		// out it hates being finalized in goFinishRemovingToggleRef, so we just
-		// don't call it there and let the GC do its thing.
-
-		if traceObjects {
-			slog.Debug(
-				"finalizeBox: unknown object, possible bug?",
-				"gobject.ptr", fmt.Sprintf("%p", dummy.gobject))
+	if e := shared.byObject[gobject]; e != nil {
+		if e.phase == entryActive || e.phase == entryCleanupQueued {
+			// Get's transfer contract guarantees that the native object is
+			// valid. Promote the stable entry and cancel queued cleanup rather
+			// than installing a second toggle reference.
+			box := makeStrong(e)
+			shared.mu.Unlock()
+			consumeTransferredRef(gobject, take)
+			return box
 		}
-
-		return
-	}
-
-	// Always delegate the finalization to the next cycle.
-	// This won't be the case once goFinishRemovingToggleRef is called.
-	runtime.SetFinalizer(dummy, finalizeBox)
-
-	if box.finalize {
-		// If the box is already finalizing, then we don't need to do anything.
-		// Repeat this until box is gone from the registry.
-
-		if toggleRefs {
-			slog.Debug(
-				"finalizeBox: already finalizing, waiting for goFinishRemovingToggleRef",
-				"gobject.ptr", fmt.Sprintf("%p", dummy.gobject))
-		}
-
-		return
-	}
-
-	if strong {
-		// If strong: the closures are strong-referenced, then they might still
-		// be referenced from the C side, and those closures might access this
-		// object. Don't free.
-
-		if toggleRefs {
-			slog.Debug(
-				"finalizeBox: moving finalize to next GC cycle since object is still strong",
-				objInfo(dummy.gobject))
-		}
-
-		return
-	}
-
-	// Mark the box as finalizing.
-	box.finalize = true
-
-	// Do this before we dispatch the remove_toggle_ref, because the
-	// remove_toggle_ref might destroy the object.
-	var prevObjInfo slog.Attr
-	if toggleRefs {
-		prevObjInfo = objInfo(dummy.gobject)
-	}
-
-	// Do this in the main loop instead. This is because finalizers are
-	// called in a finalizer thread, and our remove_toggle_ref might be
-	// destroying other main loop objects.
-	C.g_main_context_invoke(
-		nil, // nil means the default main context
-		(*[0]byte)(C.gotk4_intern_remove_toggle_ref),
-		C.gpointer(dummy.gobject))
-
-	if toggleRefs {
-		slog.Debug(
-			"finalizeBox: remove_toggle_ref queued for next main loop iteration",
-			prevObjInfo)
-	}
-}
-
-//go:nosplit
-func gets(gobject unsafe.Pointer) (b *Box, strong bool) {
-	if strong, ok := shared.strong[gobject]; ok {
-		return strong, true
-	}
-
-	if weak := shared.weak.Get(gobject); weak != nil {
-		// If forObject is false, then that probably means this was called
-		// inside goMarshal while the Go object is still alive, otherwise
-		// toggleNotify would've moved it over. We don't have to worry about
-		// this being freed as long as we acquire the mutex.
-		//
-		// TODO: does this actually resurrect the value properly? We have a
-		// mutex to guard this which is also used in the finalizer, so it
-		// shouldn't explode, but still.
-		return weak, false
-	}
-
-	return nil, false
-}
-
-// makeStrong forces the Box instance associated with the given object to be
-// strongly referenced.
-//
-//go:nosplit
-func makeStrong(gobject unsafe.Pointer) *Box {
-	// TODO: double mutex check, similar to ShouldFree.
-
-	box, strong := gets(gobject)
-	if toggleRefs {
-		slog.Debug(
-			"makeStrong: obtained box",
-			"strong", strong,
-			"box", box != nil,
-			objInfo(gobject))
-	}
-	if box == nil {
+		shared.mu.Unlock()
+		consumeTransferredRef(gobject, take)
 		return nil
 	}
 
-	if !strong {
-		shared.strong[gobject] = box
-		shared.weak.Delete(gobject)
-
-		// Clear weak.Map's finalizer.
-		runtime.SetFinalizer(box, nil)
+	e := &entry{object: gobject, token: newToken(), phase: entryInitializing}
+	if objectProfile != nil {
+		// Profiles track native registry entries, not transient Box
+		// generations. An expired weak Box may be replaced under this entry.
+		objectProfile.Add(gobject, 3)
 	}
+	box := newBox(e)
+	e.box = box
+	shared.byObject[gobject] = e
+	shared.byToken[e.token] = e
 
+	// GLib requires a normal reference before adding a toggle reference and
+	// guarantees the initial toggle state is strong. No toggle callback is
+	// delivered during this installation, so publishing remains atomic.
+	if beforeToggleInstallHook != nil {
+		beforeToggleInstallHook()
+	}
+	C.gotk4_intern_add_toggle_ref(C.gpointer(gobject), C.guintptr(e.token))
+	e.phase = entryActive
+	shared.mu.Unlock()
+
+	if C.g_object_is_floating(C.gpointer(gobject)) != C.FALSE {
+		C.g_object_ref_sink(C.gpointer(gobject))
+		C.g_object_unref(C.gpointer(gobject))
+	}
+	consumeTransferredRef(gobject, take)
 	return box
 }
 
-// makeWeak forces the Box intsance associated with the given object to be
-// weakly referenced.
-//
-//go:nosplit
-func makeWeak(gobject unsafe.Pointer) *Box {
-	box, strong := gets(gobject)
-	if toggleRefs {
-		slog.Debug(
-			"makeWeak: obtained box",
-			"strong", strong,
-			"box", box != nil,
-			objInfo(gobject))
+// Free explicitly retires a Box and its exact toggle generation. It is
+// synchronous; callers must use the object's owning GLib/GTK thread because
+// removing the toggle reference can run native destruction on the caller.
+func Free(box *Box) {
+	if box == nil || !box.freed.CompareAndSwap(false, true) {
+		return
 	}
+
+	shared.mu.Lock()
+	e := shared.byToken[box.token]
+	if e == nil || e.generation != box.generation || boxForEntry(e) != box ||
+		e.phase != entryActive {
+		shared.mu.Unlock()
+		return
+	}
+	e.phase = entryRemoving
+	if e.box == box {
+		e.box = nil
+	}
+	e.weak = weak.Pointer[Box]{}
+	runtime.SetFinalizer(box.dummy, nil)
+	shared.mu.Unlock()
+
+	disconnectClosures(box, box.gobject)
+	C.gotk4_intern_remove_toggle_ref(C.gpointer(box.gobject), C.guintptr(box.token))
+	finishCleanup(box.token)
+}
+
+func finalizeBox(dummy *boxDummy) {
+	if dummy == nil {
+		return
+	}
+	shared.mu.Lock()
+	e := shared.byToken[dummy.token]
+	if e == nil || e.generation != dummy.generation ||
+		!shouldQueueFinalizerCleanup(e.phase, e.box != nil) {
+		shared.mu.Unlock()
+		return
+	}
+	e.phase = entryCleanupQueued
+	token := e.token
+	shared.mu.Unlock()
+
+	C.gotk4_intern_queue_remove_toggle_ref(C.guintptr(token))
+}
+
+// shouldQueueFinalizerCleanup decides whether a boxDummy finalizer owns the
+// active entry's cleanup. A finalizer proves its Box was unreachable at mark
+// time; weak handles are cleared later during sweeping and must not veto it.
+func shouldQueueFinalizerCleanup(phase entryPhase, hasStrongBox bool) bool {
+	return phase == entryActive && !hasStrongBox
+}
+
+func beginQueuedCleanup(token uintptr) {
+	shared.mu.Lock()
+	e := shared.byToken[token]
+	if e == nil || e.token != token || e.phase != entryCleanupQueued {
+		shared.mu.Unlock()
+		return
+	}
+	e.phase = entryRemoving
+	obj := e.object
+	shared.mu.Unlock()
+
+	C.gotk4_intern_remove_toggle_ref(C.gpointer(obj), C.guintptr(token))
+	finishCleanup(token)
+}
+
+func finishCleanup(token uintptr) {
+	shared.mu.Lock()
+	e := shared.byToken[token]
+	if e == nil || e.phase != entryRemoving {
+		shared.mu.Unlock()
+		return
+	}
+	delete(shared.byToken, token)
+	if shared.byObject[e.object] == e {
+		delete(shared.byObject, e.object)
+	}
+	obj := e.object
+	shared.mu.Unlock()
+	if objectProfile != nil {
+		objectProfile.Remove(obj)
+	}
+}
+
+func disconnectClosures(box *Box, gobject unsafe.Pointer) {
 	if box == nil {
+		return
+	}
+	if reg := box.closures.Load(); reg != nil {
+		reg.RangeSignals(func(gclosure unsafe.Pointer, _ *closure.FuncStack) bool {
+			C.gotk4_intern_disconnect_closure(C.gpointer(gobject), (*C.GClosure)(gclosure))
+			reg.Delete(gclosure)
+			return true
+		})
+	}
+}
+
+func makeStrong(e *entry) *Box {
+	if e == nil || e.phase == entryRemoving {
 		return nil
 	}
-
-	if strong {
-		shared.weak.Set(gobject, box)
-		delete(shared.strong, gobject)
+	if e.box == nil {
+		box := e.weak.Value()
+		if box != nil {
+			if e.finalizerArmed {
+				runtime.SetFinalizer(box.dummy, nil)
+				e.finalizerArmed = false
+			}
+			e.box = box
+		} else {
+			// A queued finalizer for an expired box is harmless because it
+			// carries the old generation. The replacement gets a new sentinel.
+			e.finalizerArmed = false
+			e.box = newBox(e)
+		}
 	}
+	e.weak = weak.Pointer[Box]{}
+	e.phase = entryActive
+	return e.box
+}
 
+func makeWeak(e *entry) *Box {
+	if e == nil || e.phase != entryActive || e.box == nil {
+		return nil
+	}
+	box := e.box
+	e.weak = weak.Make(box)
+	e.box = nil
+	if !e.finalizerArmed {
+		runtime.SetFinalizer(box.dummy, finalizeBox)
+		e.finalizerArmed = true
+	}
 	return box
 }

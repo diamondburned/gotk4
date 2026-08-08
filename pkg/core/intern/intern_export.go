@@ -14,25 +14,38 @@ import (
 // the C GObject.
 //
 //export goToggleNotify
-func goToggleNotify(_ C.gpointer, obj *C.GObject, isLastInt C.gboolean) {
-	gobject := unsafe.Pointer(obj)
-	isLast := isLastInt != C.FALSE
+func goToggleNotify(data C.guintptr, obj *C.GObject, isLastInt C.gboolean) {
+	toggleNotify(uintptr(data), unsafe.Pointer(obj), isLastInt != C.FALSE)
+}
+
+func toggleNotify(token uintptr, gobject unsafe.Pointer, isLast bool) {
 
 	shared.mu.Lock()
-	defer shared.mu.Unlock()
-
+	e := shared.byToken[token]
+	if e == nil || e.object != gobject || e.phase == entryRemoving {
+		shared.mu.Unlock()
+		return
+	}
+	if e.phase == entryCleanupQueued && isLast {
+		// The finalizer already owns the queued removal and there is no strong
+		// Box to re-weakify. A later non-last notification may still promote
+		// the entry through makeStrong.
+		shared.mu.Unlock()
+		return
+	}
 	var box *Box
 	if isLast {
-		box = makeWeak(gobject)
+		box = makeWeak(e)
 	} else {
-		box = makeStrong(gobject)
+		box = makeStrong(e)
 	}
+	shared.mu.Unlock()
 
 	if box == nil {
 		if toggleRefs {
 			slog.Debug(
 				"goToggleNotify: box not found",
-				objInfo(unsafe.Pointer(obj)))
+				"object", gobject)
 		}
 		return
 	}
@@ -41,69 +54,22 @@ func goToggleNotify(_ C.gpointer, obj *C.GObject, isLastInt C.gboolean) {
 		slog.Debug(
 			"goToggleNotify: finished",
 			"is_last", isLast,
-			"finalize", box.finalize,
-			objInfo(unsafe.Pointer(obj)))
+			"generation", box.generation,
+			objInfo(gobject))
 	}
 
-	if box.finalize {
-		box.finalize = false
-		return
-	}
 }
 
 // finishRemovingToggleRef is called after the toggle reference removal routine
-// is dispatched in the main loop. It removes the GObject from the global maps.
+// has returned. It removes the GObject from the global maps. The toggle ref
+// was the only reference the box owned, so no additional unref is needed.
 //
 //export goFinishRemovingToggleRef
-func goFinishRemovingToggleRef(gobject unsafe.Pointer) {
-	shared.mu.Lock()
-	defer shared.mu.Unlock()
+func goFinishRemovingToggleRef(token C.guintptr) {
+	finishCleanup(uintptr(token))
+}
 
-	box, strong := gets(gobject)
-	if box == nil {
-		if toggleRefs {
-			slog.Debug(
-				"goFinishRemovingToggleRef: object not found in weak map",
-				"box", false,
-				objInfo(gobject))
-		}
-		return
-	}
-
-	if toggleRefs {
-		slog.Debug(
-			"goFinishRemovingToggleRef: object found in weak map",
-			"box", true,
-			objInfo(gobject))
-	}
-
-	if strong {
-		if toggleRefs {
-			slog.Debug(
-				"goFinishRemovingToggleRef: object still strong",
-				objInfo(gobject))
-		}
-		return
-	}
-
-	if !box.finalize {
-		if toggleRefs {
-			slog.Debug(
-				"goFinishRemovingToggleRef: object resurrected",
-				objInfo(gobject))
-		}
-		return
-	}
-
-	shared.weak.Delete(gobject)
-
-	if toggleRefs {
-		slog.Debug(
-			"goFinishRemovingToggleRef: removed from weak ref",
-			objInfo(gobject))
-	}
-
-	if objectProfile != nil {
-		objectProfile.Remove(gobject)
-	}
+//export goRemoveQueuedToggleRef
+func goRemoveQueuedToggleRef(token C.guintptr) {
+	beginQueuedCleanup(uintptr(token))
 }

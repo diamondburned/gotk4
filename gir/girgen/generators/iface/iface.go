@@ -327,7 +327,7 @@ func (g *Generator) Use(typ interface{}) bool {
 		p.Linef("{")
 		p.Linef("  closure := coreglib.ConnectedGeneratedClosure(uintptr(%s))", closure)
 		p.Linef("  if closure == nil {")
-		p.Linef(`     panic("given unknown closure user_data")`)
+		p.Linef("     return")
 		p.Linef("  }")
 		p.Linef("  defer closure.TryRepanic()")
 		p.Linef("  ")

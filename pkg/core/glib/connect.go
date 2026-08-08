@@ -39,7 +39,7 @@ func (v *Object) connectClosure(after bool, detailedSignal string, f interface{}
 	cstr := C.CString(detailedSignal)
 	defer C.free(unsafe.Pointer(cstr))
 
-	gclosure := closureNew(v, fs)
+	gclosure := closureNew(v, fs, true)
 	c := C.g_signal_connect_closure(C.gpointer(v.Native()), (*C.gchar)(cstr), gclosure, gbool(after))
 
 	runtime.KeepAlive(v)
@@ -49,13 +49,13 @@ func (v *Object) connectClosure(after bool, detailedSignal string, f interface{}
 
 // NewClosure creates a new closure for the given object.
 func NewClosure(v *Object, f interface{}) unsafe.Pointer {
-	return unsafe.Pointer(closureNew(v, f))
+	return unsafe.Pointer(closureNew(v, f, false))
 }
 
 // closureNew creates a new GClosure that's bound to the current object and adds
 // its callback function to the internal registry. It's exported for visibility
 // to other gotk3 packages and should not be used in a regular application.
-func closureNew(v *Object, f interface{}) *C.GClosure {
+func closureNew(v *Object, f interface{}, signal bool) *C.GClosure {
 	fs, ok := f.(*closure.FuncStack)
 	if !ok {
 		fs = closure.NewFuncStack(f, 2)
@@ -64,7 +64,11 @@ func closureNew(v *Object, f interface{}) *C.GClosure {
 	gclosure := C.g_closure_new_simple(C.sizeof_GClosure, nil)
 
 	closures := v.box.Closures()
-	closures.Register(unsafe.Pointer(gclosure), fs)
+	if signal {
+		closures.RegisterSignal(unsafe.Pointer(gclosure), fs)
+	} else {
+		closures.Register(unsafe.Pointer(gclosure), fs)
+	}
 
 	C.g_object_watch_closure(v.native(), gclosure)
 	C.g_closure_set_meta_marshal(gclosure, C.gpointer(v.Native()), (*[0]byte)(C._gotk4_goMarshal))

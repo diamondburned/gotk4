@@ -338,6 +338,12 @@ func (g *Generator) Use(typ interface{}) bool {
 	}
 
 	for i, sig := range signals {
+		// signals with the G_SIGNAL_ACTION flag are there to be freely emitted by user code. They also can
+		// be thought of as methods on generic objects.
+		if sig.Action {
+			continue // TODO: generate a type safe call for emit instead, similar to how we do for connect
+		}
+
 		// A signal has 2 implied parameters: the instance (0th) parameter and
 		// the final user_data parameter.
 		param := &gir.Parameters{
@@ -475,6 +481,21 @@ func (g *Generator) ImplInterfaces() []string {
 			resolved.ImportPubl(g.gen, &g.header)
 		}
 		names[i] = resolved.PublicType(namespace)
+	}
+
+	return names
+}
+
+func (g *Generator) ParentNames() []string {
+	parents := g.Tree.Requires
+	names := make([]string, len(parents))
+
+	for i, parent := range parents {
+		namespace := parent.NeedsNamespace(g.gen.Namespace())
+		if namespace {
+			parent.ImportPubl(g.gen, &g.header)
+		}
+		names[i] = parent.PublicType(namespace)
 	}
 
 	return names

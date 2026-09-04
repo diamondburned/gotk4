@@ -19,7 +19,7 @@ If you haven't installed [Nix][nix] yet, see the [Install Nix][install-nix]
 section of the Nix guides. The prerequisite is "any Linux distribution, macOS
 [or] Windows (via WSL)."
 
-[install-nix]: https://nixos.org/guides/install-nix.html
+[install-nix]: https://nixos.org/download/
 
 Afterwards, to use Nix for developing, simply run
 

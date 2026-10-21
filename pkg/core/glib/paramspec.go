@@ -69,6 +69,7 @@ func NewStringParam(name, nick, blurb string, defaultValue string, flags ParamFl
 	var cdefault *C.gchar
 	if defaultValue != "" {
 		cdefault = C.CString(defaultValue)
+		defer C.free(unsafe.Pointer(cdefault))
 	}
 
 	cname, cnick, cblurb, cfree := newParamSpecCommon(name, nick, blurb)

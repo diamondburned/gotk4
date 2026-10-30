@@ -564,21 +564,7 @@ func Overrides[OverridesT any](obj Objector) OverridesT {
 	rtype := rtypeElemV(obj)
 
 	if subclass, ok := knownTypes[rtype]; ok {
-		topt, ok := subclass.opts.typeOpts[subclass.parentType]
-		if ok && topt.override != nil {
-			overrides, ok := topt.override(obj).(OverridesT)
-			if ok {
-				return overrides
-			}
-
-			var z OverridesT
-			log.Panicf(
-				"gotk4: Overrides: object type %s's parent overrides type is %s, cannot assert to %T",
-				rtype, subclass.parentType.GoOverridesType, z)
-		}
-
-		var z OverridesT
-		return z
+		return subclassOverrides[OverridesT](subclass, obj)
 	}
 
 	if typeInfo, ok := classInstanceTypes[rtype]; ok {
@@ -597,27 +583,34 @@ func Overrides[OverridesT any](obj Objector) OverridesT {
 	return OverridesFromObj[OverridesT](obase)
 }
 
+// subclassOverrides gets the OverridesT instance that the subclass added using
+// WithOverrides. A subclass may add overrides for any class in its parent
+// chain, not just its direct parent, so the class is looked up from
+// OverridesT. The zero value is returned if the subclass didn't add one.
+func subclassOverrides[OverridesT any](subclass *registeredSubclass, obj Objector) OverridesT {
+	var z OverridesT
+
+	ptype, ok := classOverridesTypes[rtypeElem[OverridesT]()]
+	if !ok {
+		return z
+	}
+
+	topt, ok := subclass.opts.typeOpts[ptype]
+	if !ok || topt.override == nil {
+		return z
+	}
+
+	overrides, _ := topt.override(obj).(OverridesT)
+	return overrides
+}
+
 // OverridesFromObj is like Overrides, except it specifically takes the base
 // object. The GType is asked for instead of using the underlying Go type.
 func OverridesFromObj[OverridesT any](obj *Object) OverridesT {
 	gtype := obj.TypeFromInstance()
 
 	if subclass, ok := knownGTypes[gtype]; ok {
-		topt, ok := subclass.opts.typeOpts[subclass.parentType]
-		if ok && topt.override != nil {
-			overrides, ok := topt.override(obj).(OverridesT)
-			if ok {
-				return overrides
-			}
-
-			var z OverridesT
-			log.Panicf(
-				"gotk4: OverridesFromObj: object type %s's parent overrides type is %s, cannot assert to %T",
-				gtype, subclass.parentType.GoOverridesType, z)
-		}
-
-		var z OverridesT
-		return z
+		return subclassOverrides[OverridesT](subclass, obj)
 	}
 
 	if typeInfo, ok := classGTypes[gtype]; ok {

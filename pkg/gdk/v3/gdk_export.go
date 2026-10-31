@@ -860,7 +860,7 @@ func _gotk4_gdk3_Seat_ConnectToolRemoved(arg0 C.gpointer, arg1 *C.GdkDeviceTool,
 //export _gotk4_gdk3_WindowClass_create_surface
 func _gotk4_gdk3_WindowClass_create_surface(arg0 *C.GdkWindow, arg1 C.gint, arg2 C.gint) (cret *C.cairo_surface_t) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[WindowOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[WindowOverrides](instance0)
 	if overrides.CreateSurface == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected WindowOverrides.CreateSurface, got none")
 	}
@@ -883,7 +883,7 @@ func _gotk4_gdk3_WindowClass_create_surface(arg0 *C.GdkWindow, arg1 C.gint, arg2
 //export _gotk4_gdk3_WindowClass_from_embedder
 func _gotk4_gdk3_WindowClass_from_embedder(arg0 *C.GdkWindow, arg1 C.gdouble, arg2 C.gdouble, arg3 *C.gdouble, arg4 *C.gdouble) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[WindowOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[WindowOverrides](instance0)
 	if overrides.FromEmbedder == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected WindowOverrides.FromEmbedder, got none")
 	}
@@ -904,7 +904,7 @@ func _gotk4_gdk3_WindowClass_from_embedder(arg0 *C.GdkWindow, arg1 C.gdouble, ar
 //export _gotk4_gdk3_WindowClass_to_embedder
 func _gotk4_gdk3_WindowClass_to_embedder(arg0 *C.GdkWindow, arg1 C.gdouble, arg2 C.gdouble, arg3 *C.gdouble, arg4 *C.gdouble) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[WindowOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[WindowOverrides](instance0)
 	if overrides.ToEmbedder == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected WindowOverrides.ToEmbedder, got none")
 	}

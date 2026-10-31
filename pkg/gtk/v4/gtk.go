@@ -25177,7 +25177,10 @@ type AccessibleHyperlinkOverrides struct {
 }
 
 func defaultAccessibleHyperlinkOverrides(v *AccessibleHyperlink) AccessibleHyperlinkOverrides {
-	return AccessibleHyperlinkOverrides{}
+
+	overrides := AccessibleHyperlinkOverrides{}
+
+	return overrides
 }
 
 // AccessibleHyperlink represents a link (i.e. a uri).
@@ -25577,11 +25580,34 @@ type AdjustmentOverrides struct {
 }
 
 func defaultAdjustmentOverrides(v *Adjustment) AdjustmentOverrides {
-	return AdjustmentOverrides{
-		Changed:      v.changed,
-		ValueChanged: v.valueChanged,
+	var pclass *C.GtkAdjustmentClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeAdjustment)) != C.FALSE {
+			pclass = (*C.GtkAdjustmentClass)(parentClass)
+		}
 	}
+
+	overrides := AdjustmentOverrides{
+
+		Changed:      noop_Adjustment_Changed,
+		ValueChanged: noop_Adjustment_ValueChanged,
+	}
+	if pclass != nil {
+
+		if pclass.changed != nil {
+			overrides.Changed = v.changed
+		}
+		if pclass.value_changed != nil {
+			overrides.ValueChanged = v.valueChanged
+		}
+	}
+
+	return overrides
 }
+
+func noop_Adjustment_Changed() {}
+
+func noop_Adjustment_ValueChanged() {}
 
 // Adjustment: model for a numeric value.
 //
@@ -26076,7 +26102,10 @@ type AlertDialogOverrides struct {
 }
 
 func defaultAlertDialogOverrides(v *AlertDialog) AlertDialogOverrides {
-	return AlertDialogOverrides{}
+
+	overrides := AlertDialogOverrides{}
+
+	return overrides
 }
 
 // AlertDialog collects the arguments that are needed to present a message to
@@ -27771,11 +27800,34 @@ type ApplicationOverrides struct {
 }
 
 func defaultApplicationOverrides(v *Application) ApplicationOverrides {
-	return ApplicationOverrides{
-		WindowAdded:   v.windowAdded,
-		WindowRemoved: v.windowRemoved,
+	var pclass *C.GtkApplicationClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeApplication)) != C.FALSE {
+			pclass = (*C.GtkApplicationClass)(parentClass)
+		}
 	}
+
+	overrides := ApplicationOverrides{
+
+		WindowAdded:   noop_Application_WindowAdded,
+		WindowRemoved: noop_Application_WindowRemoved,
+	}
+	if pclass != nil {
+
+		if pclass.window_added != nil {
+			overrides.WindowAdded = v.windowAdded
+		}
+		if pclass.window_removed != nil {
+			overrides.WindowRemoved = v.windowRemoved
+		}
+	}
+
+	return overrides
 }
+
+func noop_Application_WindowAdded(window *Window) {}
+
+func noop_Application_WindowRemoved(window *Window) {}
 
 // Application: high-level API for writing applications.
 //
@@ -28570,7 +28622,10 @@ type ApplicationWindowOverrides struct {
 }
 
 func defaultApplicationWindowOverrides(v *ApplicationWindow) ApplicationWindowOverrides {
-	return ApplicationWindowOverrides{}
+
+	overrides := ApplicationWindowOverrides{}
+
+	return overrides
 }
 
 // ApplicationWindow: GtkWindow subclass that integrates with GtkApplication.
@@ -30004,7 +30059,10 @@ type BinLayoutOverrides struct {
 }
 
 func defaultBinLayoutOverrides(v *BinLayout) BinLayoutOverrides {
-	return BinLayoutOverrides{}
+
+	overrides := BinLayoutOverrides{}
+
+	return overrides
 }
 
 // BinLayout: layout manager for widgets with a single child.
@@ -30072,7 +30130,10 @@ type BookmarkListOverrides struct {
 }
 
 func defaultBookmarkListOverrides(v *BookmarkList) BookmarkListOverrides {
-	return BookmarkListOverrides{}
+
+	overrides := BookmarkListOverrides{}
+
+	return overrides
 }
 
 // BookmarkList: list model that wraps GBookmarkFile.
@@ -30296,7 +30357,10 @@ type BoolFilterOverrides struct {
 }
 
 func defaultBoolFilterOverrides(v *BoolFilter) BoolFilterOverrides {
-	return BoolFilterOverrides{}
+
+	overrides := BoolFilterOverrides{}
+
+	return overrides
 }
 
 // BoolFilter evaluates a boolean expression to determine whether to include
@@ -30471,7 +30535,10 @@ type BoxOverrides struct {
 }
 
 func defaultBoxOverrides(v *Box) BoxOverrides {
-	return BoxOverrides{}
+
+	overrides := BoxOverrides{}
+
+	return overrides
 }
 
 // Box arranges child widgets into a single row or column.
@@ -30874,7 +30941,10 @@ type BoxLayoutOverrides struct {
 }
 
 func defaultBoxLayoutOverrides(v *BoxLayout) BoxLayoutOverrides {
-	return BoxLayoutOverrides{}
+
+	overrides := BoxLayoutOverrides{}
+
+	return overrides
 }
 
 // BoxLayout arranges children in a single row or column.
@@ -32243,7 +32313,10 @@ type BuilderCScopeOverrides struct {
 }
 
 func defaultBuilderCScopeOverrides(v *BuilderCScope) BuilderCScopeOverrides {
-	return BuilderCScopeOverrides{}
+
+	overrides := BuilderCScopeOverrides{}
+
+	return overrides
 }
 
 // BuilderCScope: GtkBuilderScope implementation for the C language.
@@ -32526,11 +32599,34 @@ type ButtonOverrides struct {
 }
 
 func defaultButtonOverrides(v *Button) ButtonOverrides {
-	return ButtonOverrides{
-		Activate: v.activate,
-		Clicked:  v.clicked,
+	var pclass *C.GtkButtonClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeButton)) != C.FALSE {
+			pclass = (*C.GtkButtonClass)(parentClass)
+		}
 	}
+
+	overrides := ButtonOverrides{
+
+		Activate: noop_Button_Activate,
+		Clicked:  noop_Button_Clicked,
+	}
+	if pclass != nil {
+
+		if pclass.activate != nil {
+			overrides.Activate = v.activate
+		}
+		if pclass.clicked != nil {
+			overrides.Clicked = v.clicked
+		}
+	}
+
+	return overrides
 }
+
+func noop_Button_Activate() {}
+
+func noop_Button_Clicked() {}
 
 // Button calls a callback function when the button is clicked.
 //
@@ -33719,7 +33815,7 @@ type CellAreaOverrides struct {
 	// The function returns the following values:
 	//
 	//   - ok: whether area was successfully activated.
-	Activate func(context *CellAreaContext, widget Widgetter, cellArea *gdk.Rectangle, flags CellRendererState, editOnly bool) bool
+	Activate func(context *CellAreaContext, widget Widgetter, cellArea *gdk.Rectangle, flags CellRendererState, editOnly bool) bool // optional
 	// Add adds renderer to area with the default child cell properties.
 	//
 	// Deprecated: since version 4.10.
@@ -33760,7 +33856,7 @@ type CellAreaOverrides struct {
 	// The function returns the following values:
 	//
 	//   - cellAreaContext: newly created GtkCellAreaContext copy of context.
-	CopyContext func(context *CellAreaContext) *CellAreaContext
+	CopyContext func(context *CellAreaContext) *CellAreaContext // optional
 	// CreateContext creates a GtkCellAreaContext to be used with area for all
 	// purposes. GtkCellAreaContext stores geometry information for rows for
 	// which it was operated on, it is important to use the same context for the
@@ -33774,7 +33870,7 @@ type CellAreaOverrides struct {
 	//
 	//   - cellAreaContext: newly created GtkCellAreaContext which can be used
 	//     with area.
-	CreateContext func() *CellAreaContext
+	CreateContext func() *CellAreaContext // optional
 	// Event delegates event handling to a GtkCellArea.
 	//
 	// Deprecated: since version 4.10.
@@ -33790,7 +33886,7 @@ type CellAreaOverrides struct {
 	// The function returns the following values:
 	//
 	//   - gint: TRUE if the event was handled by area.
-	Event func(context *CellAreaContext, widget Widgetter, event gdk.Eventer, cellArea *gdk.Rectangle, flags CellRendererState) int
+	Event func(context *CellAreaContext, widget Widgetter, event gdk.Eventer, cellArea *gdk.Rectangle, flags CellRendererState) int // optional
 	// Focus: this should be called by the area’s owning layout widget when
 	// focus is to be passed to area, or moved within area for a given direction
 	// and row data.
@@ -33807,7 +33903,7 @@ type CellAreaOverrides struct {
 	// The function returns the following values:
 	//
 	//   - ok: TRUE if focus remains inside area as a result of this call.
-	Focus func(direction DirectionType) bool
+	Focus func(direction DirectionType) bool // optional
 	// PreferredHeight retrieves a cell area’s initial minimum and natural
 	// height.
 	//
@@ -33828,7 +33924,7 @@ type CellAreaOverrides struct {
 	//
 	//   - minimumHeight (optional): location to store the minimum height.
 	//   - naturalHeight (optional): location to store the natural height.
-	PreferredHeight func(context *CellAreaContext, widget Widgetter) (minimumHeight, naturalHeight int)
+	PreferredHeight func(context *CellAreaContext, widget Widgetter) (minimumHeight, naturalHeight int) // optional
 	// PreferredHeightForWidth retrieves a cell area’s minimum and natural
 	// height if it would be given the specified width.
 	//
@@ -33857,7 +33953,7 @@ type CellAreaOverrides struct {
 	//
 	//   - minimumHeight (optional): location to store the minimum height.
 	//   - naturalHeight (optional): location to store the natural height.
-	PreferredHeightForWidth func(context *CellAreaContext, widget Widgetter, width int) (minimumHeight, naturalHeight int)
+	PreferredHeightForWidth func(context *CellAreaContext, widget Widgetter, width int) (minimumHeight, naturalHeight int) // optional
 	// PreferredWidth retrieves a cell area’s initial minimum and natural width.
 	//
 	// area will store some geometrical information in context along the way;
@@ -33877,7 +33973,7 @@ type CellAreaOverrides struct {
 	//
 	//   - minimumWidth (optional): location to store the minimum width.
 	//   - naturalWidth (optional): location to store the natural width.
-	PreferredWidth func(context *CellAreaContext, widget Widgetter) (minimumWidth, naturalWidth int)
+	PreferredWidth func(context *CellAreaContext, widget Widgetter) (minimumWidth, naturalWidth int) // optional
 	// PreferredWidthForHeight retrieves a cell area’s minimum and natural width
 	// if it would be given the specified height.
 	//
@@ -33906,14 +34002,14 @@ type CellAreaOverrides struct {
 	//
 	//   - minimumWidth (optional): location to store the minimum width.
 	//   - naturalWidth (optional): location to store the natural width.
-	PreferredWidthForHeight func(context *CellAreaContext, widget Widgetter, height int) (minimumWidth, naturalWidth int)
+	PreferredWidthForHeight func(context *CellAreaContext, widget Widgetter, height int) (minimumWidth, naturalWidth int) // optional
 	// RequestMode gets whether the area prefers a height-for-width layout or a
 	// width-for-height layout.
 	//
 	// The function returns the following values:
 	//
 	//   - sizeRequestMode: GtkSizeRequestMode preferred by area.
-	RequestMode func() SizeRequestMode
+	RequestMode func() SizeRequestMode // optional
 	// IsActivatable returns whether the area can do anything when activated,
 	// after applying new attributes to area.
 	//
@@ -33922,7 +34018,7 @@ type CellAreaOverrides struct {
 	// The function returns the following values:
 	//
 	//   - ok: whether area can do anything when activated.
-	IsActivatable func() bool
+	IsActivatable func() bool // optional
 	// Remove removes renderer from area.
 	//
 	// Deprecated: since version 4.10.
@@ -33950,23 +34046,80 @@ type CellAreaOverrides struct {
 }
 
 func defaultCellAreaOverrides(v *CellArea) CellAreaOverrides {
-	return CellAreaOverrides{
-		Activate:                v.activate,
-		Add:                     v.add,
-		ApplyAttributes:         v.applyAttributes,
-		CopyContext:             v.copyContext,
-		CreateContext:           v.createContext,
-		Event:                   v.event,
-		Focus:                   v.focus,
-		PreferredHeight:         v.preferredHeight,
-		PreferredHeightForWidth: v.preferredHeightForWidth,
-		PreferredWidth:          v.preferredWidth,
-		PreferredWidthForHeight: v.preferredWidthForHeight,
-		RequestMode:             v.requestMode,
-		IsActivatable:           v.isActivatable,
-		Remove:                  v.remove,
-		Snapshot:                v.snapshot,
+	var pclass *C.GtkCellAreaClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeCellArea)) != C.FALSE {
+			pclass = (*C.GtkCellAreaClass)(parentClass)
+		}
 	}
+
+	overrides := CellAreaOverrides{
+
+		Add:             noop_CellArea_Add,
+		ApplyAttributes: noop_CellArea_ApplyAttributes,
+		Remove:          noop_CellArea_Remove,
+		Snapshot:        noop_CellArea_Snapshot,
+	}
+	if pclass != nil {
+
+		if pclass.activate != nil {
+			overrides.Activate = v.activate
+		}
+		if pclass.add != nil {
+			overrides.Add = v.add
+		}
+		if pclass.apply_attributes != nil {
+			overrides.ApplyAttributes = v.applyAttributes
+		}
+		if pclass.copy_context != nil {
+			overrides.CopyContext = v.copyContext
+		}
+		if pclass.create_context != nil {
+			overrides.CreateContext = v.createContext
+		}
+		if pclass.event != nil {
+			overrides.Event = v.event
+		}
+		if pclass.focus != nil {
+			overrides.Focus = v.focus
+		}
+		if pclass.get_preferred_height != nil {
+			overrides.PreferredHeight = v.preferredHeight
+		}
+		if pclass.get_preferred_height_for_width != nil {
+			overrides.PreferredHeightForWidth = v.preferredHeightForWidth
+		}
+		if pclass.get_preferred_width != nil {
+			overrides.PreferredWidth = v.preferredWidth
+		}
+		if pclass.get_preferred_width_for_height != nil {
+			overrides.PreferredWidthForHeight = v.preferredWidthForHeight
+		}
+		if pclass.get_request_mode != nil {
+			overrides.RequestMode = v.requestMode
+		}
+		if pclass.is_activatable != nil {
+			overrides.IsActivatable = v.isActivatable
+		}
+		if pclass.remove != nil {
+			overrides.Remove = v.remove
+		}
+		if pclass.snapshot != nil {
+			overrides.Snapshot = v.snapshot
+		}
+	}
+
+	return overrides
+}
+
+func noop_CellArea_Add(renderer CellRendererer) {}
+
+func noop_CellArea_ApplyAttributes(treeModel TreeModeller, iter *TreeIter, isExpander, isExpanded bool) {
+}
+
+func noop_CellArea_Remove(renderer CellRendererer) {}
+
+func noop_CellArea_Snapshot(context *CellAreaContext, widget Widgetter, snapshot *Snapshot, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState, paintFocus bool) {
 }
 
 // CellArea: abstract class for laying out GtkCellRenderers
@@ -36755,7 +36908,7 @@ type CellAreaContextOverrides struct {
 	//
 	//   - minimumHeight (optional): location to store the minimum height.
 	//   - naturalHeight (optional): location to store the natural height.
-	PreferredHeightForWidth func(width int) (minimumHeight, naturalHeight int)
+	PreferredHeightForWidth func(width int) (minimumHeight, naturalHeight int) // optional
 	// PreferredWidthForHeight gets the accumulative preferred width for height
 	// for all rows which have been requested for the same said height with this
 	// context.
@@ -36773,7 +36926,7 @@ type CellAreaContextOverrides struct {
 	//
 	//   - minimumWidth (optional): location to store the minimum width.
 	//   - naturalWidth (optional): location to store the natural width.
-	PreferredWidthForHeight func(height int) (minimumWidth, naturalWidth int)
+	PreferredWidthForHeight func(height int) (minimumWidth, naturalWidth int) // optional
 	// Reset resets any previously cached request and allocation data.
 	//
 	// When underlying GtkTreeModel data changes its important to reset the
@@ -36797,13 +36950,40 @@ type CellAreaContextOverrides struct {
 }
 
 func defaultCellAreaContextOverrides(v *CellAreaContext) CellAreaContextOverrides {
-	return CellAreaContextOverrides{
-		Allocate:                v.allocate,
-		PreferredHeightForWidth: v.preferredHeightForWidth,
-		PreferredWidthForHeight: v.preferredWidthForHeight,
-		Reset:                   v.reset,
+	var pclass *C.GtkCellAreaContextClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeCellAreaContext)) != C.FALSE {
+			pclass = (*C.GtkCellAreaContextClass)(parentClass)
+		}
 	}
+
+	overrides := CellAreaContextOverrides{
+
+		Allocate: noop_CellAreaContext_Allocate,
+		Reset:    noop_CellAreaContext_Reset,
+	}
+	if pclass != nil {
+
+		if pclass.allocate != nil {
+			overrides.Allocate = v.allocate
+		}
+		if pclass.get_preferred_height_for_width != nil {
+			overrides.PreferredHeightForWidth = v.preferredHeightForWidth
+		}
+		if pclass.get_preferred_width_for_height != nil {
+			overrides.PreferredWidthForHeight = v.preferredWidthForHeight
+		}
+		if pclass.reset != nil {
+			overrides.Reset = v.reset
+		}
+	}
+
+	return overrides
 }
+
+func noop_CellAreaContext_Allocate(width, height int) {}
+
+func noop_CellAreaContext_Reset() {}
 
 // CellAreaContext stores geometrical information for a series of rows in a
 // GtkCellArea
@@ -37377,7 +37557,7 @@ type CellRendererOverrides struct {
 	// The function returns the following values:
 	//
 	//   - ok: TRUE if the event was consumed/handled.
-	Activate func(event gdk.Eventer, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) bool
+	Activate func(event gdk.Eventer, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) bool // optional
 	// EditingCanceled: signal gets emitted when the user cancels the process of
 	// editing a cell.
 	EditingCanceled func()
@@ -37404,7 +37584,7 @@ type CellRendererOverrides struct {
 	//
 	//   - alignedArea: return location for the space inside cell_area that
 	//     would actually be used to render.
-	AlignedArea func(widget Widgetter, flags CellRendererState, cellArea *gdk.Rectangle) *gdk.Rectangle
+	AlignedArea func(widget Widgetter, flags CellRendererState, cellArea *gdk.Rectangle) *gdk.Rectangle // optional
 	// PreferredHeight retrieves a renderer’s natural size when rendered to
 	// widget.
 	//
@@ -37418,7 +37598,7 @@ type CellRendererOverrides struct {
 	//
 	//   - minimumSize (optional): location to store the minimum size.
 	//   - naturalSize (optional): location to store the natural size.
-	PreferredHeight func(widget Widgetter) (minimumSize, naturalSize int)
+	PreferredHeight func(widget Widgetter) (minimumSize, naturalSize int) // optional
 	// PreferredHeightForWidth retrieves a cell renderers’s minimum and natural
 	// height if it were rendered to widget with the specified width.
 	//
@@ -37433,7 +37613,7 @@ type CellRendererOverrides struct {
 	//
 	//   - minimumHeight (optional): location for storing the minimum size.
 	//   - naturalHeight (optional): location for storing the preferred size.
-	PreferredHeightForWidth func(widget Widgetter, width int) (minimumHeight, naturalHeight int)
+	PreferredHeightForWidth func(widget Widgetter, width int) (minimumHeight, naturalHeight int) // optional
 	// PreferredWidth retrieves a renderer’s natural size when rendered to
 	// widget.
 	//
@@ -37447,7 +37627,7 @@ type CellRendererOverrides struct {
 	//
 	//   - minimumSize (optional): location to store the minimum size.
 	//   - naturalSize (optional): location to store the natural size.
-	PreferredWidth func(widget Widgetter) (minimumSize, naturalSize int)
+	PreferredWidth func(widget Widgetter) (minimumSize, naturalSize int) // optional
 	// PreferredWidthForHeight retrieves a cell renderers’s minimum and natural
 	// width if it were rendered to widget with the specified height.
 	//
@@ -37462,7 +37642,7 @@ type CellRendererOverrides struct {
 	//
 	//   - minimumWidth (optional): location for storing the minimum size.
 	//   - naturalWidth (optional): location for storing the preferred size.
-	PreferredWidthForHeight func(widget Widgetter, height int) (minimumWidth, naturalWidth int)
+	PreferredWidthForHeight func(widget Widgetter, height int) (minimumWidth, naturalWidth int) // optional
 	// RequestMode gets whether the cell renderer prefers a height-for-width
 	// layout or a width-for-height layout.
 	//
@@ -37471,7 +37651,7 @@ type CellRendererOverrides struct {
 	// The function returns the following values:
 	//
 	//   - sizeRequestMode: GtkSizeRequestMode preferred by this renderer.
-	RequestMode func() SizeRequestMode
+	RequestMode func() SizeRequestMode // optional
 	// Snapshot invokes the virtual render function of the GtkCellRenderer.
 	// The three passed-in rectangles are areas in cr. Most renderers will
 	// draw within cell_area; the xalign, yalign, xpad, and ypad fields of
@@ -37512,23 +37692,68 @@ type CellRendererOverrides struct {
 	//
 	//   - cellEditable (optional): new GtkCellEditable for editing this cell,
 	//     or NULL if editing is not possible.
-	StartEditing func(event gdk.Eventer, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) *CellEditable
+	StartEditing func(event gdk.Eventer, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) *CellEditable // optional
 }
 
 func defaultCellRendererOverrides(v *CellRenderer) CellRendererOverrides {
-	return CellRendererOverrides{
-		Activate:                v.activate,
-		EditingCanceled:         v.editingCanceled,
-		EditingStarted:          v.editingStarted,
-		AlignedArea:             v.alignedArea,
-		PreferredHeight:         v.preferredHeight,
-		PreferredHeightForWidth: v.preferredHeightForWidth,
-		PreferredWidth:          v.preferredWidth,
-		PreferredWidthForHeight: v.preferredWidthForHeight,
-		RequestMode:             v.requestMode,
-		Snapshot:                v.snapshot,
-		StartEditing:            v.startEditing,
+	var pclass *C.GtkCellRendererClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeCellRenderer)) != C.FALSE {
+			pclass = (*C.GtkCellRendererClass)(parentClass)
+		}
 	}
+
+	overrides := CellRendererOverrides{
+
+		EditingCanceled: noop_CellRenderer_EditingCanceled,
+		EditingStarted:  noop_CellRenderer_EditingStarted,
+		Snapshot:        noop_CellRenderer_Snapshot,
+	}
+	if pclass != nil {
+
+		if pclass.activate != nil {
+			overrides.Activate = v.activate
+		}
+		if pclass.editing_canceled != nil {
+			overrides.EditingCanceled = v.editingCanceled
+		}
+		if pclass.editing_started != nil {
+			overrides.EditingStarted = v.editingStarted
+		}
+		if pclass.get_aligned_area != nil {
+			overrides.AlignedArea = v.alignedArea
+		}
+		if pclass.get_preferred_height != nil {
+			overrides.PreferredHeight = v.preferredHeight
+		}
+		if pclass.get_preferred_height_for_width != nil {
+			overrides.PreferredHeightForWidth = v.preferredHeightForWidth
+		}
+		if pclass.get_preferred_width != nil {
+			overrides.PreferredWidth = v.preferredWidth
+		}
+		if pclass.get_preferred_width_for_height != nil {
+			overrides.PreferredWidthForHeight = v.preferredWidthForHeight
+		}
+		if pclass.get_request_mode != nil {
+			overrides.RequestMode = v.requestMode
+		}
+		if pclass.snapshot != nil {
+			overrides.Snapshot = v.snapshot
+		}
+		if pclass.start_editing != nil {
+			overrides.StartEditing = v.startEditing
+		}
+	}
+
+	return overrides
+}
+
+func noop_CellRenderer_EditingCanceled() {}
+
+func noop_CellRenderer_EditingStarted(editable CellEditabler, path string) {}
+
+func noop_CellRenderer_Snapshot(snapshot *Snapshot, widget Widgetter, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) {
 }
 
 // CellRenderer: object for rendering a single cell
@@ -39357,10 +39582,28 @@ type CellRendererTextOverrides struct {
 }
 
 func defaultCellRendererTextOverrides(v *CellRendererText) CellRendererTextOverrides {
-	return CellRendererTextOverrides{
-		Edited: v.edited,
+	var pclass *C.GtkCellRendererTextClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeCellRendererText)) != C.FALSE {
+			pclass = (*C.GtkCellRendererTextClass)(parentClass)
+		}
 	}
+
+	overrides := CellRendererTextOverrides{
+
+		Edited: noop_CellRendererText_Edited,
+	}
+	if pclass != nil {
+
+		if pclass.edited != nil {
+			overrides.Edited = v.edited
+		}
+	}
+
+	return overrides
 }
+
+func noop_CellRendererText_Edited(path, newText string) {}
 
 // CellRendererText renders text in a cell
 //
@@ -40490,7 +40733,10 @@ type CenterLayoutOverrides struct {
 }
 
 func defaultCenterLayoutOverrides(v *CenterLayout) CenterLayoutOverrides {
-	return CenterLayoutOverrides{}
+
+	overrides := CenterLayoutOverrides{}
+
+	return overrides
 }
 
 // CenterLayout manages up to three children.
@@ -40859,11 +41105,34 @@ type CheckButtonOverrides struct {
 }
 
 func defaultCheckButtonOverrides(v *CheckButton) CheckButtonOverrides {
-	return CheckButtonOverrides{
-		Activate: v.activate,
-		Toggled:  v.toggled,
+	var pclass *C.GtkCheckButtonClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeCheckButton)) != C.FALSE {
+			pclass = (*C.GtkCheckButtonClass)(parentClass)
+		}
 	}
+
+	overrides := CheckButtonOverrides{
+
+		Activate: noop_CheckButton_Activate,
+		Toggled:  noop_CheckButton_Toggled,
+	}
+	if pclass != nil {
+
+		if pclass.activate != nil {
+			overrides.Activate = v.activate
+		}
+		if pclass.toggled != nil {
+			overrides.Toggled = v.toggled
+		}
+	}
+
+	return overrides
 }
+
+func noop_CheckButton_Activate() {}
+
+func noop_CheckButton_Toggled() {}
 
 // CheckButton places a label next to an indicator.
 //
@@ -41872,7 +42141,10 @@ type ColorDialogOverrides struct {
 }
 
 func defaultColorDialogOverrides(v *ColorDialog) ColorDialogOverrides {
-	return ColorDialogOverrides{}
+
+	overrides := ColorDialogOverrides{}
+
+	return overrides
 }
 
 // ColorDialog asynchronous API to present a color chooser dialog.
@@ -42149,7 +42421,10 @@ type ColorDialogButtonOverrides struct {
 }
 
 func defaultColorDialogButtonOverrides(v *ColorDialogButton) ColorDialogButtonOverrides {
-	return ColorDialogButtonOverrides{}
+
+	overrides := ColorDialogButtonOverrides{}
+
+	return overrides
 }
 
 // ColorDialogButton opens a color chooser dialog to select a color.
@@ -44148,7 +44423,10 @@ type ColumnViewSorterOverrides struct {
 }
 
 func defaultColumnViewSorterOverrides(v *ColumnViewSorter) ColumnViewSorterOverrides {
-	return ColumnViewSorterOverrides{}
+
+	overrides := ColumnViewSorterOverrides{}
+
+	return overrides
 }
 
 // ColumnViewSorter sorts gtk.ColumnView columns.
@@ -44338,16 +44616,41 @@ type ComboBoxOverrides struct {
 	Changed func()
 	// FormatEntryText: signal which allows you to change how the text displayed
 	// in a combo box’s entry is displayed.
-	FormatEntryText func(path string) string
+	FormatEntryText func(path string) string // optional
 }
 
 func defaultComboBoxOverrides(v *ComboBox) ComboBoxOverrides {
-	return ComboBoxOverrides{
-		Activate:        v.activate,
-		Changed:         v.changed,
-		FormatEntryText: v.formatEntryText,
+	var pclass *C.GtkComboBoxClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeComboBox)) != C.FALSE {
+			pclass = (*C.GtkComboBoxClass)(parentClass)
+		}
 	}
+
+	overrides := ComboBoxOverrides{
+
+		Activate: noop_ComboBox_Activate,
+		Changed:  noop_ComboBox_Changed,
+	}
+	if pclass != nil {
+
+		if pclass.activate != nil {
+			overrides.Activate = v.activate
+		}
+		if pclass.changed != nil {
+			overrides.Changed = v.changed
+		}
+		if pclass.format_entry_text != nil {
+			overrides.FormatEntryText = v.formatEntryText
+		}
+	}
+
+	return overrides
 }
+
+func noop_ComboBox_Activate() {}
+
+func noop_ComboBox_Changed() {}
 
 // ComboBox: GtkComboBox is a widget that allows the user to choose from a list
 // of valid choices.
@@ -45778,7 +46081,10 @@ type ConstraintOverrides struct {
 }
 
 func defaultConstraintOverrides(v *Constraint) ConstraintOverrides {
-	return ConstraintOverrides{}
+
+	overrides := ConstraintOverrides{}
+
+	return overrides
 }
 
 // Constraint describes a constraint between attributes of two widgets,
@@ -46191,7 +46497,10 @@ type ConstraintGuideOverrides struct {
 }
 
 func defaultConstraintGuideOverrides(v *ConstraintGuide) ConstraintGuideOverrides {
-	return ConstraintGuideOverrides{}
+
+	overrides := ConstraintGuideOverrides{}
+
+	return overrides
 }
 
 // ConstraintGuide: invisible layout element in a GtkConstraintLayout.
@@ -46498,7 +46807,10 @@ type ConstraintLayoutOverrides struct {
 }
 
 func defaultConstraintLayoutOverrides(v *ConstraintLayout) ConstraintLayoutOverrides {
-	return ConstraintLayoutOverrides{}
+
+	overrides := ConstraintLayoutOverrides{}
+
+	return overrides
 }
 
 // ConstraintLayout uses constraints to describe relations between widgets.
@@ -47028,7 +47340,10 @@ type ConstraintLayoutChildOverrides struct {
 }
 
 func defaultConstraintLayoutChildOverrides(v *ConstraintLayoutChild) ConstraintLayoutChildOverrides {
-	return ConstraintLayoutChildOverrides{}
+
+	overrides := ConstraintLayoutChildOverrides{}
+
+	return overrides
 }
 
 // ConstraintLayoutChild: GtkLayoutChild subclass for children in a
@@ -47347,7 +47662,10 @@ type CustomFilterOverrides struct {
 }
 
 func defaultCustomFilterOverrides(v *CustomFilter) CustomFilterOverrides {
-	return CustomFilterOverrides{}
+
+	overrides := CustomFilterOverrides{}
+
+	return overrides
 }
 
 // CustomFilter determines whether to include items with a callback.
@@ -47460,7 +47778,10 @@ type CustomLayoutOverrides struct {
 }
 
 func defaultCustomLayoutOverrides(v *CustomLayout) CustomLayoutOverrides {
-	return CustomLayoutOverrides{}
+
+	overrides := CustomLayoutOverrides{}
+
+	return overrides
 }
 
 // CustomLayout uses closures for size negotiation.
@@ -47510,7 +47831,10 @@ type CustomSorterOverrides struct {
 }
 
 func defaultCustomSorterOverrides(v *CustomSorter) CustomSorterOverrides {
-	return CustomSorterOverrides{}
+
+	overrides := CustomSorterOverrides{}
+
+	return overrides
 }
 
 // CustomSorter sorts items via a callback function.
@@ -47633,11 +47957,34 @@ type DialogOverrides struct {
 }
 
 func defaultDialogOverrides(v *Dialog) DialogOverrides {
-	return DialogOverrides{
-		Close:    v.close,
-		Response: v.response,
+	var pclass *C.GtkDialogClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeDialog)) != C.FALSE {
+			pclass = (*C.GtkDialogClass)(parentClass)
+		}
 	}
+
+	overrides := DialogOverrides{
+
+		Close:    noop_Dialog_Close,
+		Response: noop_Dialog_Response,
+	}
+	if pclass != nil {
+
+		if pclass.close != nil {
+			overrides.Close = v.close
+		}
+		if pclass.response != nil {
+			overrides.Response = v.response
+		}
+	}
+
+	return overrides
 }
+
+func noop_Dialog_Close() {}
+
+func noop_Dialog_Response(responseId int) {}
 
 // Dialog dialogs are a convenient way to prompt the user for a small amount of
 // input.
@@ -48207,7 +48554,10 @@ type DirectoryListOverrides struct {
 }
 
 func defaultDirectoryListOverrides(v *DirectoryList) DirectoryListOverrides {
-	return DirectoryListOverrides{}
+
+	overrides := DirectoryListOverrides{}
+
+	return overrides
 }
 
 // DirectoryList: list model that wraps gio.File.EnumerateChildrenAsync().
@@ -48559,7 +48909,10 @@ type DragIconOverrides struct {
 }
 
 func defaultDragIconOverrides(v *DragIcon) DragIconOverrides {
-	return DragIconOverrides{}
+
+	overrides := DragIconOverrides{}
+
+	return overrides
 }
 
 // DragIcon: GtkRoot implementation for drag icons.
@@ -49140,10 +49493,28 @@ type DrawingAreaOverrides struct {
 }
 
 func defaultDrawingAreaOverrides(v *DrawingArea) DrawingAreaOverrides {
-	return DrawingAreaOverrides{
-		Resize: v.resize,
+	var pclass *C.GtkDrawingAreaClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeDrawingArea)) != C.FALSE {
+			pclass = (*C.GtkDrawingAreaClass)(parentClass)
+		}
 	}
+
+	overrides := DrawingAreaOverrides{
+
+		Resize: noop_DrawingArea_Resize,
+	}
+	if pclass != nil {
+
+		if pclass.resize != nil {
+			overrides.Resize = v.resize
+		}
+	}
+
+	return overrides
 }
+
+func noop_DrawingArea_Resize(width, height int) {}
 
 // DrawingArea allows drawing with cairo.
 //
@@ -49602,7 +49973,10 @@ type DropDownOverrides struct {
 }
 
 func defaultDropDownOverrides(v *DropDown) DropDownOverrides {
-	return DropDownOverrides{}
+
+	overrides := DropDownOverrides{}
+
+	return overrides
 }
 
 // DropDown allows the user to choose an item from a list of options.
@@ -50937,7 +51311,10 @@ type EditableLabelOverrides struct {
 }
 
 func defaultEditableLabelOverrides(v *EditableLabel) EditableLabelOverrides {
-	return EditableLabelOverrides{}
+
+	overrides := EditableLabelOverrides{}
+
+	return overrides
 }
 
 // EditableLabel allows users to edit the displayed text by switching to an
@@ -51261,10 +51638,28 @@ type EntryOverrides struct {
 }
 
 func defaultEntryOverrides(v *Entry) EntryOverrides {
-	return EntryOverrides{
-		Activate: v.activate,
+	var pclass *C.GtkEntryClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeEntry)) != C.FALSE {
+			pclass = (*C.GtkEntryClass)(parentClass)
+		}
 	}
+
+	overrides := EntryOverrides{
+
+		Activate: noop_Entry_Activate,
+	}
+	if pclass != nil {
+
+		if pclass.activate != nil {
+			overrides.Activate = v.activate
+		}
+	}
+
+	return overrides
 }
+
+func noop_Entry_Activate() {}
 
 // Entry: single-line text entry widget.
 //
@@ -53082,7 +53477,7 @@ type EntryBufferOverrides struct {
 	// The function returns the following values:
 	//
 	//   - guint: number of characters deleted.
-	DeleteText func(position, nChars uint) uint
+	DeleteText func(position, nChars uint) uint // optional
 	// The function takes the following parameters:
 	//
 	//   - position
@@ -53093,8 +53488,8 @@ type EntryBufferOverrides struct {
 	// The function returns the following values:
 	//
 	//   - guint: number of characters in the buffer.
-	Length func() uint
-	Text   func(nBytes *uint) string
+	Length func() uint               // optional
+	Text   func(nBytes *uint) string // optional
 	// InsertText inserts n_chars characters of chars into the contents of the
 	// buffer, at position position.
 	//
@@ -53114,7 +53509,7 @@ type EntryBufferOverrides struct {
 	// The function returns the following values:
 	//
 	//   - guint: number of characters actually inserted.
-	InsertText func(position uint, chars string, nChars uint) uint
+	InsertText func(position uint, chars string, nChars uint) uint // optional
 	// The function takes the following parameters:
 	//
 	//   - position
@@ -53124,15 +53519,46 @@ type EntryBufferOverrides struct {
 }
 
 func defaultEntryBufferOverrides(v *EntryBuffer) EntryBufferOverrides {
-	return EntryBufferOverrides{
-		DeleteText:   v.deleteText,
-		DeletedText:  v.deletedText,
-		Length:       v.length,
-		Text:         v.text,
-		InsertText:   v.insertText,
-		InsertedText: v.insertedText,
+	var pclass *C.GtkEntryBufferClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeEntryBuffer)) != C.FALSE {
+			pclass = (*C.GtkEntryBufferClass)(parentClass)
+		}
 	}
+
+	overrides := EntryBufferOverrides{
+
+		DeletedText:  noop_EntryBuffer_DeletedText,
+		InsertedText: noop_EntryBuffer_InsertedText,
+	}
+	if pclass != nil {
+
+		if pclass.delete_text != nil {
+			overrides.DeleteText = v.deleteText
+		}
+		if pclass.deleted_text != nil {
+			overrides.DeletedText = v.deletedText
+		}
+		if pclass.get_length != nil {
+			overrides.Length = v.length
+		}
+		if pclass.get_text != nil {
+			overrides.Text = v.text
+		}
+		if pclass.insert_text != nil {
+			overrides.InsertText = v.insertText
+		}
+		if pclass.inserted_text != nil {
+			overrides.InsertedText = v.insertedText
+		}
+	}
+
+	return overrides
 }
+
+func noop_EntryBuffer_DeletedText(position, nChars uint) {}
+
+func noop_EntryBuffer_InsertedText(position uint, chars string, nChars uint) {}
 
 // EntryBuffer holds the text that is displayed in a single-line text entry
 // widget.
@@ -56631,7 +57057,10 @@ type FileChooserNativeOverrides struct {
 }
 
 func defaultFileChooserNativeOverrides(v *FileChooserNative) FileChooserNativeOverrides {
-	return FileChooserNativeOverrides{}
+
+	overrides := FileChooserNativeOverrides{}
+
+	return overrides
 }
 
 // FileChooserNative: GtkFileChooserNative is an abstraction of a dialog
@@ -57254,7 +57683,10 @@ type FileDialogOverrides struct {
 }
 
 func defaultFileDialogOverrides(v *FileDialog) FileDialogOverrides {
-	return FileDialogOverrides{}
+
+	overrides := FileDialogOverrides{}
+
+	return overrides
 }
 
 // FileDialog asynchronous API to present a file chooser dialog.
@@ -58737,7 +59169,10 @@ type FileLauncherOverrides struct {
 }
 
 func defaultFileLauncherOverrides(v *FileLauncher) FileLauncherOverrides {
-	return FileLauncherOverrides{}
+
+	overrides := FileLauncherOverrides{}
+
+	return overrides
 }
 
 // FileLauncher asynchronous API to open a file with an application.
@@ -59090,7 +59525,7 @@ type FilterOverrides struct {
 	// The function returns the following values:
 	//
 	//   - filterMatch strictness of self.
-	Strictness func() FilterMatch
+	Strictness func() FilterMatch // optional
 	// Match checks if the given item is matched by the filter or not.
 	//
 	// The function takes the following parameters:
@@ -59100,14 +59535,29 @@ type FilterOverrides struct {
 	// The function returns the following values:
 	//
 	//   - ok: true if the filter matches the item.
-	Match func(item *coreglib.Object) bool
+	Match func(item *coreglib.Object) bool // optional
 }
 
 func defaultFilterOverrides(v *Filter) FilterOverrides {
-	return FilterOverrides{
-		Strictness: v.strictness,
-		Match:      v.match,
+	var pclass *C.GtkFilterClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeFilter)) != C.FALSE {
+			pclass = (*C.GtkFilterClass)(parentClass)
+		}
 	}
+
+	overrides := FilterOverrides{}
+	if pclass != nil {
+
+		if pclass.get_strictness != nil {
+			overrides.Strictness = v.strictness
+		}
+		if pclass.match != nil {
+			overrides.Match = v.match
+		}
+	}
+
+	return overrides
 }
 
 // Filter describes the filtering to be performed by a gtk.FilterListModel.
@@ -59337,7 +59787,10 @@ type FilterListModelOverrides struct {
 }
 
 func defaultFilterListModelOverrides(v *FilterListModel) FilterListModelOverrides {
-	return FilterListModelOverrides{}
+
+	overrides := FilterListModelOverrides{}
+
+	return overrides
 }
 
 // FilterListModel: list model that filters the elements of another model.
@@ -59668,7 +60121,10 @@ type FixedOverrides struct {
 }
 
 func defaultFixedOverrides(v *Fixed) FixedOverrides {
-	return FixedOverrides{}
+
+	overrides := FixedOverrides{}
+
+	return overrides
 }
 
 // Fixed places its child widgets at fixed positions and with fixed sizes.
@@ -59944,7 +60400,10 @@ type FixedLayoutOverrides struct {
 }
 
 func defaultFixedLayoutOverrides(v *FixedLayout) FixedLayoutOverrides {
-	return FixedLayoutOverrides{}
+
+	overrides := FixedLayoutOverrides{}
+
+	return overrides
 }
 
 // FixedLayout places child widgets at fixed positions.
@@ -60034,7 +60493,10 @@ type FixedLayoutChildOverrides struct {
 }
 
 func defaultFixedLayoutChildOverrides(v *FixedLayoutChild) FixedLayoutChildOverrides {
-	return FixedLayoutChildOverrides{}
+
+	overrides := FixedLayoutChildOverrides{}
+
+	return overrides
 }
 
 // FixedLayoutChild: GtkLayoutChild subclass for children in a GtkFixedLayout.
@@ -60127,7 +60589,10 @@ type FlattenListModelOverrides struct {
 }
 
 func defaultFlattenListModelOverrides(v *FlattenListModel) FlattenListModelOverrides {
-	return FlattenListModelOverrides{}
+
+	overrides := FlattenListModelOverrides{}
+
+	return overrides
 }
 
 // FlattenListModel: list model that concatenates other list models.
@@ -61223,10 +61688,28 @@ type FlowBoxChildOverrides struct {
 }
 
 func defaultFlowBoxChildOverrides(v *FlowBoxChild) FlowBoxChildOverrides {
-	return FlowBoxChildOverrides{
-		Activate: v.activate,
+	var pclass *C.GtkFlowBoxChildClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeFlowBoxChild)) != C.FALSE {
+			pclass = (*C.GtkFlowBoxChildClass)(parentClass)
+		}
 	}
+
+	overrides := FlowBoxChildOverrides{
+
+		Activate: noop_FlowBoxChild_Activate,
+	}
+	if pclass != nil {
+
+		if pclass.activate != nil {
+			overrides.Activate = v.activate
+		}
+	}
+
+	return overrides
 }
+
+func noop_FlowBoxChild_Activate() {}
 
 // FlowBoxChild: kind of widget that can be added to a GtkFlowBox.
 //
@@ -61979,7 +62462,10 @@ type FontDialogOverrides struct {
 }
 
 func defaultFontDialogOverrides(v *FontDialog) FontDialogOverrides {
-	return FontDialogOverrides{}
+
+	overrides := FontDialogOverrides{}
+
+	return overrides
 }
 
 // FontDialog asynchronous API to present a font chooser dialog.
@@ -62670,7 +63156,10 @@ type FontDialogButtonOverrides struct {
 }
 
 func defaultFontDialogButtonOverrides(v *FontDialogButton) FontDialogButtonOverrides {
-	return FontDialogButtonOverrides{}
+
+	overrides := FontDialogButtonOverrides{}
+
+	return overrides
 }
 
 // FontDialogButton opens a font chooser dialog to select a font.
@@ -63092,10 +63581,28 @@ type FrameOverrides struct {
 }
 
 func defaultFrameOverrides(v *Frame) FrameOverrides {
-	return FrameOverrides{
-		ComputeChildAllocation: v.computeChildAllocation,
+	var pclass *C.GtkFrameClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeFrame)) != C.FALSE {
+			pclass = (*C.GtkFrameClass)(parentClass)
+		}
 	}
+
+	overrides := FrameOverrides{
+
+		ComputeChildAllocation: noop_Frame_ComputeChildAllocation,
+	}
+	if pclass != nil {
+
+		if pclass.compute_child_allocation != nil {
+			overrides.ComputeChildAllocation = v.computeChildAllocation
+		}
+	}
+
+	return overrides
 }
+
+func noop_Frame_ComputeChildAllocation(allocation *Allocation) {}
 
 // Frame surrounds its child with a decorative frame and an optional label.
 //
@@ -63442,7 +63949,7 @@ func (frame *Frame) computeChildAllocation(allocation *Allocation) {
 // GLAreaOverrides contains methods that are overridable.
 type GLAreaOverrides struct {
 	// Render class closure for the GtkGLArea::render signal.
-	Render func(context gdk.GLContexter) bool
+	Render func(context gdk.GLContexter) bool // optional
 	// Resize class closeure for the GtkGLArea::resize signal.
 	//
 	// The function takes the following parameters:
@@ -63453,11 +63960,31 @@ type GLAreaOverrides struct {
 }
 
 func defaultGLAreaOverrides(v *GLArea) GLAreaOverrides {
-	return GLAreaOverrides{
-		Render: v.render,
-		Resize: v.resize,
+	var pclass *C.GtkGLAreaClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeGLArea)) != C.FALSE {
+			pclass = (*C.GtkGLAreaClass)(parentClass)
+		}
 	}
+
+	overrides := GLAreaOverrides{
+
+		Resize: noop_GLArea_Resize,
+	}
+	if pclass != nil {
+
+		if pclass.render != nil {
+			overrides.Render = v.render
+		}
+		if pclass.resize != nil {
+			overrides.Resize = v.resize
+		}
+	}
+
+	return overrides
 }
+
+func noop_GLArea_Resize(width, height int) {}
 
 // GLArea allows drawing with OpenGL.
 //
@@ -66117,7 +66644,10 @@ type GraphicsOffloadOverrides struct {
 }
 
 func defaultGraphicsOffloadOverrides(v *GraphicsOffload) GraphicsOffloadOverrides {
-	return GraphicsOffloadOverrides{}
+
+	overrides := GraphicsOffloadOverrides{}
+
+	return overrides
 }
 
 // GraphicsOffload bypasses gsk rendering by passing the content of its child
@@ -66391,7 +66921,10 @@ type GridOverrides struct {
 }
 
 func defaultGridOverrides(v *Grid) GridOverrides {
-	return GridOverrides{}
+
+	overrides := GridOverrides{}
+
+	return overrides
 }
 
 // Grid arranges its child widgets in rows and columns.
@@ -67107,7 +67640,10 @@ type GridLayoutOverrides struct {
 }
 
 func defaultGridLayoutOverrides(v *GridLayout) GridLayoutOverrides {
-	return GridLayoutOverrides{}
+
+	overrides := GridLayoutOverrides{}
+
+	return overrides
 }
 
 // GridLayout arranges child widgets in rows and columns.
@@ -67441,7 +67977,10 @@ type GridLayoutChildOverrides struct {
 }
 
 func defaultGridLayoutChildOverrides(v *GridLayoutChild) GridLayoutChildOverrides {
-	return GridLayoutChildOverrides{}
+
+	overrides := GridLayoutChildOverrides{}
+
+	return overrides
 }
 
 // GridLayoutChild: GtkLayoutChild subclass for children in a GtkGridLayout.
@@ -68488,7 +69027,7 @@ func (bar *HeaderBar) SetUseNativeControls(setting bool) {
 // IMContextOverrides contains methods that are overridable.
 type IMContextOverrides struct {
 	ActivateOSK          func()
-	ActivateOSKWithEvent func(event gdk.Eventer) bool
+	ActivateOSKWithEvent func(event gdk.Eventer) bool // optional
 	// Commit: default handler of the gtk.IMContext::commit signal.
 	Commit func(str string)
 	// DeleteSurrounding asks the widget that the input context is attached
@@ -68518,7 +69057,7 @@ type IMContextOverrides struct {
 	// The function returns the following values:
 	//
 	//   - ok: TRUE if the signal was handled.
-	DeleteSurrounding func(offset, nChars int) bool
+	DeleteSurrounding func(offset, nChars int) bool // optional
 	// FilterKeypress: allow an input method to internally handle key press and
 	// release events.
 	//
@@ -68532,7 +69071,7 @@ type IMContextOverrides struct {
 	// The function returns the following values:
 	//
 	//   - ok: TRUE if the input method handled the key event.
-	FilterKeypress func(event gdk.Eventer) bool
+	FilterKeypress func(event gdk.Eventer) bool // optional
 	// FocusIn: notify the input method that the widget to which this input
 	// context corresponds has gained focus.
 	//
@@ -68559,7 +69098,7 @@ type IMContextOverrides struct {
 	//     pango.AttrList.Unref().
 	//   - cursorPos: location to store position of cursor (in characters)
 	//     within the preedit string.
-	PreeditString func() (string, *pango.AttrList, int)
+	PreeditString func() (string, *pango.AttrList, int) // optional
 	// Surrounding retrieves context around the insertion point.
 	//
 	// Input methods typically want context in order to constrain input text
@@ -68587,7 +69126,7 @@ type IMContextOverrides struct {
 	//     within text.
 	//   - ok: TRUE if surrounding text was provided; in this case you must free
 	//     the result stored in text.
-	Surrounding func() (string, int, bool)
+	Surrounding func() (string, int, bool) // optional
 	// SurroundingWithSelection retrieves context around the insertion point.
 	//
 	// Input methods typically want context in order to constrain input text
@@ -68615,10 +69154,10 @@ type IMContextOverrides struct {
 	//     within text.
 	//   - ok: TRUE if surrounding text was provided; in this case you must free
 	//     the result stored in text.
-	SurroundingWithSelection func() (text string, cursorIndex, anchorIndex int, ok bool)
+	SurroundingWithSelection func() (text string, cursorIndex, anchorIndex int, ok bool) // optional
 	// InvalidComposition: default handler of the
 	// gtk.IMContext::invalid-composition signal. Since: 4.22.
-	InvalidComposition func(str string) bool
+	InvalidComposition func(str string) bool // optional
 	// PreeditChanged: default handler of the gtk.IMContext::preedit-changed
 	// signal.
 	PreeditChanged func()
@@ -68633,7 +69172,7 @@ type IMContextOverrides struct {
 	Reset func()
 	// RetrieveSurrounding: default handler of the
 	// gtk.IMContext::retrieve-surrounding signal.
-	RetrieveSurrounding func() bool
+	RetrieveSurrounding func() bool // optional
 	// SetClientWidget: set the client widget for the input context.
 	//
 	// This is the GtkWidget holding the input focus. This widget is used in
@@ -68695,30 +69234,124 @@ type IMContextOverrides struct {
 }
 
 func defaultIMContextOverrides(v *IMContext) IMContextOverrides {
-	return IMContextOverrides{
-		ActivateOSK:                 v.activateOSK,
-		ActivateOSKWithEvent:        v.activateOSKWithEvent,
-		Commit:                      v.commit,
-		DeleteSurrounding:           v.deleteSurrounding,
-		FilterKeypress:              v.filterKeypress,
-		FocusIn:                     v.focusIn,
-		FocusOut:                    v.focusOut,
-		PreeditString:               v.preeditString,
-		Surrounding:                 v.surrounding,
-		SurroundingWithSelection:    v.surroundingWithSelection,
-		InvalidComposition:          v.invalidComposition,
-		PreeditChanged:              v.preeditChanged,
-		PreeditEnd:                  v.preeditEnd,
-		PreeditStart:                v.preeditStart,
-		Reset:                       v.reset,
-		RetrieveSurrounding:         v.retrieveSurrounding,
-		SetClientWidget:             v.setClientWidget,
-		SetCursorLocation:           v.setCursorLocation,
-		SetSurrounding:              v.setSurrounding,
-		SetSurroundingWithSelection: v.setSurroundingWithSelection,
-		SetUsePreedit:               v.setUsePreedit,
+	var pclass *C.GtkIMContextClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeIMContext)) != C.FALSE {
+			pclass = (*C.GtkIMContextClass)(parentClass)
+		}
 	}
+
+	overrides := IMContextOverrides{
+
+		ActivateOSK:                 noop_IMContext_ActivateOSK,
+		Commit:                      noop_IMContext_Commit,
+		FocusIn:                     noop_IMContext_FocusIn,
+		FocusOut:                    noop_IMContext_FocusOut,
+		PreeditChanged:              noop_IMContext_PreeditChanged,
+		PreeditEnd:                  noop_IMContext_PreeditEnd,
+		PreeditStart:                noop_IMContext_PreeditStart,
+		Reset:                       noop_IMContext_Reset,
+		SetClientWidget:             noop_IMContext_SetClientWidget,
+		SetCursorLocation:           noop_IMContext_SetCursorLocation,
+		SetSurrounding:              noop_IMContext_SetSurrounding,
+		SetSurroundingWithSelection: noop_IMContext_SetSurroundingWithSelection,
+		SetUsePreedit:               noop_IMContext_SetUsePreedit,
+	}
+	if pclass != nil {
+
+		if pclass.activate_osk != nil {
+			overrides.ActivateOSK = v.activateOSK
+		}
+		if pclass.activate_osk_with_event != nil {
+			overrides.ActivateOSKWithEvent = v.activateOSKWithEvent
+		}
+		if pclass.commit != nil {
+			overrides.Commit = v.commit
+		}
+		if pclass.delete_surrounding != nil {
+			overrides.DeleteSurrounding = v.deleteSurrounding
+		}
+		if pclass.filter_keypress != nil {
+			overrides.FilterKeypress = v.filterKeypress
+		}
+		if pclass.focus_in != nil {
+			overrides.FocusIn = v.focusIn
+		}
+		if pclass.focus_out != nil {
+			overrides.FocusOut = v.focusOut
+		}
+		if pclass.get_preedit_string != nil {
+			overrides.PreeditString = v.preeditString
+		}
+		if pclass.get_surrounding != nil {
+			overrides.Surrounding = v.surrounding
+		}
+		if pclass.get_surrounding_with_selection != nil {
+			overrides.SurroundingWithSelection = v.surroundingWithSelection
+		}
+		if pclass.invalid_composition != nil {
+			overrides.InvalidComposition = v.invalidComposition
+		}
+		if pclass.preedit_changed != nil {
+			overrides.PreeditChanged = v.preeditChanged
+		}
+		if pclass.preedit_end != nil {
+			overrides.PreeditEnd = v.preeditEnd
+		}
+		if pclass.preedit_start != nil {
+			overrides.PreeditStart = v.preeditStart
+		}
+		if pclass.reset != nil {
+			overrides.Reset = v.reset
+		}
+		if pclass.retrieve_surrounding != nil {
+			overrides.RetrieveSurrounding = v.retrieveSurrounding
+		}
+		if pclass.set_client_widget != nil {
+			overrides.SetClientWidget = v.setClientWidget
+		}
+		if pclass.set_cursor_location != nil {
+			overrides.SetCursorLocation = v.setCursorLocation
+		}
+		if pclass.set_surrounding != nil {
+			overrides.SetSurrounding = v.setSurrounding
+		}
+		if pclass.set_surrounding_with_selection != nil {
+			overrides.SetSurroundingWithSelection = v.setSurroundingWithSelection
+		}
+		if pclass.set_use_preedit != nil {
+			overrides.SetUsePreedit = v.setUsePreedit
+		}
+	}
+
+	return overrides
 }
+
+func noop_IMContext_ActivateOSK() {}
+
+func noop_IMContext_Commit(str string) {}
+
+func noop_IMContext_FocusIn() {}
+
+func noop_IMContext_FocusOut() {}
+
+func noop_IMContext_PreeditChanged() {}
+
+func noop_IMContext_PreeditEnd() {}
+
+func noop_IMContext_PreeditStart() {}
+
+func noop_IMContext_Reset() {}
+
+func noop_IMContext_SetClientWidget(widget Widgetter) {}
+
+func noop_IMContext_SetCursorLocation(area *gdk.Rectangle) {}
+
+func noop_IMContext_SetSurrounding(text string, cursorIndex int) {}
+
+func noop_IMContext_SetSurroundingWithSelection(text string, cursorIndex, anchorIndex int) {}
+
+func noop_IMContext_SetUsePreedit(usePreedit bool) {}
 
 // IMContext: interface for GTK input methods.
 //
@@ -70039,7 +70672,10 @@ type IMContextSimpleOverrides struct {
 }
 
 func defaultIMContextSimpleOverrides(v *IMContextSimple) IMContextSimpleOverrides {
-	return IMContextSimpleOverrides{}
+
+	overrides := IMContextSimpleOverrides{}
+
+	return overrides
 }
 
 // IMContextSimple supports compose sequences, dead keys and numeric Unicode
@@ -70158,7 +70794,10 @@ type IMMulticontextOverrides struct {
 }
 
 func defaultIMMulticontextOverrides(v *IMMulticontext) IMMulticontextOverrides {
-	return IMMulticontextOverrides{}
+
+	overrides := IMMulticontextOverrides{}
+
+	return overrides
 }
 
 // IMMulticontext supports switching between multiple input methods.
@@ -70272,7 +70911,10 @@ type IconPaintableOverrides struct {
 }
 
 func defaultIconPaintableOverrides(v *IconPaintable) IconPaintableOverrides {
-	return IconPaintableOverrides{}
+
+	overrides := IconPaintableOverrides{}
+
+	return overrides
 }
 
 // IconPaintable contains information found when looking up an icon in
@@ -74179,7 +74821,10 @@ type InscriptionOverrides struct {
 }
 
 func defaultInscriptionOverrides(v *Inscription) InscriptionOverrides {
-	return InscriptionOverrides{}
+
+	overrides := InscriptionOverrides{}
+
+	return overrides
 }
 
 // Inscription shows text in a predefined area.
@@ -76437,7 +77082,10 @@ type LayoutChildOverrides struct {
 }
 
 func defaultLayoutChildOverrides(v *LayoutChild) LayoutChildOverrides {
-	return LayoutChildOverrides{}
+
+	overrides := LayoutChildOverrides{}
+
+	return overrides
 }
 
 // LayoutChild: base class for objects that are meant to hold layout properties.
@@ -76602,11 +77250,11 @@ type LayoutManagerOverrides struct {
 	// The function returns the following values:
 	//
 	//   - layoutChild: GtkLayoutChild.
-	CreateLayoutChild func(widget, forChild Widgetter) LayoutChilder
+	CreateLayoutChild func(widget, forChild Widgetter) LayoutChilder // optional
 	// RequestMode: virtual function, used to return the preferred request mode
 	// for the layout manager; for instance, "width for height" or "height for
 	// width"; see GtkSizeRequestMode.
-	RequestMode func(widget Widgetter) SizeRequestMode
+	RequestMode func(widget Widgetter) SizeRequestMode // optional
 	// Measure measures the size of the widget using manager, for the given
 	// orientation and size.
 	//
@@ -76630,7 +77278,7 @@ type LayoutManagerOverrides struct {
 	//     orientation.
 	//   - minimumBaseline (optional): baseline position for the minimum size.
 	//   - naturalBaseline (optional): baseline position for the natural size.
-	Measure func(widget Widgetter, orientation Orientation, forSize int) (minimum, natural, minimumBaseline, naturalBaseline int)
+	Measure func(widget Widgetter, orientation Orientation, forSize int) (minimum, natural, minimumBaseline, naturalBaseline int) // optional
 	// Root: virtual function, called when the widget using the layout manager
 	// is attached to a GtkRoot.
 	Root func()
@@ -76640,15 +77288,49 @@ type LayoutManagerOverrides struct {
 }
 
 func defaultLayoutManagerOverrides(v *LayoutManager) LayoutManagerOverrides {
-	return LayoutManagerOverrides{
-		Allocate:          v.allocate,
-		CreateLayoutChild: v.createLayoutChild,
-		RequestMode:       v.requestMode,
-		Measure:           v.measure,
-		Root:              v.root,
-		Unroot:            v.unroot,
+	var pclass *C.GtkLayoutManagerClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeLayoutManager)) != C.FALSE {
+			pclass = (*C.GtkLayoutManagerClass)(parentClass)
+		}
 	}
+
+	overrides := LayoutManagerOverrides{
+
+		Allocate: noop_LayoutManager_Allocate,
+		Root:     noop_LayoutManager_Root,
+		Unroot:   noop_LayoutManager_Unroot,
+	}
+	if pclass != nil {
+
+		if pclass.allocate != nil {
+			overrides.Allocate = v.allocate
+		}
+		if pclass.create_layout_child != nil {
+			overrides.CreateLayoutChild = v.createLayoutChild
+		}
+		if pclass.get_request_mode != nil {
+			overrides.RequestMode = v.requestMode
+		}
+		if pclass.measure != nil {
+			overrides.Measure = v.measure
+		}
+		if pclass.root != nil {
+			overrides.Root = v.root
+		}
+		if pclass.unroot != nil {
+			overrides.Unroot = v.unroot
+		}
+	}
+
+	return overrides
 }
+
+func noop_LayoutManager_Allocate(widget Widgetter, width, height, baseline int) {}
+
+func noop_LayoutManager_Root() {}
+
+func noop_LayoutManager_Unroot() {}
 
 // LayoutManager handles the preferred size and allocation for children of a
 // widget.
@@ -78997,10 +79679,28 @@ type ListBoxRowOverrides struct {
 }
 
 func defaultListBoxRowOverrides(v *ListBoxRow) ListBoxRowOverrides {
-	return ListBoxRowOverrides{
-		Activate: v.activate,
+	var pclass *C.GtkListBoxRowClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeListBoxRow)) != C.FALSE {
+			pclass = (*C.GtkListBoxRowClass)(parentClass)
+		}
 	}
+
+	overrides := ListBoxRowOverrides{
+
+		Activate: noop_ListBoxRow_Activate,
+	}
+	if pclass != nil {
+
+		if pclass.activate != nil {
+			overrides.Activate = v.activate
+		}
+	}
+
+	return overrides
 }
+
+func noop_ListBoxRow_Activate() {}
 
 // ListBoxRow: kind of widget that can be added to a GtkListBox.
 //
@@ -80042,7 +80742,10 @@ type ListStoreOverrides struct {
 }
 
 func defaultListStoreOverrides(v *ListStore) ListStoreOverrides {
-	return ListStoreOverrides{}
+
+	overrides := ListStoreOverrides{}
+
+	return overrides
 }
 
 // ListStore: list-like data structure that can be used with the gtk.TreeView.
@@ -81511,7 +82214,10 @@ type MapListModelOverrides struct {
 }
 
 func defaultMapListModelOverrides(v *MapListModel) MapListModelOverrides {
-	return MapListModelOverrides{}
+
+	overrides := MapListModelOverrides{}
+
+	return overrides
 }
 
 // MapListModel: list model that maps the items in another model to different
@@ -81735,7 +82441,10 @@ type MediaControlsOverrides struct {
 }
 
 func defaultMediaControlsOverrides(v *MediaControls) MediaControlsOverrides {
-	return MediaControlsOverrides{}
+
+	overrides := MediaControlsOverrides{}
+
+	return overrides
 }
 
 // MediaControls shows controls for video playback.
@@ -81884,11 +82593,34 @@ type MediaFileOverrides struct {
 }
 
 func defaultMediaFileOverrides(v *MediaFile) MediaFileOverrides {
-	return MediaFileOverrides{
-		Close: v.close,
-		Open:  v.open,
+	var pclass *C.GtkMediaFileClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeMediaFile)) != C.FALSE {
+			pclass = (*C.GtkMediaFileClass)(parentClass)
+		}
 	}
+
+	overrides := MediaFileOverrides{
+
+		Close: noop_MediaFile_Close,
+		Open:  noop_MediaFile_Open,
+	}
+	if pclass != nil {
+
+		if pclass.close != nil {
+			overrides.Close = v.close
+		}
+		if pclass.open != nil {
+			overrides.Open = v.open
+		}
+	}
+
+	return overrides
 }
+
+func noop_MediaFile_Close() {}
+
+func noop_MediaFile_Open() {}
 
 // MediaFile implements the GtkMediaStream interface for files.
 //
@@ -82295,7 +83027,7 @@ type MediaStreamOverrides struct {
 	//
 	// If the stream is not playing, do nothing.
 	Pause func()
-	Play  func() bool
+	Play  func() bool // optional
 	// Realize: called by users to attach the media stream to a GdkSurface they
 	// manage.
 	//
@@ -82348,15 +83080,55 @@ type MediaStreamOverrides struct {
 }
 
 func defaultMediaStreamOverrides(v *MediaStream) MediaStreamOverrides {
-	return MediaStreamOverrides{
-		Pause:       v.pause,
-		Play:        v.play,
-		Realize:     v.realize,
-		Seek:        v.seek,
-		Unrealize:   v.unrealize,
-		UpdateAudio: v.updateAudio,
+	var pclass *C.GtkMediaStreamClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeMediaStream)) != C.FALSE {
+			pclass = (*C.GtkMediaStreamClass)(parentClass)
+		}
 	}
+
+	overrides := MediaStreamOverrides{
+
+		Pause:       noop_MediaStream_Pause,
+		Realize:     noop_MediaStream_Realize,
+		Seek:        noop_MediaStream_Seek,
+		Unrealize:   noop_MediaStream_Unrealize,
+		UpdateAudio: noop_MediaStream_UpdateAudio,
+	}
+	if pclass != nil {
+
+		if pclass.pause != nil {
+			overrides.Pause = v.pause
+		}
+		if pclass.play != nil {
+			overrides.Play = v.play
+		}
+		if pclass.realize != nil {
+			overrides.Realize = v.realize
+		}
+		if pclass.seek != nil {
+			overrides.Seek = v.seek
+		}
+		if pclass.unrealize != nil {
+			overrides.Unrealize = v.unrealize
+		}
+		if pclass.update_audio != nil {
+			overrides.UpdateAudio = v.updateAudio
+		}
+	}
+
+	return overrides
 }
+
+func noop_MediaStream_Pause() {}
+
+func noop_MediaStream_Realize(surface gdk.Surfacer) {}
+
+func noop_MediaStream_Seek(timestamp int64) {}
+
+func noop_MediaStream_Unrealize(surface gdk.Surfacer) {}
+
+func noop_MediaStream_UpdateAudio(muted bool, volume float64) {}
 
 // MediaStream: integration point for media playback inside GTK.
 //
@@ -84342,7 +85114,10 @@ type MountOperationOverrides struct {
 }
 
 func defaultMountOperationOverrides(v *MountOperation) MountOperationOverrides {
-	return MountOperationOverrides{}
+
+	overrides := MountOperationOverrides{}
+
+	return overrides
 }
 
 // MountOperation asks the user for passwords and other information required to
@@ -84625,7 +85400,10 @@ type MultiSelectionOverrides struct {
 }
 
 func defaultMultiSelectionOverrides(v *MultiSelection) MultiSelectionOverrides {
-	return MultiSelectionOverrides{}
+
+	overrides := MultiSelectionOverrides{}
+
+	return overrides
 }
 
 // MultiSelection: selection model that allows selecting multiple elements.
@@ -84763,7 +85541,10 @@ type MultiSorterOverrides struct {
 }
 
 func defaultMultiSorterOverrides(v *MultiSorter) MultiSorterOverrides {
-	return MultiSorterOverrides{}
+
+	overrides := MultiSorterOverrides{}
+
+	return overrides
 }
 
 // MultiSorter combines multiple sorters by trying them in turn.
@@ -84979,12 +85760,40 @@ type NativeDialogOverrides struct {
 }
 
 func defaultNativeDialogOverrides(v *NativeDialog) NativeDialogOverrides {
-	return NativeDialogOverrides{
-		Hide:     v.hide,
-		Response: v.response,
-		Show:     v.show,
+	var pclass *C.GtkNativeDialogClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeNativeDialog)) != C.FALSE {
+			pclass = (*C.GtkNativeDialogClass)(parentClass)
+		}
 	}
+
+	overrides := NativeDialogOverrides{
+
+		Hide:     noop_NativeDialog_Hide,
+		Response: noop_NativeDialog_Response,
+		Show:     noop_NativeDialog_Show,
+	}
+	if pclass != nil {
+
+		if pclass.hide != nil {
+			overrides.Hide = v.hide
+		}
+		if pclass.response != nil {
+			overrides.Response = v.response
+		}
+		if pclass.show != nil {
+			overrides.Show = v.show
+		}
+	}
+
+	return overrides
 }
+
+func noop_NativeDialog_Hide() {}
+
+func noop_NativeDialog_Response(responseId int) {}
+
+func noop_NativeDialog_Show() {}
 
 // NativeDialog: base class for platform dialogs that don't use GtkDialog.
 //
@@ -85394,7 +86203,10 @@ type NoSelectionOverrides struct {
 }
 
 func defaultNoSelectionOverrides(v *NoSelection) NoSelectionOverrides {
-	return NoSelectionOverrides{}
+
+	overrides := NoSelectionOverrides{}
+
+	return overrides
 }
 
 // NoSelection: selection model that does not allow selecting anything.
@@ -87130,7 +87942,10 @@ type NumericSorterOverrides struct {
 }
 
 func defaultNumericSorterOverrides(v *NumericSorter) NumericSorterOverrides {
-	return NumericSorterOverrides{}
+
+	overrides := NumericSorterOverrides{}
+
+	return overrides
 }
 
 // NumericSorter sorts items numerically.
@@ -87690,7 +88505,10 @@ type OverlayLayoutOverrides struct {
 }
 
 func defaultOverlayLayoutOverrides(v *OverlayLayout) OverlayLayoutOverrides {
-	return OverlayLayoutOverrides{}
+
+	overrides := OverlayLayoutOverrides{}
+
+	return overrides
 }
 
 // OverlayLayout: layout manager used by gtk.Overlay.
@@ -87759,7 +88577,10 @@ type OverlayLayoutChildOverrides struct {
 }
 
 func defaultOverlayLayoutChildOverrides(v *OverlayLayoutChild) OverlayLayoutChildOverrides {
-	return OverlayLayoutChildOverrides{}
+
+	overrides := OverlayLayoutChildOverrides{}
+
+	return overrides
 }
 
 // OverlayLayoutChild: GtkLayoutChild subclass for children in a
@@ -89634,7 +90455,10 @@ type PasswordEntryBufferOverrides struct {
 }
 
 func defaultPasswordEntryBufferOverrides(v *PasswordEntryBuffer) PasswordEntryBufferOverrides {
-	return PasswordEntryBufferOverrides{}
+
+	overrides := PasswordEntryBufferOverrides{}
+
+	return overrides
 }
 
 // PasswordEntryBuffer: GtkEntryBuffer that locks the underlying memory to
@@ -89701,7 +90525,10 @@ type PictureOverrides struct {
 }
 
 func defaultPictureOverrides(v *Picture) PictureOverrides {
-	return PictureOverrides{}
+
+	overrides := PictureOverrides{}
+
+	return overrides
 }
 
 // Picture displays a GdkPaintable.
@@ -90421,11 +91248,34 @@ type PopoverOverrides struct {
 }
 
 func defaultPopoverOverrides(v *Popover) PopoverOverrides {
-	return PopoverOverrides{
-		ActivateDefault: v.activateDefault,
-		Closed:          v.closed,
+	var pclass *C.GtkPopoverClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypePopover)) != C.FALSE {
+			pclass = (*C.GtkPopoverClass)(parentClass)
+		}
 	}
+
+	overrides := PopoverOverrides{
+
+		ActivateDefault: noop_Popover_ActivateDefault,
+		Closed:          noop_Popover_Closed,
+	}
+	if pclass != nil {
+
+		if pclass.activate_default != nil {
+			overrides.ActivateDefault = v.activateDefault
+		}
+		if pclass.closed != nil {
+			overrides.Closed = v.closed
+		}
+	}
+
+	return overrides
 }
+
+func noop_Popover_ActivateDefault() {}
+
+func noop_Popover_Closed() {}
 
 // Popover presents a bubble-like popup.
 //
@@ -91108,7 +91958,10 @@ type PopoverBinOverrides struct {
 }
 
 func defaultPopoverBinOverrides(v *PopoverBin) PopoverBinOverrides {
-	return PopoverBinOverrides{}
+
+	overrides := PopoverBinOverrides{}
+
+	return overrides
 }
 
 // PopoverBin: single child container with a popover.
@@ -92448,7 +93301,10 @@ type PrintDialogOverrides struct {
 }
 
 func defaultPrintDialogOverrides(v *PrintDialog) PrintDialogOverrides {
-	return PrintDialogOverrides{}
+
+	overrides := PrintDialogOverrides{}
+
+	return overrides
 }
 
 // PrintDialog asynchronous API to present a print dialog to the user.
@@ -93015,7 +93871,7 @@ type PrintOperationOverrides struct {
 	EndPrint func(context *PrintContext)
 	// Paginate: signal emitted after the “begin-print” signal, but before the
 	// actual rendering starts.
-	Paginate func(context *PrintContext) bool
+	Paginate func(context *PrintContext) bool // optional
 	// Preview: signal emitted when a preview is requested from the native
 	// dialog.
 	//
@@ -93024,7 +93880,7 @@ type PrintOperationOverrides struct {
 	//   - preview
 	//   - context
 	//   - parent
-	Preview func(preview PrintOperationPreviewer, context *PrintContext, parent *Window) bool
+	Preview func(preview PrintOperationPreviewer, context *PrintContext, parent *Window) bool // optional
 	// RequestPageSetup is emitted once for every page that is printed, to give
 	// the application a chance to modify the page setup.
 	//
@@ -93048,18 +93904,76 @@ type PrintOperationOverrides struct {
 }
 
 func defaultPrintOperationOverrides(v *PrintOperation) PrintOperationOverrides {
-	return PrintOperationOverrides{
-		BeginPrint:         v.beginPrint,
-		CustomWidgetApply:  v.customWidgetApply,
-		Done:               v.done,
-		DrawPage:           v.drawPage,
-		EndPrint:           v.endPrint,
-		Paginate:           v.paginate,
-		Preview:            v.preview,
-		RequestPageSetup:   v.requestPageSetup,
-		StatusChanged:      v.statusChanged,
-		UpdateCustomWidget: v.updateCustomWidget,
+	var pclass *C.GtkPrintOperationClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypePrintOperation)) != C.FALSE {
+			pclass = (*C.GtkPrintOperationClass)(parentClass)
+		}
 	}
+
+	overrides := PrintOperationOverrides{
+
+		BeginPrint:         noop_PrintOperation_BeginPrint,
+		CustomWidgetApply:  noop_PrintOperation_CustomWidgetApply,
+		Done:               noop_PrintOperation_Done,
+		DrawPage:           noop_PrintOperation_DrawPage,
+		EndPrint:           noop_PrintOperation_EndPrint,
+		RequestPageSetup:   noop_PrintOperation_RequestPageSetup,
+		StatusChanged:      noop_PrintOperation_StatusChanged,
+		UpdateCustomWidget: noop_PrintOperation_UpdateCustomWidget,
+	}
+	if pclass != nil {
+
+		if pclass.begin_print != nil {
+			overrides.BeginPrint = v.beginPrint
+		}
+		if pclass.custom_widget_apply != nil {
+			overrides.CustomWidgetApply = v.customWidgetApply
+		}
+		if pclass.done != nil {
+			overrides.Done = v.done
+		}
+		if pclass.draw_page != nil {
+			overrides.DrawPage = v.drawPage
+		}
+		if pclass.end_print != nil {
+			overrides.EndPrint = v.endPrint
+		}
+		if pclass.paginate != nil {
+			overrides.Paginate = v.paginate
+		}
+		if pclass.preview != nil {
+			overrides.Preview = v.preview
+		}
+		if pclass.request_page_setup != nil {
+			overrides.RequestPageSetup = v.requestPageSetup
+		}
+		if pclass.status_changed != nil {
+			overrides.StatusChanged = v.statusChanged
+		}
+		if pclass.update_custom_widget != nil {
+			overrides.UpdateCustomWidget = v.updateCustomWidget
+		}
+	}
+
+	return overrides
+}
+
+func noop_PrintOperation_BeginPrint(context *PrintContext) {}
+
+func noop_PrintOperation_CustomWidgetApply(widget Widgetter) {}
+
+func noop_PrintOperation_Done(result PrintOperationResult) {}
+
+func noop_PrintOperation_DrawPage(context *PrintContext, pageNr int) {}
+
+func noop_PrintOperation_EndPrint(context *PrintContext) {}
+
+func noop_PrintOperation_RequestPageSetup(context *PrintContext, pageNr int, setup *PageSetup) {}
+
+func noop_PrintOperation_StatusChanged() {}
+
+func noop_PrintOperation_UpdateCustomWidget(widget Widgetter, setup *PageSetup, settings *PrintSettings) {
 }
 
 // PrintOperation: high-level, portable printing API.
@@ -96686,21 +97600,56 @@ type RangeOverrides struct {
 	//
 	//   - scroll
 	//   - newValue
-	ChangeValue  func(scroll ScrollType, newValue float64) bool
+	ChangeValue  func(scroll ScrollType, newValue float64) bool // optional
 	RangeBorder  func(border_ *Border)
 	MoveSlider   func(scroll ScrollType)
 	ValueChanged func()
 }
 
 func defaultRangeOverrides(v *Range) RangeOverrides {
-	return RangeOverrides{
-		AdjustBounds: v.adjustBounds,
-		ChangeValue:  v.changeValue,
-		RangeBorder:  v.rangeBorder,
-		MoveSlider:   v.moveSlider,
-		ValueChanged: v.valueChanged,
+	var pclass *C.GtkRangeClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeRange)) != C.FALSE {
+			pclass = (*C.GtkRangeClass)(parentClass)
+		}
 	}
+
+	overrides := RangeOverrides{
+
+		AdjustBounds: noop_Range_AdjustBounds,
+		RangeBorder:  noop_Range_RangeBorder,
+		MoveSlider:   noop_Range_MoveSlider,
+		ValueChanged: noop_Range_ValueChanged,
+	}
+	if pclass != nil {
+
+		if pclass.adjust_bounds != nil {
+			overrides.AdjustBounds = v.adjustBounds
+		}
+		if pclass.change_value != nil {
+			overrides.ChangeValue = v.changeValue
+		}
+		if pclass.get_range_border != nil {
+			overrides.RangeBorder = v.rangeBorder
+		}
+		if pclass.move_slider != nil {
+			overrides.MoveSlider = v.moveSlider
+		}
+		if pclass.value_changed != nil {
+			overrides.ValueChanged = v.valueChanged
+		}
+	}
+
+	return overrides
 }
+
+func noop_Range_AdjustBounds(newValue float64) {}
+
+func noop_Range_RangeBorder(border_ *Border) {}
+
+func noop_Range_MoveSlider(scroll ScrollType) {}
+
+func noop_Range_ValueChanged() {}
 
 // Range: base class for widgets which visualize an adjustment.
 //
@@ -97452,10 +98401,28 @@ type RecentManagerOverrides struct {
 }
 
 func defaultRecentManagerOverrides(v *RecentManager) RecentManagerOverrides {
-	return RecentManagerOverrides{
-		Changed: v.changed,
+	var pclass *C.GtkRecentManagerClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeRecentManager)) != C.FALSE {
+			pclass = (*C.GtkRecentManagerClass)(parentClass)
+		}
 	}
+
+	overrides := RecentManagerOverrides{
+
+		Changed: noop_RecentManager_Changed,
+	}
+	if pclass != nil {
+
+		if pclass.changed != nil {
+			overrides.Changed = v.changed
+		}
+	}
+
+	return overrides
 }
+
+func noop_RecentManager_Changed() {}
 
 // RecentManager manages and looks up recently used files.
 //
@@ -98204,13 +99171,26 @@ type ScaleOverrides struct {
 	//
 	//   - x (optional): location to store X offset of layout.
 	//   - y (optional): location to store Y offset of layout.
-	LayoutOffsets func() (x, y int)
+	LayoutOffsets func() (x, y int) // optional
 }
 
 func defaultScaleOverrides(v *Scale) ScaleOverrides {
-	return ScaleOverrides{
-		LayoutOffsets: v.layoutOffsets,
+	var pclass *C.GtkScaleClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeScale)) != C.FALSE {
+			pclass = (*C.GtkScaleClass)(parentClass)
+		}
 	}
+
+	overrides := ScaleOverrides{}
+	if pclass != nil {
+
+		if pclass.get_layout_offsets != nil {
+			overrides.LayoutOffsets = v.layoutOffsets
+		}
+	}
+
+	return overrides
 }
 
 // Scale allows to select a numeric value with a slider control.
@@ -98811,10 +99791,28 @@ type ScaleButtonOverrides struct {
 }
 
 func defaultScaleButtonOverrides(v *ScaleButton) ScaleButtonOverrides {
-	return ScaleButtonOverrides{
-		ValueChanged: v.valueChanged,
+	var pclass *C.GtkScaleButtonClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeScaleButton)) != C.FALSE {
+			pclass = (*C.GtkScaleButtonClass)(parentClass)
+		}
 	}
+
+	overrides := ScaleButtonOverrides{
+
+		ValueChanged: noop_ScaleButton_ValueChanged,
+	}
+	if pclass != nil {
+
+		if pclass.value_changed != nil {
+			overrides.ValueChanged = v.valueChanged
+		}
+	}
+
+	return overrides
 }
+
+func noop_ScaleButton_ValueChanged(value float64) {}
 
 // ScaleButton provides a button which pops up a scale widget.
 //
@@ -101090,7 +102088,10 @@ type SelectionFilterModelOverrides struct {
 }
 
 func defaultSelectionFilterModelOverrides(v *SelectionFilterModel) SelectionFilterModelOverrides {
-	return SelectionFilterModelOverrides{}
+
+	overrides := SelectionFilterModelOverrides{}
+
+	return overrides
 }
 
 // SelectionFilterModel: list model that presents the selection from a
@@ -101418,7 +102419,10 @@ type ShortcutOverrides struct {
 }
 
 func defaultShortcutOverrides(v *Shortcut) ShortcutOverrides {
-	return ShortcutOverrides{}
+
+	overrides := ShortcutOverrides{}
+
+	return overrides
 }
 
 // Shortcut describes a keyboard shortcut.
@@ -103151,7 +104155,10 @@ type SingleSelectionOverrides struct {
 }
 
 func defaultSingleSelectionOverrides(v *SingleSelection) SingleSelectionOverrides {
-	return SingleSelectionOverrides{}
+
+	overrides := SingleSelectionOverrides{}
+
+	return overrides
 }
 
 // SingleSelection: selection model that allows selecting a single item.
@@ -103732,7 +104739,10 @@ type SliceListModelOverrides struct {
 }
 
 func defaultSliceListModelOverrides(v *SliceListModel) SliceListModelOverrides {
-	return SliceListModelOverrides{}
+
+	overrides := SliceListModelOverrides{}
+
+	return overrides
 }
 
 // SliceListModel: list model that presents a slice of another model.
@@ -105538,7 +106548,10 @@ type SortListModelOverrides struct {
 }
 
 func defaultSortListModelOverrides(v *SortListModel) SortListModelOverrides {
-	return SortListModelOverrides{}
+
+	overrides := SortListModelOverrides{}
+
+	return overrides
 }
 
 // SortListModel: list model that sorts the elements of another model.
@@ -105894,7 +106907,7 @@ type SorterOverrides struct {
 	//
 	//   - ordering: GTK_ORDERING_EQUAL if item1 == item2, GTK_ORDERING_SMALLER
 	//     if item1 < item2, GTK_ORDERING_LARGER if item1 > item2.
-	Compare func(item1, item2 *coreglib.Object) Ordering
+	Compare func(item1, item2 *coreglib.Object) Ordering // optional
 	// Order gets the order that self conforms to.
 	//
 	// See gtk.SorterOrder for details of the possible return values.
@@ -105904,14 +106917,29 @@ type SorterOverrides struct {
 	// The function returns the following values:
 	//
 	//   - sorterOrder: order.
-	Order func() SorterOrder
+	Order func() SorterOrder // optional
 }
 
 func defaultSorterOverrides(v *Sorter) SorterOverrides {
-	return SorterOverrides{
-		Compare: v.compare,
-		Order:   v.order,
+	var pclass *C.GtkSorterClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeSorter)) != C.FALSE {
+			pclass = (*C.GtkSorterClass)(parentClass)
+		}
 	}
+
+	overrides := SorterOverrides{}
+	if pclass != nil {
+
+		if pclass.compare != nil {
+			overrides.Compare = v.compare
+		}
+		if pclass.get_order != nil {
+			overrides.Order = v.order
+		}
+	}
+
+	return overrides
 }
 
 // Sorter describes sorting criteria for a gtk.SortListModel.
@@ -108703,7 +109731,10 @@ type StringFilterOverrides struct {
 }
 
 func defaultStringFilterOverrides(v *StringFilter) StringFilterOverrides {
-	return StringFilterOverrides{}
+
+	overrides := StringFilterOverrides{}
+
+	return overrides
 }
 
 // StringFilter determines whether to include items by comparing strings to a
@@ -108974,7 +110005,10 @@ type StringListOverrides struct {
 }
 
 func defaultStringListOverrides(v *StringList) StringListOverrides {
-	return StringListOverrides{}
+
+	overrides := StringListOverrides{}
+
+	return overrides
 }
 
 // StringList: list model that wraps an array of strings.
@@ -109261,7 +110295,10 @@ type StringObjectOverrides struct {
 }
 
 func defaultStringObjectOverrides(v *StringObject) StringObjectOverrides {
-	return StringObjectOverrides{}
+
+	overrides := StringObjectOverrides{}
+
+	return overrides
 }
 
 // StringObject: type of items in a GtkStringList.
@@ -109356,7 +110393,10 @@ type StringSorterOverrides struct {
 }
 
 func defaultStringSorterOverrides(v *StringSorter) StringSorterOverrides {
-	return StringSorterOverrides{}
+
+	overrides := StringSorterOverrides{}
+
+	return overrides
 }
 
 // StringSorter sorts items by comparing strings.
@@ -109580,10 +110620,28 @@ type StyleContextOverrides struct {
 }
 
 func defaultStyleContextOverrides(v *StyleContext) StyleContextOverrides {
-	return StyleContextOverrides{
-		Changed: v.changed,
+	var pclass *C.GtkStyleContextClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeStyleContext)) != C.FALSE {
+			pclass = (*C.GtkStyleContextClass)(parentClass)
+		}
 	}
+
+	overrides := StyleContextOverrides{
+
+		Changed: noop_StyleContext_Changed,
+	}
+	if pclass != nil {
+
+		if pclass.changed != nil {
+			overrides.Changed = v.changed
+		}
+	}
+
+	return overrides
 }
+
+func noop_StyleContext_Changed() {}
 
 // StyleContext: GtkStyleContext stores styling information affecting a widget.
 //
@@ -110214,7 +111272,10 @@ type SVGOverrides struct {
 }
 
 func defaultSVGOverrides(v *SVG) SVGOverrides {
-	return SVGOverrides{}
+
+	overrides := SVGOverrides{}
+
+	return overrides
 }
 
 // SVG: paintable implementation that renders SVG, with animations.
@@ -112308,24 +113369,112 @@ type TextBufferOverrides struct {
 }
 
 func defaultTextBufferOverrides(v *TextBuffer) TextBufferOverrides {
-	return TextBufferOverrides{
-		ApplyTag:          v.applyTag,
-		BeginUserAction:   v.beginUserAction,
-		Changed:           v.changed,
-		DeleteRange:       v.deleteRange,
-		EndUserAction:     v.endUserAction,
-		InsertChildAnchor: v.insertChildAnchor,
-		InsertPaintable:   v.insertPaintable,
-		InsertText:        v.insertText,
-		MarkDeleted:       v.markDeleted,
-		MarkSet:           v.markSet,
-		ModifiedChanged:   v.modifiedChanged,
-		PasteDone:         v.pasteDone,
-		Redo:              v.redo,
-		RemoveTag:         v.removeTag,
-		Undo:              v.undo,
+	var pclass *C.GtkTextBufferClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeTextBuffer)) != C.FALSE {
+			pclass = (*C.GtkTextBufferClass)(parentClass)
+		}
 	}
+
+	overrides := TextBufferOverrides{
+
+		ApplyTag:          noop_TextBuffer_ApplyTag,
+		BeginUserAction:   noop_TextBuffer_BeginUserAction,
+		Changed:           noop_TextBuffer_Changed,
+		DeleteRange:       noop_TextBuffer_DeleteRange,
+		EndUserAction:     noop_TextBuffer_EndUserAction,
+		InsertChildAnchor: noop_TextBuffer_InsertChildAnchor,
+		InsertPaintable:   noop_TextBuffer_InsertPaintable,
+		InsertText:        noop_TextBuffer_InsertText,
+		MarkDeleted:       noop_TextBuffer_MarkDeleted,
+		MarkSet:           noop_TextBuffer_MarkSet,
+		ModifiedChanged:   noop_TextBuffer_ModifiedChanged,
+		PasteDone:         noop_TextBuffer_PasteDone,
+		Redo:              noop_TextBuffer_Redo,
+		RemoveTag:         noop_TextBuffer_RemoveTag,
+		Undo:              noop_TextBuffer_Undo,
+	}
+	if pclass != nil {
+
+		if pclass.apply_tag != nil {
+			overrides.ApplyTag = v.applyTag
+		}
+		if pclass.begin_user_action != nil {
+			overrides.BeginUserAction = v.beginUserAction
+		}
+		if pclass.changed != nil {
+			overrides.Changed = v.changed
+		}
+		if pclass.delete_range != nil {
+			overrides.DeleteRange = v.deleteRange
+		}
+		if pclass.end_user_action != nil {
+			overrides.EndUserAction = v.endUserAction
+		}
+		if pclass.insert_child_anchor != nil {
+			overrides.InsertChildAnchor = v.insertChildAnchor
+		}
+		if pclass.insert_paintable != nil {
+			overrides.InsertPaintable = v.insertPaintable
+		}
+		if pclass.insert_text != nil {
+			overrides.InsertText = v.insertText
+		}
+		if pclass.mark_deleted != nil {
+			overrides.MarkDeleted = v.markDeleted
+		}
+		if pclass.mark_set != nil {
+			overrides.MarkSet = v.markSet
+		}
+		if pclass.modified_changed != nil {
+			overrides.ModifiedChanged = v.modifiedChanged
+		}
+		if pclass.paste_done != nil {
+			overrides.PasteDone = v.pasteDone
+		}
+		if pclass.redo != nil {
+			overrides.Redo = v.redo
+		}
+		if pclass.remove_tag != nil {
+			overrides.RemoveTag = v.removeTag
+		}
+		if pclass.undo != nil {
+			overrides.Undo = v.undo
+		}
+	}
+
+	return overrides
 }
+
+func noop_TextBuffer_ApplyTag(tag *TextTag, start, end *TextIter) {}
+
+func noop_TextBuffer_BeginUserAction() {}
+
+func noop_TextBuffer_Changed() {}
+
+func noop_TextBuffer_DeleteRange(start, end *TextIter) {}
+
+func noop_TextBuffer_EndUserAction() {}
+
+func noop_TextBuffer_InsertChildAnchor(iter *TextIter, anchor *TextChildAnchor) {}
+
+func noop_TextBuffer_InsertPaintable(iter *TextIter, paintable gdk.Paintabler) {}
+
+func noop_TextBuffer_InsertText(pos *TextIter, newText string, newTextLength int) {}
+
+func noop_TextBuffer_MarkDeleted(mark *TextMark) {}
+
+func noop_TextBuffer_MarkSet(location *TextIter, mark *TextMark) {}
+
+func noop_TextBuffer_ModifiedChanged() {}
+
+func noop_TextBuffer_PasteDone(clipboard *gdk.Clipboard) {}
+
+func noop_TextBuffer_Redo() {}
+
+func noop_TextBuffer_RemoveTag(tag *TextTag, start, end *TextIter) {}
+
+func noop_TextBuffer_Undo() {}
 
 // TextBuffer stores text and attributes for display in a GtkTextView.
 //
@@ -114993,7 +116142,10 @@ type TextChildAnchorOverrides struct {
 }
 
 func defaultTextChildAnchorOverrides(v *TextChildAnchor) TextChildAnchorOverrides {
-	return TextChildAnchorOverrides{}
+
+	overrides := TextChildAnchorOverrides{}
+
+	return overrides
 }
 
 // TextChildAnchor marks a spot in a GtkTextBuffer where child widgets can be
@@ -115166,7 +116318,10 @@ type TextMarkOverrides struct {
 }
 
 func defaultTextMarkOverrides(v *TextMark) TextMarkOverrides {
-	return TextMarkOverrides{}
+
+	overrides := TextMarkOverrides{}
+
+	return overrides
 }
 
 // TextMark marks a position in a GtkTextbuffer that is preserved across
@@ -115430,7 +116585,10 @@ type TextTagOverrides struct {
 }
 
 func defaultTextTagOverrides(v *TextTag) TextTagOverrides {
-	return TextTagOverrides{}
+
+	overrides := TextTagOverrides{}
+
+	return overrides
 }
 
 // TextTag: can be applied to text contained in a GtkTextBuffer.
@@ -115825,7 +116983,7 @@ type TextViewOverrides struct {
 	//   - location
 	//   - start
 	//   - end
-	ExtendSelection func(granularity TextExtendSelection, location, start, end *TextIter) bool
+	ExtendSelection func(granularity TextExtendSelection, location, start, end *TextIter) bool // optional
 	// InsertAtCursor class handler for the GtkTextView::insert-at-cursor
 	// keybinding signal.
 	InsertAtCursor func(str string)
@@ -115863,21 +117021,91 @@ type TextViewOverrides struct {
 }
 
 func defaultTextViewOverrides(v *TextView) TextViewOverrides {
-	return TextViewOverrides{
-		Backspace:        v.backspace,
-		CopyClipboard:    v.copyClipboard,
-		CutClipboard:     v.cutClipboard,
-		DeleteFromCursor: v.deleteFromCursor,
-		ExtendSelection:  v.extendSelection,
-		InsertAtCursor:   v.insertAtCursor,
-		InsertEmoji:      v.insertEmoji,
-		MoveCursor:       v.moveCursor,
-		PasteClipboard:   v.pasteClipboard,
-		SetAnchor:        v.setAnchor,
-		SnapshotLayer:    v.snapshotLayer,
-		ToggleOverwrite:  v.toggleOverwrite,
+	var pclass *C.GtkTextViewClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeTextView)) != C.FALSE {
+			pclass = (*C.GtkTextViewClass)(parentClass)
+		}
 	}
+
+	overrides := TextViewOverrides{
+
+		Backspace:        noop_TextView_Backspace,
+		CopyClipboard:    noop_TextView_CopyClipboard,
+		CutClipboard:     noop_TextView_CutClipboard,
+		DeleteFromCursor: noop_TextView_DeleteFromCursor,
+		InsertAtCursor:   noop_TextView_InsertAtCursor,
+		InsertEmoji:      noop_TextView_InsertEmoji,
+		MoveCursor:       noop_TextView_MoveCursor,
+		PasteClipboard:   noop_TextView_PasteClipboard,
+		SetAnchor:        noop_TextView_SetAnchor,
+		SnapshotLayer:    noop_TextView_SnapshotLayer,
+		ToggleOverwrite:  noop_TextView_ToggleOverwrite,
+	}
+	if pclass != nil {
+
+		if pclass.backspace != nil {
+			overrides.Backspace = v.backspace
+		}
+		if pclass.copy_clipboard != nil {
+			overrides.CopyClipboard = v.copyClipboard
+		}
+		if pclass.cut_clipboard != nil {
+			overrides.CutClipboard = v.cutClipboard
+		}
+		if pclass.delete_from_cursor != nil {
+			overrides.DeleteFromCursor = v.deleteFromCursor
+		}
+		if pclass.extend_selection != nil {
+			overrides.ExtendSelection = v.extendSelection
+		}
+		if pclass.insert_at_cursor != nil {
+			overrides.InsertAtCursor = v.insertAtCursor
+		}
+		if pclass.insert_emoji != nil {
+			overrides.InsertEmoji = v.insertEmoji
+		}
+		if pclass.move_cursor != nil {
+			overrides.MoveCursor = v.moveCursor
+		}
+		if pclass.paste_clipboard != nil {
+			overrides.PasteClipboard = v.pasteClipboard
+		}
+		if pclass.set_anchor != nil {
+			overrides.SetAnchor = v.setAnchor
+		}
+		if pclass.snapshot_layer != nil {
+			overrides.SnapshotLayer = v.snapshotLayer
+		}
+		if pclass.toggle_overwrite != nil {
+			overrides.ToggleOverwrite = v.toggleOverwrite
+		}
+	}
+
+	return overrides
 }
+
+func noop_TextView_Backspace() {}
+
+func noop_TextView_CopyClipboard() {}
+
+func noop_TextView_CutClipboard() {}
+
+func noop_TextView_DeleteFromCursor(typ DeleteType, count int) {}
+
+func noop_TextView_InsertAtCursor(str string) {}
+
+func noop_TextView_InsertEmoji() {}
+
+func noop_TextView_MoveCursor(step MovementStep, count int, extendSelection bool) {}
+
+func noop_TextView_PasteClipboard() {}
+
+func noop_TextView_SetAnchor() {}
+
+func noop_TextView_SnapshotLayer(layer TextViewLayer, snapshot *Snapshot) {}
+
+func noop_TextView_ToggleOverwrite() {}
 
 // TextView displays the contents of a gtk.TextBuffer.
 //
@@ -118586,10 +119814,28 @@ type ToggleButtonOverrides struct {
 }
 
 func defaultToggleButtonOverrides(v *ToggleButton) ToggleButtonOverrides {
-	return ToggleButtonOverrides{
-		Toggled: v.toggled,
+	var pclass *C.GtkToggleButtonClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeToggleButton)) != C.FALSE {
+			pclass = (*C.GtkToggleButtonClass)(parentClass)
+		}
 	}
+
+	overrides := ToggleButtonOverrides{
+
+		Toggled: noop_ToggleButton_Toggled,
+	}
+	if pclass != nil {
+
+		if pclass.toggled != nil {
+			overrides.Toggled = v.toggled
+		}
+	}
+
+	return overrides
 }
+
+func noop_ToggleButton_Toggled() {}
 
 // ToggleButton shows a button which remains “pressed-in” when clicked.
 //
@@ -119128,7 +120374,10 @@ type TreeExpanderOverrides struct {
 }
 
 func defaultTreeExpanderOverrides(v *TreeExpander) TreeExpanderOverrides {
-	return TreeExpanderOverrides{}
+
+	overrides := TreeExpanderOverrides{}
+
+	return overrides
 }
 
 // TreeExpander provides an expander for a tree-like list.
@@ -119535,7 +120784,10 @@ type TreeListModelOverrides struct {
 }
 
 func defaultTreeListModelOverrides(v *TreeListModel) TreeListModelOverrides {
-	return TreeListModelOverrides{}
+
+	overrides := TreeListModelOverrides{}
+
+	return overrides
 }
 
 // TreeListModel: list model that can create child models on demand.
@@ -119819,7 +121071,10 @@ type TreeListRowOverrides struct {
 }
 
 func defaultTreeListRowOverrides(v *TreeListRow) TreeListRowOverrides {
-	return TreeListRowOverrides{}
+
+	overrides := TreeListRowOverrides{}
+
+	return overrides
 }
 
 // TreeListRow: type of item used by GtkTreeListModel.
@@ -120116,7 +121371,10 @@ type TreeListRowSorterOverrides struct {
 }
 
 func defaultTreeListRowSorterOverrides(v *TreeListRowSorter) TreeListRowSorterOverrides {
-	return TreeListRowSorterOverrides{}
+
+	overrides := TreeListRowSorterOverrides{}
+
+	return overrides
 }
 
 // TreeListRowSorter applies a gives sorter to the levels in a tree.
@@ -120256,14 +121514,35 @@ type TreeModelFilterOverrides struct {
 	//
 	//   - childModel
 	//   - iter
-	Visible func(childModel TreeModeller, iter *TreeIter) bool
+	Visible func(childModel TreeModeller, iter *TreeIter) bool // optional
 }
 
 func defaultTreeModelFilterOverrides(v *TreeModelFilter) TreeModelFilterOverrides {
-	return TreeModelFilterOverrides{
-		Modify:  v.modify,
-		Visible: v.visible,
+	var pclass *C.GtkTreeModelFilterClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeTreeModelFilter)) != C.FALSE {
+			pclass = (*C.GtkTreeModelFilterClass)(parentClass)
+		}
 	}
+
+	overrides := TreeModelFilterOverrides{
+
+		Modify: noop_TreeModelFilter_Modify,
+	}
+	if pclass != nil {
+
+		if pclass.modify != nil {
+			overrides.Modify = v.modify
+		}
+		if pclass.visible != nil {
+			overrides.Visible = v.visible
+		}
+	}
+
+	return overrides
+}
+
+func noop_TreeModelFilter_Modify(childModel TreeModeller, iter *TreeIter, value *coreglib.Value, column int) {
 }
 
 // TreeModelFilter: GtkTreeModel which hides parts of an underlying tree model
@@ -120782,7 +122061,10 @@ type TreeModelSortOverrides struct {
 }
 
 func defaultTreeModelSortOverrides(v *TreeModelSort) TreeModelSortOverrides {
-	return TreeModelSortOverrides{}
+
+	overrides := TreeModelSortOverrides{}
+
+	return overrides
 }
 
 // TreeModelSort: gtkTreeModel which makes an underlying tree model sortable
@@ -121695,7 +122977,10 @@ type TreeStoreOverrides struct {
 }
 
 func defaultTreeStoreOverrides(v *TreeStore) TreeStoreOverrides {
-	return TreeStoreOverrides{}
+
+	overrides := TreeStoreOverrides{}
+
+	return overrides
 }
 
 // TreeStore: tree-like data structure that can be used with the gtk.TreeView.
@@ -122463,14 +123748,14 @@ type TreeViewOverrides struct {
 	//   - logical
 	//   - expand
 	//   - openAll
-	ExpandCollapseCursorRow func(logical, expand, openAll bool) bool
+	ExpandCollapseCursorRow func(logical, expand, openAll bool) bool // optional
 	// The function takes the following parameters:
 	//
 	//   - step
 	//   - count
 	//   - extend
 	//   - modify
-	MoveCursor func(step MovementStep, count int, extend, modify bool) bool
+	MoveCursor func(step MovementStep, count int, extend, modify bool) bool // optional
 	// RowActivated activates the cell determined by path and column.
 	//
 	// Deprecated: Use gtk.ListView or gtk.ColumnView instead.
@@ -122490,43 +123775,101 @@ type TreeViewOverrides struct {
 	//   - iter
 	//   - path
 	RowExpanded            func(iter *TreeIter, path *TreePath)
-	SelectAll              func() bool
-	SelectCursorParent     func() bool
-	SelectCursorRow        func(startEditing bool) bool
-	StartInteractiveSearch func() bool
+	SelectAll              func() bool                  // optional
+	SelectCursorParent     func() bool                  // optional
+	SelectCursorRow        func(startEditing bool) bool // optional
+	StartInteractiveSearch func() bool                  // optional
 	// The function takes the following parameters:
 	//
 	//   - iter
 	//   - path
-	TestCollapseRow func(iter *TreeIter, path *TreePath) bool
+	TestCollapseRow func(iter *TreeIter, path *TreePath) bool // optional
 	// The function takes the following parameters:
 	//
 	//   - iter
 	//   - path
-	TestExpandRow   func(iter *TreeIter, path *TreePath) bool
-	ToggleCursorRow func() bool
-	UnselectAll     func() bool
+	TestExpandRow   func(iter *TreeIter, path *TreePath) bool // optional
+	ToggleCursorRow func() bool                               // optional
+	UnselectAll     func() bool                               // optional
 }
 
 func defaultTreeViewOverrides(v *TreeView) TreeViewOverrides {
-	return TreeViewOverrides{
-		ColumnsChanged:          v.columnsChanged,
-		CursorChanged:           v.cursorChanged,
-		ExpandCollapseCursorRow: v.expandCollapseCursorRow,
-		MoveCursor:              v.moveCursor,
-		RowActivated:            v.rowActivated,
-		RowCollapsed:            v.rowCollapsed,
-		RowExpanded:             v.rowExpanded,
-		SelectAll:               v.selectAll,
-		SelectCursorParent:      v.selectCursorParent,
-		SelectCursorRow:         v.selectCursorRow,
-		StartInteractiveSearch:  v.startInteractiveSearch,
-		TestCollapseRow:         v.testCollapseRow,
-		TestExpandRow:           v.testExpandRow,
-		ToggleCursorRow:         v.toggleCursorRow,
-		UnselectAll:             v.unselectAll,
+	var pclass *C.GtkTreeViewClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeTreeView)) != C.FALSE {
+			pclass = (*C.GtkTreeViewClass)(parentClass)
+		}
 	}
+
+	overrides := TreeViewOverrides{
+
+		ColumnsChanged: noop_TreeView_ColumnsChanged,
+		CursorChanged:  noop_TreeView_CursorChanged,
+		RowActivated:   noop_TreeView_RowActivated,
+		RowCollapsed:   noop_TreeView_RowCollapsed,
+		RowExpanded:    noop_TreeView_RowExpanded,
+	}
+	if pclass != nil {
+
+		if pclass.columns_changed != nil {
+			overrides.ColumnsChanged = v.columnsChanged
+		}
+		if pclass.cursor_changed != nil {
+			overrides.CursorChanged = v.cursorChanged
+		}
+		if pclass.expand_collapse_cursor_row != nil {
+			overrides.ExpandCollapseCursorRow = v.expandCollapseCursorRow
+		}
+		if pclass.move_cursor != nil {
+			overrides.MoveCursor = v.moveCursor
+		}
+		if pclass.row_activated != nil {
+			overrides.RowActivated = v.rowActivated
+		}
+		if pclass.row_collapsed != nil {
+			overrides.RowCollapsed = v.rowCollapsed
+		}
+		if pclass.row_expanded != nil {
+			overrides.RowExpanded = v.rowExpanded
+		}
+		if pclass.select_all != nil {
+			overrides.SelectAll = v.selectAll
+		}
+		if pclass.select_cursor_parent != nil {
+			overrides.SelectCursorParent = v.selectCursorParent
+		}
+		if pclass.select_cursor_row != nil {
+			overrides.SelectCursorRow = v.selectCursorRow
+		}
+		if pclass.start_interactive_search != nil {
+			overrides.StartInteractiveSearch = v.startInteractiveSearch
+		}
+		if pclass.test_collapse_row != nil {
+			overrides.TestCollapseRow = v.testCollapseRow
+		}
+		if pclass.test_expand_row != nil {
+			overrides.TestExpandRow = v.testExpandRow
+		}
+		if pclass.toggle_cursor_row != nil {
+			overrides.ToggleCursorRow = v.toggleCursorRow
+		}
+		if pclass.unselect_all != nil {
+			overrides.UnselectAll = v.unselectAll
+		}
+	}
+
+	return overrides
 }
+
+func noop_TreeView_ColumnsChanged() {}
+
+func noop_TreeView_CursorChanged() {}
+
+func noop_TreeView_RowActivated(path *TreePath, column *TreeViewColumn) {}
+
+func noop_TreeView_RowCollapsed(iter *TreeIter, path *TreePath) {}
+
+func noop_TreeView_RowExpanded(iter *TreeIter, path *TreePath) {}
 
 // TreeView: widget for displaying both trees and lists
 //
@@ -127329,7 +128672,10 @@ type URILauncherOverrides struct {
 }
 
 func defaultURILauncherOverrides(v *URILauncher) URILauncherOverrides {
-	return URILauncherOverrides{}
+
+	overrides := URILauncherOverrides{}
+
+	return overrides
 }
 
 // URILauncher asynchronous API to open a uri with an application.
@@ -127555,7 +128901,10 @@ type VideoOverrides struct {
 }
 
 func defaultVideoOverrides(v *Video) VideoOverrides {
-	return VideoOverrides{}
+
+	overrides := VideoOverrides{}
+
+	return overrides
 }
 
 // Video shows a GtkMediaStream with media controls.
@@ -128345,12 +129694,12 @@ type WidgetOverrides struct {
 	// The function returns the following values:
 	//
 	//   - ok: true if widget contains the point (x, y).
-	Contains func(x, y float64) bool
+	Contains func(x, y float64) bool // optional
 	// DirectionChanged: signal emitted when the text direction of a widget
 	// changes.
 	DirectionChanged func(previousDirection TextDirection)
 	// Focus: vfunc for gtk_widget_child_focus().
-	Focus func(direction DirectionType) bool
+	Focus func(direction DirectionType) bool // optional
 	// RequestMode gets whether the widget prefers a height-for-width layout or
 	// a width-for-height layout.
 	//
@@ -128361,7 +129710,7 @@ type WidgetOverrides struct {
 	// The function returns the following values:
 	//
 	//   - sizeRequestMode: GtkSizeRequestMode preferred by widget.
-	RequestMode func() SizeRequestMode
+	RequestMode func() SizeRequestMode // optional
 	// GrabFocus causes widget to have the keyboard focus for the window that it
 	// belongs to.
 	//
@@ -128375,7 +129724,7 @@ type WidgetOverrides struct {
 	// The function returns the following values:
 	//
 	//   - ok: true if focus is now inside widget.
-	GrabFocus func() bool
+	GrabFocus func() bool // optional
 	// Hide reverses the effects of [method.Gtk.Widget.show].
 	//
 	// This is causing the widget to be hidden (invisible to the user).
@@ -128417,7 +129766,7 @@ type WidgetOverrides struct {
 	//   - ok: true if stopping keyboard navigation is fine, false if the
 	//     emitting widget should try to handle the keyboard navigation attempt
 	//     in its parent widget.
-	KeynavFailed func(direction DirectionType) bool
+	KeynavFailed func(direction DirectionType) bool // optional
 	// Map causes a widget to be mapped if it isn’t already.
 	//
 	// This function is only for use in widget implementations.
@@ -128450,7 +129799,7 @@ type WidgetOverrides struct {
 	//     for the minimum size, or -1 to report no baseline.
 	//   - naturalBaseline (optional): location to store the baseline position
 	//     for the natural size, or -1 to report no baseline.
-	Measure func(orientation Orientation, forSize int) (minimum, natural, minimumBaseline, naturalBaseline int)
+	Measure func(orientation Orientation, forSize int) (minimum, natural, minimumBaseline, naturalBaseline int) // optional
 	// MnemonicActivate emits the gtk.Widget::mnemonic-activate signal.
 	//
 	// The function takes the following parameters:
@@ -128460,7 +129809,7 @@ type WidgetOverrides struct {
 	// The function returns the following values:
 	//
 	//   - ok: true if the signal has been handled.
-	MnemonicActivate func(groupCycling bool) bool
+	MnemonicActivate func(groupCycling bool) bool // optional
 	// MoveFocus: signal emitted when a change of focus is requested.
 	MoveFocus func(direction DirectionType)
 	// QueryTooltip: signal emitted when “has-tooltip” is TRUE and the hover
@@ -128473,7 +129822,7 @@ type WidgetOverrides struct {
 	//   - y
 	//   - keyboardTooltip
 	//   - tooltip
-	QueryTooltip func(x, y int, keyboardTooltip bool, tooltip *Tooltip) bool
+	QueryTooltip func(x, y int, keyboardTooltip bool, tooltip *Tooltip) bool // optional
 	// Realize creates the GDK resources associated with a widget.
 	//
 	// Normally realization happens implicitly; if you show a widget and all
@@ -128549,32 +129898,136 @@ type WidgetOverrides struct {
 }
 
 func defaultWidgetOverrides(v *Widget) WidgetOverrides {
-	return WidgetOverrides{
-		Contains:             v.contains,
-		DirectionChanged:     v.directionChanged,
-		Focus:                v.focus,
-		RequestMode:          v.requestMode,
-		GrabFocus:            v.grabFocus,
-		Hide:                 v.hide,
-		KeynavFailed:         v.keynavFailed,
-		Map:                  v._map,
-		Measure:              v.measure,
-		MnemonicActivate:     v.mnemonicActivate,
-		MoveFocus:            v.moveFocus,
-		QueryTooltip:         v.queryTooltip,
-		Realize:              v.realize,
-		Root:                 v.root,
-		SetFocusChild:        v.setFocusChild,
-		Show:                 v.show,
-		SizeAllocate:         v.sizeAllocate,
-		Snapshot:             v.snapshot,
-		StateFlagsChanged:    v.stateFlagsChanged,
-		SystemSettingChanged: v.systemSettingChanged,
-		Unmap:                v.unmap,
-		Unrealize:            v.unrealize,
-		Unroot:               v.unroot,
+	var pclass *C.GtkWidgetClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeWidget)) != C.FALSE {
+			pclass = (*C.GtkWidgetClass)(parentClass)
+		}
 	}
+
+	overrides := WidgetOverrides{
+
+		DirectionChanged:     noop_Widget_DirectionChanged,
+		Hide:                 noop_Widget_Hide,
+		Map:                  noop_Widget_Map,
+		MoveFocus:            noop_Widget_MoveFocus,
+		Realize:              noop_Widget_Realize,
+		Root:                 noop_Widget_Root,
+		SetFocusChild:        noop_Widget_SetFocusChild,
+		Show:                 noop_Widget_Show,
+		SizeAllocate:         noop_Widget_SizeAllocate,
+		Snapshot:             noop_Widget_Snapshot,
+		StateFlagsChanged:    noop_Widget_StateFlagsChanged,
+		SystemSettingChanged: noop_Widget_SystemSettingChanged,
+		Unmap:                noop_Widget_Unmap,
+		Unrealize:            noop_Widget_Unrealize,
+		Unroot:               noop_Widget_Unroot,
+	}
+	if pclass != nil {
+
+		if pclass.contains != nil {
+			overrides.Contains = v.contains
+		}
+		if pclass.direction_changed != nil {
+			overrides.DirectionChanged = v.directionChanged
+		}
+		if pclass.focus != nil {
+			overrides.Focus = v.focus
+		}
+		if pclass.get_request_mode != nil {
+			overrides.RequestMode = v.requestMode
+		}
+		if pclass.grab_focus != nil {
+			overrides.GrabFocus = v.grabFocus
+		}
+		if pclass.hide != nil {
+			overrides.Hide = v.hide
+		}
+		if pclass.keynav_failed != nil {
+			overrides.KeynavFailed = v.keynavFailed
+		}
+		if pclass._map != nil {
+			overrides.Map = v._map
+		}
+		if pclass.measure != nil {
+			overrides.Measure = v.measure
+		}
+		if pclass.mnemonic_activate != nil {
+			overrides.MnemonicActivate = v.mnemonicActivate
+		}
+		if pclass.move_focus != nil {
+			overrides.MoveFocus = v.moveFocus
+		}
+		if pclass.query_tooltip != nil {
+			overrides.QueryTooltip = v.queryTooltip
+		}
+		if pclass.realize != nil {
+			overrides.Realize = v.realize
+		}
+		if pclass.root != nil {
+			overrides.Root = v.root
+		}
+		if pclass.set_focus_child != nil {
+			overrides.SetFocusChild = v.setFocusChild
+		}
+		if pclass.show != nil {
+			overrides.Show = v.show
+		}
+		if pclass.size_allocate != nil {
+			overrides.SizeAllocate = v.sizeAllocate
+		}
+		if pclass.snapshot != nil {
+			overrides.Snapshot = v.snapshot
+		}
+		if pclass.state_flags_changed != nil {
+			overrides.StateFlagsChanged = v.stateFlagsChanged
+		}
+		if pclass.system_setting_changed != nil {
+			overrides.SystemSettingChanged = v.systemSettingChanged
+		}
+		if pclass.unmap != nil {
+			overrides.Unmap = v.unmap
+		}
+		if pclass.unrealize != nil {
+			overrides.Unrealize = v.unrealize
+		}
+		if pclass.unroot != nil {
+			overrides.Unroot = v.unroot
+		}
+	}
+
+	return overrides
 }
+
+func noop_Widget_DirectionChanged(previousDirection TextDirection) {}
+
+func noop_Widget_Hide() {}
+
+func noop_Widget_Map() {}
+
+func noop_Widget_MoveFocus(direction DirectionType) {}
+
+func noop_Widget_Realize() {}
+
+func noop_Widget_Root() {}
+
+func noop_Widget_SetFocusChild(child Widgetter) {}
+
+func noop_Widget_Show() {}
+
+func noop_Widget_SizeAllocate(width, height, baseline int) {}
+
+func noop_Widget_Snapshot(snapshot *Snapshot) {}
+
+func noop_Widget_StateFlagsChanged(previousStateFlags StateFlags) {}
+
+func noop_Widget_SystemSettingChanged(settings SystemSetting) {}
+
+func noop_Widget_Unmap() {}
+
+func noop_Widget_Unrealize() {}
+
+func noop_Widget_Unroot() {}
 
 // Widget: base class for all widgets.
 //
@@ -134598,7 +136051,10 @@ type WidgetPaintableOverrides struct {
 }
 
 func defaultWidgetPaintableOverrides(v *WidgetPaintable) WidgetPaintableOverrides {
-	return WidgetPaintableOverrides{}
+
+	overrides := WidgetPaintableOverrides{}
+
+	return overrides
 }
 
 // WidgetPaintable: GdkPaintable that displays the contents of a widget.
@@ -134752,24 +136208,56 @@ type WindowOverrides struct {
 	// The function returns the following values:
 	//
 	//   - ok: whether the window should be destroyed.
-	CloseRequest func() bool
+	CloseRequest func() bool // optional
 	// EnableDebugging class handler for the GtkWindow::enable-debugging
 	// keybinding signal.
-	EnableDebugging func(toggle bool) bool
+	EnableDebugging func(toggle bool) bool // optional
 	// KeysChanged: signal gets emitted when the set of accelerators or
 	// mnemonics that are associated with window changes.
 	KeysChanged func()
 }
 
 func defaultWindowOverrides(v *Window) WindowOverrides {
-	return WindowOverrides{
-		ActivateDefault: v.activateDefault,
-		ActivateFocus:   v.activateFocus,
-		CloseRequest:    v.closeRequest,
-		EnableDebugging: v.enableDebugging,
-		KeysChanged:     v.keysChanged,
+	var pclass *C.GtkWindowClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeWindow)) != C.FALSE {
+			pclass = (*C.GtkWindowClass)(parentClass)
+		}
 	}
+
+	overrides := WindowOverrides{
+
+		ActivateDefault: noop_Window_ActivateDefault,
+		ActivateFocus:   noop_Window_ActivateFocus,
+		KeysChanged:     noop_Window_KeysChanged,
+	}
+	if pclass != nil {
+
+		if pclass.activate_default != nil {
+			overrides.ActivateDefault = v.activateDefault
+		}
+		if pclass.activate_focus != nil {
+			overrides.ActivateFocus = v.activateFocus
+		}
+		if pclass.close_request != nil {
+			overrides.CloseRequest = v.closeRequest
+		}
+		if pclass.enable_debugging != nil {
+			overrides.EnableDebugging = v.enableDebugging
+		}
+		if pclass.keys_changed != nil {
+			overrides.KeysChanged = v.keysChanged
+		}
+	}
+
+	return overrides
 }
+
+func noop_Window_ActivateDefault() {}
+
+func noop_Window_ActivateFocus() {}
+
+func noop_Window_KeysChanged() {}
 
 // Window: toplevel window which can contain other widgets.
 //
@@ -136713,7 +138201,10 @@ type WindowControlsOverrides struct {
 }
 
 func defaultWindowControlsOverrides(v *WindowControls) WindowControlsOverrides {
-	return WindowControlsOverrides{}
+
+	overrides := WindowControlsOverrides{}
+
+	return overrides
 }
 
 // WindowControls shows window frame controls.
@@ -137009,7 +138500,10 @@ type WindowGroupOverrides struct {
 }
 
 func defaultWindowGroupOverrides(v *WindowGroup) WindowGroupOverrides {
-	return WindowGroupOverrides{}
+
+	overrides := WindowGroupOverrides{}
+
+	return overrides
 }
 
 // WindowGroup creates groups of windows that behave like separate applications.
@@ -137147,7 +138641,10 @@ type WindowHandleOverrides struct {
 }
 
 func defaultWindowHandleOverrides(v *WindowHandle) WindowHandleOverrides {
-	return WindowHandleOverrides{}
+
+	overrides := WindowHandleOverrides{}
+
+	return overrides
 }
 
 // WindowHandle implements titlebar functionality for a window.

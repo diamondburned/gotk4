@@ -15930,7 +15930,7 @@ type WindowOverrides struct {
 	//
 	//   - width
 	//   - height
-	CreateSurface func(width, height int) *cairo.Surface
+	CreateSurface func(width, height int) *cairo.Surface // optional
 	// The function takes the following parameters:
 	//
 	//   - embedderX
@@ -15948,12 +15948,37 @@ type WindowOverrides struct {
 }
 
 func defaultWindowOverrides(v *Window) WindowOverrides {
-	return WindowOverrides{
-		CreateSurface: v.createSurface,
-		FromEmbedder:  v.fromEmbedder,
-		ToEmbedder:    v.toEmbedder,
+	var pclass *C.GdkWindowClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeWindow)) != C.FALSE {
+			pclass = (*C.GdkWindowClass)(parentClass)
+		}
 	}
+
+	overrides := WindowOverrides{
+
+		FromEmbedder: noop_Window_FromEmbedder,
+		ToEmbedder:   noop_Window_ToEmbedder,
+	}
+	if pclass != nil {
+
+		if pclass.create_surface != nil {
+			overrides.CreateSurface = v.createSurface
+		}
+		if pclass.from_embedder != nil {
+			overrides.FromEmbedder = v.fromEmbedder
+		}
+		if pclass.to_embedder != nil {
+			overrides.ToEmbedder = v.toEmbedder
+		}
+	}
+
+	return overrides
 }
+
+func noop_Window_FromEmbedder(embedderX, embedderY float64, offscreenX, offscreenY *float64) {}
+
+func noop_Window_ToEmbedder(offscreenX, offscreenY float64, embedderX, embedderY *float64) {}
 
 type Window struct {
 	_ [0]func() // equal guard

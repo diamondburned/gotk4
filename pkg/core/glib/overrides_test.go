@@ -13,7 +13,13 @@ type launchContextWithParentOverrides struct {
 
 type launchContextWithObjectOverrides struct {
 	gio.AppLaunchContext
-	initCalled bool
+	initCalled        bool
+	constructedCalled bool
+	disposeCalled     bool
+}
+
+type launchContextWithClassInit struct {
+	gio.AppLaunchContext
 }
 
 // TestSubclassOverrides verifies that subclasses can add overrides for any
@@ -40,8 +46,9 @@ func TestSubclassOverrides(t *testing.T) {
 			}),
 			glib.WithOverrides(func(obj *launchContextWithObjectOverrides) glib.ObjectOverrides {
 				return glib.ObjectOverrides{
-					Init:    func() { obj.initCalled = true },
-					Dispose: func() {},
+					Init:        func() { obj.initCalled = true },
+					Constructed: func() { obj.constructedCalled = true },
+					Dispose:     func() { obj.disposeCalled = true },
 				}
 			}),
 		)
@@ -50,12 +57,80 @@ func TestSubclassOverrides(t *testing.T) {
 		if !obj.initCalled {
 			t.Error("ObjectOverrides.Init was not called")
 		}
+		if !obj.constructedCalled {
+			t.Error("ObjectOverrides.Constructed was not called")
+		}
 
 		overrides := glib.Overrides[glib.ObjectOverrides](obj)
-		if overrides.Init == nil || overrides.Dispose == nil {
+		if overrides.Init == nil || overrides.Constructed == nil || overrides.Dispose == nil {
 			t.Error("Overrides did not return the ObjectOverrides")
 		}
 
 		glib.Destroy(obj)
+		if !obj.disposeCalled {
+			t.Error("ObjectOverrides.Dispose was not called")
+		}
+	})
+
+	t.Run("with class init", func(t *testing.T) {
+		var classInitCalled bool
+		subclass := glib.RegisterSubclass[*launchContextWithClassInit](
+			glib.WithClassInit(func(c *gio.AppLaunchContextClass) {
+				classInitCalled = true
+			}),
+		)
+
+		obj := subclass.New()
+		if !classInitCalled {
+			t.Error("WithClassInit was not called")
+		}
+		glib.Destroy(obj)
+	})
+}
+
+type benchLaunchContext struct {
+	gio.AppLaunchContext
+	counter int
+}
+
+func BenchmarkSubclassLifecycle(b *testing.B) {
+	subclass := glib.RegisterSubclass[*benchLaunchContext](
+		glib.WithOverrides(func(o *benchLaunchContext) gio.AppLaunchContextOverrides {
+			return gio.AppLaunchContextOverrides{
+				LaunchFailed: func(startupNotifyId string) {
+					o.counter++
+				},
+			}
+		}),
+		glib.WithOverrides(func(o *benchLaunchContext) glib.ObjectOverrides {
+			return glib.ObjectOverrides{
+				Init: func() {
+					o.counter++
+				},
+				Constructed: func() {
+					o.counter++
+				},
+				Dispose: func() {
+					o.counter++
+				},
+			}
+		}),
+	)
+
+	b.Run("allocate-deallocate", func(b *testing.B) {
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			obj := subclass.New()
+			glib.Destroy(obj)
+		}
+	})
+
+	b.Run("with-virtual-method-call", func(b *testing.B) {
+		b.ReportAllocs()
+		for i := 0; i < b.N; i++ {
+			obj := subclass.New()
+			obj.LaunchFailed("bench")
+			glib.Destroy(obj)
+		}
 	})
 }

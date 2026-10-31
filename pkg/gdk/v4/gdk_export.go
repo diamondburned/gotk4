@@ -69,7 +69,7 @@ func _gotk4_gdk4_Clipboard_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr) {
 //export _gotk4_gdk4_ContentProviderClass_attach_clipboard
 func _gotk4_gdk4_ContentProviderClass_attach_clipboard(arg0 *C.GdkContentProvider, arg1 *C.GdkClipboard) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ContentProviderOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ContentProviderOverrides](instance0)
 	if overrides.AttachClipboard == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ContentProviderOverrides.AttachClipboard, got none")
 	}
@@ -84,7 +84,7 @@ func _gotk4_gdk4_ContentProviderClass_attach_clipboard(arg0 *C.GdkContentProvide
 //export _gotk4_gdk4_ContentProviderClass_content_changed
 func _gotk4_gdk4_ContentProviderClass_content_changed(arg0 *C.GdkContentProvider) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ContentProviderOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ContentProviderOverrides](instance0)
 	if overrides.ContentChanged == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ContentProviderOverrides.ContentChanged, got none")
 	}
@@ -95,7 +95,7 @@ func _gotk4_gdk4_ContentProviderClass_content_changed(arg0 *C.GdkContentProvider
 //export _gotk4_gdk4_ContentProviderClass_detach_clipboard
 func _gotk4_gdk4_ContentProviderClass_detach_clipboard(arg0 *C.GdkContentProvider, arg1 *C.GdkClipboard) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ContentProviderOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ContentProviderOverrides](instance0)
 	if overrides.DetachClipboard == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ContentProviderOverrides.DetachClipboard, got none")
 	}
@@ -110,7 +110,7 @@ func _gotk4_gdk4_ContentProviderClass_detach_clipboard(arg0 *C.GdkContentProvide
 //export _gotk4_gdk4_ContentProviderClass_get_value
 func _gotk4_gdk4_ContentProviderClass_get_value(arg0 *C.GdkContentProvider, arg1 *C.GValue, _cerr **C.GError) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ContentProviderOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ContentProviderOverrides](instance0)
 	if overrides.Value == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ContentProviderOverrides.Value, got none")
 	}
@@ -131,7 +131,7 @@ func _gotk4_gdk4_ContentProviderClass_get_value(arg0 *C.GdkContentProvider, arg1
 //export _gotk4_gdk4_ContentProviderClass_ref_formats
 func _gotk4_gdk4_ContentProviderClass_ref_formats(arg0 *C.GdkContentProvider) (cret *C.GdkContentFormats) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ContentProviderOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ContentProviderOverrides](instance0)
 	if overrides.RefFormats == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ContentProviderOverrides.RefFormats, got none")
 	}
@@ -148,7 +148,7 @@ func _gotk4_gdk4_ContentProviderClass_ref_formats(arg0 *C.GdkContentProvider) (c
 //export _gotk4_gdk4_ContentProviderClass_ref_storable_formats
 func _gotk4_gdk4_ContentProviderClass_ref_storable_formats(arg0 *C.GdkContentProvider) (cret *C.GdkContentFormats) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ContentProviderOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ContentProviderOverrides](instance0)
 	if overrides.RefStorableFormats == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ContentProviderOverrides.RefStorableFormats, got none")
 	}
@@ -165,7 +165,7 @@ func _gotk4_gdk4_ContentProviderClass_ref_storable_formats(arg0 *C.GdkContentPro
 //export _gotk4_gdk4_ContentProviderClass_write_mime_type_finish
 func _gotk4_gdk4_ContentProviderClass_write_mime_type_finish(arg0 *C.GdkContentProvider, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ContentProviderOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ContentProviderOverrides](instance0)
 	if overrides.WriteMIMETypeFinish == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ContentProviderOverrides.WriteMIMETypeFinish, got none")
 	}

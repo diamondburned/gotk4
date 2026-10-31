@@ -9584,14 +9584,14 @@ type ContentProviderOverrides struct {
 	// The function returns the following values:
 	//
 	//   - value: GValue to fill.
-	Value func() (coreglib.Value, error)
+	Value func() (coreglib.Value, error) // optional
 	// RefFormats gets the formats that the provider can provide its current
 	// contents in.
 	//
 	// The function returns the following values:
 	//
 	//   - contentFormats formats of the provider.
-	RefFormats func() *ContentFormats
+	RefFormats func() *ContentFormats // optional
 	// RefStorableFormats gets the formats that the provider suggests other
 	// applications to store the data in.
 	//
@@ -9602,7 +9602,7 @@ type ContentProviderOverrides struct {
 	// The function returns the following values:
 	//
 	//   - contentFormats: storable formats of the provider.
-	RefStorableFormats func() *ContentFormats
+	RefStorableFormats func() *ContentFormats // optional
 	// WriteMIMETypeFinish finishes an asynchronous write operation.
 	//
 	// See gdk.ContentProvider.WriteMIMETypeAsync().
@@ -9610,20 +9610,56 @@ type ContentProviderOverrides struct {
 	// The function takes the following parameters:
 	//
 	//   - result: GAsyncResult.
-	WriteMIMETypeFinish func(result gio.AsyncResulter) error
+	WriteMIMETypeFinish func(result gio.AsyncResulter) error // optional
 }
 
 func defaultContentProviderOverrides(v *ContentProvider) ContentProviderOverrides {
-	return ContentProviderOverrides{
-		AttachClipboard:     v.attachClipboard,
-		ContentChanged:      v.contentChanged,
-		DetachClipboard:     v.detachClipboard,
-		Value:               v.value,
-		RefFormats:          v.refFormats,
-		RefStorableFormats:  v.refStorableFormats,
-		WriteMIMETypeFinish: v.writeMIMETypeFinish,
+	var pclass *C.GdkContentProviderClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeContentProvider)) != C.FALSE {
+			pclass = (*C.GdkContentProviderClass)(parentClass)
+		}
 	}
+
+	overrides := ContentProviderOverrides{
+
+		AttachClipboard: noop_ContentProvider_AttachClipboard,
+		ContentChanged:  noop_ContentProvider_ContentChanged,
+		DetachClipboard: noop_ContentProvider_DetachClipboard,
+	}
+	if pclass != nil {
+
+		if pclass.attach_clipboard != nil {
+			overrides.AttachClipboard = v.attachClipboard
+		}
+		if pclass.content_changed != nil {
+			overrides.ContentChanged = v.contentChanged
+		}
+		if pclass.detach_clipboard != nil {
+			overrides.DetachClipboard = v.detachClipboard
+		}
+		if pclass.get_value != nil {
+			overrides.Value = v.value
+		}
+		if pclass.ref_formats != nil {
+			overrides.RefFormats = v.refFormats
+		}
+		if pclass.ref_storable_formats != nil {
+			overrides.RefStorableFormats = v.refStorableFormats
+		}
+		if pclass.write_mime_type_finish != nil {
+			overrides.WriteMIMETypeFinish = v.writeMIMETypeFinish
+		}
+	}
+
+	return overrides
 }
+
+func noop_ContentProvider_AttachClipboard(clipboard *Clipboard) {}
+
+func noop_ContentProvider_ContentChanged() {}
+
+func noop_ContentProvider_DetachClipboard(clipboard *Clipboard) {}
 
 // ContentProvider provides content for the clipboard or for drag-and-drop
 // operations in a number of formats.

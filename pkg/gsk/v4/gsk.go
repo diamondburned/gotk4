@@ -3277,7 +3277,10 @@ type GLShaderOverrides struct {
 }
 
 func defaultGLShaderOverrides(v *GLShader) GLShaderOverrides {
-	return GLShaderOverrides{}
+
+	overrides := GLShaderOverrides{}
+
+	return overrides
 }
 
 // GLShader implements a fragment shader using GLSL.

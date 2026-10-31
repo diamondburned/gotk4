@@ -114,7 +114,7 @@ func _gotk4_gdkpixbuf2_PixbufSaveFunc(arg1 *C.gchar, arg2 C.gsize, arg3 **C.GErr
 //export _gotk4_gdkpixbuf2_PixbufLoaderClass_area_prepared
 func _gotk4_gdkpixbuf2_PixbufLoaderClass_area_prepared(arg0 *C.GdkPixbufLoader) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[PixbufLoaderOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[PixbufLoaderOverrides](instance0)
 	if overrides.AreaPrepared == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected PixbufLoaderOverrides.AreaPrepared, got none")
 	}
@@ -125,7 +125,7 @@ func _gotk4_gdkpixbuf2_PixbufLoaderClass_area_prepared(arg0 *C.GdkPixbufLoader) 
 //export _gotk4_gdkpixbuf2_PixbufLoaderClass_area_updated
 func _gotk4_gdkpixbuf2_PixbufLoaderClass_area_updated(arg0 *C.GdkPixbufLoader, arg1 C.int, arg2 C.int, arg3 C.int, arg4 C.int) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[PixbufLoaderOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[PixbufLoaderOverrides](instance0)
 	if overrides.AreaUpdated == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected PixbufLoaderOverrides.AreaUpdated, got none")
 	}
@@ -146,7 +146,7 @@ func _gotk4_gdkpixbuf2_PixbufLoaderClass_area_updated(arg0 *C.GdkPixbufLoader, a
 //export _gotk4_gdkpixbuf2_PixbufLoaderClass_closed
 func _gotk4_gdkpixbuf2_PixbufLoaderClass_closed(arg0 *C.GdkPixbufLoader) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[PixbufLoaderOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[PixbufLoaderOverrides](instance0)
 	if overrides.Closed == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected PixbufLoaderOverrides.Closed, got none")
 	}
@@ -157,7 +157,7 @@ func _gotk4_gdkpixbuf2_PixbufLoaderClass_closed(arg0 *C.GdkPixbufLoader) {
 //export _gotk4_gdkpixbuf2_PixbufLoaderClass_size_prepared
 func _gotk4_gdkpixbuf2_PixbufLoaderClass_size_prepared(arg0 *C.GdkPixbufLoader, arg1 C.int, arg2 C.int) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[PixbufLoaderOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[PixbufLoaderOverrides](instance0)
 	if overrides.SizePrepared == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected PixbufLoaderOverrides.SizePrepared, got none")
 	}

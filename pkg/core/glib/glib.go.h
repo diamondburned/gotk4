@@ -109,4 +109,20 @@ static void init_i18n(const char *domain, const char *dir) {
 
 static const char *localize(const char *string) { return _(string); }
 
+static inline void _gotk4_gobject_chainup_dispose(GObject *object) {
+  GObjectClass *parent_class =
+      G_OBJECT_CLASS(g_type_class_peek_parent(G_OBJECT_GET_CLASS(object)));
+  if (parent_class && parent_class->dispose) {
+    parent_class->dispose(object);
+  }
+}
+
+static inline void _gotk4_gobject_chainup_constructed(GObject *object) {
+  GObjectClass *parent_class =
+      G_OBJECT_CLASS(g_type_class_peek_parent(G_OBJECT_GET_CLASS(object)));
+  if (parent_class && parent_class->constructed) {
+    parent_class->constructed(object);
+  }
+}
+
 #endif

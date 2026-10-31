@@ -40977,7 +40977,7 @@ type AppLaunchContextOverrides struct {
 	// The function returns the following values:
 	//
 	//   - utf8 (optional): display string for the display.
-	Display func(info AppInfor, files []Filer) string
+	Display func(info AppInfor, files []Filer) string // optional
 	// StartupNotifyID initiates startup notification for the application and
 	// returns the XDG_ACTIVATION_TOKEN or DESKTOP_STARTUP_ID for the launched
 	// operation, if supported.
@@ -41006,7 +41006,7 @@ type AppLaunchContextOverrides struct {
 	//
 	//   - utf8 (optional): startup notification ID for the application, or NULL
 	//     if not supported.
-	StartupNotifyID func(info AppInfor, files []Filer) string
+	StartupNotifyID func(info AppInfor, files []Filer) string // optional
 	// LaunchFailed: called when an application has failed to launch,
 	// so that it can cancel the application startup notification started in
 	// gio.AppLaunchContext.GetStartupNotifyID().
@@ -41029,14 +41029,46 @@ type AppLaunchContextOverrides struct {
 }
 
 func defaultAppLaunchContextOverrides(v *AppLaunchContext) AppLaunchContextOverrides {
-	return AppLaunchContextOverrides{
-		Display:         v.display,
-		StartupNotifyID: v.startupNotifyID,
-		LaunchFailed:    v.launchFailed,
-		LaunchStarted:   v.launchStarted,
-		Launched:        v.launched,
+	var pclass *C.GAppLaunchContextClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeAppLaunchContext)) != C.FALSE {
+			pclass = (*C.GAppLaunchContextClass)(parentClass)
+		}
 	}
+
+	overrides := AppLaunchContextOverrides{
+
+		LaunchFailed:  noop_AppLaunchContext_LaunchFailed,
+		LaunchStarted: noop_AppLaunchContext_LaunchStarted,
+		Launched:      noop_AppLaunchContext_Launched,
+	}
+	if pclass != nil {
+
+		if pclass.get_display != nil {
+			overrides.Display = v.display
+		}
+		if pclass.get_startup_notify_id != nil {
+			overrides.StartupNotifyID = v.startupNotifyID
+		}
+		if pclass.launch_failed != nil {
+			overrides.LaunchFailed = v.launchFailed
+		}
+		if pclass.launch_started != nil {
+			overrides.LaunchStarted = v.launchStarted
+		}
+		if pclass.launched != nil {
+			overrides.Launched = v.launched
+		}
+	}
+
+	return overrides
 }
+
+func noop_AppLaunchContext_LaunchFailed(startupNotifyId string) {}
+
+func noop_AppLaunchContext_LaunchStarted(info AppInfor, platformData *glib.Variant) {}
+
+func noop_AppLaunchContext_Launched(info AppInfor, platformData *glib.Variant) {}
 
 // AppLaunchContext: integrating the launch with the launching application.
 // This is used to handle for instance startup notification and launching the
@@ -41581,7 +41613,7 @@ type ApplicationOverrides struct {
 	BeforeEmit func(platformData *glib.Variant)
 	// CommandLine: invoked on the primary instance when a command-line is not
 	// handled locally.
-	CommandLine func(commandLine *ApplicationCommandLine) int
+	CommandLine func(commandLine *ApplicationCommandLine) int // optional
 	// DBusRegister: invoked locally during registration, if the application
 	// is using its D-Bus backend. You can use this to export extra objects
 	// on the bus, that need to exist before the application tries to own the
@@ -41594,7 +41626,7 @@ type ApplicationOverrides struct {
 	//
 	//   - connection
 	//   - objectPath
-	DBusRegister func(connection *DBusConnection, objectPath string) error
+	DBusRegister func(connection *DBusConnection, objectPath string) error // optional
 	// DBusUnregister: invoked locally during unregistration, if the application
 	// is using its D-Bus backend. Use this to undo anything done by the
 	// dbus_register vfunc. Since: 2.34.
@@ -41606,10 +41638,10 @@ type ApplicationOverrides struct {
 	DBusUnregister func(connection *DBusConnection, objectPath string)
 	// HandleLocalOptions: invoked locally after the parsing of the commandline
 	// options has occurred. Since: 2.40.
-	HandleLocalOptions func(options *glib.VariantDict) int
+	HandleLocalOptions func(options *glib.VariantDict) int // optional
 	// NameLost: invoked when another instance is taking over the name. Since:
 	// 2.60.
-	NameLost func() bool
+	NameLost func() bool // optional
 	// Open opens the given files.
 	//
 	// In essence, this results in the #GApplication::open signal being emitted
@@ -41647,23 +41679,94 @@ type ApplicationOverrides struct {
 }
 
 func defaultApplicationOverrides(v *Application) ApplicationOverrides {
-	return ApplicationOverrides{
-		Activate:           v.activate,
-		AddPlatformData:    v.addPlatformData,
-		AfterEmit:          v.afterEmit,
-		BeforeEmit:         v.beforeEmit,
-		CommandLine:        v.commandLine,
-		DBusRegister:       v.dBusRegister,
-		DBusUnregister:     v.dBusUnregister,
-		HandleLocalOptions: v.handleLocalOptions,
-		NameLost:           v.nameLost,
-		Open:               v.open,
-		QuitMainloop:       v.quitMainloop,
-		RunMainloop:        v.runMainloop,
-		Shutdown:           v.shutdown,
-		Startup:            v.startup,
+	var pclass *C.GApplicationClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeApplication)) != C.FALSE {
+			pclass = (*C.GApplicationClass)(parentClass)
+		}
 	}
+
+	overrides := ApplicationOverrides{
+
+		Activate:        noop_Application_Activate,
+		AddPlatformData: noop_Application_AddPlatformData,
+		AfterEmit:       noop_Application_AfterEmit,
+		BeforeEmit:      noop_Application_BeforeEmit,
+		DBusUnregister:  noop_Application_DBusUnregister,
+		Open:            noop_Application_Open,
+		QuitMainloop:    noop_Application_QuitMainloop,
+		RunMainloop:     noop_Application_RunMainloop,
+		Shutdown:        noop_Application_Shutdown,
+		Startup:         noop_Application_Startup,
+	}
+	if pclass != nil {
+
+		if pclass.activate != nil {
+			overrides.Activate = v.activate
+		}
+		if pclass.add_platform_data != nil {
+			overrides.AddPlatformData = v.addPlatformData
+		}
+		if pclass.after_emit != nil {
+			overrides.AfterEmit = v.afterEmit
+		}
+		if pclass.before_emit != nil {
+			overrides.BeforeEmit = v.beforeEmit
+		}
+		if pclass.command_line != nil {
+			overrides.CommandLine = v.commandLine
+		}
+		if pclass.dbus_register != nil {
+			overrides.DBusRegister = v.dBusRegister
+		}
+		if pclass.dbus_unregister != nil {
+			overrides.DBusUnregister = v.dBusUnregister
+		}
+		if pclass.handle_local_options != nil {
+			overrides.HandleLocalOptions = v.handleLocalOptions
+		}
+		if pclass.name_lost != nil {
+			overrides.NameLost = v.nameLost
+		}
+		if pclass.open != nil {
+			overrides.Open = v.open
+		}
+		if pclass.quit_mainloop != nil {
+			overrides.QuitMainloop = v.quitMainloop
+		}
+		if pclass.run_mainloop != nil {
+			overrides.RunMainloop = v.runMainloop
+		}
+		if pclass.shutdown != nil {
+			overrides.Shutdown = v.shutdown
+		}
+		if pclass.startup != nil {
+			overrides.Startup = v.startup
+		}
+	}
+
+	return overrides
 }
+
+func noop_Application_Activate() {}
+
+func noop_Application_AddPlatformData(builder *glib.VariantBuilder) {}
+
+func noop_Application_AfterEmit(platformData *glib.Variant) {}
+
+func noop_Application_BeforeEmit(platformData *glib.Variant) {}
+
+func noop_Application_DBusUnregister(connection *DBusConnection, objectPath string) {}
+
+func noop_Application_Open(files []Filer, hint string) {}
+
+func noop_Application_QuitMainloop() {}
+
+func noop_Application_RunMainloop() {}
+
+func noop_Application_Shutdown() {}
+
+func noop_Application_Startup() {}
 
 // Application: GApplication is the core class for application support.
 //
@@ -43591,7 +43694,7 @@ type ApplicationCommandLineOverrides struct {
 	// The function returns the following values:
 	//
 	//   - inputStream (optional) for stdin.
-	Stdin func() InputStreamer
+	Stdin func() InputStreamer // optional
 	// PrintLiteral prints a message using the stdout print handler in the
 	// invoking process.
 	//
@@ -43619,13 +43722,43 @@ type ApplicationCommandLineOverrides struct {
 }
 
 func defaultApplicationCommandLineOverrides(v *ApplicationCommandLine) ApplicationCommandLineOverrides {
-	return ApplicationCommandLineOverrides{
-		Done:            v.done,
-		Stdin:           v.stdin,
-		PrintLiteral:    v.printLiteral,
-		PrinterrLiteral: v.printerrLiteral,
+	var pclass *C.GApplicationCommandLineClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeApplicationCommandLine)) != C.FALSE {
+			pclass = (*C.GApplicationCommandLineClass)(parentClass)
+		}
 	}
+
+	overrides := ApplicationCommandLineOverrides{
+
+		Done:            noop_ApplicationCommandLine_Done,
+		PrintLiteral:    noop_ApplicationCommandLine_PrintLiteral,
+		PrinterrLiteral: noop_ApplicationCommandLine_PrinterrLiteral,
+	}
+	if pclass != nil {
+
+		if pclass.done != nil {
+			overrides.Done = v.done
+		}
+		if pclass.get_stdin != nil {
+			overrides.Stdin = v.stdin
+		}
+		if pclass.print_literal != nil {
+			overrides.PrintLiteral = v.printLiteral
+		}
+		if pclass.printerr_literal != nil {
+			overrides.PrinterrLiteral = v.printerrLiteral
+		}
+	}
+
+	return overrides
 }
+
+func noop_ApplicationCommandLine_Done() {}
+
+func noop_ApplicationCommandLine_PrintLiteral(message string) {}
+
+func noop_ApplicationCommandLine_PrinterrLiteral(message string) {}
 
 // ApplicationCommandLine: GApplicationCommandLine represents a command-line
 // invocation of an application.
@@ -44469,7 +44602,7 @@ type BufferedInputStreamOverrides struct {
 	//
 	//   - gssize: number of bytes read into stream's buffer, up to count,
 	//     or -1 on error.
-	Fill func(ctx context.Context, count int) (int, error)
+	Fill func(ctx context.Context, count int) (int, error) // optional
 	// FillFinish finishes an asynchronous read.
 	//
 	// The function takes the following parameters:
@@ -44479,14 +44612,29 @@ type BufferedInputStreamOverrides struct {
 	// The function returns the following values:
 	//
 	//   - gssize of the read stream, or -1 on an error.
-	FillFinish func(result AsyncResulter) (int, error)
+	FillFinish func(result AsyncResulter) (int, error) // optional
 }
 
 func defaultBufferedInputStreamOverrides(v *BufferedInputStream) BufferedInputStreamOverrides {
-	return BufferedInputStreamOverrides{
-		Fill:       v.fill,
-		FillFinish: v.fillFinish,
+	var pclass *C.GBufferedInputStreamClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeBufferedInputStream)) != C.FALSE {
+			pclass = (*C.GBufferedInputStreamClass)(parentClass)
+		}
 	}
+
+	overrides := BufferedInputStreamOverrides{}
+	if pclass != nil {
+
+		if pclass.fill != nil {
+			overrides.Fill = v.fill
+		}
+		if pclass.fill_finish != nil {
+			overrides.FillFinish = v.fillFinish
+		}
+	}
+
+	return overrides
 }
 
 // BufferedInputStream: buffered input stream implements gio.FilterInputStream
@@ -45083,7 +45231,10 @@ type BufferedOutputStreamOverrides struct {
 }
 
 func defaultBufferedOutputStreamOverrides(v *BufferedOutputStream) BufferedOutputStreamOverrides {
-	return BufferedOutputStreamOverrides{}
+
+	overrides := BufferedOutputStreamOverrides{}
+
+	return overrides
 }
 
 // BufferedOutputStream: buffered output stream implements
@@ -45374,10 +45525,28 @@ type CancellableOverrides struct {
 }
 
 func defaultCancellableOverrides(v *Cancellable) CancellableOverrides {
-	return CancellableOverrides{
-		Cancelled: v.cancelled,
+	var pclass *C.GCancellableClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeCancellable)) != C.FALSE {
+			pclass = (*C.GCancellableClass)(parentClass)
+		}
 	}
+
+	overrides := CancellableOverrides{
+
+		Cancelled: noop_Cancellable_Cancelled,
+	}
+	if pclass != nil {
+
+		if pclass.cancelled != nil {
+			overrides.Cancelled = v.cancelled
+		}
+	}
+
+	return overrides
 }
+
+func noop_Cancellable_Cancelled() {}
 
 // Cancellable: GCancellable allows operations to be cancelled.
 //
@@ -45799,7 +45968,10 @@ type CharsetConverterOverrides struct {
 }
 
 func defaultCharsetConverterOverrides(v *CharsetConverter) CharsetConverterOverrides {
-	return CharsetConverterOverrides{}
+
+	overrides := CharsetConverterOverrides{}
+
+	return overrides
 }
 
 // CharsetConverter: GCharsetConverter is an implementation of gio.Converter
@@ -45952,7 +46124,10 @@ type ConverterInputStreamOverrides struct {
 }
 
 func defaultConverterInputStreamOverrides(v *ConverterInputStream) ConverterInputStreamOverrides {
-	return ConverterInputStreamOverrides{}
+
+	overrides := ConverterInputStreamOverrides{}
+
+	return overrides
 }
 
 // ConverterInputStream: converter input stream implements gio.InputStream and
@@ -46069,7 +46244,10 @@ type ConverterOutputStreamOverrides struct {
 }
 
 func defaultConverterOutputStreamOverrides(v *ConverterOutputStream) ConverterOutputStreamOverrides {
-	return ConverterOutputStreamOverrides{}
+
+	overrides := ConverterOutputStreamOverrides{}
+
+	return overrides
 }
 
 // ConverterOutputStream: converter output stream implements gio.OutputStream
@@ -48669,14 +48847,14 @@ type DBusInterfaceSkeletonOverrides struct {
 	Flush func()
 	// GAuthorizeMethod: signal class handler for the
 	// BusInterfaceSkeleton::g-authorize-method signal.
-	GAuthorizeMethod func(invocation *DBusMethodInvocation) bool
+	GAuthorizeMethod func(invocation *DBusMethodInvocation) bool // optional
 	// Info gets D-Bus introspection information for the D-Bus interface
 	// implemented by interface_.
 	//
 	// The function returns the following values:
 	//
 	//   - dBusInterfaceInfo (never NULL). Do not free.
-	Info func() *DBusInterfaceInfo
+	Info func() *DBusInterfaceInfo // optional
 	// Properties gets all D-Bus properties for interface_.
 	//
 	// The function returns the following values:
@@ -48684,7 +48862,7 @@ type DBusInterfaceSkeletonOverrides struct {
 	//   - variant of type 'a{sv}'
 	//     (../glib/gvariant-text-format.html#dictionaries-and-dictionary-entries).
 	//     Free with g_variant_unref().
-	Properties func() *glib.Variant
+	Properties func() *glib.Variant // optional
 	// Vtable gets the interface vtable for the D-Bus interface implemented
 	// by interface_. The returned function pointers should expect interface_
 	// itself to be passed as user_data.
@@ -48693,18 +48871,44 @@ type DBusInterfaceSkeletonOverrides struct {
 	//
 	//   - dBusInterfaceVTable: vtable of the D-Bus interface implemented by the
 	//     skeleton.
-	Vtable func() *DBusInterfaceVTable
+	Vtable func() *DBusInterfaceVTable // optional
 }
 
 func defaultDBusInterfaceSkeletonOverrides(v *DBusInterfaceSkeleton) DBusInterfaceSkeletonOverrides {
-	return DBusInterfaceSkeletonOverrides{
-		Flush:            v.flush,
-		GAuthorizeMethod: v.gAuthorizeMethod,
-		Info:             v.info,
-		Properties:       v.properties,
-		Vtable:           v.vtable,
+	var pclass *C.GDBusInterfaceSkeletonClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeDBusInterfaceSkeleton)) != C.FALSE {
+			pclass = (*C.GDBusInterfaceSkeletonClass)(parentClass)
+		}
 	}
+
+	overrides := DBusInterfaceSkeletonOverrides{
+
+		Flush: noop_DBusInterfaceSkeleton_Flush,
+	}
+	if pclass != nil {
+
+		if pclass.flush != nil {
+			overrides.Flush = v.flush
+		}
+		if pclass.g_authorize_method != nil {
+			overrides.GAuthorizeMethod = v.gAuthorizeMethod
+		}
+		if pclass.get_info != nil {
+			overrides.Info = v.info
+		}
+		if pclass.get_properties != nil {
+			overrides.Properties = v.properties
+		}
+		if pclass.get_vtable != nil {
+			overrides.Vtable = v.vtable
+		}
+	}
+
+	return overrides
 }
+
+func noop_DBusInterfaceSkeleton_Flush() {}
 
 // DBusInterfaceSkeleton: abstract base class for D-Bus interfaces on the
 // service side.
@@ -50939,9 +51143,28 @@ type DBusObjectManagerClientOverrides struct {
 }
 
 func defaultDBusObjectManagerClientOverrides(v *DBusObjectManagerClient) DBusObjectManagerClientOverrides {
-	return DBusObjectManagerClientOverrides{
-		InterfaceProxySignal: v.interfaceProxySignal,
+	var pclass *C.GDBusObjectManagerClientClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeDBusObjectManagerClient)) != C.FALSE {
+			pclass = (*C.GDBusObjectManagerClientClass)(parentClass)
+		}
 	}
+
+	overrides := DBusObjectManagerClientOverrides{
+
+		InterfaceProxySignal: noop_DBusObjectManagerClient_InterfaceProxySignal,
+	}
+	if pclass != nil {
+
+		if pclass.interface_proxy_signal != nil {
+			overrides.InterfaceProxySignal = v.interfaceProxySignal
+		}
+	}
+
+	return overrides
+}
+
+func noop_DBusObjectManagerClient_InterfaceProxySignal(objectProxy *DBusObjectProxy, interfaceProxy *DBusProxy, senderName, signalName string, parameters *glib.Variant) {
 }
 
 // DBusObjectManagerClient: GDBusObjectManagerClient is used
@@ -51295,7 +51518,10 @@ type DBusObjectManagerServerOverrides struct {
 }
 
 func defaultDBusObjectManagerServerOverrides(v *DBusObjectManagerServer) DBusObjectManagerServerOverrides {
-	return DBusObjectManagerServerOverrides{}
+
+	overrides := DBusObjectManagerServerOverrides{}
+
+	return overrides
 }
 
 // DBusObjectManagerServer: GDBusObjectManagerServer
@@ -51551,7 +51777,10 @@ type DBusObjectProxyOverrides struct {
 }
 
 func defaultDBusObjectProxyOverrides(v *DBusObjectProxy) DBusObjectProxyOverrides {
-	return DBusObjectProxyOverrides{}
+
+	overrides := DBusObjectProxyOverrides{}
+
+	return overrides
 }
 
 // DBusObjectProxy: GDBusObjectProxy is an object used to represent a remote
@@ -51659,13 +51888,26 @@ type DBusObjectSkeletonOverrides struct {
 	//
 	//   - interface_
 	//   - invocation
-	AuthorizeMethod func(interface_ DBusInterfaceSkeletonner, invocation *DBusMethodInvocation) bool
+	AuthorizeMethod func(interface_ DBusInterfaceSkeletonner, invocation *DBusMethodInvocation) bool // optional
 }
 
 func defaultDBusObjectSkeletonOverrides(v *DBusObjectSkeleton) DBusObjectSkeletonOverrides {
-	return DBusObjectSkeletonOverrides{
-		AuthorizeMethod: v.authorizeMethod,
+	var pclass *C.GDBusObjectSkeletonClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeDBusObjectSkeleton)) != C.FALSE {
+			pclass = (*C.GDBusObjectSkeletonClass)(parentClass)
+		}
 	}
+
+	overrides := DBusObjectSkeletonOverrides{}
+	if pclass != nil {
+
+		if pclass.authorize_method != nil {
+			overrides.AuthorizeMethod = v.authorizeMethod
+		}
+	}
+
+	return overrides
 }
 
 // DBusObjectSkeleton: GDBusObjectSkeleton instance is essentially a group of
@@ -51895,10 +52137,28 @@ type DBusProxyOverrides struct {
 }
 
 func defaultDBusProxyOverrides(v *DBusProxy) DBusProxyOverrides {
-	return DBusProxyOverrides{
-		GSignal: v.gSignal,
+	var pclass *C.GDBusProxyClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeDBusProxy)) != C.FALSE {
+			pclass = (*C.GDBusProxyClass)(parentClass)
+		}
 	}
+
+	overrides := DBusProxyOverrides{
+
+		GSignal: noop_DBusProxy_GSignal,
+	}
+	if pclass != nil {
+
+		if pclass.g_signal != nil {
+			overrides.GSignal = v.gSignal
+		}
+	}
+
+	return overrides
 }
+
+func noop_DBusProxy_GSignal(senderName, signalName string, parameters *glib.Variant) {}
 
 // DBusProxy: GDBusProxy is a base class used for proxies to access a D-Bus
 // interface on a remote object. A GDBusProxy can be constructed for both
@@ -53267,7 +53527,10 @@ type DataInputStreamOverrides struct {
 }
 
 func defaultDataInputStreamOverrides(v *DataInputStream) DataInputStreamOverrides {
-	return DataInputStreamOverrides{}
+
+	overrides := DataInputStreamOverrides{}
+
+	return overrides
 }
 
 // DataInputStream: data input stream implements gio.InputStream and includes
@@ -54311,7 +54574,10 @@ type DataOutputStreamOverrides struct {
 }
 
 func defaultDataOutputStreamOverrides(v *DataOutputStream) DataOutputStreamOverrides {
-	return DataOutputStreamOverrides{}
+
+	overrides := DataOutputStreamOverrides{}
+
+	return overrides
 }
 
 // DataOutputStream: data output stream implements gio.OutputStream and includes
@@ -54699,13 +54965,26 @@ func (stream *DataOutputStream) SetByteOrder(order DataStreamByteOrder) {
 // DebugControllerDBusOverrides contains methods that are overridable.
 type DebugControllerDBusOverrides struct {
 	// Authorize: default handler for the ControllerDBus::authorize signal.
-	Authorize func(invocation *DBusMethodInvocation) bool
+	Authorize func(invocation *DBusMethodInvocation) bool // optional
 }
 
 func defaultDebugControllerDBusOverrides(v *DebugControllerDBus) DebugControllerDBusOverrides {
-	return DebugControllerDBusOverrides{
-		Authorize: v.authorize,
+	var pclass *C.GDebugControllerDBusClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeDebugControllerDBus)) != C.FALSE {
+			pclass = (*C.GDebugControllerDBusClass)(parentClass)
+		}
 	}
+
+	overrides := DebugControllerDBusOverrides{}
+	if pclass != nil {
+
+		if pclass.authorize != nil {
+			overrides.Authorize = v.authorize
+		}
+	}
+
+	return overrides
 }
 
 // DebugControllerDBus: GDebugControllerDBus is an implementation of
@@ -55110,7 +55389,10 @@ type EmblemedIconOverrides struct {
 }
 
 func defaultEmblemedIconOverrides(v *EmblemedIcon) EmblemedIconOverrides {
-	return EmblemedIconOverrides{}
+
+	overrides := EmblemedIconOverrides{}
+
+	return overrides
 }
 
 // EmblemedIcon: GEmblemedIcon is an implementation of gio.Icon that supports
@@ -55283,8 +55565,8 @@ type FileEnumeratorOverrides struct {
 	// The function takes the following parameters:
 	//
 	//   - result: Result.
-	CloseFinish func(result AsyncResulter) error
-	CloseFn     func(ctx context.Context) error
+	CloseFinish func(result AsyncResulter) error // optional
+	CloseFn     func(ctx context.Context) error  // optional
 	// NextFile returns information for the next file in the enumerated object.
 	// Will block until the information is available. The Info returned from
 	// this function will contain attributes that match the attribute string
@@ -55304,7 +55586,7 @@ type FileEnumeratorOverrides struct {
 	//
 	//   - fileInfo (optional) or NULL on error or end of enumerator. Free the
 	//     returned object with g_object_unref() when no longer needed.
-	NextFile func(ctx context.Context) (*FileInfo, error)
+	NextFile func(ctx context.Context) (*FileInfo, error) // optional
 	// NextFilesFinish finishes the asynchronous operation started with
 	// g_file_enumerator_next_files_async().
 	//
@@ -55316,16 +55598,35 @@ type FileEnumeratorOverrides struct {
 	//
 	//   - list of Infos. You must free the list with g_list_free() and unref
 	//     the infos with g_object_unref() when you're done with them.
-	NextFilesFinish func(result AsyncResulter) ([]*FileInfo, error)
+	NextFilesFinish func(result AsyncResulter) ([]*FileInfo, error) // optional
 }
 
 func defaultFileEnumeratorOverrides(v *FileEnumerator) FileEnumeratorOverrides {
-	return FileEnumeratorOverrides{
-		CloseFinish:     v.closeFinish,
-		CloseFn:         v.closeFn,
-		NextFile:        v.nextFile,
-		NextFilesFinish: v.nextFilesFinish,
+	var pclass *C.GFileEnumeratorClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeFileEnumerator)) != C.FALSE {
+			pclass = (*C.GFileEnumeratorClass)(parentClass)
+		}
 	}
+
+	overrides := FileEnumeratorOverrides{}
+	if pclass != nil {
+
+		if pclass.close_finish != nil {
+			overrides.CloseFinish = v.closeFinish
+		}
+		if pclass.close_fn != nil {
+			overrides.CloseFn = v.closeFn
+		}
+		if pclass.next_file != nil {
+			overrides.NextFile = v.nextFile
+		}
+		if pclass.next_files_finish != nil {
+			overrides.NextFilesFinish = v.nextFilesFinish
+		}
+	}
+
+	return overrides
 }
 
 // FileEnumerator: GFileEnumerator allows you to operate on a set of gio.File
@@ -56217,8 +56518,8 @@ func (enumerator *FileEnumerator) nextFilesFinish(result AsyncResulter) ([]*File
 
 // FileIOStreamOverrides contains methods that are overridable.
 type FileIOStreamOverrides struct {
-	CanSeek     func() bool
-	CanTruncate func() bool
+	CanSeek     func() bool // optional
+	CanTruncate func() bool // optional
 	// ETag gets the entity tag for the file when it has been written. This must
 	// be called after the stream has been written and closed, as the etag can
 	// change while writing.
@@ -56226,7 +56527,7 @@ type FileIOStreamOverrides struct {
 	// The function returns the following values:
 	//
 	//   - utf8 (optional): entity tag for the stream.
-	ETag func() string
+	ETag func() string // optional
 	// QueryInfo queries a file io stream for the given attributes. This
 	// function blocks while querying the stream. For the asynchronous version
 	// of this function, see g_file_io_stream_query_info_async(). While the
@@ -56252,7 +56553,7 @@ type FileIOStreamOverrides struct {
 	// The function returns the following values:
 	//
 	//   - fileInfo for the stream, or NULL on error.
-	QueryInfo func(ctx context.Context, attributes string) (*FileInfo, error)
+	QueryInfo func(ctx context.Context, attributes string) (*FileInfo, error) // optional
 	// QueryInfoFinish finalizes the asynchronous query started by
 	// g_file_io_stream_query_info_async().
 	//
@@ -56263,32 +56564,59 @@ type FileIOStreamOverrides struct {
 	// The function returns the following values:
 	//
 	//   - fileInfo for the finished query.
-	QueryInfoFinish func(result AsyncResulter) (*FileInfo, error)
+	QueryInfoFinish func(result AsyncResulter) (*FileInfo, error) // optional
 	// The function takes the following parameters:
 	//
 	//   - ctx (optional)
 	//   - offset
 	//   - typ
-	Seek func(ctx context.Context, offset int64, typ glib.SeekType) error
-	Tell func() int64
+	Seek func(ctx context.Context, offset int64, typ glib.SeekType) error // optional
+	Tell func() int64                                                     // optional
 	// The function takes the following parameters:
 	//
 	//   - ctx (optional)
 	//   - size
-	TruncateFn func(ctx context.Context, size int64) error
+	TruncateFn func(ctx context.Context, size int64) error // optional
 }
 
 func defaultFileIOStreamOverrides(v *FileIOStream) FileIOStreamOverrides {
-	return FileIOStreamOverrides{
-		CanSeek:         v.canSeek,
-		CanTruncate:     v.canTruncate,
-		ETag:            v.eTag,
-		QueryInfo:       v.queryInfo,
-		QueryInfoFinish: v.queryInfoFinish,
-		Seek:            v.seek,
-		Tell:            v.tell,
-		TruncateFn:      v.truncateFn,
+	var pclass *C.GFileIOStreamClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeFileIOStream)) != C.FALSE {
+			pclass = (*C.GFileIOStreamClass)(parentClass)
+		}
 	}
+
+	overrides := FileIOStreamOverrides{}
+	if pclass != nil {
+
+		if pclass.can_seek != nil {
+			overrides.CanSeek = v.canSeek
+		}
+		if pclass.can_truncate != nil {
+			overrides.CanTruncate = v.canTruncate
+		}
+		if pclass.get_etag != nil {
+			overrides.ETag = v.eTag
+		}
+		if pclass.query_info != nil {
+			overrides.QueryInfo = v.queryInfo
+		}
+		if pclass.query_info_finish != nil {
+			overrides.QueryInfoFinish = v.queryInfoFinish
+		}
+		if pclass.seek != nil {
+			overrides.Seek = v.seek
+		}
+		if pclass.tell != nil {
+			overrides.Tell = v.tell
+		}
+		if pclass.truncate_fn != nil {
+			overrides.TruncateFn = v.truncateFn
+		}
+	}
+
+	return overrides
 }
 
 // FileIOStream: GFileIOStream provides I/O streams that both read and write to
@@ -58872,7 +59200,7 @@ func (info *FileInfo) UnsetAttributeMask() {
 
 // FileInputStreamOverrides contains methods that are overridable.
 type FileInputStreamOverrides struct {
-	CanSeek func() bool
+	CanSeek func() bool // optional
 	// QueryInfo queries a file input stream the given attributes. This function
 	// blocks while querying the stream. For the asynchronous (non-blocking)
 	// version of this function, see g_file_input_stream_query_info_async().
@@ -58888,7 +59216,7 @@ type FileInputStreamOverrides struct {
 	// The function returns the following values:
 	//
 	//   - fileInfo or NULL on error.
-	QueryInfo func(ctx context.Context, attributes string) (*FileInfo, error)
+	QueryInfo func(ctx context.Context, attributes string) (*FileInfo, error) // optional
 	// QueryInfoFinish finishes an asynchronous info query operation.
 	//
 	// The function takes the following parameters:
@@ -58898,24 +59226,45 @@ type FileInputStreamOverrides struct {
 	// The function returns the following values:
 	//
 	//   - fileInfo: Info.
-	QueryInfoFinish func(result AsyncResulter) (*FileInfo, error)
+	QueryInfoFinish func(result AsyncResulter) (*FileInfo, error) // optional
 	// The function takes the following parameters:
 	//
 	//   - ctx (optional)
 	//   - offset
 	//   - typ
-	Seek func(ctx context.Context, offset int64, typ glib.SeekType) error
-	Tell func() int64
+	Seek func(ctx context.Context, offset int64, typ glib.SeekType) error // optional
+	Tell func() int64                                                     // optional
 }
 
 func defaultFileInputStreamOverrides(v *FileInputStream) FileInputStreamOverrides {
-	return FileInputStreamOverrides{
-		CanSeek:         v.canSeek,
-		QueryInfo:       v.queryInfo,
-		QueryInfoFinish: v.queryInfoFinish,
-		Seek:            v.seek,
-		Tell:            v.tell,
+	var pclass *C.GFileInputStreamClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeFileInputStream)) != C.FALSE {
+			pclass = (*C.GFileInputStreamClass)(parentClass)
+		}
 	}
+
+	overrides := FileInputStreamOverrides{}
+	if pclass != nil {
+
+		if pclass.can_seek != nil {
+			overrides.CanSeek = v.canSeek
+		}
+		if pclass.query_info != nil {
+			overrides.QueryInfo = v.queryInfo
+		}
+		if pclass.query_info_finish != nil {
+			overrides.QueryInfoFinish = v.queryInfoFinish
+		}
+		if pclass.seek != nil {
+			overrides.Seek = v.seek
+		}
+		if pclass.tell != nil {
+			overrides.Tell = v.tell
+		}
+	}
+
+	return overrides
 }
 
 // FileInputStream: GFileInputStream provides input streams that take their
@@ -59343,7 +59692,7 @@ type FileMonitorOverrides struct {
 	// The function returns the following values:
 	//
 	//   - ok always TRUE.
-	Cancel func() bool
+	Cancel func() bool // optional
 	// The function takes the following parameters:
 	//
 	//   - file
@@ -59353,11 +59702,31 @@ type FileMonitorOverrides struct {
 }
 
 func defaultFileMonitorOverrides(v *FileMonitor) FileMonitorOverrides {
-	return FileMonitorOverrides{
-		Cancel:  v.cancel,
-		Changed: v.changed,
+	var pclass *C.GFileMonitorClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeFileMonitor)) != C.FALSE {
+			pclass = (*C.GFileMonitorClass)(parentClass)
+		}
 	}
+
+	overrides := FileMonitorOverrides{
+
+		Changed: noop_FileMonitor_Changed,
+	}
+	if pclass != nil {
+
+		if pclass.cancel != nil {
+			overrides.Cancel = v.cancel
+		}
+		if pclass.changed != nil {
+			overrides.Changed = v.changed
+		}
+	}
+
+	return overrides
 }
+
+func noop_FileMonitor_Changed(file, otherFile Filer, eventType FileMonitorEvent) {}
 
 // FileMonitor monitors a file or directory for changes.
 //
@@ -59616,8 +59985,8 @@ func (monitor *FileMonitor) changed(file, otherFile Filer, eventType FileMonitor
 
 // FileOutputStreamOverrides contains methods that are overridable.
 type FileOutputStreamOverrides struct {
-	CanSeek     func() bool
-	CanTruncate func() bool
+	CanSeek     func() bool // optional
+	CanTruncate func() bool // optional
 	// ETag gets the entity tag for the file when it has been written. This must
 	// be called after the stream has been written and closed, as the etag can
 	// change while writing.
@@ -59625,7 +59994,7 @@ type FileOutputStreamOverrides struct {
 	// The function returns the following values:
 	//
 	//   - utf8 (optional): entity tag for the stream.
-	ETag func() string
+	ETag func() string // optional
 	// QueryInfo queries a file output stream for the given attributes. This
 	// function blocks while querying the stream. For the asynchronous version
 	// of this function, see g_file_output_stream_query_info_async(). While
@@ -59651,7 +60020,7 @@ type FileOutputStreamOverrides struct {
 	// The function returns the following values:
 	//
 	//   - fileInfo for the stream, or NULL on error.
-	QueryInfo func(ctx context.Context, attributes string) (*FileInfo, error)
+	QueryInfo func(ctx context.Context, attributes string) (*FileInfo, error) // optional
 	// QueryInfoFinish finalizes the asynchronous query started by
 	// g_file_output_stream_query_info_async().
 	//
@@ -59662,32 +60031,59 @@ type FileOutputStreamOverrides struct {
 	// The function returns the following values:
 	//
 	//   - fileInfo for the finished query.
-	QueryInfoFinish func(result AsyncResulter) (*FileInfo, error)
+	QueryInfoFinish func(result AsyncResulter) (*FileInfo, error) // optional
 	// The function takes the following parameters:
 	//
 	//   - ctx (optional)
 	//   - offset
 	//   - typ
-	Seek func(ctx context.Context, offset int64, typ glib.SeekType) error
-	Tell func() int64
+	Seek func(ctx context.Context, offset int64, typ glib.SeekType) error // optional
+	Tell func() int64                                                     // optional
 	// The function takes the following parameters:
 	//
 	//   - ctx (optional)
 	//   - size
-	TruncateFn func(ctx context.Context, size int64) error
+	TruncateFn func(ctx context.Context, size int64) error // optional
 }
 
 func defaultFileOutputStreamOverrides(v *FileOutputStream) FileOutputStreamOverrides {
-	return FileOutputStreamOverrides{
-		CanSeek:         v.canSeek,
-		CanTruncate:     v.canTruncate,
-		ETag:            v.eTag,
-		QueryInfo:       v.queryInfo,
-		QueryInfoFinish: v.queryInfoFinish,
-		Seek:            v.seek,
-		Tell:            v.tell,
-		TruncateFn:      v.truncateFn,
+	var pclass *C.GFileOutputStreamClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeFileOutputStream)) != C.FALSE {
+			pclass = (*C.GFileOutputStreamClass)(parentClass)
+		}
 	}
+
+	overrides := FileOutputStreamOverrides{}
+	if pclass != nil {
+
+		if pclass.can_seek != nil {
+			overrides.CanSeek = v.canSeek
+		}
+		if pclass.can_truncate != nil {
+			overrides.CanTruncate = v.canTruncate
+		}
+		if pclass.get_etag != nil {
+			overrides.ETag = v.eTag
+		}
+		if pclass.query_info != nil {
+			overrides.QueryInfo = v.queryInfo
+		}
+		if pclass.query_info_finish != nil {
+			overrides.QueryInfoFinish = v.queryInfoFinish
+		}
+		if pclass.seek != nil {
+			overrides.Seek = v.seek
+		}
+		if pclass.tell != nil {
+			overrides.Tell = v.tell
+		}
+		if pclass.truncate_fn != nil {
+			overrides.TruncateFn = v.truncateFn
+		}
+	}
+
+	return overrides
 }
 
 // FileOutputStream: GFileOutputStream provides output streams that write their
@@ -60255,10 +60651,28 @@ type FilenameCompleterOverrides struct {
 }
 
 func defaultFilenameCompleterOverrides(v *FilenameCompleter) FilenameCompleterOverrides {
-	return FilenameCompleterOverrides{
-		GotCompletionData: v.gotCompletionData,
+	var pclass *C.GFilenameCompleterClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeFilenameCompleter)) != C.FALSE {
+			pclass = (*C.GFilenameCompleterClass)(parentClass)
+		}
 	}
+
+	overrides := FilenameCompleterOverrides{
+
+		GotCompletionData: noop_FilenameCompleter_GotCompletionData,
+	}
+	if pclass != nil {
+
+		if pclass.got_completion_data != nil {
+			overrides.GotCompletionData = v.gotCompletionData
+		}
+	}
+
+	return overrides
 }
+
+func noop_FilenameCompleter_GotCompletionData() {}
 
 // FilenameCompleter completes partial file and directory names given a partial
 // string by looking in the file system for clues. Can return a list of possible
@@ -60447,7 +60861,10 @@ type FilterInputStreamOverrides struct {
 }
 
 func defaultFilterInputStreamOverrides(v *FilterInputStream) FilterInputStreamOverrides {
-	return FilterInputStreamOverrides{}
+
+	overrides := FilterInputStreamOverrides{}
+
+	return overrides
 }
 
 // FilterInputStream: base class for input stream implementations that perform
@@ -60597,7 +61014,10 @@ type FilterOutputStreamOverrides struct {
 }
 
 func defaultFilterOutputStreamOverrides(v *FilterOutputStream) FilterOutputStreamOverrides {
-	return FilterOutputStreamOverrides{}
+
+	overrides := FilterOutputStreamOverrides{}
+
+	return overrides
 }
 
 // FilterOutputStream: base class for output stream implementations that perform
@@ -60749,31 +61169,50 @@ type IOStreamOverrides struct {
 	// The function takes the following parameters:
 	//
 	//   - result: Result.
-	CloseFinish func(result AsyncResulter) error
-	CloseFn     func(ctx context.Context) error
+	CloseFinish func(result AsyncResulter) error // optional
+	CloseFn     func(ctx context.Context) error  // optional
 	// InputStream gets the input stream for this object. This is used for
 	// reading.
 	//
 	// The function returns the following values:
 	//
 	//   - inputStream owned by the OStream. Do not free.
-	InputStream func() InputStreamer
+	InputStream func() InputStreamer // optional
 	// OutputStream gets the output stream for this object. This is used for
 	// writing.
 	//
 	// The function returns the following values:
 	//
 	//   - outputStream owned by the OStream. Do not free.
-	OutputStream func() OutputStreamer
+	OutputStream func() OutputStreamer // optional
 }
 
 func defaultIOStreamOverrides(v *IOStream) IOStreamOverrides {
-	return IOStreamOverrides{
-		CloseFinish:  v.closeFinish,
-		CloseFn:      v.closeFn,
-		InputStream:  v.inputStream,
-		OutputStream: v.outputStream,
+	var pclass *C.GIOStreamClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeIOStream)) != C.FALSE {
+			pclass = (*C.GIOStreamClass)(parentClass)
+		}
 	}
+
+	overrides := IOStreamOverrides{}
+	if pclass != nil {
+
+		if pclass.close_finish != nil {
+			overrides.CloseFinish = v.closeFinish
+		}
+		if pclass.close_fn != nil {
+			overrides.CloseFn = v.closeFn
+		}
+		if pclass.get_input_stream != nil {
+			overrides.InputStream = v.inputStream
+		}
+		if pclass.get_output_stream != nil {
+			overrides.OutputStream = v.outputStream
+		}
+	}
+
+	return overrides
 }
 
 // IOStream: GIOStream represents an object that has both read and write
@@ -61430,7 +61869,10 @@ type IPToSMessageOverrides struct {
 }
 
 func defaultIPToSMessageOverrides(v *IPToSMessage) IPToSMessageOverrides {
-	return IPToSMessageOverrides{}
+
+	overrides := IPToSMessageOverrides{}
+
+	return overrides
 }
 
 // IPToSMessage contains the type of service (ToS) byte of an IPv4 header.
@@ -61561,7 +62003,10 @@ type IPv6TClassMessageOverrides struct {
 }
 
 func defaultIPv6TClassMessageOverrides(v *IPv6TClassMessage) IPv6TClassMessageOverrides {
-	return IPv6TClassMessageOverrides{}
+
+	overrides := IPv6TClassMessageOverrides{}
+
+	return overrides
 }
 
 // IPv6TClassMessage contains the Traffic Class byte of an IPv6 header.
@@ -61695,13 +62140,26 @@ type InetAddressOverrides struct {
 	//
 	//   - utf8: representation of address as a string, which should be freed
 	//     after use.
-	String func() string
+	String func() string // optional
 }
 
 func defaultInetAddressOverrides(v *InetAddress) InetAddressOverrides {
-	return InetAddressOverrides{
-		String: v.str,
+	var pclass *C.GInetAddressClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeInetAddress)) != C.FALSE {
+			pclass = (*C.GInetAddressClass)(parentClass)
+		}
 	}
+
+	overrides := InetAddressOverrides{}
+	if pclass != nil {
+
+		if pclass.to_string != nil {
+			overrides.String = v.str
+		}
+	}
+
+	return overrides
 }
 
 // InetAddress: GInetAddress represents an IPv4 or IPv6 internet address.
@@ -62245,7 +62703,10 @@ type InetAddressMaskOverrides struct {
 }
 
 func defaultInetAddressMaskOverrides(v *InetAddressMask) InetAddressMaskOverrides {
-	return InetAddressMaskOverrides{}
+
+	overrides := InetAddressMaskOverrides{}
+
+	return overrides
 }
 
 // InetAddressMask: GInetAddressMask represents a range of IPv4 or IPv6
@@ -62512,7 +62973,10 @@ type InetSocketAddressOverrides struct {
 }
 
 func defaultInetSocketAddressOverrides(v *InetSocketAddress) InetSocketAddressOverrides {
-	return InetSocketAddressOverrides{}
+
+	overrides := InetSocketAddressOverrides{}
+
+	return overrides
 }
 
 // InetSocketAddress: IPv4 or IPv6 socket address. That is, the combination of a
@@ -62728,8 +63192,8 @@ type InputStreamOverrides struct {
 	// The function takes the following parameters:
 	//
 	//   - result: Result.
-	CloseFinish func(result AsyncResulter) error
-	CloseFn     func(ctx context.Context) error
+	CloseFinish func(result AsyncResulter) error // optional
+	CloseFn     func(ctx context.Context) error  // optional
 	// ReadFinish finishes an asynchronous stream read operation.
 	//
 	// The function takes the following parameters:
@@ -62739,7 +63203,7 @@ type InputStreamOverrides struct {
 	// The function returns the following values:
 	//
 	//   - gssize: number of bytes read in, or -1 on error, or 0 on end of file.
-	ReadFinish func(result AsyncResulter) (int, error)
+	ReadFinish func(result AsyncResulter) (int, error) // optional
 	// Skip tries to skip count bytes from the stream. Will block during the
 	// operation.
 	//
@@ -62764,7 +63228,7 @@ type InputStreamOverrides struct {
 	// The function returns the following values:
 	//
 	//   - gssize: number of bytes skipped, or -1 on error.
-	Skip func(ctx context.Context, count uint) (int, error)
+	Skip func(ctx context.Context, count uint) (int, error) // optional
 	// SkipFinish finishes a stream skip operation.
 	//
 	// The function takes the following parameters:
@@ -62774,17 +63238,38 @@ type InputStreamOverrides struct {
 	// The function returns the following values:
 	//
 	//   - gssize: size of the bytes skipped, or -1 on error.
-	SkipFinish func(result AsyncResulter) (int, error)
+	SkipFinish func(result AsyncResulter) (int, error) // optional
 }
 
 func defaultInputStreamOverrides(v *InputStream) InputStreamOverrides {
-	return InputStreamOverrides{
-		CloseFinish: v.closeFinish,
-		CloseFn:     v.closeFn,
-		ReadFinish:  v.readFinish,
-		Skip:        v.skip,
-		SkipFinish:  v.skipFinish,
+	var pclass *C.GInputStreamClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeInputStream)) != C.FALSE {
+			pclass = (*C.GInputStreamClass)(parentClass)
+		}
 	}
+
+	overrides := InputStreamOverrides{}
+	if pclass != nil {
+
+		if pclass.close_finish != nil {
+			overrides.CloseFinish = v.closeFinish
+		}
+		if pclass.close_fn != nil {
+			overrides.CloseFn = v.closeFn
+		}
+		if pclass.read_finish != nil {
+			overrides.ReadFinish = v.readFinish
+		}
+		if pclass.skip != nil {
+			overrides.Skip = v.skip
+		}
+		if pclass.skip_finish != nil {
+			overrides.SkipFinish = v.skipFinish
+		}
+	}
+
+	return overrides
 }
 
 // InputStream: GInputStream is a base class for implementing streaming input.
@@ -64080,7 +64565,10 @@ type ListStoreOverrides struct {
 }
 
 func defaultListStoreOverrides(v *ListStore) ListStoreOverrides {
-	return ListStoreOverrides{}
+
+	overrides := ListStoreOverrides{}
+
+	return overrides
 }
 
 // ListStore: GListStore is a simple implementation of gio.ListModel that stores
@@ -64435,7 +64923,10 @@ type MemoryInputStreamOverrides struct {
 }
 
 func defaultMemoryInputStreamOverrides(v *MemoryInputStream) MemoryInputStreamOverrides {
-	return MemoryInputStreamOverrides{}
+
+	overrides := MemoryInputStreamOverrides{}
+
+	return overrides
 }
 
 // MemoryInputStream: GMemoryInputStream is a class for using arbitrary memory
@@ -64558,7 +65049,10 @@ type MemoryOutputStreamOverrides struct {
 }
 
 func defaultMemoryOutputStreamOverrides(v *MemoryOutputStream) MemoryOutputStreamOverrides {
-	return MemoryOutputStreamOverrides{}
+
+	overrides := MemoryOutputStreamOverrides{}
+
+	return overrides
 }
 
 // MemoryOutputStream: GMemoryOutputStream is a class for using arbitrary memory
@@ -65216,13 +65710,26 @@ type MenuAttributeIterOverrides struct {
 	//   - outName (optional): type of the attribute.
 	//   - value (optional): attribute value.
 	//   - ok: TRUE on success, or FALSE if there is no additional attribute.
-	Next func() (string, *glib.Variant, bool)
+	Next func() (string, *glib.Variant, bool) // optional
 }
 
 func defaultMenuAttributeIterOverrides(v *MenuAttributeIter) MenuAttributeIterOverrides {
-	return MenuAttributeIterOverrides{
-		Next: v.next,
+	var pclass *C.GMenuAttributeIterClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeMenuAttributeIter)) != C.FALSE {
+			pclass = (*C.GMenuAttributeIterClass)(parentClass)
+		}
 	}
+
+	overrides := MenuAttributeIterOverrides{}
+	if pclass != nil {
+
+		if pclass.get_next != nil {
+			overrides.Next = v.next
+		}
+	}
+
+	return overrides
 }
 
 // MenuAttributeIter is an opaque structure type. You must access it using the
@@ -66070,13 +66577,26 @@ type MenuLinkIterOverrides struct {
 	//   - outLink (optional): name of the link.
 	//   - value (optional): linked Model.
 	//   - ok: TRUE on success, or FALSE if there is no additional link.
-	Next func() (string, MenuModeller, bool)
+	Next func() (string, MenuModeller, bool) // optional
 }
 
 func defaultMenuLinkIterOverrides(v *MenuLinkIter) MenuLinkIterOverrides {
-	return MenuLinkIterOverrides{
-		Next: v.next,
+	var pclass *C.GMenuLinkIterClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeMenuLinkIter)) != C.FALSE {
+			pclass = (*C.GMenuLinkIterClass)(parentClass)
+		}
 	}
+
+	overrides := MenuLinkIterOverrides{}
+	if pclass != nil {
+
+		if pclass.get_next != nil {
+			overrides.Next = v.next
+		}
+	}
+
+	return overrides
 }
 
 // MenuLinkIter is an opaque structure type. You must access it using the
@@ -66378,7 +66898,7 @@ type MenuModelOverrides struct {
 	// The function returns the following values:
 	//
 	//   - variant (optional): value of the attribute.
-	ItemAttributeValue func(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant
+	ItemAttributeValue func(itemIndex int, attribute string, expectedType *glib.VariantType) *glib.Variant // optional
 	// ItemAttributes gets all the attributes associated with the item in the
 	// menu model.
 	//
@@ -66389,7 +66909,7 @@ type MenuModelOverrides struct {
 	// The function returns the following values:
 	//
 	//   - attributes attributes on the item.
-	ItemAttributes func(itemIndex int) map[string]*glib.Variant
+	ItemAttributes func(itemIndex int) map[string]*glib.Variant // optional
 	// ItemLink queries the item at position item_index in model for the link
 	// specified by link.
 	//
@@ -66404,7 +66924,7 @@ type MenuModelOverrides struct {
 	// The function returns the following values:
 	//
 	//   - menuModel (optional): linked Model, or NULL.
-	ItemLink func(itemIndex int, link string) MenuModeller
+	ItemLink func(itemIndex int, link string) MenuModeller // optional
 	// ItemLinks gets all the links associated with the item in the menu model.
 	//
 	// The function takes the following parameters:
@@ -66414,13 +66934,13 @@ type MenuModelOverrides struct {
 	// The function returns the following values:
 	//
 	//   - links links from the item.
-	ItemLinks func(itemIndex int) map[string]MenuModeller
+	ItemLinks func(itemIndex int) map[string]MenuModeller // optional
 	// NItems: query the number of items in model.
 	//
 	// The function returns the following values:
 	//
 	//   - gint: number of items.
-	NItems func() int
+	NItems func() int // optional
 	// IsMutable queries if model is mutable.
 	//
 	// An immutable Model will never emit the Model::items-changed signal.
@@ -66430,7 +66950,7 @@ type MenuModelOverrides struct {
 	//
 	//   - ok: TRUE if the model is mutable (ie: "items-changed" may be
 	//     emitted).
-	IsMutable func() bool
+	IsMutable func() bool // optional
 	// IterateItemAttributes creates a AttributeIter to iterate over the
 	// attributes of the item at position item_index in model.
 	//
@@ -66443,7 +66963,7 @@ type MenuModelOverrides struct {
 	// The function returns the following values:
 	//
 	//   - menuAttributeIter: new AttributeIter.
-	IterateItemAttributes func(itemIndex int) MenuAttributeIterer
+	IterateItemAttributes func(itemIndex int) MenuAttributeIterer // optional
 	// IterateItemLinks creates a LinkIter to iterate over the links of the item
 	// at position item_index in model.
 	//
@@ -66456,20 +66976,47 @@ type MenuModelOverrides struct {
 	// The function returns the following values:
 	//
 	//   - menuLinkIter: new LinkIter.
-	IterateItemLinks func(itemIndex int) MenuLinkIterer
+	IterateItemLinks func(itemIndex int) MenuLinkIterer // optional
 }
 
 func defaultMenuModelOverrides(v *MenuModel) MenuModelOverrides {
-	return MenuModelOverrides{
-		ItemAttributeValue:    v.itemAttributeValue,
-		ItemAttributes:        v.itemAttributes,
-		ItemLink:              v.itemLink,
-		ItemLinks:             v.itemLinks,
-		NItems:                v.nItems,
-		IsMutable:             v.isMutable,
-		IterateItemAttributes: v.iterateItemAttributes,
-		IterateItemLinks:      v.iterateItemLinks,
+	var pclass *C.GMenuModelClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeMenuModel)) != C.FALSE {
+			pclass = (*C.GMenuModelClass)(parentClass)
+		}
 	}
+
+	overrides := MenuModelOverrides{}
+	if pclass != nil {
+
+		if pclass.get_item_attribute_value != nil {
+			overrides.ItemAttributeValue = v.itemAttributeValue
+		}
+		if pclass.get_item_attributes != nil {
+			overrides.ItemAttributes = v.itemAttributes
+		}
+		if pclass.get_item_link != nil {
+			overrides.ItemLink = v.itemLink
+		}
+		if pclass.get_item_links != nil {
+			overrides.ItemLinks = v.itemLinks
+		}
+		if pclass.get_n_items != nil {
+			overrides.NItems = v.nItems
+		}
+		if pclass.is_mutable != nil {
+			overrides.IsMutable = v.isMutable
+		}
+		if pclass.iterate_item_attributes != nil {
+			overrides.IterateItemAttributes = v.iterateItemAttributes
+		}
+		if pclass.iterate_item_links != nil {
+			overrides.IterateItemLinks = v.iterateItemLinks
+		}
+	}
+
+	return overrides
 }
 
 // MenuModel: GMenuModel represents the contents of a menu — an ordered
@@ -67398,14 +67945,53 @@ type MountOperationOverrides struct {
 }
 
 func defaultMountOperationOverrides(v *MountOperation) MountOperationOverrides {
-	return MountOperationOverrides{
-		Aborted:             v.aborted,
-		AskPassword:         v.askPassword,
-		AskQuestion:         v.askQuestion,
-		Reply:               v.reply,
-		ShowUnmountProgress: v.showUnmountProgress,
+	var pclass *C.GMountOperationClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeMountOperation)) != C.FALSE {
+			pclass = (*C.GMountOperationClass)(parentClass)
+		}
 	}
+
+	overrides := MountOperationOverrides{
+
+		Aborted:             noop_MountOperation_Aborted,
+		AskPassword:         noop_MountOperation_AskPassword,
+		AskQuestion:         noop_MountOperation_AskQuestion,
+		Reply:               noop_MountOperation_Reply,
+		ShowUnmountProgress: noop_MountOperation_ShowUnmountProgress,
+	}
+	if pclass != nil {
+
+		if pclass.aborted != nil {
+			overrides.Aborted = v.aborted
+		}
+		if pclass.ask_password != nil {
+			overrides.AskPassword = v.askPassword
+		}
+		if pclass.ask_question != nil {
+			overrides.AskQuestion = v.askQuestion
+		}
+		if pclass.reply != nil {
+			overrides.Reply = v.reply
+		}
+		if pclass.show_unmount_progress != nil {
+			overrides.ShowUnmountProgress = v.showUnmountProgress
+		}
+	}
+
+	return overrides
 }
+
+func noop_MountOperation_Aborted() {}
+
+func noop_MountOperation_AskPassword(message, defaultUser, defaultDomain string, flags AskPasswordFlags) {
+}
+
+func noop_MountOperation_AskQuestion(message string, choices []string) {}
+
+func noop_MountOperation_Reply(result MountOperationResult) {}
+
+func noop_MountOperation_ShowUnmountProgress(message string, timeLeft, bytesLeft int64) {}
 
 // MountOperation: GMountOperation provides a mechanism for interacting
 // with the user. It can be used for authenticating mountable operations,
@@ -68079,7 +68665,10 @@ type NativeSocketAddressOverrides struct {
 }
 
 func defaultNativeSocketAddressOverrides(v *NativeSocketAddress) NativeSocketAddressOverrides {
-	return NativeSocketAddressOverrides{}
+
+	overrides := NativeSocketAddressOverrides{}
+
+	return overrides
 }
 
 // NativeSocketAddress: socket address of some unknown native type.
@@ -68160,7 +68749,10 @@ type NativeVolumeMonitorOverrides struct {
 }
 
 func defaultNativeVolumeMonitorOverrides(v *NativeVolumeMonitor) NativeVolumeMonitorOverrides {
-	return NativeVolumeMonitorOverrides{}
+
+	overrides := NativeVolumeMonitorOverrides{}
+
+	return overrides
 }
 
 type NativeVolumeMonitor struct {
@@ -68225,7 +68817,10 @@ type NetworkAddressOverrides struct {
 }
 
 func defaultNetworkAddressOverrides(v *NetworkAddress) NetworkAddressOverrides {
-	return NetworkAddressOverrides{}
+
+	overrides := NetworkAddressOverrides{}
+
+	return overrides
 }
 
 // NetworkAddress: GNetworkAddress provides an easy way to resolve a hostname
@@ -68511,7 +69106,10 @@ type NetworkServiceOverrides struct {
 }
 
 func defaultNetworkServiceOverrides(v *NetworkService) NetworkServiceOverrides {
-	return NetworkServiceOverrides{}
+
+	overrides := NetworkServiceOverrides{}
+
+	return overrides
 }
 
 // NetworkService: like gio.NetworkAddress does with hostnames, GNetworkService
@@ -69049,8 +69647,8 @@ type OutputStreamOverrides struct {
 	// The function takes the following parameters:
 	//
 	//   - result: Result.
-	CloseFinish func(result AsyncResulter) error
-	CloseFn     func(ctx context.Context) error
+	CloseFinish func(result AsyncResulter) error // optional
+	CloseFn     func(ctx context.Context) error  // optional
 	// Flush forces a write of all user-space buffered data for the given
 	// stream. Will block during the operation. Closing the stream will
 	// implicitly cause a flush.
@@ -69064,13 +69662,13 @@ type OutputStreamOverrides struct {
 	// The function takes the following parameters:
 	//
 	//   - ctx (optional): optional cancellable object.
-	Flush func(ctx context.Context) error
+	Flush func(ctx context.Context) error // optional
 	// FlushFinish finishes flushing an output stream.
 	//
 	// The function takes the following parameters:
 	//
 	//   - result: GAsyncResult.
-	FlushFinish func(result AsyncResulter) error
+	FlushFinish func(result AsyncResulter) error // optional
 	// Splice splices an input stream into an output stream.
 	//
 	// The function takes the following parameters:
@@ -69085,7 +69683,7 @@ type OutputStreamOverrides struct {
 	//     occurred. Note that if the number of bytes spliced is greater than
 	//     G_MAXSSIZE, then that will be returned, and there is no way to
 	//     determine the actual number of bytes spliced.
-	Splice func(ctx context.Context, source InputStreamer, flags OutputStreamSpliceFlags) (int, error)
+	Splice func(ctx context.Context, source InputStreamer, flags OutputStreamSpliceFlags) (int, error) // optional
 	// SpliceFinish finishes an asynchronous stream splice operation.
 	//
 	// The function takes the following parameters:
@@ -69097,7 +69695,7 @@ type OutputStreamOverrides struct {
 	//   - gssize of the number of bytes spliced. Note that if the number of
 	//     bytes spliced is greater than G_MAXSSIZE, then that will be returned,
 	//     and there is no way to determine the actual number of bytes spliced.
-	SpliceFinish func(result AsyncResulter) (int, error)
+	SpliceFinish func(result AsyncResulter) (int, error) // optional
 	// WriteFinish finishes a stream write operation.
 	//
 	// The function takes the following parameters:
@@ -69107,7 +69705,7 @@ type OutputStreamOverrides struct {
 	// The function returns the following values:
 	//
 	//   - gssize containing the number of bytes written to the stream.
-	WriteFinish func(result AsyncResulter) (int, error)
+	WriteFinish func(result AsyncResulter) (int, error) // optional
 	// WritevFinish finishes a stream writev operation.
 	//
 	// The function takes the following parameters:
@@ -69118,20 +69716,47 @@ type OutputStreamOverrides struct {
 	//
 	//   - bytesWritten (optional): location to store the number of bytes that
 	//     were written to the stream.
-	WritevFinish func(result AsyncResulter) (uint, error)
+	WritevFinish func(result AsyncResulter) (uint, error) // optional
 }
 
 func defaultOutputStreamOverrides(v *OutputStream) OutputStreamOverrides {
-	return OutputStreamOverrides{
-		CloseFinish:  v.closeFinish,
-		CloseFn:      v.closeFn,
-		Flush:        v.flush,
-		FlushFinish:  v.flushFinish,
-		Splice:       v.splice,
-		SpliceFinish: v.spliceFinish,
-		WriteFinish:  v.writeFinish,
-		WritevFinish: v.writevFinish,
+	var pclass *C.GOutputStreamClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeOutputStream)) != C.FALSE {
+			pclass = (*C.GOutputStreamClass)(parentClass)
+		}
 	}
+
+	overrides := OutputStreamOverrides{}
+	if pclass != nil {
+
+		if pclass.close_finish != nil {
+			overrides.CloseFinish = v.closeFinish
+		}
+		if pclass.close_fn != nil {
+			overrides.CloseFn = v.closeFn
+		}
+		if pclass.flush != nil {
+			overrides.Flush = v.flush
+		}
+		if pclass.flush_finish != nil {
+			overrides.FlushFinish = v.flushFinish
+		}
+		if pclass.splice != nil {
+			overrides.Splice = v.splice
+		}
+		if pclass.splice_finish != nil {
+			overrides.SpliceFinish = v.spliceFinish
+		}
+		if pclass.write_finish != nil {
+			overrides.WriteFinish = v.writeFinish
+		}
+		if pclass.writev_finish != nil {
+			overrides.WritevFinish = v.writevFinish
+		}
+	}
+
+	return overrides
 }
 
 // OutputStream: GOutputStream is a base class for implementing streaming
@@ -71255,7 +71880,7 @@ type PermissionOverrides struct {
 	// The function takes the following parameters:
 	//
 	//   - ctx (optional) or NULL.
-	Acquire func(ctx context.Context) error
+	Acquire func(ctx context.Context) error // optional
 	// AcquireFinish collects the result of attempting to acquire the permission
 	// represented by permission.
 	//
@@ -71265,7 +71890,7 @@ type PermissionOverrides struct {
 	// The function takes the following parameters:
 	//
 	//   - result given to the ReadyCallback.
-	AcquireFinish func(result AsyncResulter) error
+	AcquireFinish func(result AsyncResulter) error // optional
 	// Release attempts to release the permission represented by permission.
 	//
 	// The precise method by which this happens depends on the permission and
@@ -71285,7 +71910,7 @@ type PermissionOverrides struct {
 	// The function takes the following parameters:
 	//
 	//   - ctx (optional) or NULL.
-	Release func(ctx context.Context) error
+	Release func(ctx context.Context) error // optional
 	// ReleaseFinish collects the result of attempting to release the permission
 	// represented by permission.
 	//
@@ -71295,16 +71920,35 @@ type PermissionOverrides struct {
 	// The function takes the following parameters:
 	//
 	//   - result given to the ReadyCallback.
-	ReleaseFinish func(result AsyncResulter) error
+	ReleaseFinish func(result AsyncResulter) error // optional
 }
 
 func defaultPermissionOverrides(v *Permission) PermissionOverrides {
-	return PermissionOverrides{
-		Acquire:       v.acquire,
-		AcquireFinish: v.acquireFinish,
-		Release:       v.release,
-		ReleaseFinish: v.releaseFinish,
+	var pclass *C.GPermissionClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypePermission)) != C.FALSE {
+			pclass = (*C.GPermissionClass)(parentClass)
+		}
 	}
+
+	overrides := PermissionOverrides{}
+	if pclass != nil {
+
+		if pclass.acquire != nil {
+			overrides.Acquire = v.acquire
+		}
+		if pclass.acquire_finish != nil {
+			overrides.AcquireFinish = v.acquireFinish
+		}
+		if pclass.release != nil {
+			overrides.Release = v.release
+		}
+		if pclass.release_finish != nil {
+			overrides.ReleaseFinish = v.releaseFinish
+		}
+	}
+
+	return overrides
 }
 
 // Permission: GPermission represents the status of the caller’s permission to
@@ -72063,7 +72707,10 @@ type ProxyAddressOverrides struct {
 }
 
 func defaultProxyAddressOverrides(v *ProxyAddress) ProxyAddressOverrides {
-	return ProxyAddressOverrides{}
+
+	overrides := ProxyAddressOverrides{}
+
+	return overrides
 }
 
 // ProxyAddress: gio.InetSocketAddress representing a connection via a proxy
@@ -72335,7 +72982,10 @@ type ProxyAddressEnumeratorOverrides struct {
 }
 
 func defaultProxyAddressEnumeratorOverrides(v *ProxyAddressEnumerator) ProxyAddressEnumeratorOverrides {
-	return ProxyAddressEnumeratorOverrides{}
+
+	overrides := ProxyAddressEnumeratorOverrides{}
+
+	return overrides
 }
 
 // ProxyAddressEnumerator: GProxyAddressEnumerator is a wrapper around
@@ -72405,7 +73055,7 @@ type ResolverOverrides struct {
 	//
 	//   - utf8: hostname (either ASCII-only, or in ASCII-encoded form), or NULL
 	//     on error.
-	LookupByAddress func(ctx context.Context, address *InetAddress) (string, error)
+	LookupByAddress func(ctx context.Context, address *InetAddress) (string, error) // optional
 	// LookupByAddressFinish retrieves the result of a previous call to
 	// g_resolver_lookup_by_address_async().
 	//
@@ -72421,7 +73071,7 @@ type ResolverOverrides struct {
 	//
 	//   - utf8: hostname (either ASCII-only, or in ASCII-encoded form), or NULL
 	//     on error.
-	LookupByAddressFinish func(result AsyncResulter) (string, error)
+	LookupByAddressFinish func(result AsyncResulter) (string, error) // optional
 	// LookupByName: synchronously resolves hostname to determine its associated
 	// IP address(es). hostname may be an ASCII-only or UTF-8 hostname, or the
 	// textual form of an IP address (in which case this just becomes a wrapper
@@ -72454,7 +73104,7 @@ type ResolverOverrides struct {
 	//   - list: non-empty #GList of Address, or NULL on error. You must unref
 	//     each of the addresses and free the list when you are done with it.
 	//     (You can use g_resolver_free_addresses() to do this.).
-	LookupByName func(ctx context.Context, hostname string) ([]*InetAddress, error)
+	LookupByName func(ctx context.Context, hostname string) ([]*InetAddress, error) // optional
 	// LookupByNameFinish retrieves the result of a call to
 	// g_resolver_lookup_by_name_async().
 	//
@@ -72470,7 +73120,7 @@ type ResolverOverrides struct {
 	//
 	//   - list Address, or NULL on error. See g_resolver_lookup_by_name() for
 	//     more details.
-	LookupByNameFinish func(result AsyncResulter) ([]*InetAddress, error)
+	LookupByNameFinish func(result AsyncResulter) ([]*InetAddress, error) // optional
 	// LookupByNameWithFlags: this differs from g_resolver_lookup_by_name() in
 	// that you can modify the lookup behavior with flags. For example this can
 	// be used to limit results with G_RESOLVER_NAME_LOOKUP_FLAGS_IPV4_ONLY.
@@ -72486,7 +73136,7 @@ type ResolverOverrides struct {
 	//   - list: non-empty #GList of Address, or NULL on error. You must unref
 	//     each of the addresses and free the list when you are done with it.
 	//     (You can use g_resolver_free_addresses() to do this.).
-	LookupByNameWithFlags func(ctx context.Context, hostname string, flags ResolverNameLookupFlags) ([]*InetAddress, error)
+	LookupByNameWithFlags func(ctx context.Context, hostname string, flags ResolverNameLookupFlags) ([]*InetAddress, error) // optional
 	// LookupByNameWithFlagsFinish retrieves the result of a call to
 	// g_resolver_lookup_by_name_with_flags_async().
 	//
@@ -72502,7 +73152,7 @@ type ResolverOverrides struct {
 	//
 	//   - list Address, or NULL on error. See g_resolver_lookup_by_name() for
 	//     more details.
-	LookupByNameWithFlagsFinish func(result AsyncResulter) ([]*InetAddress, error)
+	LookupByNameWithFlagsFinish func(result AsyncResulter) ([]*InetAddress, error) // optional
 	// LookupRecords: synchronously performs a DNS record lookup for the given
 	// rrname and returns a list of records as #GVariant tuples. See RecordType
 	// for information on what the records contain for each record_type.
@@ -72524,7 +73174,7 @@ type ResolverOverrides struct {
 	//   - list: non-empty #GList of #GVariant, or NULL on error. You must
 	//     free each of the records and the list when you are done with it.
 	//     (You can use g_list_free_full() with g_variant_unref() to do this.).
-	LookupRecords func(ctx context.Context, rrname string, recordType ResolverRecordType) ([]*glib.Variant, error)
+	LookupRecords func(ctx context.Context, rrname string, recordType ResolverRecordType) ([]*glib.Variant, error) // optional
 	// LookupRecordsFinish retrieves the result of a previous call to
 	// g_resolver_lookup_records_async(). Returns a non-empty list of records
 	// as #GVariant tuples. See RecordType for information on what the records
@@ -72543,7 +73193,7 @@ type ResolverOverrides struct {
 	//   - list: non-empty #GList of #GVariant, or NULL on error. You must
 	//     free each of the records and the list when you are done with it.
 	//     (You can use g_list_free_full() with g_variant_unref() to do this.).
-	LookupRecordsFinish func(result AsyncResulter) ([]*glib.Variant, error)
+	LookupRecordsFinish func(result AsyncResulter) ([]*glib.Variant, error) // optional
 	// LookupServiceFinish retrieves the result of a previous call to
 	// g_resolver_lookup_service_async().
 	//
@@ -72559,24 +73209,60 @@ type ResolverOverrides struct {
 	//
 	//   - list: non-empty #GList of Target, or NULL on error. See
 	//     g_resolver_lookup_service() for more details.
-	LookupServiceFinish func(result AsyncResulter) ([]*SrvTarget, error)
+	LookupServiceFinish func(result AsyncResulter) ([]*SrvTarget, error) // optional
 	Reload              func()
 }
 
 func defaultResolverOverrides(v *Resolver) ResolverOverrides {
-	return ResolverOverrides{
-		LookupByAddress:             v.lookupByAddress,
-		LookupByAddressFinish:       v.lookupByAddressFinish,
-		LookupByName:                v.lookupByName,
-		LookupByNameFinish:          v.lookupByNameFinish,
-		LookupByNameWithFlags:       v.lookupByNameWithFlags,
-		LookupByNameWithFlagsFinish: v.lookupByNameWithFlagsFinish,
-		LookupRecords:               v.lookupRecords,
-		LookupRecordsFinish:         v.lookupRecordsFinish,
-		LookupServiceFinish:         v.lookupServiceFinish,
-		Reload:                      v.reload,
+	var pclass *C.GResolverClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeResolver)) != C.FALSE {
+			pclass = (*C.GResolverClass)(parentClass)
+		}
 	}
+
+	overrides := ResolverOverrides{
+
+		Reload: noop_Resolver_Reload,
+	}
+	if pclass != nil {
+
+		if pclass.lookup_by_address != nil {
+			overrides.LookupByAddress = v.lookupByAddress
+		}
+		if pclass.lookup_by_address_finish != nil {
+			overrides.LookupByAddressFinish = v.lookupByAddressFinish
+		}
+		if pclass.lookup_by_name != nil {
+			overrides.LookupByName = v.lookupByName
+		}
+		if pclass.lookup_by_name_finish != nil {
+			overrides.LookupByNameFinish = v.lookupByNameFinish
+		}
+		if pclass.lookup_by_name_with_flags != nil {
+			overrides.LookupByNameWithFlags = v.lookupByNameWithFlags
+		}
+		if pclass.lookup_by_name_with_flags_finish != nil {
+			overrides.LookupByNameWithFlagsFinish = v.lookupByNameWithFlagsFinish
+		}
+		if pclass.lookup_records != nil {
+			overrides.LookupRecords = v.lookupRecords
+		}
+		if pclass.lookup_records_finish != nil {
+			overrides.LookupRecordsFinish = v.lookupRecordsFinish
+		}
+		if pclass.lookup_service_finish != nil {
+			overrides.LookupServiceFinish = v.lookupServiceFinish
+		}
+		if pclass.reload != nil {
+			overrides.Reload = v.reload
+		}
+	}
+
+	return overrides
 }
+
+func noop_Resolver_Reload() {}
 
 // Resolver: object that handles DNS resolution. Use gio.Resolver().GetDefault
 // to get the default resolver.
@@ -74276,20 +74962,47 @@ type SettingsOverrides struct {
 	//
 	//   - keys
 	//   - nKeys
-	ChangeEvent         func(keys *glib.Quark, nKeys int) bool
+	ChangeEvent         func(keys *glib.Quark, nKeys int) bool // optional
 	Changed             func(key string)
-	WritableChangeEvent func(key glib.Quark) bool
+	WritableChangeEvent func(key glib.Quark) bool // optional
 	WritableChanged     func(key string)
 }
 
 func defaultSettingsOverrides(v *Settings) SettingsOverrides {
-	return SettingsOverrides{
-		ChangeEvent:         v.changeEvent,
-		Changed:             v.changed,
-		WritableChangeEvent: v.writableChangeEvent,
-		WritableChanged:     v.writableChanged,
+	var pclass *C.GSettingsClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeSettings)) != C.FALSE {
+			pclass = (*C.GSettingsClass)(parentClass)
+		}
 	}
+
+	overrides := SettingsOverrides{
+
+		Changed:         noop_Settings_Changed,
+		WritableChanged: noop_Settings_WritableChanged,
+	}
+	if pclass != nil {
+
+		if pclass.change_event != nil {
+			overrides.ChangeEvent = v.changeEvent
+		}
+		if pclass.changed != nil {
+			overrides.Changed = v.changed
+		}
+		if pclass.writable_change_event != nil {
+			overrides.WritableChangeEvent = v.writableChangeEvent
+		}
+		if pclass.writable_changed != nil {
+			overrides.WritableChanged = v.writableChanged
+		}
+	}
+
+	return overrides
 }
+
+func noop_Settings_Changed(key string) {}
+
+func noop_Settings_WritableChanged(key string) {}
 
 // Settings: GSettings class provides a convenient API for storing and
 // retrieving application settings.
@@ -76801,7 +77514,10 @@ type SimpleActionGroupOverrides struct {
 }
 
 func defaultSimpleActionGroupOverrides(v *SimpleActionGroup) SimpleActionGroupOverrides {
-	return SimpleActionGroupOverrides{}
+
+	overrides := SimpleActionGroupOverrides{}
+
+	return overrides
 }
 
 // SimpleActionGroup: GSimpleActionGroup is a hash table filled with gio.Action
@@ -77659,7 +78375,10 @@ type SimpleProxyResolverOverrides struct {
 }
 
 func defaultSimpleProxyResolverOverrides(v *SimpleProxyResolver) SimpleProxyResolverOverrides {
-	return SimpleProxyResolverOverrides{}
+
+	overrides := SimpleProxyResolverOverrides{}
+
+	return overrides
 }
 
 // SimpleProxyResolver: GSimpleProxyResolver is a simple gio.ProxyResolver
@@ -77816,7 +78535,10 @@ type SocketOverrides struct {
 }
 
 func defaultSocketOverrides(v *Socket) SocketOverrides {
-	return SocketOverrides{}
+
+	overrides := SocketOverrides{}
+
+	return overrides
 }
 
 // Socket: GSocket is a low-level networking primitive. It is a more or less
@@ -80381,7 +81103,7 @@ type SocketAddressOverrides struct {
 	// The function returns the following values:
 	//
 	//   - socketFamily: socket family type of address.
-	Family func() SocketFamily
+	Family func() SocketFamily // optional
 	// NativeSize gets the size of address's native struct sockaddr. You can use
 	// this to allocate memory to pass to g_socket_address_to_native().
 	//
@@ -80389,7 +81111,7 @@ type SocketAddressOverrides struct {
 	//
 	//   - gssize: size of the native struct sockaddr that address represents,
 	//     or -1 if address is not valid.
-	NativeSize func() int
+	NativeSize func() int // optional
 	// ToNative converts a Address to a native struct sockaddr, which can be
 	// passed to low-level functions like connect() or bind().
 	//
@@ -80403,15 +81125,32 @@ type SocketAddressOverrides struct {
 	//     native struct sockaddr.
 	//   - destlen: size of dest. Must be at least as large as
 	//     g_socket_address_get_native_size().
-	ToNative func(dest unsafe.Pointer, destlen uint) error
+	ToNative func(dest unsafe.Pointer, destlen uint) error // optional
 }
 
 func defaultSocketAddressOverrides(v *SocketAddress) SocketAddressOverrides {
-	return SocketAddressOverrides{
-		Family:     v.family,
-		NativeSize: v.nativeSize,
-		ToNative:   v.toNative,
+	var pclass *C.GSocketAddressClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeSocketAddress)) != C.FALSE {
+			pclass = (*C.GSocketAddressClass)(parentClass)
+		}
 	}
+
+	overrides := SocketAddressOverrides{}
+	if pclass != nil {
+
+		if pclass.get_family != nil {
+			overrides.Family = v.family
+		}
+		if pclass.get_native_size != nil {
+			overrides.NativeSize = v.nativeSize
+		}
+		if pclass.to_native != nil {
+			overrides.ToNative = v.toNative
+		}
+	}
+
+	return overrides
 }
 
 // SocketAddress: GSocketAddress is the equivalent of struct sockaddr
@@ -80716,7 +81455,7 @@ type SocketAddressEnumeratorOverrides struct {
 	//
 	//   - socketAddress (optional) (owned by the caller), or NULL on error (in
 	//     which case *error will be set) or if there are no more addresses.
-	Next func(ctx context.Context) (SocketAddresser, error)
+	Next func(ctx context.Context) (SocketAddresser, error) // optional
 	// NextFinish retrieves the result of a completed call
 	// to g_socket_address_enumerator_next_async(). See
 	// g_socket_address_enumerator_next() for more information about error
@@ -80730,14 +81469,29 @@ type SocketAddressEnumeratorOverrides struct {
 	//
 	//   - socketAddress (optional) (owned by the caller), or NULL on error (in
 	//     which case *error will be set) or if there are no more addresses.
-	NextFinish func(result AsyncResulter) (SocketAddresser, error)
+	NextFinish func(result AsyncResulter) (SocketAddresser, error) // optional
 }
 
 func defaultSocketAddressEnumeratorOverrides(v *SocketAddressEnumerator) SocketAddressEnumeratorOverrides {
-	return SocketAddressEnumeratorOverrides{
-		Next:       v.next,
-		NextFinish: v.nextFinish,
+	var pclass *C.GSocketAddressEnumeratorClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeSocketAddressEnumerator)) != C.FALSE {
+			pclass = (*C.GSocketAddressEnumeratorClass)(parentClass)
+		}
 	}
+
+	overrides := SocketAddressEnumeratorOverrides{}
+	if pclass != nil {
+
+		if pclass.next != nil {
+			overrides.Next = v.next
+		}
+		if pclass.next_finish != nil {
+			overrides.NextFinish = v.nextFinish
+		}
+	}
+
+	return overrides
 }
 
 // SocketAddressEnumerator: GSocketAddressEnumerator is an enumerator type for
@@ -81134,9 +81888,28 @@ type SocketClientOverrides struct {
 }
 
 func defaultSocketClientOverrides(v *SocketClient) SocketClientOverrides {
-	return SocketClientOverrides{
-		Event: v.event,
+	var pclass *C.GSocketClientClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeSocketClient)) != C.FALSE {
+			pclass = (*C.GSocketClientClass)(parentClass)
+		}
 	}
+
+	overrides := SocketClientOverrides{
+
+		Event: noop_SocketClient_Event,
+	}
+	if pclass != nil {
+
+		if pclass.event != nil {
+			overrides.Event = v.event
+		}
+	}
+
+	return overrides
+}
+
+func noop_SocketClient_Event(event SocketClientEvent, connectable SocketConnectabler, connection IOStreamer) {
 }
 
 // SocketClient: GSocketClient is a lightweight high-level utility class for
@@ -82331,7 +83104,10 @@ type SocketConnectionOverrides struct {
 }
 
 func defaultSocketConnectionOverrides(v *SocketConnection) SocketConnectionOverrides {
-	return SocketConnectionOverrides{}
+
+	overrides := SocketConnectionOverrides{}
+
+	return overrides
 }
 
 // SocketConnection: GSocketConnection is a gio.IOStream for a connected socket.
@@ -82704,16 +83480,16 @@ type SocketControlMessageOverrides struct {
 	// The function returns the following values:
 	//
 	//   - gint: integer describing the level.
-	Level func() int
+	Level func() int // optional
 	// Size returns the space required for the control message, not including
 	// headers or alignment.
 	//
 	// The function returns the following values:
 	//
 	//   - gsize: number of bytes required.
-	Size func() uint
+	Size func() uint // optional
 	// Type gets the protocol specific type of the message.
-	Type func() int
+	Type func() int // optional
 	// Serialize converts the data in the message to bytes placed in the
 	// message.
 	//
@@ -82727,13 +83503,37 @@ type SocketControlMessageOverrides struct {
 }
 
 func defaultSocketControlMessageOverrides(v *SocketControlMessage) SocketControlMessageOverrides {
-	return SocketControlMessageOverrides{
-		Level:     v.level,
-		Size:      v.size,
-		Type:      v.typ,
-		Serialize: v.serialize,
+	var pclass *C.GSocketControlMessageClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeSocketControlMessage)) != C.FALSE {
+			pclass = (*C.GSocketControlMessageClass)(parentClass)
+		}
 	}
+
+	overrides := SocketControlMessageOverrides{
+
+		Serialize: noop_SocketControlMessage_Serialize,
+	}
+	if pclass != nil {
+
+		if pclass.get_level != nil {
+			overrides.Level = v.level
+		}
+		if pclass.get_size != nil {
+			overrides.Size = v.size
+		}
+		if pclass.get_type != nil {
+			overrides.Type = v.typ
+		}
+		if pclass.serialize != nil {
+			overrides.Serialize = v.serialize
+		}
+	}
+
+	return overrides
 }
+
+func noop_SocketControlMessage_Serialize(data unsafe.Pointer) {}
 
 // SocketControlMessage: GSocketControlMessage is a special-purpose utility
 // message that can be sent to or received from a gio.Socket. These types of
@@ -83076,11 +83876,34 @@ type SocketListenerOverrides struct {
 }
 
 func defaultSocketListenerOverrides(v *SocketListener) SocketListenerOverrides {
-	return SocketListenerOverrides{
-		Changed: v.changed,
-		Event:   v.event,
+	var pclass *C.GSocketListenerClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeSocketListener)) != C.FALSE {
+			pclass = (*C.GSocketListenerClass)(parentClass)
+		}
 	}
+
+	overrides := SocketListenerOverrides{
+
+		Changed: noop_SocketListener_Changed,
+		Event:   noop_SocketListener_Event,
+	}
+	if pclass != nil {
+
+		if pclass.changed != nil {
+			overrides.Changed = v.changed
+		}
+		if pclass.event != nil {
+			overrides.Event = v.event
+		}
+	}
+
+	return overrides
 }
+
+func noop_SocketListener_Changed() {}
+
+func noop_SocketListener_Event(event SocketListenerEvent, socket *Socket) {}
 
 // SocketListener: GSocketListener is an object that keeps track of a set of
 // server sockets and helps you accept sockets from any of the socket, either
@@ -83721,13 +84544,26 @@ type SocketServiceOverrides struct {
 	//
 	//   - connection
 	//   - sourceObject
-	Incoming func(connection *SocketConnection, sourceObject *coreglib.Object) bool
+	Incoming func(connection *SocketConnection, sourceObject *coreglib.Object) bool // optional
 }
 
 func defaultSocketServiceOverrides(v *SocketService) SocketServiceOverrides {
-	return SocketServiceOverrides{
-		Incoming: v.incoming,
+	var pclass *C.GSocketServiceClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeSocketService)) != C.FALSE {
+			pclass = (*C.GSocketServiceClass)(parentClass)
+		}
 	}
+
+	overrides := SocketServiceOverrides{}
+	if pclass != nil {
+
+		if pclass.incoming != nil {
+			overrides.Incoming = v.incoming
+		}
+	}
+
+	return overrides
 }
 
 // SocketService: GSocketService is an object that represents a service that is
@@ -85307,7 +86143,10 @@ type TCPConnectionOverrides struct {
 }
 
 func defaultTCPConnectionOverrides(v *TCPConnection) TCPConnectionOverrides {
-	return TCPConnectionOverrides{}
+
+	overrides := TCPConnectionOverrides{}
+
+	return overrides
 }
 
 // TCPConnection: this is the subclass of gio.SocketConnection that is created
@@ -85408,7 +86247,10 @@ type TCPWrapperConnectionOverrides struct {
 }
 
 func defaultTCPWrapperConnectionOverrides(v *TCPWrapperConnection) TCPWrapperConnectionOverrides {
-	return TCPWrapperConnectionOverrides{}
+
+	overrides := TCPWrapperConnectionOverrides{}
+
+	return overrides
 }
 
 // TCPWrapperConnection: GTcpWrapperConnection can be used to wrap a
@@ -85993,13 +86835,26 @@ type ThreadedSocketServiceOverrides struct {
 	//
 	//   - connection
 	//   - sourceObject
-	Run func(connection *SocketConnection, sourceObject *coreglib.Object) bool
+	Run func(connection *SocketConnection, sourceObject *coreglib.Object) bool // optional
 }
 
 func defaultThreadedSocketServiceOverrides(v *ThreadedSocketService) ThreadedSocketServiceOverrides {
-	return ThreadedSocketServiceOverrides{
-		Run: v.run,
+	var pclass *C.GThreadedSocketServiceClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeThreadedSocketService)) != C.FALSE {
+			pclass = (*C.GThreadedSocketServiceClass)(parentClass)
+		}
 	}
+
+	overrides := ThreadedSocketServiceOverrides{}
+	if pclass != nil {
+
+		if pclass.run != nil {
+			overrides.Run = v.run
+		}
+	}
+
+	return overrides
 }
 
 // ThreadedSocketService: GThreadedSocketService is a simple subclass
@@ -86169,13 +87024,26 @@ type TLSCertificateOverrides struct {
 	// The function returns the following values:
 	//
 	//   - tlsCertificateFlags: appropriate CertificateFlags.
-	Verify func(identity SocketConnectabler, trustedCa TLSCertificater) TLSCertificateFlags
+	Verify func(identity SocketConnectabler, trustedCa TLSCertificater) TLSCertificateFlags // optional
 }
 
 func defaultTLSCertificateOverrides(v *TLSCertificate) TLSCertificateOverrides {
-	return TLSCertificateOverrides{
-		Verify: v.verify,
+	var pclass *C.GTlsCertificateClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeTLSCertificate)) != C.FALSE {
+			pclass = (*C.GTlsCertificateClass)(parentClass)
+		}
 	}
+
+	overrides := TLSCertificateOverrides{}
+	if pclass != nil {
+
+		if pclass.verify != nil {
+			overrides.Verify = v.verify
+		}
+	}
+
+	return overrides
 }
 
 // TLSCertificate: certificate used for TLS authentication and encryption.
@@ -86910,14 +87778,14 @@ type TLSConnectionOverrides struct {
 	//
 	//   - peerCert
 	//   - errors
-	AcceptCertificate func(peerCert TLSCertificater, errors TLSCertificateFlags) bool
+	AcceptCertificate func(peerCert TLSCertificater, errors TLSCertificateFlags) bool // optional
 	// BindingData: retrieve TLS channel binding data (Since: 2.66).
 	//
 	// The function takes the following parameters:
 	//
 	//   - typ
 	//   - data
-	BindingData func(typ TLSChannelBindingType, data []byte) error
+	BindingData func(typ TLSChannelBindingType, data []byte) error // optional
 	// NegotiatedProtocol gets the name of the application-layer protocol
 	// negotiated during the handshake.
 	//
@@ -86929,7 +87797,7 @@ type TLSConnectionOverrides struct {
 	// The function returns the following values:
 	//
 	//   - utf8 (optional): negotiated protocol, or NULL.
-	NegotiatedProtocol func() string
+	NegotiatedProtocol func() string // optional
 	// Handshake attempts a TLS handshake on conn.
 	//
 	// On the client side, it is never necessary to call this method; although
@@ -86962,24 +87830,45 @@ type TLSConnectionOverrides struct {
 	// The function takes the following parameters:
 	//
 	//   - ctx (optional) or NULL.
-	Handshake func(ctx context.Context) error
+	Handshake func(ctx context.Context) error // optional
 	// HandshakeFinish: finish an asynchronous TLS handshake operation.
 	// See g_tls_connection_handshake() for more information.
 	//
 	// The function takes the following parameters:
 	//
 	//   - result: Result.
-	HandshakeFinish func(result AsyncResulter) error
+	HandshakeFinish func(result AsyncResulter) error // optional
 }
 
 func defaultTLSConnectionOverrides(v *TLSConnection) TLSConnectionOverrides {
-	return TLSConnectionOverrides{
-		AcceptCertificate:  v.acceptCertificate,
-		BindingData:        v.bindingData,
-		NegotiatedProtocol: v.negotiatedProtocol,
-		Handshake:          v.handshake,
-		HandshakeFinish:    v.handshakeFinish,
+	var pclass *C.GTlsConnectionClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeTLSConnection)) != C.FALSE {
+			pclass = (*C.GTlsConnectionClass)(parentClass)
+		}
 	}
+
+	overrides := TLSConnectionOverrides{}
+	if pclass != nil {
+
+		if pclass.accept_certificate != nil {
+			overrides.AcceptCertificate = v.acceptCertificate
+		}
+		if pclass.get_binding_data != nil {
+			overrides.BindingData = v.bindingData
+		}
+		if pclass.get_negotiated_protocol != nil {
+			overrides.NegotiatedProtocol = v.negotiatedProtocol
+		}
+		if pclass.handshake != nil {
+			overrides.Handshake = v.handshake
+		}
+		if pclass.handshake_finish != nil {
+			overrides.HandshakeFinish = v.handshakeFinish
+		}
+	}
+
+	return overrides
 }
 
 // TLSConnection: GTlsConnection is the base TLS connection class type,
@@ -88093,7 +88982,7 @@ type TLSDatabaseOverrides struct {
 	// The function returns the following values:
 	//
 	//   - utf8 (optional): newly allocated string containing the handle.
-	CreateCertificateHandle func(certificate TLSCertificater) string
+	CreateCertificateHandle func(certificate TLSCertificater) string // optional
 	// LookupCertificateForHandle: look up a certificate by its handle.
 	//
 	// The handle should have been created by calling
@@ -88119,7 +89008,7 @@ type TLSDatabaseOverrides struct {
 	//
 	//   - tlsCertificate (optional): newly allocated Certificate, or NULL.
 	//     Use g_object_unref() to release the certificate.
-	LookupCertificateForHandle func(ctx context.Context, handle string, interaction *TLSInteraction, flags TLSDatabaseLookupFlags) (TLSCertificater, error)
+	LookupCertificateForHandle func(ctx context.Context, handle string, interaction *TLSInteraction, flags TLSDatabaseLookupFlags) (TLSCertificater, error) // optional
 	// LookupCertificateForHandleFinish: finish an
 	// asynchronous lookup of a certificate by its handle. See
 	// g_tls_database_lookup_certificate_for_handle() for more information.
@@ -88135,7 +89024,7 @@ type TLSDatabaseOverrides struct {
 	//
 	//   - tlsCertificate: newly allocated Certificate object. Use
 	//     g_object_unref() to release the certificate.
-	LookupCertificateForHandleFinish func(result AsyncResulter) (TLSCertificater, error)
+	LookupCertificateForHandleFinish func(result AsyncResulter) (TLSCertificater, error) // optional
 	// LookupCertificateIssuer: look up the issuer of certificate in the
 	// database. The Certificate:issuer property of certificate is not modified,
 	// and the two certificates are not hooked into a chain.
@@ -88168,7 +89057,7 @@ type TLSDatabaseOverrides struct {
 	//
 	//   - tlsCertificate: newly allocated issuer Certificate, or NULL.
 	//     Use g_object_unref() to release the certificate.
-	LookupCertificateIssuer func(ctx context.Context, certificate TLSCertificater, interaction *TLSInteraction, flags TLSDatabaseLookupFlags) (TLSCertificater, error)
+	LookupCertificateIssuer func(ctx context.Context, certificate TLSCertificater, interaction *TLSInteraction, flags TLSDatabaseLookupFlags) (TLSCertificater, error) // optional
 	// LookupCertificateIssuerFinish: finish an asynchronous lookup issuer
 	// operation. See g_tls_database_lookup_certificate_issuer() for more
 	// information.
@@ -88181,7 +89070,7 @@ type TLSDatabaseOverrides struct {
 	//
 	//   - tlsCertificate: newly allocated issuer Certificate, or NULL.
 	//     Use g_object_unref() to release the certificate.
-	LookupCertificateIssuerFinish func(result AsyncResulter) (TLSCertificater, error)
+	LookupCertificateIssuerFinish func(result AsyncResulter) (TLSCertificater, error) // optional
 	// LookupCertificatesIssuedBy: look up certificates issued by this issuer in
 	// the database.
 	//
@@ -88201,7 +89090,7 @@ type TLSDatabaseOverrides struct {
 	//   - list: newly allocated list of Certificate objects. Use
 	//     g_object_unref() on each certificate, and g_list_free() on the
 	//     release the list.
-	LookupCertificatesIssuedBy func(ctx context.Context, issuerRawDn []byte, interaction *TLSInteraction, flags TLSDatabaseLookupFlags) ([]TLSCertificater, error)
+	LookupCertificatesIssuedBy func(ctx context.Context, issuerRawDn []byte, interaction *TLSInteraction, flags TLSDatabaseLookupFlags) ([]TLSCertificater, error) // optional
 	// LookupCertificatesIssuedByFinish: finish an asynchronous lookup of
 	// certificates. See g_tls_database_lookup_certificates_issued_by() for more
 	// information.
@@ -88215,7 +89104,7 @@ type TLSDatabaseOverrides struct {
 	//   - list: newly allocated list of Certificate objects. Use
 	//     g_object_unref() on each certificate, and g_list_free() on the
 	//     release the list.
-	LookupCertificatesIssuedByFinish func(result AsyncResulter) ([]TLSCertificater, error)
+	LookupCertificatesIssuedByFinish func(result AsyncResulter) ([]TLSCertificater, error) // optional
 	// VerifyChain determines the validity of a certificate chain, outside the
 	// context of a TLS session.
 	//
@@ -88288,7 +89177,7 @@ type TLSDatabaseOverrides struct {
 	//
 	//   - tlsCertificateFlags: appropriate CertificateFlags which represents
 	//     the result of verification.
-	VerifyChain func(ctx context.Context, chain TLSCertificater, purpose string, identity SocketConnectabler, interaction *TLSInteraction, flags TLSDatabaseVerifyFlags) (TLSCertificateFlags, error)
+	VerifyChain func(ctx context.Context, chain TLSCertificater, purpose string, identity SocketConnectabler, interaction *TLSInteraction, flags TLSDatabaseVerifyFlags) (TLSCertificateFlags, error) // optional
 	// VerifyChainFinish: finish an asynchronous verify chain operation.
 	// See g_tls_database_verify_chain() for more information.
 	//
@@ -88308,21 +89197,50 @@ type TLSDatabaseOverrides struct {
 	//
 	//   - tlsCertificateFlags: appropriate CertificateFlags which represents
 	//     the result of verification.
-	VerifyChainFinish func(result AsyncResulter) (TLSCertificateFlags, error)
+	VerifyChainFinish func(result AsyncResulter) (TLSCertificateFlags, error) // optional
 }
 
 func defaultTLSDatabaseOverrides(v *TLSDatabase) TLSDatabaseOverrides {
-	return TLSDatabaseOverrides{
-		CreateCertificateHandle:          v.createCertificateHandle,
-		LookupCertificateForHandle:       v.lookupCertificateForHandle,
-		LookupCertificateForHandleFinish: v.lookupCertificateForHandleFinish,
-		LookupCertificateIssuer:          v.lookupCertificateIssuer,
-		LookupCertificateIssuerFinish:    v.lookupCertificateIssuerFinish,
-		LookupCertificatesIssuedBy:       v.lookupCertificatesIssuedBy,
-		LookupCertificatesIssuedByFinish: v.lookupCertificatesIssuedByFinish,
-		VerifyChain:                      v.verifyChain,
-		VerifyChainFinish:                v.verifyChainFinish,
+	var pclass *C.GTlsDatabaseClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeTLSDatabase)) != C.FALSE {
+			pclass = (*C.GTlsDatabaseClass)(parentClass)
+		}
 	}
+
+	overrides := TLSDatabaseOverrides{}
+	if pclass != nil {
+
+		if pclass.create_certificate_handle != nil {
+			overrides.CreateCertificateHandle = v.createCertificateHandle
+		}
+		if pclass.lookup_certificate_for_handle != nil {
+			overrides.LookupCertificateForHandle = v.lookupCertificateForHandle
+		}
+		if pclass.lookup_certificate_for_handle_finish != nil {
+			overrides.LookupCertificateForHandleFinish = v.lookupCertificateForHandleFinish
+		}
+		if pclass.lookup_certificate_issuer != nil {
+			overrides.LookupCertificateIssuer = v.lookupCertificateIssuer
+		}
+		if pclass.lookup_certificate_issuer_finish != nil {
+			overrides.LookupCertificateIssuerFinish = v.lookupCertificateIssuerFinish
+		}
+		if pclass.lookup_certificates_issued_by != nil {
+			overrides.LookupCertificatesIssuedBy = v.lookupCertificatesIssuedBy
+		}
+		if pclass.lookup_certificates_issued_by_finish != nil {
+			overrides.LookupCertificatesIssuedByFinish = v.lookupCertificatesIssuedByFinish
+		}
+		if pclass.verify_chain != nil {
+			overrides.VerifyChain = v.verifyChain
+		}
+		if pclass.verify_chain_finish != nil {
+			overrides.VerifyChainFinish = v.verifyChainFinish
+		}
+	}
+
+	return overrides
 }
 
 // TLSDatabase: GTlsDatabase is used to look up certificates and other
@@ -90110,7 +91028,7 @@ type TLSInteractionOverrides struct {
 	// The function returns the following values:
 	//
 	//   - tlsInteractionResult status of the ask password interaction.
-	AskPassword func(ctx context.Context, password *TLSPassword) (TLSInteractionResult, error)
+	AskPassword func(ctx context.Context, password *TLSPassword) (TLSInteractionResult, error) // optional
 	// AskPasswordFinish: complete an ask password user interaction request.
 	// This should be once the g_tls_interaction_ask_password_async() completion
 	// callback is called.
@@ -90129,7 +91047,7 @@ type TLSInteractionOverrides struct {
 	// The function returns the following values:
 	//
 	//   - tlsInteractionResult status of the ask password interaction.
-	AskPasswordFinish func(result AsyncResulter) (TLSInteractionResult, error)
+	AskPasswordFinish func(result AsyncResulter) (TLSInteractionResult, error) // optional
 	// RequestCertificate: run synchronous interaction to ask the user
 	// to choose a certificate to use with the connection. In general,
 	// g_tls_interaction_invoke_request_certificate() should be used instead of
@@ -90158,7 +91076,7 @@ type TLSInteractionOverrides struct {
 	// The function returns the following values:
 	//
 	//   - tlsInteractionResult status of the request certificate interaction.
-	RequestCertificate func(ctx context.Context, connection TLSConnectioner, flags TLSCertificateRequestFlags) (TLSInteractionResult, error)
+	RequestCertificate func(ctx context.Context, connection TLSConnectioner, flags TLSCertificateRequestFlags) (TLSInteractionResult, error) // optional
 	// RequestCertificateFinish: complete a request certificate
 	// user interaction request. This should be once the
 	// g_tls_interaction_request_certificate_async() completion callback is
@@ -90179,16 +91097,35 @@ type TLSInteractionOverrides struct {
 	// The function returns the following values:
 	//
 	//   - tlsInteractionResult status of the request certificate interaction.
-	RequestCertificateFinish func(result AsyncResulter) (TLSInteractionResult, error)
+	RequestCertificateFinish func(result AsyncResulter) (TLSInteractionResult, error) // optional
 }
 
 func defaultTLSInteractionOverrides(v *TLSInteraction) TLSInteractionOverrides {
-	return TLSInteractionOverrides{
-		AskPassword:              v.askPassword,
-		AskPasswordFinish:        v.askPasswordFinish,
-		RequestCertificate:       v.requestCertificate,
-		RequestCertificateFinish: v.requestCertificateFinish,
+	var pclass *C.GTlsInteractionClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeTLSInteraction)) != C.FALSE {
+			pclass = (*C.GTlsInteractionClass)(parentClass)
+		}
 	}
+
+	overrides := TLSInteractionOverrides{}
+	if pclass != nil {
+
+		if pclass.ask_password != nil {
+			overrides.AskPassword = v.askPassword
+		}
+		if pclass.ask_password_finish != nil {
+			overrides.AskPasswordFinish = v.askPasswordFinish
+		}
+		if pclass.request_certificate != nil {
+			overrides.RequestCertificate = v.requestCertificate
+		}
+		if pclass.request_certificate_finish != nil {
+			overrides.RequestCertificateFinish = v.requestCertificateFinish
+		}
+	}
+
+	return overrides
 }
 
 // TLSInteraction: GTlsInteraction provides a mechanism for the TLS connection
@@ -90992,7 +91929,7 @@ func (interaction *TLSInteraction) requestCertificateFinish(result AsyncResulter
 type TLSPasswordOverrides struct {
 	// DefaultWarning: virtual method for g_tls_password_get_warning() if no
 	// value has been set using g_tls_password_set_warning().
-	DefaultWarning func() string
+	DefaultWarning func() string // optional
 	// Value: get the password value. If length is not NULL then it will be
 	// filled in with the length of the password value. (Note that the password
 	// value is not nul-terminated, so you can only pass NULL for length in
@@ -91001,14 +91938,29 @@ type TLSPasswordOverrides struct {
 	// The function returns the following values:
 	//
 	//   - guint8s: password value (owned by the password object).
-	Value func() []byte
+	Value func() []byte // optional
 }
 
 func defaultTLSPasswordOverrides(v *TLSPassword) TLSPasswordOverrides {
-	return TLSPasswordOverrides{
-		DefaultWarning: v.defaultWarning,
-		Value:          v.value,
+	var pclass *C.GTlsPasswordClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeTLSPassword)) != C.FALSE {
+			pclass = (*C.GTlsPasswordClass)(parentClass)
+		}
 	}
+
+	overrides := TLSPasswordOverrides{}
+	if pclass != nil {
+
+		if pclass.get_default_warning != nil {
+			overrides.DefaultWarning = v.defaultWarning
+		}
+		if pclass.get_value != nil {
+			overrides.Value = v.value
+		}
+	}
+
+	return overrides
 }
 
 // TLSPassword: abstract interface representing a password used in TLS. Often
@@ -91325,7 +92277,7 @@ type VFSOverrides struct {
 	// The function returns the following values:
 	//
 	//   - file: #GFile. Free the returned object with g_object_unref().
-	FileForPath func(path string) *File
+	FileForPath func(path string) *File // optional
 	// FileForURI gets a #GFile for uri.
 	//
 	// This operation never fails, but the returned object might not support
@@ -91339,21 +92291,21 @@ type VFSOverrides struct {
 	// The function returns the following values:
 	//
 	//   - file: #GFile. Free the returned object with g_object_unref().
-	FileForURI func(uri string) *File
+	FileForURI func(uri string) *File // optional
 	// SupportedURISchemes gets a list of URI schemes supported by vfs.
 	//
 	// The function returns the following values:
 	//
 	//   - utf8s: NULL-terminated array of strings. The returned array belongs
 	//     to GIO and must not be freed or modified.
-	SupportedURISchemes func() []string
+	SupportedURISchemes func() []string // optional
 	// IsActive checks if the VFS is active.
 	//
 	// The function returns the following values:
 	//
 	//   - ok: TRUE if construction of the vfs was successful and it is now
 	//     active.
-	IsActive func() bool
+	IsActive func() bool // optional
 	// The function takes the following parameters:
 	//
 	//   - source
@@ -91366,7 +92318,7 @@ type VFSOverrides struct {
 	//   - filename
 	//   - info
 	//   - flags
-	LocalFileSetAttributes func(ctx context.Context, filename string, info *FileInfo, flags FileQueryInfoFlags) error
+	LocalFileSetAttributes func(ctx context.Context, filename string, info *FileInfo, flags FileQueryInfoFlags) error // optional
 	// ParseName: this operation never fails, but the returned object might
 	// not support any I/O operations if the parse_name cannot be parsed by the
 	// #GVfs module.
@@ -91379,22 +92331,62 @@ type VFSOverrides struct {
 	//
 	//   - file for the given parse_name. Free the returned object with
 	//     g_object_unref().
-	ParseName func(parseName string) *File
+	ParseName func(parseName string) *File // optional
 }
 
 func defaultVFSOverrides(v *VFS) VFSOverrides {
-	return VFSOverrides{
-		AddWritableNamespaces:  v.addWritableNamespaces,
-		FileForPath:            v.fileForPath,
-		FileForURI:             v.fileForURI,
-		SupportedURISchemes:    v.supportedURISchemes,
-		IsActive:               v.isActive,
-		LocalFileMoved:         v.localFileMoved,
-		LocalFileRemoved:       v.localFileRemoved,
-		LocalFileSetAttributes: v.localFileSetAttributes,
-		ParseName:              v.parseName,
+	var pclass *C.GVfsClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeVFS)) != C.FALSE {
+			pclass = (*C.GVfsClass)(parentClass)
+		}
 	}
+
+	overrides := VFSOverrides{
+
+		AddWritableNamespaces: noop_VFS_AddWritableNamespaces,
+		LocalFileMoved:        noop_VFS_LocalFileMoved,
+		LocalFileRemoved:      noop_VFS_LocalFileRemoved,
+	}
+	if pclass != nil {
+
+		if pclass.add_writable_namespaces != nil {
+			overrides.AddWritableNamespaces = v.addWritableNamespaces
+		}
+		if pclass.get_file_for_path != nil {
+			overrides.FileForPath = v.fileForPath
+		}
+		if pclass.get_file_for_uri != nil {
+			overrides.FileForURI = v.fileForURI
+		}
+		if pclass.get_supported_uri_schemes != nil {
+			overrides.SupportedURISchemes = v.supportedURISchemes
+		}
+		if pclass.is_active != nil {
+			overrides.IsActive = v.isActive
+		}
+		if pclass.local_file_moved != nil {
+			overrides.LocalFileMoved = v.localFileMoved
+		}
+		if pclass.local_file_removed != nil {
+			overrides.LocalFileRemoved = v.localFileRemoved
+		}
+		if pclass.local_file_set_attributes != nil {
+			overrides.LocalFileSetAttributes = v.localFileSetAttributes
+		}
+		if pclass.parse_name != nil {
+			overrides.ParseName = v.parseName
+		}
+	}
+
+	return overrides
 }
+
+func noop_VFS_AddWritableNamespaces(list *FileAttributeInfoList) {}
+
+func noop_VFS_LocalFileMoved(source, dest string) {}
+
+func noop_VFS_LocalFileRemoved(filename string) {}
 
 // VFS: entry point for using GIO functionality.
 type VFS struct {
@@ -92038,7 +93030,7 @@ type VolumeMonitorOverrides struct {
 	// The function returns the following values:
 	//
 	//   - list of connected #GDrive objects.
-	ConnectedDrives func() []*Drive
+	ConnectedDrives func() []*Drive // optional
 	// MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid()).
 	//
 	// The function takes the following parameters:
@@ -92049,7 +93041,7 @@ type VolumeMonitorOverrides struct {
 	//
 	//   - mount (optional) or NULL if no such mount is available. Free the
 	//     returned object with g_object_unref().
-	MountForUUID func(uuid string) *Mount
+	MountForUUID func(uuid string) *Mount // optional
 	// Mounts gets a list of the mounts on the system.
 	//
 	// The returned list should be freed with g_list_free(), after its elements
@@ -92058,7 +93050,7 @@ type VolumeMonitorOverrides struct {
 	// The function returns the following values:
 	//
 	//   - list of #GMount objects.
-	Mounts func() []*Mount
+	Mounts func() []*Mount // optional
 	// VolumeForUUID finds a #GVolume object by its UUID (see
 	// g_volume_get_uuid()).
 	//
@@ -92070,7 +93062,7 @@ type VolumeMonitorOverrides struct {
 	//
 	//   - volume (optional) or NULL if no such volume is available. Free the
 	//     returned object with g_object_unref().
-	VolumeForUUID func(uuid string) *Volume
+	VolumeForUUID func(uuid string) *Volume // optional
 	// Volumes gets a list of the volumes on the system.
 	//
 	// The returned list should be freed with g_list_free(), after its elements
@@ -92079,7 +93071,7 @@ type VolumeMonitorOverrides struct {
 	// The function returns the following values:
 	//
 	//   - list of #GVolume objects.
-	Volumes         func() []*Volume
+	Volumes         func() []*Volume // optional
 	MountAdded      func(mount Mounter)
 	MountChanged    func(mount Mounter)
 	MountPreUnmount func(mount Mounter)
@@ -92090,26 +93082,109 @@ type VolumeMonitorOverrides struct {
 }
 
 func defaultVolumeMonitorOverrides(v *VolumeMonitor) VolumeMonitorOverrides {
-	return VolumeMonitorOverrides{
-		DriveChanged:      v.driveChanged,
-		DriveConnected:    v.driveConnected,
-		DriveDisconnected: v.driveDisconnected,
-		DriveEjectButton:  v.driveEjectButton,
-		DriveStopButton:   v.driveStopButton,
-		ConnectedDrives:   v.connectedDrives,
-		MountForUUID:      v.mountForUUID,
-		Mounts:            v.mounts,
-		VolumeForUUID:     v.volumeForUUID,
-		Volumes:           v.volumes,
-		MountAdded:        v.mountAdded,
-		MountChanged:      v.mountChanged,
-		MountPreUnmount:   v.mountPreUnmount,
-		MountRemoved:      v.mountRemoved,
-		VolumeAdded:       v.volumeAdded,
-		VolumeChanged:     v.volumeChanged,
-		VolumeRemoved:     v.volumeRemoved,
+	var pclass *C.GVolumeMonitorClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeVolumeMonitor)) != C.FALSE {
+			pclass = (*C.GVolumeMonitorClass)(parentClass)
+		}
 	}
+
+	overrides := VolumeMonitorOverrides{
+
+		DriveChanged:      noop_VolumeMonitor_DriveChanged,
+		DriveConnected:    noop_VolumeMonitor_DriveConnected,
+		DriveDisconnected: noop_VolumeMonitor_DriveDisconnected,
+		DriveEjectButton:  noop_VolumeMonitor_DriveEjectButton,
+		DriveStopButton:   noop_VolumeMonitor_DriveStopButton,
+		MountAdded:        noop_VolumeMonitor_MountAdded,
+		MountChanged:      noop_VolumeMonitor_MountChanged,
+		MountPreUnmount:   noop_VolumeMonitor_MountPreUnmount,
+		MountRemoved:      noop_VolumeMonitor_MountRemoved,
+		VolumeAdded:       noop_VolumeMonitor_VolumeAdded,
+		VolumeChanged:     noop_VolumeMonitor_VolumeChanged,
+		VolumeRemoved:     noop_VolumeMonitor_VolumeRemoved,
+	}
+	if pclass != nil {
+
+		if pclass.drive_changed != nil {
+			overrides.DriveChanged = v.driveChanged
+		}
+		if pclass.drive_connected != nil {
+			overrides.DriveConnected = v.driveConnected
+		}
+		if pclass.drive_disconnected != nil {
+			overrides.DriveDisconnected = v.driveDisconnected
+		}
+		if pclass.drive_eject_button != nil {
+			overrides.DriveEjectButton = v.driveEjectButton
+		}
+		if pclass.drive_stop_button != nil {
+			overrides.DriveStopButton = v.driveStopButton
+		}
+		if pclass.get_connected_drives != nil {
+			overrides.ConnectedDrives = v.connectedDrives
+		}
+		if pclass.get_mount_for_uuid != nil {
+			overrides.MountForUUID = v.mountForUUID
+		}
+		if pclass.get_mounts != nil {
+			overrides.Mounts = v.mounts
+		}
+		if pclass.get_volume_for_uuid != nil {
+			overrides.VolumeForUUID = v.volumeForUUID
+		}
+		if pclass.get_volumes != nil {
+			overrides.Volumes = v.volumes
+		}
+		if pclass.mount_added != nil {
+			overrides.MountAdded = v.mountAdded
+		}
+		if pclass.mount_changed != nil {
+			overrides.MountChanged = v.mountChanged
+		}
+		if pclass.mount_pre_unmount != nil {
+			overrides.MountPreUnmount = v.mountPreUnmount
+		}
+		if pclass.mount_removed != nil {
+			overrides.MountRemoved = v.mountRemoved
+		}
+		if pclass.volume_added != nil {
+			overrides.VolumeAdded = v.volumeAdded
+		}
+		if pclass.volume_changed != nil {
+			overrides.VolumeChanged = v.volumeChanged
+		}
+		if pclass.volume_removed != nil {
+			overrides.VolumeRemoved = v.volumeRemoved
+		}
+	}
+
+	return overrides
 }
+
+func noop_VolumeMonitor_DriveChanged(drive Driver) {}
+
+func noop_VolumeMonitor_DriveConnected(drive Driver) {}
+
+func noop_VolumeMonitor_DriveDisconnected(drive Driver) {}
+
+func noop_VolumeMonitor_DriveEjectButton(drive Driver) {}
+
+func noop_VolumeMonitor_DriveStopButton(drive Driver) {}
+
+func noop_VolumeMonitor_MountAdded(mount Mounter) {}
+
+func noop_VolumeMonitor_MountChanged(mount Mounter) {}
+
+func noop_VolumeMonitor_MountPreUnmount(mount Mounter) {}
+
+func noop_VolumeMonitor_MountRemoved(mount Mounter) {}
+
+func noop_VolumeMonitor_VolumeAdded(volume Volumer) {}
+
+func noop_VolumeMonitor_VolumeChanged(volume Volumer) {}
+
+func noop_VolumeMonitor_VolumeRemoved(volume Volumer) {}
 
 // VolumeMonitor: GVolumeMonitor is for listing the user interesting devices and
 // volumes on the computer. In other words, what a file selector or file manager
@@ -92876,7 +93951,10 @@ type ZlibCompressorOverrides struct {
 }
 
 func defaultZlibCompressorOverrides(v *ZlibCompressor) ZlibCompressorOverrides {
-	return ZlibCompressorOverrides{}
+
+	overrides := ZlibCompressorOverrides{}
+
+	return overrides
 }
 
 // ZlibCompressor: GZlibCompressor is an implementation of gio.Converter that
@@ -93043,7 +94121,10 @@ type ZlibDecompressorOverrides struct {
 }
 
 func defaultZlibDecompressorOverrides(v *ZlibDecompressor) ZlibDecompressorOverrides {
-	return ZlibDecompressorOverrides{}
+
+	overrides := ZlibDecompressorOverrides{}
+
+	return overrides
 }
 
 // ZlibDecompressor: GZlibDecompressor is an implementation of gio.Converter

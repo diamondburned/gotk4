@@ -28375,13 +28375,26 @@ func (sortable *TreeSortable) sortColumnChanged() {
 
 // AboutDialogOverrides contains methods that are overridable.
 type AboutDialogOverrides struct {
-	ActivateLink func(uri string) bool
+	ActivateLink func(uri string) bool // optional
 }
 
 func defaultAboutDialogOverrides(v *AboutDialog) AboutDialogOverrides {
-	return AboutDialogOverrides{
-		ActivateLink: v.activateLink,
+	var pclass *C.GtkAboutDialogClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeAboutDialog)) != C.FALSE {
+			pclass = (*C.GtkAboutDialogClass)(parentClass)
+		}
 	}
+
+	overrides := AboutDialogOverrides{}
+	if pclass != nil {
+
+		if pclass.activate_link != nil {
+			overrides.ActivateLink = v.activateLink
+		}
+	}
+
+	return overrides
 }
 
 // AboutDialog offers a simple way to display information about a program like
@@ -29296,7 +29309,10 @@ type AccelGroupOverrides struct {
 }
 
 func defaultAccelGroupOverrides(v *AccelGroup) AccelGroupOverrides {
-	return AccelGroupOverrides{}
+
+	overrides := AccelGroupOverrides{}
+
+	return overrides
 }
 
 // AccelGroup represents a group of keyboard accelerators, typically attached
@@ -29704,7 +29720,10 @@ type AccelLabelOverrides struct {
 }
 
 func defaultAccelLabelOverrides(v *AccelLabel) AccelLabelOverrides {
-	return AccelLabelOverrides{}
+
+	overrides := AccelLabelOverrides{}
+
+	return overrides
 }
 
 // AccelLabel widget is a subclass of Label that also displays an accelerator
@@ -30366,12 +30385,40 @@ type AccessibleOverrides struct {
 }
 
 func defaultAccessibleOverrides(v *Accessible) AccessibleOverrides {
-	return AccessibleOverrides{
-		ConnectWidgetDestroyed: v.connectWidgetDestroyed,
-		WidgetSet:              v.widgetSet,
-		WidgetUnset:            v.widgetUnset,
+	var pclass *C.GtkAccessibleClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeAccessible)) != C.FALSE {
+			pclass = (*C.GtkAccessibleClass)(parentClass)
+		}
 	}
+
+	overrides := AccessibleOverrides{
+
+		ConnectWidgetDestroyed: noop_Accessible_ConnectWidgetDestroyed,
+		WidgetSet:              noop_Accessible_WidgetSet,
+		WidgetUnset:            noop_Accessible_WidgetUnset,
+	}
+	if pclass != nil {
+
+		if pclass.connect_widget_destroyed != nil {
+			overrides.ConnectWidgetDestroyed = v.connectWidgetDestroyed
+		}
+		if pclass.widget_set != nil {
+			overrides.WidgetSet = v.widgetSet
+		}
+		if pclass.widget_unset != nil {
+			overrides.WidgetUnset = v.widgetUnset
+		}
+	}
+
+	return overrides
 }
+
+func noop_Accessible_ConnectWidgetDestroyed() {}
+
+func noop_Accessible_WidgetSet() {}
+
+func noop_Accessible_WidgetUnset() {}
 
 // Accessible class is the base class for accessible implementations for Widget
 // subclasses. It is a thin wrapper around Object, which adds facilities for
@@ -30568,7 +30615,7 @@ type ActionOverrides struct {
 	// The function returns the following values:
 	//
 	//   - widget: menu item provided by the action, or NULL.
-	CreateMenu func() Widgetter
+	CreateMenu func() Widgetter // optional
 	// CreateMenuItem creates a menu item widget that proxies for the given
 	// action.
 	//
@@ -30578,7 +30625,7 @@ type ActionOverrides struct {
 	// The function returns the following values:
 	//
 	//   - widget: menu item connected to the action.
-	CreateMenuItem func() Widgetter
+	CreateMenuItem func() Widgetter // optional
 	// CreateToolItem creates a toolbar item widget that proxies for the given
 	// action.
 	//
@@ -30588,20 +30635,54 @@ type ActionOverrides struct {
 	// The function returns the following values:
 	//
 	//   - widget: toolbar item connected to the action.
-	CreateToolItem  func() Widgetter
+	CreateToolItem  func() Widgetter // optional
 	DisconnectProxy func(proxy Widgetter)
 }
 
 func defaultActionOverrides(v *Action) ActionOverrides {
-	return ActionOverrides{
-		Activate:        v.activate,
-		ConnectProxy:    v.connectProxy,
-		CreateMenu:      v.createMenu,
-		CreateMenuItem:  v.createMenuItem,
-		CreateToolItem:  v.createToolItem,
-		DisconnectProxy: v.disconnectProxy,
+	var pclass *C.GtkActionClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeAction)) != C.FALSE {
+			pclass = (*C.GtkActionClass)(parentClass)
+		}
 	}
+
+	overrides := ActionOverrides{
+
+		Activate:        noop_Action_Activate,
+		ConnectProxy:    noop_Action_ConnectProxy,
+		DisconnectProxy: noop_Action_DisconnectProxy,
+	}
+	if pclass != nil {
+
+		if pclass.activate != nil {
+			overrides.Activate = v.activate
+		}
+		if pclass.connect_proxy != nil {
+			overrides.ConnectProxy = v.connectProxy
+		}
+		if pclass.create_menu != nil {
+			overrides.CreateMenu = v.createMenu
+		}
+		if pclass.create_menu_item != nil {
+			overrides.CreateMenuItem = v.createMenuItem
+		}
+		if pclass.create_tool_item != nil {
+			overrides.CreateToolItem = v.createToolItem
+		}
+		if pclass.disconnect_proxy != nil {
+			overrides.DisconnectProxy = v.disconnectProxy
+		}
+	}
+
+	return overrides
 }
+
+func noop_Action_Activate() {}
+
+func noop_Action_ConnectProxy(proxy Widgetter) {}
+
+func noop_Action_DisconnectProxy(proxy Widgetter) {}
 
 // Action: > In GTK+ 3.10, GtkAction has been deprecated. Use #GAction >
 // instead, and associate actions with Actionable widgets. Use > Model for
@@ -31973,7 +32054,10 @@ type ActionBarOverrides struct {
 }
 
 func defaultActionBarOverrides(v *ActionBar) ActionBarOverrides {
-	return ActionBarOverrides{}
+
+	overrides := ActionBarOverrides{}
+
+	return overrides
 }
 
 // ActionBar is designed to present contextual actions. It is expected to be
@@ -32158,13 +32242,26 @@ type ActionGroupOverrides struct {
 	// The function returns the following values:
 	//
 	//   - action: action, or NULL if no action by that name exists.
-	Action func(actionName string) *Action
+	Action func(actionName string) *Action // optional
 }
 
 func defaultActionGroupOverrides(v *ActionGroup) ActionGroupOverrides {
-	return ActionGroupOverrides{
-		Action: v.action,
+	var pclass *C.GtkActionGroupClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeActionGroup)) != C.FALSE {
+			pclass = (*C.GtkActionGroupClass)(parentClass)
+		}
 	}
+
+	overrides := ActionGroupOverrides{}
+	if pclass != nil {
+
+		if pclass.get_action != nil {
+			overrides.Action = v.action
+		}
+	}
+
+	return overrides
 }
 
 // ActionGroup actions are organised into groups. An action group is essentially
@@ -32772,11 +32869,34 @@ type AdjustmentOverrides struct {
 }
 
 func defaultAdjustmentOverrides(v *Adjustment) AdjustmentOverrides {
-	return AdjustmentOverrides{
-		Changed:      v.changed,
-		ValueChanged: v.valueChanged,
+	var pclass *C.GtkAdjustmentClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeAdjustment)) != C.FALSE {
+			pclass = (*C.GtkAdjustmentClass)(parentClass)
+		}
 	}
+
+	overrides := AdjustmentOverrides{
+
+		Changed:      noop_Adjustment_Changed,
+		ValueChanged: noop_Adjustment_ValueChanged,
+	}
+	if pclass != nil {
+
+		if pclass.changed != nil {
+			overrides.Changed = v.changed
+		}
+		if pclass.value_changed != nil {
+			overrides.ValueChanged = v.valueChanged
+		}
+	}
+
+	return overrides
 }
+
+func noop_Adjustment_Changed() {}
+
+func noop_Adjustment_ValueChanged() {}
 
 // Adjustment object represents a value which has an associated lower and upper
 // bound, together with step and page increments, and a page size. It is used
@@ -33307,7 +33427,10 @@ type AlignmentOverrides struct {
 }
 
 func defaultAlignmentOverrides(v *Alignment) AlignmentOverrides {
-	return AlignmentOverrides{}
+
+	overrides := AlignmentOverrides{}
+
+	return overrides
 }
 
 // Alignment widget controls the alignment and size of its child widget.
@@ -33541,10 +33664,28 @@ type AppChooserButtonOverrides struct {
 }
 
 func defaultAppChooserButtonOverrides(v *AppChooserButton) AppChooserButtonOverrides {
-	return AppChooserButtonOverrides{
-		CustomItemActivated: v.customItemActivated,
+	var pclass *C.GtkAppChooserButtonClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeAppChooserButton)) != C.FALSE {
+			pclass = (*C.GtkAppChooserButtonClass)(parentClass)
+		}
 	}
+
+	overrides := AppChooserButtonOverrides{
+
+		CustomItemActivated: noop_AppChooserButton_CustomItemActivated,
+	}
+	if pclass != nil {
+
+		if pclass.custom_item_activated != nil {
+			overrides.CustomItemActivated = v.customItemActivated
+		}
+	}
+
+	return overrides
 }
+
+func noop_AppChooserButton_CustomItemActivated(itemName string) {}
 
 // AppChooserButton is a widget that lets the user select an application.
 // It implements the AppChooser interface.
@@ -33914,7 +34055,10 @@ type AppChooserDialogOverrides struct {
 }
 
 func defaultAppChooserDialogOverrides(v *AppChooserDialog) AppChooserDialogOverrides {
-	return AppChooserDialogOverrides{}
+
+	overrides := AppChooserDialogOverrides{}
+
+	return overrides
 }
 
 // AppChooserDialog shows a AppChooserWidget inside a Dialog.
@@ -34171,12 +34315,40 @@ type AppChooserWidgetOverrides struct {
 }
 
 func defaultAppChooserWidgetOverrides(v *AppChooserWidget) AppChooserWidgetOverrides {
-	return AppChooserWidgetOverrides{
-		ApplicationActivated: v.applicationActivated,
-		ApplicationSelected:  v.applicationSelected,
-		PopulatePopup:        v.populatePopup,
+	var pclass *C.GtkAppChooserWidgetClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeAppChooserWidget)) != C.FALSE {
+			pclass = (*C.GtkAppChooserWidgetClass)(parentClass)
+		}
 	}
+
+	overrides := AppChooserWidgetOverrides{
+
+		ApplicationActivated: noop_AppChooserWidget_ApplicationActivated,
+		ApplicationSelected:  noop_AppChooserWidget_ApplicationSelected,
+		PopulatePopup:        noop_AppChooserWidget_PopulatePopup,
+	}
+	if pclass != nil {
+
+		if pclass.application_activated != nil {
+			overrides.ApplicationActivated = v.applicationActivated
+		}
+		if pclass.application_selected != nil {
+			overrides.ApplicationSelected = v.applicationSelected
+		}
+		if pclass.populate_popup != nil {
+			overrides.PopulatePopup = v.populatePopup
+		}
+	}
+
+	return overrides
 }
+
+func noop_AppChooserWidget_ApplicationActivated(appInfo gio.AppInfor) {}
+
+func noop_AppChooserWidget_ApplicationSelected(appInfo gio.AppInfor) {}
+
+func noop_AppChooserWidget_PopulatePopup(menu *Menu, appInfo gio.AppInfor) {}
 
 // AppChooserWidget is a widget for selecting applications. It is the main
 // building block for AppChooserDialog. Most applications only need to use the
@@ -34665,11 +34837,34 @@ type ApplicationOverrides struct {
 }
 
 func defaultApplicationOverrides(v *Application) ApplicationOverrides {
-	return ApplicationOverrides{
-		WindowAdded:   v.windowAdded,
-		WindowRemoved: v.windowRemoved,
+	var pclass *C.GtkApplicationClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeApplication)) != C.FALSE {
+			pclass = (*C.GtkApplicationClass)(parentClass)
+		}
 	}
+
+	overrides := ApplicationOverrides{
+
+		WindowAdded:   noop_Application_WindowAdded,
+		WindowRemoved: noop_Application_WindowRemoved,
+	}
+	if pclass != nil {
+
+		if pclass.window_added != nil {
+			overrides.WindowAdded = v.windowAdded
+		}
+		if pclass.window_removed != nil {
+			overrides.WindowRemoved = v.windowRemoved
+		}
+	}
+
+	return overrides
 }
+
+func noop_Application_WindowAdded(window *Window) {}
+
+func noop_Application_WindowRemoved(window *Window) {}
 
 // Application is a class that handles many important aspects of a GTK+
 // application in a convenient fashion, without enforcing a one-size-fits-all
@@ -35667,7 +35862,10 @@ type ApplicationWindowOverrides struct {
 }
 
 func defaultApplicationWindowOverrides(v *ApplicationWindow) ApplicationWindowOverrides {
-	return ApplicationWindowOverrides{}
+
+	overrides := ApplicationWindowOverrides{}
+
+	return overrides
 }
 
 // ApplicationWindow is a Window subclass that offers some extra
@@ -35983,7 +36181,10 @@ type ArrowOverrides struct {
 }
 
 func defaultArrowOverrides(v *Arrow) ArrowOverrides {
-	return ArrowOverrides{}
+
+	overrides := ArrowOverrides{}
+
+	return overrides
 }
 
 // Arrow should be used to draw simple arrows that need to point in one of the
@@ -36111,7 +36312,10 @@ type ArrowAccessibleOverrides struct {
 }
 
 func defaultArrowAccessibleOverrides(v *ArrowAccessible) ArrowAccessibleOverrides {
-	return ArrowAccessibleOverrides{}
+
+	overrides := ArrowAccessibleOverrides{}
+
+	return overrides
 }
 
 type ArrowAccessible struct {
@@ -36168,7 +36372,10 @@ type AspectFrameOverrides struct {
 }
 
 func defaultAspectFrameOverrides(v *AspectFrame) AspectFrameOverrides {
-	return AspectFrameOverrides{}
+
+	overrides := AspectFrameOverrides{}
+
+	return overrides
 }
 
 // AspectFrame is useful when you want pack a widget so that it can resize but
@@ -36330,13 +36537,46 @@ type AssistantOverrides struct {
 }
 
 func defaultAssistantOverrides(v *Assistant) AssistantOverrides {
-	return AssistantOverrides{
-		Apply:   v.apply,
-		Cancel:  v.cancel,
-		Close:   v.close,
-		Prepare: v.prepare,
+	var pclass *C.GtkAssistantClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeAssistant)) != C.FALSE {
+			pclass = (*C.GtkAssistantClass)(parentClass)
+		}
 	}
+
+	overrides := AssistantOverrides{
+
+		Apply:   noop_Assistant_Apply,
+		Cancel:  noop_Assistant_Cancel,
+		Close:   noop_Assistant_Close,
+		Prepare: noop_Assistant_Prepare,
+	}
+	if pclass != nil {
+
+		if pclass.apply != nil {
+			overrides.Apply = v.apply
+		}
+		if pclass.cancel != nil {
+			overrides.Cancel = v.cancel
+		}
+		if pclass.close != nil {
+			overrides.Close = v.close
+		}
+		if pclass.prepare != nil {
+			overrides.Prepare = v.prepare
+		}
+	}
+
+	return overrides
 }
+
+func noop_Assistant_Apply() {}
+
+func noop_Assistant_Cancel() {}
+
+func noop_Assistant_Close() {}
+
+func noop_Assistant_Prepare(page Widgetter) {}
 
 // Assistant is a widget used to represent a generally complex operation
 // splitted in several steps, guiding the user through its pages and controlling
@@ -37243,7 +37483,10 @@ type BinOverrides struct {
 }
 
 func defaultBinOverrides(v *Bin) BinOverrides {
-	return BinOverrides{}
+
+	overrides := BinOverrides{}
+
+	return overrides
 }
 
 // Bin widget is a container with just one child. It is not very useful itself,
@@ -37363,7 +37606,10 @@ type BooleanCellAccessibleOverrides struct {
 }
 
 func defaultBooleanCellAccessibleOverrides(v *BooleanCellAccessible) BooleanCellAccessibleOverrides {
-	return BooleanCellAccessibleOverrides{}
+
+	overrides := BooleanCellAccessibleOverrides{}
+
+	return overrides
 }
 
 type BooleanCellAccessible struct {
@@ -37429,7 +37675,10 @@ type BoxOverrides struct {
 }
 
 func defaultBoxOverrides(v *Box) BoxOverrides {
-	return BoxOverrides{}
+
+	overrides := BoxOverrides{}
+
+	return overrides
 }
 
 // Box widget arranges child widgets into a single row or column, depending upon
@@ -37955,13 +38204,26 @@ type BuilderOverrides struct {
 	// The function returns the following values:
 	//
 	//   - gType found for type_name or TYPE_INVALID if no type was found.
-	TypeFromName func(typeName string) coreglib.Type
+	TypeFromName func(typeName string) coreglib.Type // optional
 }
 
 func defaultBuilderOverrides(v *Builder) BuilderOverrides {
-	return BuilderOverrides{
-		TypeFromName: v.typeFromName,
+	var pclass *C.GtkBuilderClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeBuilder)) != C.FALSE {
+			pclass = (*C.GtkBuilderClass)(parentClass)
+		}
 	}
+
+	overrides := BuilderOverrides{}
+	if pclass != nil {
+
+		if pclass.get_type_from_name != nil {
+			overrides.TypeFromName = v.typeFromName
+		}
+	}
+
+	return overrides
 }
 
 // Builder is an auxiliary object that reads textual descriptions of a user
@@ -39015,15 +39277,58 @@ type ButtonOverrides struct {
 }
 
 func defaultButtonOverrides(v *Button) ButtonOverrides {
-	return ButtonOverrides{
-		Activate: v.activate,
-		Clicked:  v.clicked,
-		Enter:    v.enter,
-		Leave:    v.leave,
-		Pressed:  v.pressed,
-		Released: v.released,
+	var pclass *C.GtkButtonClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeButton)) != C.FALSE {
+			pclass = (*C.GtkButtonClass)(parentClass)
+		}
 	}
+
+	overrides := ButtonOverrides{
+
+		Activate: noop_Button_Activate,
+		Clicked:  noop_Button_Clicked,
+		Enter:    noop_Button_Enter,
+		Leave:    noop_Button_Leave,
+		Pressed:  noop_Button_Pressed,
+		Released: noop_Button_Released,
+	}
+	if pclass != nil {
+
+		if pclass.activate != nil {
+			overrides.Activate = v.activate
+		}
+		if pclass.clicked != nil {
+			overrides.Clicked = v.clicked
+		}
+		if pclass.enter != nil {
+			overrides.Enter = v.enter
+		}
+		if pclass.leave != nil {
+			overrides.Leave = v.leave
+		}
+		if pclass.pressed != nil {
+			overrides.Pressed = v.pressed
+		}
+		if pclass.released != nil {
+			overrides.Released = v.released
+		}
+	}
+
+	return overrides
 }
+
+func noop_Button_Activate() {}
+
+func noop_Button_Clicked() {}
+
+func noop_Button_Enter() {}
+
+func noop_Button_Leave() {}
+
+func noop_Button_Pressed() {}
+
+func noop_Button_Released() {}
 
 // Button widget is generally used to trigger a callback function that is called
 // when the button is pressed. The various signals and how to use them are
@@ -39948,7 +40253,10 @@ type ButtonAccessibleOverrides struct {
 }
 
 func defaultButtonAccessibleOverrides(v *ButtonAccessible) ButtonAccessibleOverrides {
-	return ButtonAccessibleOverrides{}
+
+	overrides := ButtonAccessibleOverrides{}
+
+	return overrides
 }
 
 type ButtonAccessible struct {
@@ -40013,7 +40321,10 @@ type ButtonBoxOverrides struct {
 }
 
 func defaultButtonBoxOverrides(v *ButtonBox) ButtonBoxOverrides {
-	return ButtonBoxOverrides{}
+
+	overrides := ButtonBoxOverrides{}
+
+	return overrides
 }
 
 type ButtonBox struct {
@@ -40267,16 +40578,64 @@ type CalendarOverrides struct {
 }
 
 func defaultCalendarOverrides(v *Calendar) CalendarOverrides {
-	return CalendarOverrides{
-		DaySelected:            v.daySelected,
-		DaySelectedDoubleClick: v.daySelectedDoubleClick,
-		MonthChanged:           v.monthChanged,
-		NextMonth:              v.nextMonth,
-		NextYear:               v.nextYear,
-		PrevMonth:              v.prevMonth,
-		PrevYear:               v.prevYear,
+	var pclass *C.GtkCalendarClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeCalendar)) != C.FALSE {
+			pclass = (*C.GtkCalendarClass)(parentClass)
+		}
 	}
+
+	overrides := CalendarOverrides{
+
+		DaySelected:            noop_Calendar_DaySelected,
+		DaySelectedDoubleClick: noop_Calendar_DaySelectedDoubleClick,
+		MonthChanged:           noop_Calendar_MonthChanged,
+		NextMonth:              noop_Calendar_NextMonth,
+		NextYear:               noop_Calendar_NextYear,
+		PrevMonth:              noop_Calendar_PrevMonth,
+		PrevYear:               noop_Calendar_PrevYear,
+	}
+	if pclass != nil {
+
+		if pclass.day_selected != nil {
+			overrides.DaySelected = v.daySelected
+		}
+		if pclass.day_selected_double_click != nil {
+			overrides.DaySelectedDoubleClick = v.daySelectedDoubleClick
+		}
+		if pclass.month_changed != nil {
+			overrides.MonthChanged = v.monthChanged
+		}
+		if pclass.next_month != nil {
+			overrides.NextMonth = v.nextMonth
+		}
+		if pclass.next_year != nil {
+			overrides.NextYear = v.nextYear
+		}
+		if pclass.prev_month != nil {
+			overrides.PrevMonth = v.prevMonth
+		}
+		if pclass.prev_year != nil {
+			overrides.PrevYear = v.prevYear
+		}
+	}
+
+	return overrides
 }
+
+func noop_Calendar_DaySelected() {}
+
+func noop_Calendar_DaySelectedDoubleClick() {}
+
+func noop_Calendar_MonthChanged() {}
+
+func noop_Calendar_NextMonth() {}
+
+func noop_Calendar_NextYear() {}
+
+func noop_Calendar_PrevMonth() {}
+
+func noop_Calendar_PrevYear() {}
 
 // Calendar is a widget that displays a Gregorian calendar, one month at a time.
 // It can be created with gtk_calendar_new().
@@ -40809,10 +41168,28 @@ type CellAccessibleOverrides struct {
 }
 
 func defaultCellAccessibleOverrides(v *CellAccessible) CellAccessibleOverrides {
-	return CellAccessibleOverrides{
-		UpdateCache: v.updateCache,
+	var pclass *C.GtkCellAccessibleClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeCellAccessible)) != C.FALSE {
+			pclass = (*C.GtkCellAccessibleClass)(parentClass)
+		}
 	}
+
+	overrides := CellAccessibleOverrides{
+
+		UpdateCache: noop_CellAccessible_UpdateCache,
+	}
+	if pclass != nil {
+
+		if pclass.update_cache != nil {
+			overrides.UpdateCache = v.updateCache
+		}
+	}
+
+	return overrides
 }
+
+func noop_CellAccessible_UpdateCache(emitSignal bool) {}
 
 type CellAccessible struct {
 	_ [0]func() // equal guard
@@ -40915,7 +41292,7 @@ type CellAreaOverrides struct {
 	// The function returns the following values:
 	//
 	//   - ok: whether area was successfully activated.
-	Activate func(context *CellAreaContext, widget Widgetter, cellArea *gdk.Rectangle, flags CellRendererState, editOnly bool) bool
+	Activate func(context *CellAreaContext, widget Widgetter, cellArea *gdk.Rectangle, flags CellRendererState, editOnly bool) bool // optional
 	// Add adds renderer to area with the default child cell properties.
 	//
 	// The function takes the following parameters:
@@ -40950,7 +41327,7 @@ type CellAreaOverrides struct {
 	// The function returns the following values:
 	//
 	//   - cellAreaContext: newly created CellAreaContext copy of context.
-	CopyContext func(context *CellAreaContext) *CellAreaContext
+	CopyContext func(context *CellAreaContext) *CellAreaContext // optional
 	// CreateContext creates a CellAreaContext to be used with area for all
 	// purposes. CellAreaContext stores geometry information for rows for which
 	// it was operated on, it is important to use the same context for the same
@@ -40962,7 +41339,7 @@ type CellAreaOverrides struct {
 	//
 	//   - cellAreaContext: newly created CellAreaContext which can be used with
 	//     area.
-	CreateContext func() *CellAreaContext
+	CreateContext func() *CellAreaContext // optional
 	// Event delegates event handling to a CellArea.
 	//
 	// The function takes the following parameters:
@@ -40976,7 +41353,7 @@ type CellAreaOverrides struct {
 	// The function returns the following values:
 	//
 	//   - gint: TRUE if the event was handled by area.
-	Event func(context *CellAreaContext, widget Widgetter, event *gdk.Event, cellArea *gdk.Rectangle, flags CellRendererState) int
+	Event func(context *CellAreaContext, widget Widgetter, event *gdk.Event, cellArea *gdk.Rectangle, flags CellRendererState) int // optional
 	// Focus: this should be called by the area’s owning layout widget when
 	// focus is to be passed to area, or moved within area for a given direction
 	// and row data.
@@ -40991,7 +41368,7 @@ type CellAreaOverrides struct {
 	// The function returns the following values:
 	//
 	//   - ok: TRUE if focus remains inside area as a result of this call.
-	Focus func(direction DirectionType) bool
+	Focus func(direction DirectionType) bool // optional
 	// PreferredHeight retrieves a cell area’s initial minimum and natural
 	// height.
 	//
@@ -41012,7 +41389,7 @@ type CellAreaOverrides struct {
 	//     or NULL.
 	//   - naturalHeight (optional): location to store the natural height,
 	//     or NULL.
-	PreferredHeight func(context *CellAreaContext, widget Widgetter) (minimumHeight, naturalHeight int)
+	PreferredHeight func(context *CellAreaContext, widget Widgetter) (minimumHeight, naturalHeight int) // optional
 	// PreferredHeightForWidth retrieves a cell area’s minimum and natural
 	// height if it would be given the specified width.
 	//
@@ -41040,7 +41417,7 @@ type CellAreaOverrides struct {
 	//     or NULL.
 	//   - naturalHeight (optional): location to store the natural height,
 	//     or NULL.
-	PreferredHeightForWidth func(context *CellAreaContext, widget Widgetter, width int) (minimumHeight, naturalHeight int)
+	PreferredHeightForWidth func(context *CellAreaContext, widget Widgetter, width int) (minimumHeight, naturalHeight int) // optional
 	// PreferredWidth retrieves a cell area’s initial minimum and natural width.
 	//
 	// area will store some geometrical information in context along the way;
@@ -41060,7 +41437,7 @@ type CellAreaOverrides struct {
 	//     or NULL.
 	//   - naturalWidth (optional): location to store the natural width,
 	//     or NULL.
-	PreferredWidth func(context *CellAreaContext, widget Widgetter) (minimumWidth, naturalWidth int)
+	PreferredWidth func(context *CellAreaContext, widget Widgetter) (minimumWidth, naturalWidth int) // optional
 	// PreferredWidthForHeight retrieves a cell area’s minimum and natural width
 	// if it would be given the specified height.
 	//
@@ -41088,21 +41465,21 @@ type CellAreaOverrides struct {
 	//     or NULL.
 	//   - naturalWidth (optional): location to store the natural width,
 	//     or NULL.
-	PreferredWidthForHeight func(context *CellAreaContext, widget Widgetter, height int) (minimumWidth, naturalWidth int)
+	PreferredWidthForHeight func(context *CellAreaContext, widget Widgetter, height int) (minimumWidth, naturalWidth int) // optional
 	// RequestMode gets whether the area prefers a height-for-width layout or a
 	// width-for-height layout.
 	//
 	// The function returns the following values:
 	//
 	//   - sizeRequestMode preferred by area.
-	RequestMode func() SizeRequestMode
+	RequestMode func() SizeRequestMode // optional
 	// IsActivatable returns whether the area can do anything when activated,
 	// after applying new attributes to area.
 	//
 	// The function returns the following values:
 	//
 	//   - ok: whether area can do anything when activated.
-	IsActivatable func() bool
+	IsActivatable func() bool // optional
 	// Remove removes renderer from area.
 	//
 	// The function takes the following parameters:
@@ -41126,23 +41503,80 @@ type CellAreaOverrides struct {
 }
 
 func defaultCellAreaOverrides(v *CellArea) CellAreaOverrides {
-	return CellAreaOverrides{
-		Activate:                v.activate,
-		Add:                     v.add,
-		ApplyAttributes:         v.applyAttributes,
-		CopyContext:             v.copyContext,
-		CreateContext:           v.createContext,
-		Event:                   v.event,
-		Focus:                   v.focus,
-		PreferredHeight:         v.preferredHeight,
-		PreferredHeightForWidth: v.preferredHeightForWidth,
-		PreferredWidth:          v.preferredWidth,
-		PreferredWidthForHeight: v.preferredWidthForHeight,
-		RequestMode:             v.requestMode,
-		IsActivatable:           v.isActivatable,
-		Remove:                  v.remove,
-		Render:                  v.render,
+	var pclass *C.GtkCellAreaClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeCellArea)) != C.FALSE {
+			pclass = (*C.GtkCellAreaClass)(parentClass)
+		}
 	}
+
+	overrides := CellAreaOverrides{
+
+		Add:             noop_CellArea_Add,
+		ApplyAttributes: noop_CellArea_ApplyAttributes,
+		Remove:          noop_CellArea_Remove,
+		Render:          noop_CellArea_Render,
+	}
+	if pclass != nil {
+
+		if pclass.activate != nil {
+			overrides.Activate = v.activate
+		}
+		if pclass.add != nil {
+			overrides.Add = v.add
+		}
+		if pclass.apply_attributes != nil {
+			overrides.ApplyAttributes = v.applyAttributes
+		}
+		if pclass.copy_context != nil {
+			overrides.CopyContext = v.copyContext
+		}
+		if pclass.create_context != nil {
+			overrides.CreateContext = v.createContext
+		}
+		if pclass.event != nil {
+			overrides.Event = v.event
+		}
+		if pclass.focus != nil {
+			overrides.Focus = v.focus
+		}
+		if pclass.get_preferred_height != nil {
+			overrides.PreferredHeight = v.preferredHeight
+		}
+		if pclass.get_preferred_height_for_width != nil {
+			overrides.PreferredHeightForWidth = v.preferredHeightForWidth
+		}
+		if pclass.get_preferred_width != nil {
+			overrides.PreferredWidth = v.preferredWidth
+		}
+		if pclass.get_preferred_width_for_height != nil {
+			overrides.PreferredWidthForHeight = v.preferredWidthForHeight
+		}
+		if pclass.get_request_mode != nil {
+			overrides.RequestMode = v.requestMode
+		}
+		if pclass.is_activatable != nil {
+			overrides.IsActivatable = v.isActivatable
+		}
+		if pclass.remove != nil {
+			overrides.Remove = v.remove
+		}
+		if pclass.render != nil {
+			overrides.Render = v.render
+		}
+	}
+
+	return overrides
+}
+
+func noop_CellArea_Add(renderer CellRendererer) {}
+
+func noop_CellArea_ApplyAttributes(treeModel TreeModeller, iter *TreeIter, isExpander, isExpanded bool) {
+}
+
+func noop_CellArea_Remove(renderer CellRendererer) {}
+
+func noop_CellArea_Render(context *CellAreaContext, widget Widgetter, cr *cairo.Context, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState, paintFocus bool) {
 }
 
 // CellArea is an abstract class for CellLayout widgets (also referred to as
@@ -43424,7 +43858,10 @@ type CellAreaBoxOverrides struct {
 }
 
 func defaultCellAreaBoxOverrides(v *CellAreaBox) CellAreaBoxOverrides {
-	return CellAreaBoxOverrides{}
+
+	overrides := CellAreaBoxOverrides{}
+
+	return overrides
 }
 
 // CellAreaBox renders cell renderers into a row or a column depending on its
@@ -43667,7 +44104,7 @@ type CellAreaContextOverrides struct {
 	//     or NULL.
 	//   - naturalHeight (optional): location to store the natural height,
 	//     or NULL.
-	PreferredHeightForWidth func(width int) (minimumHeight, naturalHeight int)
+	PreferredHeightForWidth func(width int) (minimumHeight, naturalHeight int) // optional
 	// PreferredWidthForHeight gets the accumulative preferred width for height
 	// for all rows which have been requested for the same said height with this
 	// context.
@@ -43685,7 +44122,7 @@ type CellAreaContextOverrides struct {
 	//     or NULL.
 	//   - naturalWidth (optional): location to store the natural width,
 	//     or NULL.
-	PreferredWidthForHeight func(height int) (minimumWidth, naturalWidth int)
+	PreferredWidthForHeight func(height int) (minimumWidth, naturalWidth int) // optional
 	// Reset resets any previously cached request and allocation data.
 	//
 	// When underlying TreeModel data changes its important to reset the
@@ -43709,13 +44146,40 @@ type CellAreaContextOverrides struct {
 }
 
 func defaultCellAreaContextOverrides(v *CellAreaContext) CellAreaContextOverrides {
-	return CellAreaContextOverrides{
-		Allocate:                v.allocate,
-		PreferredHeightForWidth: v.preferredHeightForWidth,
-		PreferredWidthForHeight: v.preferredWidthForHeight,
-		Reset:                   v.reset,
+	var pclass *C.GtkCellAreaContextClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeCellAreaContext)) != C.FALSE {
+			pclass = (*C.GtkCellAreaContextClass)(parentClass)
+		}
 	}
+
+	overrides := CellAreaContextOverrides{
+
+		Allocate: noop_CellAreaContext_Allocate,
+		Reset:    noop_CellAreaContext_Reset,
+	}
+	if pclass != nil {
+
+		if pclass.allocate != nil {
+			overrides.Allocate = v.allocate
+		}
+		if pclass.get_preferred_height_for_width != nil {
+			overrides.PreferredHeightForWidth = v.preferredHeightForWidth
+		}
+		if pclass.get_preferred_width_for_height != nil {
+			overrides.PreferredWidthForHeight = v.preferredWidthForHeight
+		}
+		if pclass.reset != nil {
+			overrides.Reset = v.reset
+		}
+	}
+
+	return overrides
 }
+
+func noop_CellAreaContext_Allocate(width, height int) {}
+
+func noop_CellAreaContext_Reset() {}
 
 // CellAreaContext object is created by a given CellArea implementation via its
 // CellAreaClass.create_context() virtual method and is used to store cell sizes
@@ -44262,7 +44726,7 @@ type CellRendererOverrides struct {
 	// The function returns the following values:
 	//
 	//   - ok: TRUE if the event was consumed/handled.
-	Activate func(event *gdk.Event, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) bool
+	Activate func(event *gdk.Event, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) bool // optional
 	// EditingCanceled: signal gets emitted when the user cancels the process of
 	// editing a cell.
 	EditingCanceled func()
@@ -44287,7 +44751,7 @@ type CellRendererOverrides struct {
 	//
 	//   - alignedArea: return location for the space inside cell_area that
 	//     would acually be used to render.
-	AlignedArea func(widget Widgetter, flags CellRendererState, cellArea *gdk.Rectangle) *gdk.Rectangle
+	AlignedArea func(widget Widgetter, flags CellRendererState, cellArea *gdk.Rectangle) *gdk.Rectangle // optional
 	// PreferredHeight retreives a renderer’s natural size when rendered to
 	// widget.
 	//
@@ -44299,7 +44763,7 @@ type CellRendererOverrides struct {
 	//
 	//   - minimumSize (optional): location to store the minimum size, or NULL.
 	//   - naturalSize (optional): location to store the natural size, or NULL.
-	PreferredHeight func(widget Widgetter) (minimumSize, naturalSize int)
+	PreferredHeight func(widget Widgetter) (minimumSize, naturalSize int) // optional
 	// PreferredHeightForWidth retreives a cell renderers’s minimum and natural
 	// height if it were rendered to widget with the specified width.
 	//
@@ -44314,7 +44778,7 @@ type CellRendererOverrides struct {
 	//     or NULL.
 	//   - naturalHeight (optional): location for storing the preferred size,
 	//     or NULL.
-	PreferredHeightForWidth func(widget Widgetter, width int) (minimumHeight, naturalHeight int)
+	PreferredHeightForWidth func(widget Widgetter, width int) (minimumHeight, naturalHeight int) // optional
 	// PreferredWidth retreives a renderer’s natural size when rendered to
 	// widget.
 	//
@@ -44326,7 +44790,7 @@ type CellRendererOverrides struct {
 	//
 	//   - minimumSize (optional): location to store the minimum size, or NULL.
 	//   - naturalSize (optional): location to store the natural size, or NULL.
-	PreferredWidth func(widget Widgetter) (minimumSize, naturalSize int)
+	PreferredWidth func(widget Widgetter) (minimumSize, naturalSize int) // optional
 	// PreferredWidthForHeight retreives a cell renderers’s minimum and natural
 	// width if it were rendered to widget with the specified height.
 	//
@@ -44341,14 +44805,14 @@ type CellRendererOverrides struct {
 	//     or NULL.
 	//   - naturalWidth (optional): location for storing the preferred size,
 	//     or NULL.
-	PreferredWidthForHeight func(widget Widgetter, height int) (minimumWidth, naturalWidth int)
+	PreferredWidthForHeight func(widget Widgetter, height int) (minimumWidth, naturalWidth int) // optional
 	// RequestMode gets whether the cell renderer prefers a height-for-width
 	// layout or a width-for-height layout.
 	//
 	// The function returns the following values:
 	//
 	//   - sizeRequestMode preferred by this renderer.
-	RequestMode func() SizeRequestMode
+	RequestMode func() SizeRequestMode // optional
 	// Size obtains the width and height needed to render the cell. Used by view
 	// widgets to determine the appropriate size for the cell_area passed to
 	// gtk_cell_renderer_render(). If cell_area is not NULL, fills in the x and
@@ -44374,7 +44838,7 @@ type CellRendererOverrides struct {
 	//     or NULL.
 	//   - height (optional): location to return height needed to render a cell,
 	//     or NULL.
-	Size func(widget Widgetter, cellArea *gdk.Rectangle) (xOffset, yOffset, width, height int)
+	Size func(widget Widgetter, cellArea *gdk.Rectangle) (xOffset, yOffset, width, height int) // optional
 	// Render invokes the virtual render function of the CellRenderer. The three
 	// passed-in rectangles are areas in cr. Most renderers will draw within
 	// cell_area; the xalign, yalign, xpad, and ypad fields of the CellRenderer
@@ -44411,24 +44875,71 @@ type CellRendererOverrides struct {
 	//
 	//   - cellEditable (optional): new CellEditable for editing this cell,
 	//     or NULL if editing is not possible.
-	StartEditing func(event *gdk.Event, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) *CellEditable
+	StartEditing func(event *gdk.Event, widget Widgetter, path string, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) *CellEditable // optional
 }
 
 func defaultCellRendererOverrides(v *CellRenderer) CellRendererOverrides {
-	return CellRendererOverrides{
-		Activate:                v.activate,
-		EditingCanceled:         v.editingCanceled,
-		EditingStarted:          v.editingStarted,
-		AlignedArea:             v.alignedArea,
-		PreferredHeight:         v.preferredHeight,
-		PreferredHeightForWidth: v.preferredHeightForWidth,
-		PreferredWidth:          v.preferredWidth,
-		PreferredWidthForHeight: v.preferredWidthForHeight,
-		RequestMode:             v.requestMode,
-		Size:                    v.size,
-		Render:                  v.render,
-		StartEditing:            v.startEditing,
+	var pclass *C.GtkCellRendererClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeCellRenderer)) != C.FALSE {
+			pclass = (*C.GtkCellRendererClass)(parentClass)
+		}
 	}
+
+	overrides := CellRendererOverrides{
+
+		EditingCanceled: noop_CellRenderer_EditingCanceled,
+		EditingStarted:  noop_CellRenderer_EditingStarted,
+		Render:          noop_CellRenderer_Render,
+	}
+	if pclass != nil {
+
+		if pclass.activate != nil {
+			overrides.Activate = v.activate
+		}
+		if pclass.editing_canceled != nil {
+			overrides.EditingCanceled = v.editingCanceled
+		}
+		if pclass.editing_started != nil {
+			overrides.EditingStarted = v.editingStarted
+		}
+		if pclass.get_aligned_area != nil {
+			overrides.AlignedArea = v.alignedArea
+		}
+		if pclass.get_preferred_height != nil {
+			overrides.PreferredHeight = v.preferredHeight
+		}
+		if pclass.get_preferred_height_for_width != nil {
+			overrides.PreferredHeightForWidth = v.preferredHeightForWidth
+		}
+		if pclass.get_preferred_width != nil {
+			overrides.PreferredWidth = v.preferredWidth
+		}
+		if pclass.get_preferred_width_for_height != nil {
+			overrides.PreferredWidthForHeight = v.preferredWidthForHeight
+		}
+		if pclass.get_request_mode != nil {
+			overrides.RequestMode = v.requestMode
+		}
+		if pclass.get_size != nil {
+			overrides.Size = v.size
+		}
+		if pclass.render != nil {
+			overrides.Render = v.render
+		}
+		if pclass.start_editing != nil {
+			overrides.StartEditing = v.startEditing
+		}
+	}
+
+	return overrides
+}
+
+func noop_CellRenderer_EditingCanceled() {}
+
+func noop_CellRenderer_EditingStarted(editable CellEditabler, path string) {}
+
+func noop_CellRenderer_Render(cr *cairo.Context, widget Widgetter, backgroundArea, cellArea *gdk.Rectangle, flags CellRendererState) {
 }
 
 // CellRenderer is a base class of a set of objects used for rendering a cell
@@ -45855,10 +46366,34 @@ type CellRendererAccelOverrides struct {
 }
 
 func defaultCellRendererAccelOverrides(v *CellRendererAccel) CellRendererAccelOverrides {
-	return CellRendererAccelOverrides{
-		AccelCleared: v.accelCleared,
-		AccelEdited:  v.accelEdited,
+	var pclass *C.GtkCellRendererAccelClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeCellRendererAccel)) != C.FALSE {
+			pclass = (*C.GtkCellRendererAccelClass)(parentClass)
+		}
 	}
+
+	overrides := CellRendererAccelOverrides{
+
+		AccelCleared: noop_CellRendererAccel_AccelCleared,
+		AccelEdited:  noop_CellRendererAccel_AccelEdited,
+	}
+	if pclass != nil {
+
+		if pclass.accel_cleared != nil {
+			overrides.AccelCleared = v.accelCleared
+		}
+		if pclass.accel_edited != nil {
+			overrides.AccelEdited = v.accelEdited
+		}
+	}
+
+	return overrides
+}
+
+func noop_CellRendererAccel_AccelCleared(pathString string) {}
+
+func noop_CellRendererAccel_AccelEdited(pathString string, accelKey uint, accelMods gdk.ModifierType, hardwareKeycode uint) {
 }
 
 // CellRendererAccel displays a keyboard accelerator (i.e. a key combination
@@ -45996,7 +46531,10 @@ type CellRendererComboOverrides struct {
 }
 
 func defaultCellRendererComboOverrides(v *CellRendererCombo) CellRendererComboOverrides {
-	return CellRendererComboOverrides{}
+
+	overrides := CellRendererComboOverrides{}
+
+	return overrides
 }
 
 // CellRendererCombo renders text in a cell like CellRendererText from which
@@ -46094,7 +46632,10 @@ type CellRendererPixbufOverrides struct {
 }
 
 func defaultCellRendererPixbufOverrides(v *CellRendererPixbuf) CellRendererPixbufOverrides {
-	return CellRendererPixbufOverrides{}
+
+	overrides := CellRendererPixbufOverrides{}
+
+	return overrides
 }
 
 // CellRendererPixbuf can be used to render an image in a cell. It allows to
@@ -46174,7 +46715,10 @@ type CellRendererProgressOverrides struct {
 }
 
 func defaultCellRendererProgressOverrides(v *CellRendererProgress) CellRendererProgressOverrides {
-	return CellRendererProgressOverrides{}
+
+	overrides := CellRendererProgressOverrides{}
+
+	return overrides
 }
 
 // CellRendererProgress renders a numeric value as a progress par in a cell.
@@ -46247,7 +46791,10 @@ type CellRendererSpinOverrides struct {
 }
 
 func defaultCellRendererSpinOverrides(v *CellRendererSpin) CellRendererSpinOverrides {
-	return CellRendererSpinOverrides{}
+
+	overrides := CellRendererSpinOverrides{}
+
+	return overrides
 }
 
 // CellRendererSpin renders text in a cell like CellRendererText from which
@@ -46326,7 +46873,10 @@ type CellRendererSpinnerOverrides struct {
 }
 
 func defaultCellRendererSpinnerOverrides(v *CellRendererSpinner) CellRendererSpinnerOverrides {
-	return CellRendererSpinnerOverrides{}
+
+	overrides := CellRendererSpinnerOverrides{}
+
+	return overrides
 }
 
 // CellRendererSpinner renders a spinning animation in a cell, very similar to
@@ -46405,10 +46955,28 @@ type CellRendererTextOverrides struct {
 }
 
 func defaultCellRendererTextOverrides(v *CellRendererText) CellRendererTextOverrides {
-	return CellRendererTextOverrides{
-		Edited: v.edited,
+	var pclass *C.GtkCellRendererTextClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeCellRendererText)) != C.FALSE {
+			pclass = (*C.GtkCellRendererTextClass)(parentClass)
+		}
 	}
+
+	overrides := CellRendererTextOverrides{
+
+		Edited: noop_CellRendererText_Edited,
+	}
+	if pclass != nil {
+
+		if pclass.edited != nil {
+			overrides.Edited = v.edited
+		}
+	}
+
+	return overrides
 }
+
+func noop_CellRendererText_Edited(path, newText string) {}
 
 // CellRendererText renders a given text in its cell, using the font, color and
 // style information provided by its properties. The text will be ellipsized if
@@ -46545,10 +47113,28 @@ type CellRendererToggleOverrides struct {
 }
 
 func defaultCellRendererToggleOverrides(v *CellRendererToggle) CellRendererToggleOverrides {
-	return CellRendererToggleOverrides{
-		Toggled: v.toggled,
+	var pclass *C.GtkCellRendererToggleClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeCellRendererToggle)) != C.FALSE {
+			pclass = (*C.GtkCellRendererToggleClass)(parentClass)
+		}
 	}
+
+	overrides := CellRendererToggleOverrides{
+
+		Toggled: noop_CellRendererToggle_Toggled,
+	}
+	if pclass != nil {
+
+		if pclass.toggled != nil {
+			overrides.Toggled = v.toggled
+		}
+	}
+
+	return overrides
 }
+
+func noop_CellRendererToggle_Toggled(path string) {}
 
 // CellRendererToggle renders a toggle button in a cell. The button is drawn as
 // a radio or a checkbutton, depending on the CellRendererToggle:radio property.
@@ -46783,7 +47369,10 @@ type CellViewOverrides struct {
 }
 
 func defaultCellViewOverrides(v *CellView) CellViewOverrides {
-	return CellViewOverrides{}
+
+	overrides := CellViewOverrides{}
+
+	return overrides
 }
 
 // CellView displays a single row of a TreeModel using a CellArea and
@@ -47265,10 +47854,28 @@ type CheckButtonOverrides struct {
 }
 
 func defaultCheckButtonOverrides(v *CheckButton) CheckButtonOverrides {
-	return CheckButtonOverrides{
-		DrawIndicator: v.drawIndicator,
+	var pclass *C.GtkCheckButtonClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeCheckButton)) != C.FALSE {
+			pclass = (*C.GtkCheckButtonClass)(parentClass)
+		}
 	}
+
+	overrides := CheckButtonOverrides{
+
+		DrawIndicator: noop_CheckButton_DrawIndicator,
+	}
+	if pclass != nil {
+
+		if pclass.draw_indicator != nil {
+			overrides.DrawIndicator = v.drawIndicator
+		}
+	}
+
+	return overrides
 }
+
+func noop_CheckButton_DrawIndicator(cr *cairo.Context) {}
 
 // CheckButton places a discrete ToggleButton next to a widget, (usually a
 // Label). See the section on ToggleButton widgets for more information about
@@ -47462,11 +48069,34 @@ type CheckMenuItemOverrides struct {
 }
 
 func defaultCheckMenuItemOverrides(v *CheckMenuItem) CheckMenuItemOverrides {
-	return CheckMenuItemOverrides{
-		DrawIndicator: v.drawIndicator,
-		Toggled:       v.toggled,
+	var pclass *C.GtkCheckMenuItemClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeCheckMenuItem)) != C.FALSE {
+			pclass = (*C.GtkCheckMenuItemClass)(parentClass)
+		}
 	}
+
+	overrides := CheckMenuItemOverrides{
+
+		DrawIndicator: noop_CheckMenuItem_DrawIndicator,
+		Toggled:       noop_CheckMenuItem_Toggled,
+	}
+	if pclass != nil {
+
+		if pclass.draw_indicator != nil {
+			overrides.DrawIndicator = v.drawIndicator
+		}
+		if pclass.toggled != nil {
+			overrides.Toggled = v.toggled
+		}
+	}
+
+	return overrides
 }
+
+func noop_CheckMenuItem_DrawIndicator(cr *cairo.Context) {}
+
+func noop_CheckMenuItem_Toggled() {}
 
 // CheckMenuItem is a menu item that maintains the state of a boolean value in
 // addition to a MenuItem usual role in activating application code.
@@ -47822,7 +48452,10 @@ type CheckMenuItemAccessibleOverrides struct {
 }
 
 func defaultCheckMenuItemAccessibleOverrides(v *CheckMenuItemAccessible) CheckMenuItemAccessibleOverrides {
-	return CheckMenuItemAccessibleOverrides{}
+
+	overrides := CheckMenuItemAccessibleOverrides{}
+
+	return overrides
 }
 
 type CheckMenuItemAccessible struct {
@@ -48457,10 +49090,28 @@ type ColorButtonOverrides struct {
 }
 
 func defaultColorButtonOverrides(v *ColorButton) ColorButtonOverrides {
-	return ColorButtonOverrides{
-		ColorSet: v.colorSet,
+	var pclass *C.GtkColorButtonClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeColorButton)) != C.FALSE {
+			pclass = (*C.GtkColorButtonClass)(parentClass)
+		}
 	}
+
+	overrides := ColorButtonOverrides{
+
+		ColorSet: noop_ColorButton_ColorSet,
+	}
+	if pclass != nil {
+
+		if pclass.color_set != nil {
+			overrides.ColorSet = v.colorSet
+		}
+	}
+
+	return overrides
 }
+
+func noop_ColorButton_ColorSet() {}
 
 // ColorButton is a button which displays the currently selected color and
 // allows to open a color selection dialog to change the color. It is suitable
@@ -48826,7 +49477,10 @@ type ColorChooserDialogOverrides struct {
 }
 
 func defaultColorChooserDialogOverrides(v *ColorChooserDialog) ColorChooserDialogOverrides {
-	return ColorChooserDialogOverrides{}
+
+	overrides := ColorChooserDialogOverrides{}
+
+	return overrides
 }
 
 // ColorChooserDialog widget is a dialog for choosing a color. It implements the
@@ -48932,7 +49586,10 @@ type ColorChooserWidgetOverrides struct {
 }
 
 func defaultColorChooserWidgetOverrides(v *ColorChooserWidget) ColorChooserWidgetOverrides {
-	return ColorChooserWidgetOverrides{}
+
+	overrides := ColorChooserWidgetOverrides{}
+
+	return overrides
 }
 
 // ColorChooserWidget widget lets the user select a color. By default,
@@ -49039,10 +49696,28 @@ type ColorSelectionOverrides struct {
 }
 
 func defaultColorSelectionOverrides(v *ColorSelection) ColorSelectionOverrides {
-	return ColorSelectionOverrides{
-		ColorChanged: v.colorChanged,
+	var pclass *C.GtkColorSelectionClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeColorSelection)) != C.FALSE {
+			pclass = (*C.GtkColorSelectionClass)(parentClass)
+		}
 	}
+
+	overrides := ColorSelectionOverrides{
+
+		ColorChanged: noop_ColorSelection_ColorChanged,
+	}
+	if pclass != nil {
+
+		if pclass.color_changed != nil {
+			overrides.ColorChanged = v.colorChanged
+		}
+	}
+
+	return overrides
 }
+
+func noop_ColorSelection_ColorChanged() {}
 
 type ColorSelection struct {
 	_ [0]func() // equal guard
@@ -49597,7 +50272,10 @@ type ColorSelectionDialogOverrides struct {
 }
 
 func defaultColorSelectionDialogOverrides(v *ColorSelectionDialog) ColorSelectionDialogOverrides {
-	return ColorSelectionDialogOverrides{}
+
+	overrides := ColorSelectionDialogOverrides{}
+
+	return overrides
 }
 
 type ColorSelectionDialog struct {
@@ -49723,15 +50401,35 @@ type ComboBoxOverrides struct {
 	Changed func()
 	// FormatEntryText: signal which allows you to change how the text displayed
 	// in a combo box’s entry is displayed.
-	FormatEntryText func(path string) string
+	FormatEntryText func(path string) string // optional
 }
 
 func defaultComboBoxOverrides(v *ComboBox) ComboBoxOverrides {
-	return ComboBoxOverrides{
-		Changed:         v.changed,
-		FormatEntryText: v.formatEntryText,
+	var pclass *C.GtkComboBoxClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeComboBox)) != C.FALSE {
+			pclass = (*C.GtkComboBoxClass)(parentClass)
+		}
 	}
+
+	overrides := ComboBoxOverrides{
+
+		Changed: noop_ComboBox_Changed,
+	}
+	if pclass != nil {
+
+		if pclass.changed != nil {
+			overrides.Changed = v.changed
+		}
+		if pclass.format_entry_text != nil {
+			overrides.FormatEntryText = v.formatEntryText
+		}
+	}
+
+	return overrides
 }
+
+func noop_ComboBox_Changed() {}
 
 // ComboBox is a widget that allows the user to choose from a list of valid
 // choices. The GtkComboBox displays the selected choice. When activated, the
@@ -50872,7 +51570,10 @@ type ComboBoxAccessibleOverrides struct {
 }
 
 func defaultComboBoxAccessibleOverrides(v *ComboBoxAccessible) ComboBoxAccessibleOverrides {
-	return ComboBoxAccessibleOverrides{}
+
+	overrides := ComboBoxAccessibleOverrides{}
+
+	return overrides
 }
 
 type ComboBoxAccessible struct {
@@ -50937,7 +51638,10 @@ type ComboBoxTextOverrides struct {
 }
 
 func defaultComboBoxTextOverrides(v *ComboBoxText) ComboBoxTextOverrides {
-	return ComboBoxTextOverrides{}
+
+	overrides := ComboBoxTextOverrides{}
+
+	return overrides
 }
 
 // ComboBoxText is a simple variant of ComboBox that hides the model-view
@@ -51322,9 +52026,9 @@ type ContainerOverrides struct {
 	// The function returns the following values:
 	//
 	//   - gType: #GType.
-	ChildType func() coreglib.Type
+	ChildType func() coreglib.Type // optional
 	// CompositeName gets a widget’s composite name. Deprecated: 3.10.
-	CompositeName func(child Widgetter) string
+	CompositeName func(child Widgetter) string // optional
 	// PathForChild returns a newly created widget path representing all the
 	// widget hierarchy from the toplevel down to and including child.
 	//
@@ -51335,7 +52039,7 @@ type ContainerOverrides struct {
 	// The function returns the following values:
 	//
 	//   - widgetPath: newly created WidgetPath.
-	PathForChild func(child Widgetter) *WidgetPath
+	PathForChild func(child Widgetter) *WidgetPath // optional
 	// Remove removes widget from container. widget must be inside container.
 	// Note that container will own a reference to widget, and that this
 	// may be the last reference held; so removing a widget from its
@@ -51368,16 +52072,55 @@ type ContainerOverrides struct {
 }
 
 func defaultContainerOverrides(v *Container) ContainerOverrides {
-	return ContainerOverrides{
-		Add:           v.add,
-		CheckResize:   v.checkResize,
-		ChildType:     v.childType,
-		CompositeName: v.compositeName,
-		PathForChild:  v.pathForChild,
-		Remove:        v.remove,
-		SetFocusChild: v.setFocusChild,
+	var pclass *C.GtkContainerClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeContainer)) != C.FALSE {
+			pclass = (*C.GtkContainerClass)(parentClass)
+		}
 	}
+
+	overrides := ContainerOverrides{
+
+		Add:           noop_Container_Add,
+		CheckResize:   noop_Container_CheckResize,
+		Remove:        noop_Container_Remove,
+		SetFocusChild: noop_Container_SetFocusChild,
+	}
+	if pclass != nil {
+
+		if pclass.add != nil {
+			overrides.Add = v.add
+		}
+		if pclass.check_resize != nil {
+			overrides.CheckResize = v.checkResize
+		}
+		if pclass.child_type != nil {
+			overrides.ChildType = v.childType
+		}
+		if pclass.composite_name != nil {
+			overrides.CompositeName = v.compositeName
+		}
+		if pclass.get_path_for_child != nil {
+			overrides.PathForChild = v.pathForChild
+		}
+		if pclass.remove != nil {
+			overrides.Remove = v.remove
+		}
+		if pclass.set_focus_child != nil {
+			overrides.SetFocusChild = v.setFocusChild
+		}
+	}
+
+	return overrides
 }
+
+func noop_Container_Add(widget Widgetter) {}
+
+func noop_Container_CheckResize() {}
+
+func noop_Container_Remove(widget Widgetter) {}
+
+func noop_Container_SetFocusChild(child Widgetter) {}
 
 // Container: GTK+ user interface is constructed by nesting widgets inside
 // widgets. Container widgets are the inner nodes in the resulting tree of
@@ -52534,7 +53277,10 @@ type ContainerAccessibleOverrides struct {
 }
 
 func defaultContainerAccessibleOverrides(v *ContainerAccessible) ContainerAccessibleOverrides {
-	return ContainerAccessibleOverrides{}
+
+	overrides := ContainerAccessibleOverrides{}
+
+	return overrides
 }
 
 type ContainerAccessible struct {
@@ -52586,7 +53332,10 @@ type ContainerCellAccessibleOverrides struct {
 }
 
 func defaultContainerCellAccessibleOverrides(v *ContainerCellAccessible) ContainerCellAccessibleOverrides {
-	return ContainerCellAccessibleOverrides{}
+
+	overrides := ContainerCellAccessibleOverrides{}
+
+	return overrides
 }
 
 type ContainerCellAccessible struct {
@@ -52714,10 +53463,28 @@ type CSSProviderOverrides struct {
 }
 
 func defaultCSSProviderOverrides(v *CSSProvider) CSSProviderOverrides {
-	return CSSProviderOverrides{
-		ParsingError: v.parsingError,
+	var pclass *C.GtkCssProviderClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeCSSProvider)) != C.FALSE {
+			pclass = (*C.GtkCssProviderClass)(parentClass)
+		}
 	}
+
+	overrides := CSSProviderOverrides{
+
+		ParsingError: noop_CSSProvider_ParsingError,
+	}
+	if pclass != nil {
+
+		if pclass.parsing_error != nil {
+			overrides.ParsingError = v.parsingError
+		}
+	}
+
+	return overrides
 }
+
+func noop_CSSProvider_ParsingError(section *CSSSection, err error) {}
 
 // CSSProvider is an object implementing the StyleProvider interface. It is able
 // to parse [CSS-like][css-overview] input in order to style widgets.
@@ -53050,11 +53817,34 @@ type DialogOverrides struct {
 }
 
 func defaultDialogOverrides(v *Dialog) DialogOverrides {
-	return DialogOverrides{
-		Close:    v.close,
-		Response: v.response,
+	var pclass *C.GtkDialogClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeDialog)) != C.FALSE {
+			pclass = (*C.GtkDialogClass)(parentClass)
+		}
 	}
+
+	overrides := DialogOverrides{
+
+		Close:    noop_Dialog_Close,
+		Response: noop_Dialog_Response,
+	}
+	if pclass != nil {
+
+		if pclass.close != nil {
+			overrides.Close = v.close
+		}
+		if pclass.response != nil {
+			overrides.Response = v.response
+		}
+	}
+
+	return overrides
 }
+
+func noop_Dialog_Close() {}
+
+func noop_Dialog_Response(responseId int) {}
 
 // Dialog boxes are a convenient way to prompt the user for a small amount of
 // input, e.g. to display a message, ask a question, or anything else that does
@@ -53635,7 +54425,10 @@ type DrawingAreaOverrides struct {
 }
 
 func defaultDrawingAreaOverrides(v *DrawingArea) DrawingAreaOverrides {
-	return DrawingAreaOverrides{}
+
+	overrides := DrawingAreaOverrides{}
+
+	return overrides
 }
 
 // DrawingArea widget is used for creating custom user interface elements.
@@ -53852,23 +54645,106 @@ type EntryOverrides struct {
 }
 
 func defaultEntryOverrides(v *Entry) EntryOverrides {
-	return EntryOverrides{
-		Activate:         v.activate,
-		Backspace:        v.backspace,
-		CopyClipboard:    v.copyClipboard,
-		CutClipboard:     v.cutClipboard,
-		DeleteFromCursor: v.deleteFromCursor,
-		FrameSize:        v.frameSize,
-		TextAreaSize:     v.textAreaSize,
-		InsertAtCursor:   v.insertAtCursor,
-		InsertEmoji:      v.insertEmoji,
-		MoveCursor:       v.moveCursor,
-		PasteClipboard:   v.pasteClipboard,
-		PopulatePopup:    v.populatePopup,
-		ToggleDirection:  v.toggleDirection,
-		ToggleOverwrite:  v.toggleOverwrite,
+	var pclass *C.GtkEntryClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeEntry)) != C.FALSE {
+			pclass = (*C.GtkEntryClass)(parentClass)
+		}
 	}
+
+	overrides := EntryOverrides{
+
+		Activate:         noop_Entry_Activate,
+		Backspace:        noop_Entry_Backspace,
+		CopyClipboard:    noop_Entry_CopyClipboard,
+		CutClipboard:     noop_Entry_CutClipboard,
+		DeleteFromCursor: noop_Entry_DeleteFromCursor,
+		FrameSize:        noop_Entry_FrameSize,
+		TextAreaSize:     noop_Entry_TextAreaSize,
+		InsertAtCursor:   noop_Entry_InsertAtCursor,
+		InsertEmoji:      noop_Entry_InsertEmoji,
+		MoveCursor:       noop_Entry_MoveCursor,
+		PasteClipboard:   noop_Entry_PasteClipboard,
+		PopulatePopup:    noop_Entry_PopulatePopup,
+		ToggleDirection:  noop_Entry_ToggleDirection,
+		ToggleOverwrite:  noop_Entry_ToggleOverwrite,
+	}
+	if pclass != nil {
+
+		if pclass.activate != nil {
+			overrides.Activate = v.activate
+		}
+		if pclass.backspace != nil {
+			overrides.Backspace = v.backspace
+		}
+		if pclass.copy_clipboard != nil {
+			overrides.CopyClipboard = v.copyClipboard
+		}
+		if pclass.cut_clipboard != nil {
+			overrides.CutClipboard = v.cutClipboard
+		}
+		if pclass.delete_from_cursor != nil {
+			overrides.DeleteFromCursor = v.deleteFromCursor
+		}
+		if pclass.get_frame_size != nil {
+			overrides.FrameSize = v.frameSize
+		}
+		if pclass.get_text_area_size != nil {
+			overrides.TextAreaSize = v.textAreaSize
+		}
+		if pclass.insert_at_cursor != nil {
+			overrides.InsertAtCursor = v.insertAtCursor
+		}
+		if pclass.insert_emoji != nil {
+			overrides.InsertEmoji = v.insertEmoji
+		}
+		if pclass.move_cursor != nil {
+			overrides.MoveCursor = v.moveCursor
+		}
+		if pclass.paste_clipboard != nil {
+			overrides.PasteClipboard = v.pasteClipboard
+		}
+		if pclass.populate_popup != nil {
+			overrides.PopulatePopup = v.populatePopup
+		}
+		if pclass.toggle_direction != nil {
+			overrides.ToggleDirection = v.toggleDirection
+		}
+		if pclass.toggle_overwrite != nil {
+			overrides.ToggleOverwrite = v.toggleOverwrite
+		}
+	}
+
+	return overrides
 }
+
+func noop_Entry_Activate() {}
+
+func noop_Entry_Backspace() {}
+
+func noop_Entry_CopyClipboard() {}
+
+func noop_Entry_CutClipboard() {}
+
+func noop_Entry_DeleteFromCursor(typ DeleteType, count int) {}
+
+func noop_Entry_FrameSize(x, y, width, height *int) {}
+
+func noop_Entry_TextAreaSize(x, y, width, height *int) {}
+
+func noop_Entry_InsertAtCursor(str string) {}
+
+func noop_Entry_InsertEmoji() {}
+
+func noop_Entry_MoveCursor(step MovementStep, count int, extendSelection bool) {}
+
+func noop_Entry_PasteClipboard() {}
+
+func noop_Entry_PopulatePopup(popup Widgetter) {}
+
+func noop_Entry_ToggleDirection() {}
+
+func noop_Entry_ToggleOverwrite() {}
 
 // Entry widget is a single line text entry widget. A fairly large set of key
 // bindings are supported by default. If the entered text is longer than the
@@ -56395,7 +57271,10 @@ type EntryAccessibleOverrides struct {
 }
 
 func defaultEntryAccessibleOverrides(v *EntryAccessible) EntryAccessibleOverrides {
-	return EntryAccessibleOverrides{}
+
+	overrides := EntryAccessibleOverrides{}
+
+	return overrides
 }
 
 type EntryAccessible struct {
@@ -56476,7 +57355,7 @@ type EntryBufferOverrides struct {
 	// The function returns the following values:
 	//
 	//   - guint: number of characters deleted.
-	DeleteText func(position, nChars uint) uint
+	DeleteText func(position, nChars uint) uint // optional
 	// The function takes the following parameters:
 	//
 	//   - position
@@ -56487,8 +57366,8 @@ type EntryBufferOverrides struct {
 	// The function returns the following values:
 	//
 	//   - guint: number of characters in the buffer.
-	Length func() uint
-	Text   func(nBytes *uint) string
+	Length func() uint               // optional
+	Text   func(nBytes *uint) string // optional
 	// InsertText inserts n_chars characters of chars into the contents of the
 	// buffer, at position position.
 	//
@@ -56508,7 +57387,7 @@ type EntryBufferOverrides struct {
 	// The function returns the following values:
 	//
 	//   - guint: number of characters actually inserted.
-	InsertText func(position uint, chars string, nChars uint) uint
+	InsertText func(position uint, chars string, nChars uint) uint // optional
 	// The function takes the following parameters:
 	//
 	//   - position
@@ -56518,15 +57397,46 @@ type EntryBufferOverrides struct {
 }
 
 func defaultEntryBufferOverrides(v *EntryBuffer) EntryBufferOverrides {
-	return EntryBufferOverrides{
-		DeleteText:   v.deleteText,
-		DeletedText:  v.deletedText,
-		Length:       v.length,
-		Text:         v.text,
-		InsertText:   v.insertText,
-		InsertedText: v.insertedText,
+	var pclass *C.GtkEntryBufferClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeEntryBuffer)) != C.FALSE {
+			pclass = (*C.GtkEntryBufferClass)(parentClass)
+		}
 	}
+
+	overrides := EntryBufferOverrides{
+
+		DeletedText:  noop_EntryBuffer_DeletedText,
+		InsertedText: noop_EntryBuffer_InsertedText,
+	}
+	if pclass != nil {
+
+		if pclass.delete_text != nil {
+			overrides.DeleteText = v.deleteText
+		}
+		if pclass.deleted_text != nil {
+			overrides.DeletedText = v.deletedText
+		}
+		if pclass.get_length != nil {
+			overrides.Length = v.length
+		}
+		if pclass.get_text != nil {
+			overrides.Text = v.text
+		}
+		if pclass.insert_text != nil {
+			overrides.InsertText = v.insertText
+		}
+		if pclass.inserted_text != nil {
+			overrides.InsertedText = v.insertedText
+		}
+	}
+
+	return overrides
 }
+
+func noop_EntryBuffer_DeletedText(position, nChars uint) {}
+
+func noop_EntryBuffer_InsertedText(position uint, chars string, nChars uint) {}
 
 // EntryBuffer class contains the actual text displayed in a Entry widget.
 //
@@ -57106,25 +58016,54 @@ type EntryCompletionOverrides struct {
 	//
 	//   - model
 	//   - iter
-	CursorOnMatch func(model TreeModeller, iter *TreeIter) bool
-	InsertPrefix  func(prefix string) bool
+	CursorOnMatch func(model TreeModeller, iter *TreeIter) bool // optional
+	InsertPrefix  func(prefix string) bool                      // optional
 	// The function takes the following parameters:
 	//
 	//   - model
 	//   - iter
-	MatchSelected func(model TreeModeller, iter *TreeIter) bool
+	MatchSelected func(model TreeModeller, iter *TreeIter) bool // optional
 	NoMatches     func()
 }
 
 func defaultEntryCompletionOverrides(v *EntryCompletion) EntryCompletionOverrides {
-	return EntryCompletionOverrides{
-		ActionActivated: v.actionActivated,
-		CursorOnMatch:   v.cursorOnMatch,
-		InsertPrefix:    v.insertPrefix,
-		MatchSelected:   v.matchSelected,
-		NoMatches:       v.noMatches,
+	var pclass *C.GtkEntryCompletionClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeEntryCompletion)) != C.FALSE {
+			pclass = (*C.GtkEntryCompletionClass)(parentClass)
+		}
 	}
+
+	overrides := EntryCompletionOverrides{
+
+		ActionActivated: noop_EntryCompletion_ActionActivated,
+		NoMatches:       noop_EntryCompletion_NoMatches,
+	}
+	if pclass != nil {
+
+		if pclass.action_activated != nil {
+			overrides.ActionActivated = v.actionActivated
+		}
+		if pclass.cursor_on_match != nil {
+			overrides.CursorOnMatch = v.cursorOnMatch
+		}
+		if pclass.insert_prefix != nil {
+			overrides.InsertPrefix = v.insertPrefix
+		}
+		if pclass.match_selected != nil {
+			overrides.MatchSelected = v.matchSelected
+		}
+		if pclass.no_matches != nil {
+			overrides.NoMatches = v.noMatches
+		}
+	}
+
+	return overrides
 }
+
+func noop_EntryCompletion_ActionActivated(index_ int) {}
+
+func noop_EntryCompletion_NoMatches() {}
 
 // EntryCompletion is an auxiliary object to be used in conjunction with Entry
 // to provide the completion functionality. It implements the CellLayout
@@ -58031,7 +58970,10 @@ type EventBoxOverrides struct {
 }
 
 func defaultEventBoxOverrides(v *EventBox) EventBoxOverrides {
-	return EventBoxOverrides{}
+
+	overrides := EventBoxOverrides{}
+
+	return overrides
 }
 
 // EventBox widget is a subclass of Bin which also has its own window. It is
@@ -58765,10 +59707,28 @@ type ExpanderOverrides struct {
 }
 
 func defaultExpanderOverrides(v *Expander) ExpanderOverrides {
-	return ExpanderOverrides{
-		Activate: v.activate,
+	var pclass *C.GtkExpanderClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeExpander)) != C.FALSE {
+			pclass = (*C.GtkExpanderClass)(parentClass)
+		}
 	}
+
+	overrides := ExpanderOverrides{
+
+		Activate: noop_Expander_Activate,
+	}
+	if pclass != nil {
+
+		if pclass.activate != nil {
+			overrides.Activate = v.activate
+		}
+	}
+
+	return overrides
 }
+
+func noop_Expander_Activate() {}
 
 // Expander allows the user to hide or show its child by clicking on an expander
 // triangle similar to the triangles used in a TreeView.
@@ -59319,7 +60279,10 @@ type ExpanderAccessibleOverrides struct {
 }
 
 func defaultExpanderAccessibleOverrides(v *ExpanderAccessible) ExpanderAccessibleOverrides {
-	return ExpanderAccessibleOverrides{}
+
+	overrides := ExpanderAccessibleOverrides{}
+
+	return overrides
 }
 
 type ExpanderAccessible struct {
@@ -59380,10 +60343,28 @@ type FileChooserButtonOverrides struct {
 }
 
 func defaultFileChooserButtonOverrides(v *FileChooserButton) FileChooserButtonOverrides {
-	return FileChooserButtonOverrides{
-		FileSet: v.fileSet,
+	var pclass *C.GtkFileChooserButtonClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeFileChooserButton)) != C.FALSE {
+			pclass = (*C.GtkFileChooserButtonClass)(parentClass)
+		}
 	}
+
+	overrides := FileChooserButtonOverrides{
+
+		FileSet: noop_FileChooserButton_FileSet,
+	}
+	if pclass != nil {
+
+		if pclass.file_set != nil {
+			overrides.FileSet = v.fileSet
+		}
+	}
+
+	return overrides
 }
+
+func noop_FileChooserButton_FileSet() {}
 
 // FileChooserButton is a widget that lets the user select a file. It implements
 // the FileChooser interface. Visually, it is a file name with a button to bring
@@ -59701,7 +60682,10 @@ type FileChooserDialogOverrides struct {
 }
 
 func defaultFileChooserDialogOverrides(v *FileChooserDialog) FileChooserDialogOverrides {
-	return FileChooserDialogOverrides{}
+
+	overrides := FileChooserDialogOverrides{}
+
+	return overrides
 }
 
 // FileChooserDialog is a dialog box suitable for use with “File/Open” or
@@ -59916,7 +60900,10 @@ type FileChooserNativeOverrides struct {
 }
 
 func defaultFileChooserNativeOverrides(v *FileChooserNative) FileChooserNativeOverrides {
-	return FileChooserNativeOverrides{}
+
+	overrides := FileChooserNativeOverrides{}
+
+	return overrides
 }
 
 // FileChooserNative is an abstraction of a dialog box suitable for use
@@ -60275,7 +61262,10 @@ type FileChooserWidgetOverrides struct {
 }
 
 func defaultFileChooserWidgetOverrides(v *FileChooserWidget) FileChooserWidgetOverrides {
-	return FileChooserWidgetOverrides{}
+
+	overrides := FileChooserWidgetOverrides{}
+
+	return overrides
 }
 
 // FileChooserWidget is a widget for choosing files. It exposes the FileChooser
@@ -60876,7 +61866,10 @@ type FixedOverrides struct {
 }
 
 func defaultFixedOverrides(v *Fixed) FixedOverrides {
-	return FixedOverrides{}
+
+	overrides := FixedOverrides{}
+
+	return overrides
 }
 
 // Fixed widget is a container which can place child widgets at fixed positions
@@ -61039,7 +62032,7 @@ type FlowBoxOverrides struct {
 	//
 	//   - step
 	//   - count
-	MoveCursor func(step MovementStep, count int) bool
+	MoveCursor func(step MovementStep, count int) bool // optional
 	// SelectAll: select all children of box, if the selection mode allows it.
 	SelectAll               func()
 	SelectedChildrenChanged func()
@@ -61050,16 +62043,61 @@ type FlowBoxOverrides struct {
 }
 
 func defaultFlowBoxOverrides(v *FlowBox) FlowBoxOverrides {
-	return FlowBoxOverrides{
-		ActivateCursorChild:     v.activateCursorChild,
-		ChildActivated:          v.childActivated,
-		MoveCursor:              v.moveCursor,
-		SelectAll:               v.selectAll,
-		SelectedChildrenChanged: v.selectedChildrenChanged,
-		ToggleCursorChild:       v.toggleCursorChild,
-		UnselectAll:             v.unselectAll,
+	var pclass *C.GtkFlowBoxClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeFlowBox)) != C.FALSE {
+			pclass = (*C.GtkFlowBoxClass)(parentClass)
+		}
 	}
+
+	overrides := FlowBoxOverrides{
+
+		ActivateCursorChild:     noop_FlowBox_ActivateCursorChild,
+		ChildActivated:          noop_FlowBox_ChildActivated,
+		SelectAll:               noop_FlowBox_SelectAll,
+		SelectedChildrenChanged: noop_FlowBox_SelectedChildrenChanged,
+		ToggleCursorChild:       noop_FlowBox_ToggleCursorChild,
+		UnselectAll:             noop_FlowBox_UnselectAll,
+	}
+	if pclass != nil {
+
+		if pclass.activate_cursor_child != nil {
+			overrides.ActivateCursorChild = v.activateCursorChild
+		}
+		if pclass.child_activated != nil {
+			overrides.ChildActivated = v.childActivated
+		}
+		if pclass.move_cursor != nil {
+			overrides.MoveCursor = v.moveCursor
+		}
+		if pclass.select_all != nil {
+			overrides.SelectAll = v.selectAll
+		}
+		if pclass.selected_children_changed != nil {
+			overrides.SelectedChildrenChanged = v.selectedChildrenChanged
+		}
+		if pclass.toggle_cursor_child != nil {
+			overrides.ToggleCursorChild = v.toggleCursorChild
+		}
+		if pclass.unselect_all != nil {
+			overrides.UnselectAll = v.unselectAll
+		}
+	}
+
+	return overrides
 }
+
+func noop_FlowBox_ActivateCursorChild() {}
+
+func noop_FlowBox_ChildActivated(child *FlowBoxChild) {}
+
+func noop_FlowBox_SelectAll() {}
+
+func noop_FlowBox_SelectedChildrenChanged() {}
+
+func noop_FlowBox_ToggleCursorChild() {}
+
+func noop_FlowBox_UnselectAll() {}
 
 // FlowBox positions child widgets in sequence according to its orientation.
 //
@@ -62050,7 +63088,10 @@ type FlowBoxAccessibleOverrides struct {
 }
 
 func defaultFlowBoxAccessibleOverrides(v *FlowBoxAccessible) FlowBoxAccessibleOverrides {
-	return FlowBoxAccessibleOverrides{}
+
+	overrides := FlowBoxAccessibleOverrides{}
+
+	return overrides
 }
 
 type FlowBoxAccessible struct {
@@ -62110,10 +63151,28 @@ type FlowBoxChildOverrides struct {
 }
 
 func defaultFlowBoxChildOverrides(v *FlowBoxChild) FlowBoxChildOverrides {
-	return FlowBoxChildOverrides{
-		Activate: v.activate,
+	var pclass *C.GtkFlowBoxChildClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeFlowBoxChild)) != C.FALSE {
+			pclass = (*C.GtkFlowBoxChildClass)(parentClass)
+		}
 	}
+
+	overrides := FlowBoxChildOverrides{
+
+		Activate: noop_FlowBoxChild_Activate,
+	}
+	if pclass != nil {
+
+		if pclass.activate != nil {
+			overrides.Activate = v.activate
+		}
+	}
+
+	return overrides
 }
+
+func noop_FlowBoxChild_Activate() {}
 
 type FlowBoxChild struct {
 	_ [0]func() // equal guard
@@ -62285,7 +63344,10 @@ type FlowBoxChildAccessibleOverrides struct {
 }
 
 func defaultFlowBoxChildAccessibleOverrides(v *FlowBoxChildAccessible) FlowBoxChildAccessibleOverrides {
-	return FlowBoxChildAccessibleOverrides{}
+
+	overrides := FlowBoxChildAccessibleOverrides{}
+
+	return overrides
 }
 
 type FlowBoxChildAccessible struct {
@@ -62340,10 +63402,28 @@ type FontButtonOverrides struct {
 }
 
 func defaultFontButtonOverrides(v *FontButton) FontButtonOverrides {
-	return FontButtonOverrides{
-		FontSet: v.fontSet,
+	var pclass *C.GtkFontButtonClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeFontButton)) != C.FALSE {
+			pclass = (*C.GtkFontButtonClass)(parentClass)
+		}
 	}
+
+	overrides := FontButtonOverrides{
+
+		FontSet: noop_FontButton_FontSet,
+	}
+	if pclass != nil {
+
+		if pclass.font_set != nil {
+			overrides.FontSet = v.fontSet
+		}
+	}
+
+	return overrides
 }
+
+func noop_FontButton_FontSet() {}
 
 // FontButton is a button which displays the currently selected font an allows
 // to open a font chooser dialog to change the font. It is suitable widget for
@@ -62780,7 +63860,10 @@ type FontChooserDialogOverrides struct {
 }
 
 func defaultFontChooserDialogOverrides(v *FontChooserDialog) FontChooserDialogOverrides {
-	return FontChooserDialogOverrides{}
+
+	overrides := FontChooserDialogOverrides{}
+
+	return overrides
 }
 
 // FontChooserDialog widget is a dialog for selecting a font. It implements the
@@ -62891,7 +63974,10 @@ type FontChooserWidgetOverrides struct {
 }
 
 func defaultFontChooserWidgetOverrides(v *FontChooserWidget) FontChooserWidgetOverrides {
-	return FontChooserWidgetOverrides{}
+
+	overrides := FontChooserWidgetOverrides{}
+
+	return overrides
 }
 
 // FontChooserWidget widget lists the available fonts, styles and sizes,
@@ -62994,7 +64080,10 @@ type FontSelectionOverrides struct {
 }
 
 func defaultFontSelectionOverrides(v *FontSelection) FontSelectionOverrides {
-	return FontSelectionOverrides{}
+
+	overrides := FontSelectionOverrides{}
+
+	return overrides
 }
 
 type FontSelection struct {
@@ -63495,7 +64584,10 @@ type FontSelectionDialogOverrides struct {
 }
 
 func defaultFontSelectionDialogOverrides(v *FontSelectionDialog) FontSelectionDialogOverrides {
-	return FontSelectionDialogOverrides{}
+
+	overrides := FontSelectionDialogOverrides{}
+
+	return overrides
 }
 
 type FontSelectionDialog struct {
@@ -63813,10 +64905,28 @@ type FrameOverrides struct {
 }
 
 func defaultFrameOverrides(v *Frame) FrameOverrides {
-	return FrameOverrides{
-		ComputeChildAllocation: v.computeChildAllocation,
+	var pclass *C.GtkFrameClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeFrame)) != C.FALSE {
+			pclass = (*C.GtkFrameClass)(parentClass)
+		}
 	}
+
+	overrides := FrameOverrides{
+
+		ComputeChildAllocation: noop_Frame_ComputeChildAllocation,
+	}
+	if pclass != nil {
+
+		if pclass.compute_child_allocation != nil {
+			overrides.ComputeChildAllocation = v.computeChildAllocation
+		}
+	}
+
+	return overrides
 }
+
+func noop_Frame_ComputeChildAllocation(allocation *Allocation) {}
 
 // Frame: frame widget is a bin that surrounds its child with a decorative
 // frame and an optional label. If present, the label is drawn in a gap in
@@ -64154,7 +65264,10 @@ type FrameAccessibleOverrides struct {
 }
 
 func defaultFrameAccessibleOverrides(v *FrameAccessible) FrameAccessibleOverrides {
-	return FrameAccessibleOverrides{}
+
+	overrides := FrameAccessibleOverrides{}
+
+	return overrides
 }
 
 type FrameAccessible struct {
@@ -64206,7 +65319,7 @@ func marshalFrameAccessible(p uintptr) (interface{}, error) {
 // GLAreaOverrides contains methods that are overridable.
 type GLAreaOverrides struct {
 	// Render class closure for the GLArea::render signal.
-	Render func(context gdk.GLContexter) bool
+	Render func(context gdk.GLContexter) bool // optional
 	// Resize class closeure for the GLArea::resize signal.
 	//
 	// The function takes the following parameters:
@@ -64217,11 +65330,31 @@ type GLAreaOverrides struct {
 }
 
 func defaultGLAreaOverrides(v *GLArea) GLAreaOverrides {
-	return GLAreaOverrides{
-		Render: v.render,
-		Resize: v.resize,
+	var pclass *C.GtkGLAreaClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeGLArea)) != C.FALSE {
+			pclass = (*C.GtkGLAreaClass)(parentClass)
+		}
 	}
+
+	overrides := GLAreaOverrides{
+
+		Resize: noop_GLArea_Resize,
+	}
+	if pclass != nil {
+
+		if pclass.render != nil {
+			overrides.Render = v.render
+		}
+		if pclass.resize != nil {
+			overrides.Resize = v.resize
+		}
+	}
+
+	return overrides
 }
+
+func noop_GLArea_Resize(width, height int) {}
 
 // GLArea is a widget that allows drawing with OpenGL.
 //
@@ -66716,7 +67849,10 @@ type GridOverrides struct {
 }
 
 func defaultGridOverrides(v *Grid) GridOverrides {
-	return GridOverrides{}
+
+	overrides := GridOverrides{}
+
+	return overrides
 }
 
 // Grid is a container which arranges its child widgets in rows and columns,
@@ -67301,7 +68437,10 @@ type HBoxOverrides struct {
 }
 
 func defaultHBoxOverrides(v *HBox) HBoxOverrides {
-	return HBoxOverrides{}
+
+	overrides := HBoxOverrides{}
+
+	return overrides
 }
 
 // HBox is a container that organizes child widgets into a single row.
@@ -67415,7 +68554,10 @@ type HButtonBoxOverrides struct {
 }
 
 func defaultHButtonBoxOverrides(v *HButtonBox) HButtonBoxOverrides {
-	return HButtonBoxOverrides{}
+
+	overrides := HButtonBoxOverrides{}
+
+	return overrides
 }
 
 type HButtonBox struct {
@@ -67499,7 +68641,10 @@ type HPanedOverrides struct {
 }
 
 func defaultHPanedOverrides(v *HPaned) HPanedOverrides {
-	return HPanedOverrides{}
+
+	overrides := HPanedOverrides{}
+
+	return overrides
 }
 
 // HPaned widget is a container widget with two children arranged horizontally.
@@ -67588,11 +68733,34 @@ type HSVOverrides struct {
 }
 
 func defaultHSVOverrides(v *HSV) HSVOverrides {
-	return HSVOverrides{
-		Changed: v.changed,
-		Move:    v.move,
+	var pclass *C.GtkHSVClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeHSV)) != C.FALSE {
+			pclass = (*C.GtkHSVClass)(parentClass)
+		}
 	}
+
+	overrides := HSVOverrides{
+
+		Changed: noop_HSV_Changed,
+		Move:    noop_HSV_Move,
+	}
+	if pclass != nil {
+
+		if pclass.changed != nil {
+			overrides.Changed = v.changed
+		}
+		if pclass.move != nil {
+			overrides.Move = v.move
+		}
+	}
+
+	return overrides
 }
+
+func noop_HSV_Changed() {}
+
+func noop_HSV_Move(typ DirectionType) {}
 
 // HSV is the “color wheel” part of a complete color selector widget. It allows
 // to select a color by determining its HSV components in an intuitive way.
@@ -67887,7 +69055,10 @@ type HScaleOverrides struct {
 }
 
 func defaultHScaleOverrides(v *HScale) HScaleOverrides {
-	return HScaleOverrides{}
+
+	overrides := HScaleOverrides{}
+
+	return overrides
 }
 
 // HScale widget is used to allow the user to select a value using a horizontal
@@ -68028,7 +69199,10 @@ type HScrollbarOverrides struct {
 }
 
 func defaultHScrollbarOverrides(v *HScrollbar) HScrollbarOverrides {
-	return HScrollbarOverrides{}
+
+	overrides := HScrollbarOverrides{}
+
+	return overrides
 }
 
 // HScrollbar widget is a widget arranged horizontally creating a scrollbar.
@@ -68126,7 +69300,10 @@ type HSeparatorOverrides struct {
 }
 
 func defaultHSeparatorOverrides(v *HSeparator) HSeparatorOverrides {
-	return HSeparatorOverrides{}
+
+	overrides := HSeparatorOverrides{}
+
+	return overrides
 }
 
 // HSeparator widget is a horizontal separator, used to group the widgets within
@@ -68222,11 +69399,34 @@ type HandleBoxOverrides struct {
 }
 
 func defaultHandleBoxOverrides(v *HandleBox) HandleBoxOverrides {
-	return HandleBoxOverrides{
-		ChildAttached: v.childAttached,
-		ChildDetached: v.childDetached,
+	var pclass *C.GtkHandleBoxClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeHandleBox)) != C.FALSE {
+			pclass = (*C.GtkHandleBoxClass)(parentClass)
+		}
 	}
+
+	overrides := HandleBoxOverrides{
+
+		ChildAttached: noop_HandleBox_ChildAttached,
+		ChildDetached: noop_HandleBox_ChildDetached,
+	}
+	if pclass != nil {
+
+		if pclass.child_attached != nil {
+			overrides.ChildAttached = v.childAttached
+		}
+		if pclass.child_detached != nil {
+			overrides.ChildDetached = v.childDetached
+		}
+	}
+
+	return overrides
 }
+
+func noop_HandleBox_ChildAttached(child Widgetter) {}
+
+func noop_HandleBox_ChildDetached(child Widgetter) {}
 
 // HandleBox widget allows a portion of a window to be "torn off". It is a bin
 // widget which displays its child and a handle that the user can drag to tear
@@ -68546,7 +69746,10 @@ type HeaderBarOverrides struct {
 }
 
 func defaultHeaderBarOverrides(v *HeaderBar) HeaderBarOverrides {
-	return HeaderBarOverrides{}
+
+	overrides := HeaderBarOverrides{}
+
+	return overrides
 }
 
 // HeaderBar is similar to a horizontal Box. It allows children to be placed
@@ -69025,7 +70228,7 @@ type IMContextOverrides struct {
 	// The function returns the following values:
 	//
 	//   - ok: TRUE if the signal was handled.
-	DeleteSurrounding func(offset, nChars int) bool
+	DeleteSurrounding func(offset, nChars int) bool // optional
 	// FilterKeypress: allow an input method to internally handle key press and
 	// release events. If this function returns TRUE, then no further processing
 	// should be done for this key event.
@@ -69037,7 +70240,7 @@ type IMContextOverrides struct {
 	// The function returns the following values:
 	//
 	//   - ok: TRUE if the input method handled the key event.
-	FilterKeypress func(event *gdk.EventKey) bool
+	FilterKeypress func(event *gdk.EventKey) bool // optional
 	// FocusIn: notify the input method that the widget to which this input
 	// context corresponds has gained focus. The input method may, for example,
 	// change the displayed feedback to reflect this change.
@@ -69060,7 +70263,7 @@ type IMContextOverrides struct {
 	//     pango_attr_list_unref().
 	//   - cursorPos: location to store position of cursor (in characters)
 	//     within the preedit string.
-	PreeditString func() (string, *pango.AttrList, int)
+	PreeditString func() (string, *pango.AttrList, int) // optional
 	// Surrounding retrieves context around the insertion point. Input methods
 	// typically want context in order to constrain input text based on existing
 	// text; this is important for languages such as Thai where only some
@@ -69083,7 +70286,7 @@ type IMContextOverrides struct {
 	//     within text.
 	//   - ok: TRUE if surrounding text was provided; in this case you must free
 	//     the result stored in *text.
-	Surrounding func() (string, int, bool)
+	Surrounding func() (string, int, bool) // optional
 	// PreeditChanged: default handler of the IMContext::preedit-changed signal.
 	PreeditChanged func()
 	// PreeditEnd: default handler of the IMContext::preedit-end signal.
@@ -69096,7 +70299,7 @@ type IMContextOverrides struct {
 	Reset func()
 	// RetrieveSurrounding: default handler of the
 	// IMContext::retrieve-surrounding signal.
-	RetrieveSurrounding func() bool
+	RetrieveSurrounding func() bool // optional
 	// SetClientWindow: set the client window for the input context; this is
 	// the Window in which the input appears. This window is used in order to
 	// correctly position status windows, and may also be used for purposes
@@ -69137,25 +70340,103 @@ type IMContextOverrides struct {
 }
 
 func defaultIMContextOverrides(v *IMContext) IMContextOverrides {
-	return IMContextOverrides{
-		Commit:              v.commit,
-		DeleteSurrounding:   v.deleteSurrounding,
-		FilterKeypress:      v.filterKeypress,
-		FocusIn:             v.focusIn,
-		FocusOut:            v.focusOut,
-		PreeditString:       v.preeditString,
-		Surrounding:         v.surrounding,
-		PreeditChanged:      v.preeditChanged,
-		PreeditEnd:          v.preeditEnd,
-		PreeditStart:        v.preeditStart,
-		Reset:               v.reset,
-		RetrieveSurrounding: v.retrieveSurrounding,
-		SetClientWindow:     v.setClientWindow,
-		SetCursorLocation:   v.setCursorLocation,
-		SetSurrounding:      v.setSurrounding,
-		SetUsePreedit:       v.setUsePreedit,
+	var pclass *C.GtkIMContextClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeIMContext)) != C.FALSE {
+			pclass = (*C.GtkIMContextClass)(parentClass)
+		}
 	}
+
+	overrides := IMContextOverrides{
+
+		Commit:            noop_IMContext_Commit,
+		FocusIn:           noop_IMContext_FocusIn,
+		FocusOut:          noop_IMContext_FocusOut,
+		PreeditChanged:    noop_IMContext_PreeditChanged,
+		PreeditEnd:        noop_IMContext_PreeditEnd,
+		PreeditStart:      noop_IMContext_PreeditStart,
+		Reset:             noop_IMContext_Reset,
+		SetClientWindow:   noop_IMContext_SetClientWindow,
+		SetCursorLocation: noop_IMContext_SetCursorLocation,
+		SetSurrounding:    noop_IMContext_SetSurrounding,
+		SetUsePreedit:     noop_IMContext_SetUsePreedit,
+	}
+	if pclass != nil {
+
+		if pclass.commit != nil {
+			overrides.Commit = v.commit
+		}
+		if pclass.delete_surrounding != nil {
+			overrides.DeleteSurrounding = v.deleteSurrounding
+		}
+		if pclass.filter_keypress != nil {
+			overrides.FilterKeypress = v.filterKeypress
+		}
+		if pclass.focus_in != nil {
+			overrides.FocusIn = v.focusIn
+		}
+		if pclass.focus_out != nil {
+			overrides.FocusOut = v.focusOut
+		}
+		if pclass.get_preedit_string != nil {
+			overrides.PreeditString = v.preeditString
+		}
+		if pclass.get_surrounding != nil {
+			overrides.Surrounding = v.surrounding
+		}
+		if pclass.preedit_changed != nil {
+			overrides.PreeditChanged = v.preeditChanged
+		}
+		if pclass.preedit_end != nil {
+			overrides.PreeditEnd = v.preeditEnd
+		}
+		if pclass.preedit_start != nil {
+			overrides.PreeditStart = v.preeditStart
+		}
+		if pclass.reset != nil {
+			overrides.Reset = v.reset
+		}
+		if pclass.retrieve_surrounding != nil {
+			overrides.RetrieveSurrounding = v.retrieveSurrounding
+		}
+		if pclass.set_client_window != nil {
+			overrides.SetClientWindow = v.setClientWindow
+		}
+		if pclass.set_cursor_location != nil {
+			overrides.SetCursorLocation = v.setCursorLocation
+		}
+		if pclass.set_surrounding != nil {
+			overrides.SetSurrounding = v.setSurrounding
+		}
+		if pclass.set_use_preedit != nil {
+			overrides.SetUsePreedit = v.setUsePreedit
+		}
+	}
+
+	return overrides
 }
+
+func noop_IMContext_Commit(str string) {}
+
+func noop_IMContext_FocusIn() {}
+
+func noop_IMContext_FocusOut() {}
+
+func noop_IMContext_PreeditChanged() {}
+
+func noop_IMContext_PreeditEnd() {}
+
+func noop_IMContext_PreeditStart() {}
+
+func noop_IMContext_Reset() {}
+
+func noop_IMContext_SetClientWindow(window gdk.Windower) {}
+
+func noop_IMContext_SetCursorLocation(area *gdk.Rectangle) {}
+
+func noop_IMContext_SetSurrounding(text string, cursorIndex int) {}
+
+func noop_IMContext_SetUsePreedit(usePreedit bool) {}
 
 // IMContext defines the interface for GTK+ input methods. An input method is
 // used by GTK+ text input widgets like Entry to map from key events to Unicode
@@ -70067,7 +71348,10 @@ type IMContextSimpleOverrides struct {
 }
 
 func defaultIMContextSimpleOverrides(v *IMContextSimple) IMContextSimpleOverrides {
-	return IMContextSimpleOverrides{}
+
+	overrides := IMContextSimpleOverrides{}
+
+	return overrides
 }
 
 // IMContextSimple is a simple input method context supporting table-based input
@@ -70163,7 +71447,10 @@ type IMMulticontextOverrides struct {
 }
 
 func defaultIMMulticontextOverrides(v *IMMulticontext) IMMulticontextOverrides {
-	return IMMulticontextOverrides{}
+
+	overrides := IMMulticontextOverrides{}
+
+	return overrides
 }
 
 type IMMulticontext struct {
@@ -70290,7 +71577,10 @@ type IconFactoryOverrides struct {
 }
 
 func defaultIconFactoryOverrides(v *IconFactory) IconFactoryOverrides {
-	return IconFactoryOverrides{}
+
+	overrides := IconFactoryOverrides{}
+
+	return overrides
 }
 
 // IconFactory: icon factory manages a collection of IconSet; a IconSet
@@ -71494,10 +72784,28 @@ type IconThemeOverrides struct {
 }
 
 func defaultIconThemeOverrides(v *IconTheme) IconThemeOverrides {
-	return IconThemeOverrides{
-		Changed: v.changed,
+	var pclass *C.GtkIconThemeClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeIconTheme)) != C.FALSE {
+			pclass = (*C.GtkIconThemeClass)(parentClass)
+		}
 	}
+
+	overrides := IconThemeOverrides{
+
+		Changed: noop_IconTheme_Changed,
+	}
+	if pclass != nil {
+
+		if pclass.changed != nil {
+			overrides.Changed = v.changed
+		}
+	}
+
+	return overrides
 }
+
+func noop_IconTheme_Changed() {}
 
 // IconTheme provides a facility for looking up icons by name and size. The main
 // reason for using a name rather than simply providing a filename is to allow
@@ -72635,7 +73943,7 @@ func IconThemeGetForScreen(screen *gdk.Screen) *IconTheme {
 
 // IconViewOverrides contains methods that are overridable.
 type IconViewOverrides struct {
-	ActivateCursorItem func() bool
+	ActivateCursorItem func() bool // optional
 	// ItemActivated activates the item determined by path.
 	//
 	// The function takes the following parameters:
@@ -72646,7 +73954,7 @@ type IconViewOverrides struct {
 	//
 	//   - step
 	//   - count
-	MoveCursor func(step MovementStep, count int) bool
+	MoveCursor func(step MovementStep, count int) bool // optional
 	// SelectAll selects all the icons. icon_view must has its selection mode
 	// set to K_SELECTION_MULTIPLE.
 	SelectAll        func()
@@ -72658,17 +73966,64 @@ type IconViewOverrides struct {
 }
 
 func defaultIconViewOverrides(v *IconView) IconViewOverrides {
-	return IconViewOverrides{
-		ActivateCursorItem: v.activateCursorItem,
-		ItemActivated:      v.itemActivated,
-		MoveCursor:         v.moveCursor,
-		SelectAll:          v.selectAll,
-		SelectCursorItem:   v.selectCursorItem,
-		SelectionChanged:   v.selectionChanged,
-		ToggleCursorItem:   v.toggleCursorItem,
-		UnselectAll:        v.unselectAll,
+	var pclass *C.GtkIconViewClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeIconView)) != C.FALSE {
+			pclass = (*C.GtkIconViewClass)(parentClass)
+		}
 	}
+
+	overrides := IconViewOverrides{
+
+		ItemActivated:    noop_IconView_ItemActivated,
+		SelectAll:        noop_IconView_SelectAll,
+		SelectCursorItem: noop_IconView_SelectCursorItem,
+		SelectionChanged: noop_IconView_SelectionChanged,
+		ToggleCursorItem: noop_IconView_ToggleCursorItem,
+		UnselectAll:      noop_IconView_UnselectAll,
+	}
+	if pclass != nil {
+
+		if pclass.activate_cursor_item != nil {
+			overrides.ActivateCursorItem = v.activateCursorItem
+		}
+		if pclass.item_activated != nil {
+			overrides.ItemActivated = v.itemActivated
+		}
+		if pclass.move_cursor != nil {
+			overrides.MoveCursor = v.moveCursor
+		}
+		if pclass.select_all != nil {
+			overrides.SelectAll = v.selectAll
+		}
+		if pclass.select_cursor_item != nil {
+			overrides.SelectCursorItem = v.selectCursorItem
+		}
+		if pclass.selection_changed != nil {
+			overrides.SelectionChanged = v.selectionChanged
+		}
+		if pclass.toggle_cursor_item != nil {
+			overrides.ToggleCursorItem = v.toggleCursorItem
+		}
+		if pclass.unselect_all != nil {
+			overrides.UnselectAll = v.unselectAll
+		}
+	}
+
+	return overrides
 }
+
+func noop_IconView_ItemActivated(path *TreePath) {}
+
+func noop_IconView_SelectAll() {}
+
+func noop_IconView_SelectCursorItem() {}
+
+func noop_IconView_SelectionChanged() {}
+
+func noop_IconView_ToggleCursorItem() {}
+
+func noop_IconView_UnselectAll() {}
 
 // IconView provides an alternative view on a TreeModel. It displays
 // the model as a grid of icons with labels. Like TreeView, it allows
@@ -74633,7 +75988,10 @@ type IconViewAccessibleOverrides struct {
 }
 
 func defaultIconViewAccessibleOverrides(v *IconViewAccessible) IconViewAccessibleOverrides {
-	return IconViewAccessibleOverrides{}
+
+	overrides := IconViewAccessibleOverrides{}
+
+	return overrides
 }
 
 type IconViewAccessible struct {
@@ -74692,7 +76050,10 @@ type ImageOverrides struct {
 }
 
 func defaultImageOverrides(v *Image) ImageOverrides {
-	return ImageOverrides{}
+
+	overrides := ImageOverrides{}
+
+	return overrides
 }
 
 // Image widget displays an image. Various kinds of object can be displayed
@@ -75600,7 +76961,10 @@ type ImageAccessibleOverrides struct {
 }
 
 func defaultImageAccessibleOverrides(v *ImageAccessible) ImageAccessibleOverrides {
-	return ImageAccessibleOverrides{}
+
+	overrides := ImageAccessibleOverrides{}
+
+	return overrides
 }
 
 type ImageAccessible struct {
@@ -75657,7 +77021,10 @@ type ImageCellAccessibleOverrides struct {
 }
 
 func defaultImageCellAccessibleOverrides(v *ImageCellAccessible) ImageCellAccessibleOverrides {
-	return ImageCellAccessibleOverrides{}
+
+	overrides := ImageCellAccessibleOverrides{}
+
+	return overrides
 }
 
 type ImageCellAccessible struct {
@@ -75734,7 +77101,10 @@ type ImageMenuItemOverrides struct {
 }
 
 func defaultImageMenuItemOverrides(v *ImageMenuItem) ImageMenuItemOverrides {
-	return ImageMenuItemOverrides{}
+
+	overrides := ImageMenuItemOverrides{}
+
+	return overrides
 }
 
 // ImageMenuItem is a menu item which has an icon next to the text label.
@@ -76152,11 +77522,34 @@ type InfoBarOverrides struct {
 }
 
 func defaultInfoBarOverrides(v *InfoBar) InfoBarOverrides {
-	return InfoBarOverrides{
-		Close:    v.close,
-		Response: v.response,
+	var pclass *C.GtkInfoBarClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeInfoBar)) != C.FALSE {
+			pclass = (*C.GtkInfoBarClass)(parentClass)
+		}
 	}
+
+	overrides := InfoBarOverrides{
+
+		Close:    noop_InfoBar_Close,
+		Response: noop_InfoBar_Response,
+	}
+	if pclass != nil {
+
+		if pclass.close != nil {
+			overrides.Close = v.close
+		}
+		if pclass.response != nil {
+			overrides.Response = v.response
+		}
+	}
+
+	return overrides
 }
+
+func noop_InfoBar_Close() {}
+
+func noop_InfoBar_Response(responseId int) {}
 
 // InfoBar is a widget that can be used to show messages to the user without
 // showing a dialog. It is often temporarily shown at the top or bottom of a
@@ -76654,7 +78047,10 @@ type InvisibleOverrides struct {
 }
 
 func defaultInvisibleOverrides(v *Invisible) InvisibleOverrides {
-	return InvisibleOverrides{}
+
+	overrides := InvisibleOverrides{}
+
+	return overrides
 }
 
 // Invisible widget is used internally in GTK+, and is probably not very useful
@@ -76795,7 +78191,7 @@ func (invisible *Invisible) SetScreen(screen *gdk.Screen) {
 
 // LabelOverrides contains methods that are overridable.
 type LabelOverrides struct {
-	ActivateLink  func(uri string) bool
+	ActivateLink  func(uri string) bool // optional
 	CopyClipboard func()
 	// The function takes the following parameters:
 	//
@@ -76807,13 +78203,43 @@ type LabelOverrides struct {
 }
 
 func defaultLabelOverrides(v *Label) LabelOverrides {
-	return LabelOverrides{
-		ActivateLink:  v.activateLink,
-		CopyClipboard: v.copyClipboard,
-		MoveCursor:    v.moveCursor,
-		PopulatePopup: v.populatePopup,
+	var pclass *C.GtkLabelClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeLabel)) != C.FALSE {
+			pclass = (*C.GtkLabelClass)(parentClass)
+		}
 	}
+
+	overrides := LabelOverrides{
+
+		CopyClipboard: noop_Label_CopyClipboard,
+		MoveCursor:    noop_Label_MoveCursor,
+		PopulatePopup: noop_Label_PopulatePopup,
+	}
+	if pclass != nil {
+
+		if pclass.activate_link != nil {
+			overrides.ActivateLink = v.activateLink
+		}
+		if pclass.copy_clipboard != nil {
+			overrides.CopyClipboard = v.copyClipboard
+		}
+		if pclass.move_cursor != nil {
+			overrides.MoveCursor = v.moveCursor
+		}
+		if pclass.populate_popup != nil {
+			overrides.PopulatePopup = v.populatePopup
+		}
+	}
+
+	return overrides
 }
+
+func noop_Label_CopyClipboard() {}
+
+func noop_Label_MoveCursor(step MovementStep, count int, extendSelection bool) {}
+
+func noop_Label_PopulatePopup(menu *Menu) {}
 
 // Label widget displays a small amount of text. As the name implies,
 // most labels are used to label another widget such as a Button, a MenuItem,
@@ -78235,7 +79661,10 @@ type LabelAccessibleOverrides struct {
 }
 
 func defaultLabelAccessibleOverrides(v *LabelAccessible) LabelAccessibleOverrides {
-	return LabelAccessibleOverrides{}
+
+	overrides := LabelAccessibleOverrides{}
+
+	return overrides
 }
 
 type LabelAccessible struct {
@@ -78298,7 +79727,10 @@ type LayoutOverrides struct {
 }
 
 func defaultLayoutOverrides(v *Layout) LayoutOverrides {
-	return LayoutOverrides{}
+
+	overrides := LayoutOverrides{}
+
+	return overrides
 }
 
 // Layout is similar to DrawingArea in that it’s a “blank slate” and doesn’t
@@ -78647,10 +80079,28 @@ type LevelBarOverrides struct {
 }
 
 func defaultLevelBarOverrides(v *LevelBar) LevelBarOverrides {
-	return LevelBarOverrides{
-		OffsetChanged: v.offsetChanged,
+	var pclass *C.GtkLevelBarClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeLevelBar)) != C.FALSE {
+			pclass = (*C.GtkLevelBarClass)(parentClass)
+		}
 	}
+
+	overrides := LevelBarOverrides{
+
+		OffsetChanged: noop_LevelBar_OffsetChanged,
+	}
+	if pclass != nil {
+
+		if pclass.offset_changed != nil {
+			overrides.OffsetChanged = v.offsetChanged
+		}
+	}
+
+	return overrides
 }
+
+func noop_LevelBar_OffsetChanged(name string) {}
 
 // LevelBar is a bar widget that can be used as a level indicator. Typical use
 // cases are displaying the strength of a password, or showing the charge level
@@ -79110,7 +80560,10 @@ type LevelBarAccessibleOverrides struct {
 }
 
 func defaultLevelBarAccessibleOverrides(v *LevelBarAccessible) LevelBarAccessibleOverrides {
-	return LevelBarAccessibleOverrides{}
+
+	overrides := LevelBarAccessibleOverrides{}
+
+	return overrides
 }
 
 type LevelBarAccessible struct {
@@ -79165,13 +80618,26 @@ func marshalLevelBarAccessible(p uintptr) (interface{}, error) {
 // LinkButtonOverrides contains methods that are overridable.
 type LinkButtonOverrides struct {
 	// ActivateLink class handler for the LinkButton::activate-link signal.
-	ActivateLink func() bool
+	ActivateLink func() bool // optional
 }
 
 func defaultLinkButtonOverrides(v *LinkButton) LinkButtonOverrides {
-	return LinkButtonOverrides{
-		ActivateLink: v.activateLink,
+	var pclass *C.GtkLinkButtonClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeLinkButton)) != C.FALSE {
+			pclass = (*C.GtkLinkButtonClass)(parentClass)
+		}
 	}
+
+	overrides := LinkButtonOverrides{}
+	if pclass != nil {
+
+		if pclass.activate_link != nil {
+			overrides.ActivateLink = v.activateLink
+		}
+	}
+
+	return overrides
 }
 
 // LinkButton is a Button with a hyperlink, similar to the one used by web
@@ -79457,7 +80923,10 @@ type LinkButtonAccessibleOverrides struct {
 }
 
 func defaultLinkButtonAccessibleOverrides(v *LinkButtonAccessible) LinkButtonAccessibleOverrides {
-	return LinkButtonAccessibleOverrides{}
+
+	overrides := LinkButtonAccessibleOverrides{}
+
+	return overrides
 }
 
 type LinkButtonAccessible struct {
@@ -79551,17 +81020,70 @@ type ListBoxOverrides struct {
 }
 
 func defaultListBoxOverrides(v *ListBox) ListBoxOverrides {
-	return ListBoxOverrides{
-		ActivateCursorRow:   v.activateCursorRow,
-		MoveCursor:          v.moveCursor,
-		RowActivated:        v.rowActivated,
-		RowSelected:         v.rowSelected,
-		SelectAll:           v.selectAll,
-		SelectedRowsChanged: v.selectedRowsChanged,
-		ToggleCursorRow:     v.toggleCursorRow,
-		UnselectAll:         v.unselectAll,
+	var pclass *C.GtkListBoxClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeListBox)) != C.FALSE {
+			pclass = (*C.GtkListBoxClass)(parentClass)
+		}
 	}
+
+	overrides := ListBoxOverrides{
+
+		ActivateCursorRow:   noop_ListBox_ActivateCursorRow,
+		MoveCursor:          noop_ListBox_MoveCursor,
+		RowActivated:        noop_ListBox_RowActivated,
+		RowSelected:         noop_ListBox_RowSelected,
+		SelectAll:           noop_ListBox_SelectAll,
+		SelectedRowsChanged: noop_ListBox_SelectedRowsChanged,
+		ToggleCursorRow:     noop_ListBox_ToggleCursorRow,
+		UnselectAll:         noop_ListBox_UnselectAll,
+	}
+	if pclass != nil {
+
+		if pclass.activate_cursor_row != nil {
+			overrides.ActivateCursorRow = v.activateCursorRow
+		}
+		if pclass.move_cursor != nil {
+			overrides.MoveCursor = v.moveCursor
+		}
+		if pclass.row_activated != nil {
+			overrides.RowActivated = v.rowActivated
+		}
+		if pclass.row_selected != nil {
+			overrides.RowSelected = v.rowSelected
+		}
+		if pclass.select_all != nil {
+			overrides.SelectAll = v.selectAll
+		}
+		if pclass.selected_rows_changed != nil {
+			overrides.SelectedRowsChanged = v.selectedRowsChanged
+		}
+		if pclass.toggle_cursor_row != nil {
+			overrides.ToggleCursorRow = v.toggleCursorRow
+		}
+		if pclass.unselect_all != nil {
+			overrides.UnselectAll = v.unselectAll
+		}
+	}
+
+	return overrides
 }
+
+func noop_ListBox_ActivateCursorRow() {}
+
+func noop_ListBox_MoveCursor(step MovementStep, count int) {}
+
+func noop_ListBox_RowActivated(row *ListBoxRow) {}
+
+func noop_ListBox_RowSelected(row *ListBoxRow) {}
+
+func noop_ListBox_SelectAll() {}
+
+func noop_ListBox_SelectedRowsChanged() {}
+
+func noop_ListBox_ToggleCursorRow() {}
+
+func noop_ListBox_UnselectAll() {}
 
 // ListBox is a vertical container that contains GtkListBoxRow children.
 // These rows can be dynamically sorted and filtered, and headers can be added
@@ -80478,7 +82000,10 @@ type ListBoxAccessibleOverrides struct {
 }
 
 func defaultListBoxAccessibleOverrides(v *ListBoxAccessible) ListBoxAccessibleOverrides {
-	return ListBoxAccessibleOverrides{}
+
+	overrides := ListBoxAccessibleOverrides{}
+
+	return overrides
 }
 
 type ListBoxAccessible struct {
@@ -80538,10 +82063,28 @@ type ListBoxRowOverrides struct {
 }
 
 func defaultListBoxRowOverrides(v *ListBoxRow) ListBoxRowOverrides {
-	return ListBoxRowOverrides{
-		Activate: v.activate,
+	var pclass *C.GtkListBoxRowClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeListBoxRow)) != C.FALSE {
+			pclass = (*C.GtkListBoxRowClass)(parentClass)
+		}
 	}
+
+	overrides := ListBoxRowOverrides{
+
+		Activate: noop_ListBoxRow_Activate,
+	}
+	if pclass != nil {
+
+		if pclass.activate != nil {
+			overrides.Activate = v.activate
+		}
+	}
+
+	return overrides
 }
+
+func noop_ListBoxRow_Activate() {}
 
 type ListBoxRow struct {
 	_ [0]func() // equal guard
@@ -80874,7 +82417,10 @@ type ListBoxRowAccessibleOverrides struct {
 }
 
 func defaultListBoxRowAccessibleOverrides(v *ListBoxRowAccessible) ListBoxRowAccessibleOverrides {
-	return ListBoxRowAccessibleOverrides{}
+
+	overrides := ListBoxRowAccessibleOverrides{}
+
+	return overrides
 }
 
 type ListBoxRowAccessible struct {
@@ -80928,7 +82474,10 @@ type ListStoreOverrides struct {
 }
 
 func defaultListStoreOverrides(v *ListStore) ListStoreOverrides {
-	return ListStoreOverrides{}
+
+	overrides := ListStoreOverrides{}
+
+	return overrides
 }
 
 // ListStore object is a list model for use with a TreeView widget.
@@ -81539,7 +83088,10 @@ type LockButtonOverrides struct {
 }
 
 func defaultLockButtonOverrides(v *LockButton) LockButtonOverrides {
-	return LockButtonOverrides{}
+
+	overrides := LockButtonOverrides{}
+
+	return overrides
 }
 
 // LockButton is a widget that can be used in control panels or preference
@@ -81731,7 +83283,10 @@ type LockButtonAccessibleOverrides struct {
 }
 
 func defaultLockButtonAccessibleOverrides(v *LockButtonAccessible) LockButtonAccessibleOverrides {
-	return LockButtonAccessibleOverrides{}
+
+	overrides := LockButtonAccessibleOverrides{}
+
+	return overrides
 }
 
 type LockButtonAccessible struct {
@@ -81794,7 +83349,10 @@ type MenuOverrides struct {
 }
 
 func defaultMenuOverrides(v *Menu) MenuOverrides {
-	return MenuOverrides{}
+
+	overrides := MenuOverrides{}
+
+	return overrides
 }
 
 // Menu is a MenuShell that implements a drop down menu consisting of a list of
@@ -82660,7 +84218,10 @@ type MenuAccessibleOverrides struct {
 }
 
 func defaultMenuAccessibleOverrides(v *MenuAccessible) MenuAccessibleOverrides {
-	return MenuAccessibleOverrides{}
+
+	overrides := MenuAccessibleOverrides{}
+
+	return overrides
 }
 
 type MenuAccessible struct {
@@ -82719,7 +84280,10 @@ type MenuBarOverrides struct {
 }
 
 func defaultMenuBarOverrides(v *MenuBar) MenuBarOverrides {
-	return MenuBarOverrides{}
+
+	overrides := MenuBarOverrides{}
+
+	return overrides
 }
 
 // MenuBar is a subclass of MenuShell which contains one or more MenuItems.
@@ -82909,7 +84473,10 @@ type MenuButtonOverrides struct {
 }
 
 func defaultMenuButtonOverrides(v *MenuButton) MenuButtonOverrides {
-	return MenuButtonOverrides{}
+
+	overrides := MenuButtonOverrides{}
+
+	return overrides
 }
 
 // MenuButton widget is used to display a popup when clicked on. This popup can
@@ -83400,7 +84967,10 @@ type MenuButtonAccessibleOverrides struct {
 }
 
 func defaultMenuButtonAccessibleOverrides(v *MenuButtonAccessible) MenuButtonAccessibleOverrides {
-	return MenuButtonAccessibleOverrides{}
+
+	overrides := MenuButtonAccessibleOverrides{}
+
+	return overrides
 }
 
 type MenuButtonAccessible struct {
@@ -83475,7 +85045,7 @@ type MenuItemOverrides struct {
 	//
 	//   - utf8: text in the menu_item label. This is the internal string used
 	//     by the label, and must not be modified.
-	Label func() string
+	Label func() string // optional
 	// Select emits the MenuItem::select signal on the given item.
 	Select func()
 	// SetLabel sets text on the menu_item label.
@@ -83494,16 +85064,61 @@ type MenuItemOverrides struct {
 }
 
 func defaultMenuItemOverrides(v *MenuItem) MenuItemOverrides {
-	return MenuItemOverrides{
-		Activate:           v.activate,
-		ActivateItem:       v.activateItem,
-		Deselect:           v.deselect,
-		Label:              v.label,
-		Select:             v.sel,
-		SetLabel:           v.setLabel,
-		ToggleSizeAllocate: v.toggleSizeAllocate,
+	var pclass *C.GtkMenuItemClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeMenuItem)) != C.FALSE {
+			pclass = (*C.GtkMenuItemClass)(parentClass)
+		}
 	}
+
+	overrides := MenuItemOverrides{
+
+		Activate:           noop_MenuItem_Activate,
+		ActivateItem:       noop_MenuItem_ActivateItem,
+		Deselect:           noop_MenuItem_Deselect,
+		Select:             noop_MenuItem_Select,
+		SetLabel:           noop_MenuItem_SetLabel,
+		ToggleSizeAllocate: noop_MenuItem_ToggleSizeAllocate,
+	}
+	if pclass != nil {
+
+		if pclass.activate != nil {
+			overrides.Activate = v.activate
+		}
+		if pclass.activate_item != nil {
+			overrides.ActivateItem = v.activateItem
+		}
+		if pclass.deselect != nil {
+			overrides.Deselect = v.deselect
+		}
+		if pclass.get_label != nil {
+			overrides.Label = v.label
+		}
+		if pclass._select != nil {
+			overrides.Select = v.sel
+		}
+		if pclass.set_label != nil {
+			overrides.SetLabel = v.setLabel
+		}
+		if pclass.toggle_size_allocate != nil {
+			overrides.ToggleSizeAllocate = v.toggleSizeAllocate
+		}
+	}
+
+	return overrides
 }
+
+func noop_MenuItem_Activate() {}
+
+func noop_MenuItem_ActivateItem() {}
+
+func noop_MenuItem_Deselect() {}
+
+func noop_MenuItem_Select() {}
+
+func noop_MenuItem_SetLabel(label string) {}
+
+func noop_MenuItem_ToggleSizeAllocate(allocation int) {}
 
 // MenuItem widget and the derived widgets are the only valid children for
 // menus. Their function is to correctly handle highlighting, alignment,
@@ -84209,7 +85824,10 @@ type MenuItemAccessibleOverrides struct {
 }
 
 func defaultMenuItemAccessibleOverrides(v *MenuItemAccessible) MenuItemAccessibleOverrides {
-	return MenuItemAccessibleOverrides{}
+
+	overrides := MenuItemAccessibleOverrides{}
+
+	return overrides
 }
 
 type MenuItemAccessible struct {
@@ -84278,7 +85896,7 @@ type MenuShellOverrides struct {
 	//
 	// Typically this results in the menu shell being erased from the screen.
 	Deactivate func()
-	PopupDelay func() int
+	PopupDelay func() int // optional
 	// Insert adds a new MenuItem to the menu shell’s item list at the position
 	// indicated by position.
 	//
@@ -84289,7 +85907,7 @@ type MenuShellOverrides struct {
 	//     numbered from 0 to n-1.
 	Insert       func(child Widgetter, position int)
 	MoveCurrent  func(direction MenuDirectionType)
-	MoveSelected func(distance int) bool
+	MoveSelected func(distance int) bool // optional
 	// SelectItem selects the menu item from the menu shell.
 	//
 	// The function takes the following parameters:
@@ -84300,18 +85918,70 @@ type MenuShellOverrides struct {
 }
 
 func defaultMenuShellOverrides(v *MenuShell) MenuShellOverrides {
-	return MenuShellOverrides{
-		ActivateCurrent: v.activateCurrent,
-		Cancel:          v.cancel,
-		Deactivate:      v.deactivate,
-		PopupDelay:      v.popupDelay,
-		Insert:          v.insert,
-		MoveCurrent:     v.moveCurrent,
-		MoveSelected:    v.moveSelected,
-		SelectItem:      v.selectItem,
-		SelectionDone:   v.selectionDone,
+	var pclass *C.GtkMenuShellClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeMenuShell)) != C.FALSE {
+			pclass = (*C.GtkMenuShellClass)(parentClass)
+		}
 	}
+
+	overrides := MenuShellOverrides{
+
+		ActivateCurrent: noop_MenuShell_ActivateCurrent,
+		Cancel:          noop_MenuShell_Cancel,
+		Deactivate:      noop_MenuShell_Deactivate,
+		Insert:          noop_MenuShell_Insert,
+		MoveCurrent:     noop_MenuShell_MoveCurrent,
+		SelectItem:      noop_MenuShell_SelectItem,
+		SelectionDone:   noop_MenuShell_SelectionDone,
+	}
+	if pclass != nil {
+
+		if pclass.activate_current != nil {
+			overrides.ActivateCurrent = v.activateCurrent
+		}
+		if pclass.cancel != nil {
+			overrides.Cancel = v.cancel
+		}
+		if pclass.deactivate != nil {
+			overrides.Deactivate = v.deactivate
+		}
+		if pclass.get_popup_delay != nil {
+			overrides.PopupDelay = v.popupDelay
+		}
+		if pclass.insert != nil {
+			overrides.Insert = v.insert
+		}
+		if pclass.move_current != nil {
+			overrides.MoveCurrent = v.moveCurrent
+		}
+		if pclass.move_selected != nil {
+			overrides.MoveSelected = v.moveSelected
+		}
+		if pclass.select_item != nil {
+			overrides.SelectItem = v.selectItem
+		}
+		if pclass.selection_done != nil {
+			overrides.SelectionDone = v.selectionDone
+		}
+	}
+
+	return overrides
 }
+
+func noop_MenuShell_ActivateCurrent(forceHide bool) {}
+
+func noop_MenuShell_Cancel() {}
+
+func noop_MenuShell_Deactivate() {}
+
+func noop_MenuShell_Insert(child Widgetter, position int) {}
+
+func noop_MenuShell_MoveCurrent(direction MenuDirectionType) {}
+
+func noop_MenuShell_SelectItem(menuItem Widgetter) {}
+
+func noop_MenuShell_SelectionDone() {}
 
 // MenuShell is the abstract base class used to derive the Menu and MenuBar
 // subclasses.
@@ -85013,7 +86683,10 @@ type MenuShellAccessibleOverrides struct {
 }
 
 func defaultMenuShellAccessibleOverrides(v *MenuShellAccessible) MenuShellAccessibleOverrides {
-	return MenuShellAccessibleOverrides{}
+
+	overrides := MenuShellAccessibleOverrides{}
+
+	return overrides
 }
 
 type MenuShellAccessible struct {
@@ -85074,10 +86747,28 @@ type MenuToolButtonOverrides struct {
 }
 
 func defaultMenuToolButtonOverrides(v *MenuToolButton) MenuToolButtonOverrides {
-	return MenuToolButtonOverrides{
-		ShowMenu: v.showMenu,
+	var pclass *C.GtkMenuToolButtonClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeMenuToolButton)) != C.FALSE {
+			pclass = (*C.GtkMenuToolButtonClass)(parentClass)
+		}
 	}
+
+	overrides := MenuToolButtonOverrides{
+
+		ShowMenu: noop_MenuToolButton_ShowMenu,
+	}
+	if pclass != nil {
+
+		if pclass.show_menu != nil {
+			overrides.ShowMenu = v.showMenu
+		}
+	}
+
+	return overrides
 }
+
+func noop_MenuToolButton_ShowMenu() {}
 
 // MenuToolButton is a ToolItem that contains a button and a small additional
 // button with an arrow. When clicked, the arrow button pops up a dropdown menu.
@@ -85367,7 +87058,10 @@ type MessageDialogOverrides struct {
 }
 
 func defaultMessageDialogOverrides(v *MessageDialog) MessageDialogOverrides {
-	return MessageDialogOverrides{}
+
+	overrides := MessageDialogOverrides{}
+
+	return overrides
 }
 
 // MessageDialog presents a dialog with some message text. It’s simply a
@@ -85582,7 +87276,10 @@ type MiscOverrides struct {
 }
 
 func defaultMiscOverrides(v *Misc) MiscOverrides {
-	return MiscOverrides{}
+
+	overrides := MiscOverrides{}
+
+	return overrides
 }
 
 // Misc widget is an abstract widget which is not useful itself, but is used to
@@ -85917,7 +87614,10 @@ type MountOperationOverrides struct {
 }
 
 func defaultMountOperationOverrides(v *MountOperation) MountOperationOverrides {
-	return MountOperationOverrides{}
+
+	overrides := MountOperationOverrides{}
+
+	return overrides
 }
 
 // MountOperation: this should not be accessed directly. Use the accessor
@@ -86112,12 +87812,40 @@ type NativeDialogOverrides struct {
 }
 
 func defaultNativeDialogOverrides(v *NativeDialog) NativeDialogOverrides {
-	return NativeDialogOverrides{
-		Hide:     v.hide,
-		Response: v.response,
-		Show:     v.show,
+	var pclass *C.GtkNativeDialogClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeNativeDialog)) != C.FALSE {
+			pclass = (*C.GtkNativeDialogClass)(parentClass)
+		}
 	}
+
+	overrides := NativeDialogOverrides{
+
+		Hide:     noop_NativeDialog_Hide,
+		Response: noop_NativeDialog_Response,
+		Show:     noop_NativeDialog_Show,
+	}
+	if pclass != nil {
+
+		if pclass.hide != nil {
+			overrides.Hide = v.hide
+		}
+		if pclass.response != nil {
+			overrides.Response = v.response
+		}
+		if pclass.show != nil {
+			overrides.Show = v.show
+		}
+	}
+
+	return overrides
 }
+
+func noop_NativeDialog_Hide() {}
+
+func noop_NativeDialog_Response(responseId int) {}
+
+func noop_NativeDialog_Show() {}
 
 // NativeDialog: native dialogs are platform dialogs that don't use Dialog
 // or Window. They are used in order to integrate better with a platform,
@@ -86518,15 +88246,15 @@ func (self *NativeDialog) show() {
 
 // NotebookOverrides contains methods that are overridable.
 type NotebookOverrides struct {
-	ChangeCurrentPage func(offset int) bool
-	FocusTab          func(typ NotebookTab) bool
+	ChangeCurrentPage func(offset int) bool      // optional
+	FocusTab          func(typ NotebookTab) bool // optional
 	// The function takes the following parameters:
 	//
 	//   - child
 	//   - tabLabel
 	//   - menuLabel
 	//   - position
-	InsertPage   func(child, tabLabel, menuLabel Widgetter, position int) int
+	InsertPage   func(child, tabLabel, menuLabel Widgetter, position int) int // optional
 	MoveFocusOut func(direction DirectionType)
 	// The function takes the following parameters:
 	//
@@ -86547,8 +88275,8 @@ type NotebookOverrides struct {
 	//
 	//   - direction
 	//   - moveToLast
-	ReorderTab func(direction DirectionType, moveToLast bool) bool
-	SelectPage func(moveFocus bool) bool
+	ReorderTab func(direction DirectionType, moveToLast bool) bool // optional
+	SelectPage func(moveFocus bool) bool                           // optional
 	// The function takes the following parameters:
 	//
 	//   - page
@@ -86557,19 +88285,67 @@ type NotebookOverrides struct {
 }
 
 func defaultNotebookOverrides(v *Notebook) NotebookOverrides {
-	return NotebookOverrides{
-		ChangeCurrentPage: v.changeCurrentPage,
-		FocusTab:          v.focusTab,
-		InsertPage:        v.insertPage,
-		MoveFocusOut:      v.moveFocusOut,
-		PageAdded:         v.pageAdded,
-		PageRemoved:       v.pageRemoved,
-		PageReordered:     v.pageReordered,
-		ReorderTab:        v.reorderTab,
-		SelectPage:        v.selectPage,
-		SwitchPage:        v.switchPage,
+	var pclass *C.GtkNotebookClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeNotebook)) != C.FALSE {
+			pclass = (*C.GtkNotebookClass)(parentClass)
+		}
 	}
+
+	overrides := NotebookOverrides{
+
+		MoveFocusOut:  noop_Notebook_MoveFocusOut,
+		PageAdded:     noop_Notebook_PageAdded,
+		PageRemoved:   noop_Notebook_PageRemoved,
+		PageReordered: noop_Notebook_PageReordered,
+		SwitchPage:    noop_Notebook_SwitchPage,
+	}
+	if pclass != nil {
+
+		if pclass.change_current_page != nil {
+			overrides.ChangeCurrentPage = v.changeCurrentPage
+		}
+		if pclass.focus_tab != nil {
+			overrides.FocusTab = v.focusTab
+		}
+		if pclass.insert_page != nil {
+			overrides.InsertPage = v.insertPage
+		}
+		if pclass.move_focus_out != nil {
+			overrides.MoveFocusOut = v.moveFocusOut
+		}
+		if pclass.page_added != nil {
+			overrides.PageAdded = v.pageAdded
+		}
+		if pclass.page_removed != nil {
+			overrides.PageRemoved = v.pageRemoved
+		}
+		if pclass.page_reordered != nil {
+			overrides.PageReordered = v.pageReordered
+		}
+		if pclass.reorder_tab != nil {
+			overrides.ReorderTab = v.reorderTab
+		}
+		if pclass.select_page != nil {
+			overrides.SelectPage = v.selectPage
+		}
+		if pclass.switch_page != nil {
+			overrides.SwitchPage = v.switchPage
+		}
+	}
+
+	return overrides
 }
+
+func noop_Notebook_MoveFocusOut(direction DirectionType) {}
+
+func noop_Notebook_PageAdded(child Widgetter, pageNum uint) {}
+
+func noop_Notebook_PageRemoved(child Widgetter, pageNum uint) {}
+
+func noop_Notebook_PageReordered(child Widgetter, pageNum uint) {}
+
+func noop_Notebook_SwitchPage(page Widgetter, pageNum uint) {}
 
 // Notebook widget is a Container whose children are pages that can be switched
 // between using tab labels along one edge.
@@ -88278,7 +90054,10 @@ type NotebookAccessibleOverrides struct {
 }
 
 func defaultNotebookAccessibleOverrides(v *NotebookAccessible) NotebookAccessibleOverrides {
-	return NotebookAccessibleOverrides{}
+
+	overrides := NotebookAccessibleOverrides{}
+
+	return overrides
 }
 
 type NotebookAccessible struct {
@@ -88337,7 +90116,10 @@ type NotebookPageAccessibleOverrides struct {
 }
 
 func defaultNotebookPageAccessibleOverrides(v *NotebookPageAccessible) NotebookPageAccessibleOverrides {
-	return NotebookPageAccessibleOverrides{}
+
+	overrides := NotebookPageAccessibleOverrides{}
+
+	return overrides
 }
 
 type NotebookPageAccessible struct {
@@ -88421,7 +90203,10 @@ type NumerableIconOverrides struct {
 }
 
 func defaultNumerableIconOverrides(v *NumerableIcon) NumerableIconOverrides {
-	return NumerableIconOverrides{}
+
+	overrides := NumerableIconOverrides{}
+
+	return overrides
 }
 
 // NumerableIcon is a subclass of Icon that can show a number or short string as
@@ -88816,7 +90601,10 @@ type OffscreenWindowOverrides struct {
 }
 
 func defaultOffscreenWindowOverrides(v *OffscreenWindow) OffscreenWindowOverrides {
-	return OffscreenWindowOverrides{}
+
+	overrides := OffscreenWindowOverrides{}
+
+	return overrides
 }
 
 // OffscreenWindow is strictly intended to be used for obtaining snapshots of
@@ -88977,13 +90765,26 @@ type OverlayOverrides struct {
 	//
 	//   - widget
 	//   - allocation
-	ChildPosition func(widget Widgetter, allocation *Allocation) bool
+	ChildPosition func(widget Widgetter, allocation *Allocation) bool // optional
 }
 
 func defaultOverlayOverrides(v *Overlay) OverlayOverrides {
-	return OverlayOverrides{
-		ChildPosition: v.childPosition,
+	var pclass *C.GtkOverlayClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeOverlay)) != C.FALSE {
+			pclass = (*C.GtkOverlayClass)(parentClass)
+		}
 	}
+
+	overrides := OverlayOverrides{}
+	if pclass != nil {
+
+		if pclass.get_child_position != nil {
+			overrides.ChildPosition = v.childPosition
+		}
+	}
+
+	return overrides
 }
 
 // Overlay is a container which contains a single main child, on top of which
@@ -90172,23 +91973,46 @@ func (setup *PageSetup) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
 
 // PanedOverrides contains methods that are overridable.
 type PanedOverrides struct {
-	AcceptPosition    func() bool
-	CancelPosition    func() bool
-	CycleChildFocus   func(reverse bool) bool
-	CycleHandleFocus  func(reverse bool) bool
-	MoveHandle        func(scroll ScrollType) bool
-	ToggleHandleFocus func() bool
+	AcceptPosition    func() bool                  // optional
+	CancelPosition    func() bool                  // optional
+	CycleChildFocus   func(reverse bool) bool      // optional
+	CycleHandleFocus  func(reverse bool) bool      // optional
+	MoveHandle        func(scroll ScrollType) bool // optional
+	ToggleHandleFocus func() bool                  // optional
 }
 
 func defaultPanedOverrides(v *Paned) PanedOverrides {
-	return PanedOverrides{
-		AcceptPosition:    v.acceptPosition,
-		CancelPosition:    v.cancelPosition,
-		CycleChildFocus:   v.cycleChildFocus,
-		CycleHandleFocus:  v.cycleHandleFocus,
-		MoveHandle:        v.moveHandle,
-		ToggleHandleFocus: v.toggleHandleFocus,
+	var pclass *C.GtkPanedClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypePaned)) != C.FALSE {
+			pclass = (*C.GtkPanedClass)(parentClass)
+		}
 	}
+
+	overrides := PanedOverrides{}
+	if pclass != nil {
+
+		if pclass.accept_position != nil {
+			overrides.AcceptPosition = v.acceptPosition
+		}
+		if pclass.cancel_position != nil {
+			overrides.CancelPosition = v.cancelPosition
+		}
+		if pclass.cycle_child_focus != nil {
+			overrides.CycleChildFocus = v.cycleChildFocus
+		}
+		if pclass.cycle_handle_focus != nil {
+			overrides.CycleHandleFocus = v.cycleHandleFocus
+		}
+		if pclass.move_handle != nil {
+			overrides.MoveHandle = v.moveHandle
+		}
+		if pclass.toggle_handle_focus != nil {
+			overrides.ToggleHandleFocus = v.toggleHandleFocus
+		}
+	}
+
+	return overrides
 }
 
 // Paned has two panes, arranged either horizontally or vertically. The division
@@ -90818,7 +92642,10 @@ type PanedAccessibleOverrides struct {
 }
 
 func defaultPanedAccessibleOverrides(v *PanedAccessible) PanedAccessibleOverrides {
-	return PanedAccessibleOverrides{}
+
+	overrides := PanedAccessibleOverrides{}
+
+	return overrides
 }
 
 type PanedAccessible struct {
@@ -91724,10 +93551,28 @@ type PlugOverrides struct {
 }
 
 func defaultPlugOverrides(v *Plug) PlugOverrides {
-	return PlugOverrides{
-		Embedded: v.embedded,
+	var pclass *C.GtkPlugClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypePlug)) != C.FALSE {
+			pclass = (*C.GtkPlugClass)(parentClass)
+		}
 	}
+
+	overrides := PlugOverrides{
+
+		Embedded: noop_Plug_Embedded,
+	}
+	if pclass != nil {
+
+		if pclass.embedded != nil {
+			overrides.Embedded = v.embedded
+		}
+	}
+
+	return overrides
 }
+
+func noop_Plug_Embedded() {}
 
 // Plug: together with Socket, Plug provides the ability to embed widgets from
 // one process into another process in a fashion that is transparent to the
@@ -91884,7 +93729,10 @@ type PlugAccessibleOverrides struct {
 }
 
 func defaultPlugAccessibleOverrides(v *PlugAccessible) PlugAccessibleOverrides {
-	return PlugAccessibleOverrides{}
+
+	overrides := PlugAccessibleOverrides{}
+
+	return overrides
 }
 
 type PlugAccessible struct {
@@ -91963,10 +93811,28 @@ type PopoverOverrides struct {
 }
 
 func defaultPopoverOverrides(v *Popover) PopoverOverrides {
-	return PopoverOverrides{
-		Closed: v.closed,
+	var pclass *C.GtkPopoverClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypePopover)) != C.FALSE {
+			pclass = (*C.GtkPopoverClass)(parentClass)
+		}
 	}
+
+	overrides := PopoverOverrides{
+
+		Closed: noop_Popover_Closed,
+	}
+	if pclass != nil {
+
+		if pclass.closed != nil {
+			overrides.Closed = v.closed
+		}
+	}
+
+	return overrides
 }
+
+func noop_Popover_Closed() {}
 
 // Popover is a bubble-like context window, primarily meant to provide
 // context-dependent information or options. Popovers are attached to a widget,
@@ -92591,7 +94457,10 @@ type PopoverAccessibleOverrides struct {
 }
 
 func defaultPopoverAccessibleOverrides(v *PopoverAccessible) PopoverAccessibleOverrides {
-	return PopoverAccessibleOverrides{}
+
+	overrides := PopoverAccessibleOverrides{}
+
+	return overrides
 }
 
 type PopoverAccessible struct {
@@ -92645,7 +94514,10 @@ type PopoverMenuOverrides struct {
 }
 
 func defaultPopoverMenuOverrides(v *PopoverMenu) PopoverMenuOverrides {
-	return PopoverMenuOverrides{}
+
+	overrides := PopoverMenuOverrides{}
+
+	return overrides
 }
 
 // PopoverMenu is a subclass of Popover that treats its children like menus and
@@ -93207,7 +95079,7 @@ type PrintOperationOverrides struct {
 	EndPrint func(context *PrintContext)
 	// Paginate: signal emitted after the “begin-print” signal, but before the
 	// actual rendering starts.
-	Paginate func(context *PrintContext) bool
+	Paginate func(context *PrintContext) bool // optional
 	// Preview: signal emitted when a preview is requested from the native
 	// dialog.
 	//
@@ -93216,7 +95088,7 @@ type PrintOperationOverrides struct {
 	//   - preview
 	//   - context
 	//   - parent
-	Preview func(preview PrintOperationPreviewer, context *PrintContext, parent *Window) bool
+	Preview func(preview PrintOperationPreviewer, context *PrintContext, parent *Window) bool // optional
 	// RequestPageSetup is emitted once for every page that is printed, to give
 	// the application a chance to modify the page setup.
 	//
@@ -93240,18 +95112,76 @@ type PrintOperationOverrides struct {
 }
 
 func defaultPrintOperationOverrides(v *PrintOperation) PrintOperationOverrides {
-	return PrintOperationOverrides{
-		BeginPrint:         v.beginPrint,
-		CustomWidgetApply:  v.customWidgetApply,
-		Done:               v.done,
-		DrawPage:           v.drawPage,
-		EndPrint:           v.endPrint,
-		Paginate:           v.paginate,
-		Preview:            v.preview,
-		RequestPageSetup:   v.requestPageSetup,
-		StatusChanged:      v.statusChanged,
-		UpdateCustomWidget: v.updateCustomWidget,
+	var pclass *C.GtkPrintOperationClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypePrintOperation)) != C.FALSE {
+			pclass = (*C.GtkPrintOperationClass)(parentClass)
+		}
 	}
+
+	overrides := PrintOperationOverrides{
+
+		BeginPrint:         noop_PrintOperation_BeginPrint,
+		CustomWidgetApply:  noop_PrintOperation_CustomWidgetApply,
+		Done:               noop_PrintOperation_Done,
+		DrawPage:           noop_PrintOperation_DrawPage,
+		EndPrint:           noop_PrintOperation_EndPrint,
+		RequestPageSetup:   noop_PrintOperation_RequestPageSetup,
+		StatusChanged:      noop_PrintOperation_StatusChanged,
+		UpdateCustomWidget: noop_PrintOperation_UpdateCustomWidget,
+	}
+	if pclass != nil {
+
+		if pclass.begin_print != nil {
+			overrides.BeginPrint = v.beginPrint
+		}
+		if pclass.custom_widget_apply != nil {
+			overrides.CustomWidgetApply = v.customWidgetApply
+		}
+		if pclass.done != nil {
+			overrides.Done = v.done
+		}
+		if pclass.draw_page != nil {
+			overrides.DrawPage = v.drawPage
+		}
+		if pclass.end_print != nil {
+			overrides.EndPrint = v.endPrint
+		}
+		if pclass.paginate != nil {
+			overrides.Paginate = v.paginate
+		}
+		if pclass.preview != nil {
+			overrides.Preview = v.preview
+		}
+		if pclass.request_page_setup != nil {
+			overrides.RequestPageSetup = v.requestPageSetup
+		}
+		if pclass.status_changed != nil {
+			overrides.StatusChanged = v.statusChanged
+		}
+		if pclass.update_custom_widget != nil {
+			overrides.UpdateCustomWidget = v.updateCustomWidget
+		}
+	}
+
+	return overrides
+}
+
+func noop_PrintOperation_BeginPrint(context *PrintContext) {}
+
+func noop_PrintOperation_CustomWidgetApply(widget Widgetter) {}
+
+func noop_PrintOperation_Done(result PrintOperationResult) {}
+
+func noop_PrintOperation_DrawPage(context *PrintContext, pageNr int) {}
+
+func noop_PrintOperation_EndPrint(context *PrintContext) {}
+
+func noop_PrintOperation_RequestPageSetup(context *PrintContext, pageNr int, setup *PageSetup) {}
+
+func noop_PrintOperation_StatusChanged() {}
+
+func noop_PrintOperation_UpdateCustomWidget(widget Widgetter, setup *PageSetup, settings *PrintSettings) {
 }
 
 // PrintOperation is the high-level, portable printing API. It looks a bit
@@ -96298,7 +98228,10 @@ type ProgressBarOverrides struct {
 }
 
 func defaultProgressBarOverrides(v *ProgressBar) ProgressBarOverrides {
-	return ProgressBarOverrides{}
+
+	overrides := ProgressBarOverrides{}
+
+	return overrides
 }
 
 // ProgressBar is typically used to display the progress of a long running
@@ -96693,7 +98626,10 @@ type ProgressBarAccessibleOverrides struct {
 }
 
 func defaultProgressBarAccessibleOverrides(v *ProgressBarAccessible) ProgressBarAccessibleOverrides {
-	return ProgressBarAccessibleOverrides{}
+
+	overrides := ProgressBarAccessibleOverrides{}
+
+	return overrides
 }
 
 type ProgressBarAccessible struct {
@@ -96751,10 +98687,28 @@ type RadioActionOverrides struct {
 }
 
 func defaultRadioActionOverrides(v *RadioAction) RadioActionOverrides {
-	return RadioActionOverrides{
-		Changed: v.changed,
+	var pclass *C.GtkRadioActionClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeRadioAction)) != C.FALSE {
+			pclass = (*C.GtkRadioActionClass)(parentClass)
+		}
 	}
+
+	overrides := RadioActionOverrides{
+
+		Changed: noop_RadioAction_Changed,
+	}
+	if pclass != nil {
+
+		if pclass.changed != nil {
+			overrides.Changed = v.changed
+		}
+	}
+
+	return overrides
 }
+
+func noop_RadioAction_Changed(current *RadioAction) {}
 
 // RadioAction is similar to RadioMenuItem. A number of radio actions can be
 // linked together so that only one may be active at any one time.
@@ -97044,10 +98998,28 @@ type RadioButtonOverrides struct {
 }
 
 func defaultRadioButtonOverrides(v *RadioButton) RadioButtonOverrides {
-	return RadioButtonOverrides{
-		GroupChanged: v.groupChanged,
+	var pclass *C.GtkRadioButtonClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeRadioButton)) != C.FALSE {
+			pclass = (*C.GtkRadioButtonClass)(parentClass)
+		}
 	}
+
+	overrides := RadioButtonOverrides{
+
+		GroupChanged: noop_RadioButton_GroupChanged,
+	}
+	if pclass != nil {
+
+		if pclass.group_changed != nil {
+			overrides.GroupChanged = v.groupChanged
+		}
+	}
+
+	return overrides
 }
+
+func noop_RadioButton_GroupChanged() {}
 
 // RadioButton: single radio button performs the same basic function as a
 // CheckButton, as its position in the object hierarchy reflects. It is only
@@ -97525,7 +99497,10 @@ type RadioButtonAccessibleOverrides struct {
 }
 
 func defaultRadioButtonAccessibleOverrides(v *RadioButtonAccessible) RadioButtonAccessibleOverrides {
-	return RadioButtonAccessibleOverrides{}
+
+	overrides := RadioButtonAccessibleOverrides{}
+
+	return overrides
 }
 
 type RadioButtonAccessible struct {
@@ -97591,10 +99566,28 @@ type RadioMenuItemOverrides struct {
 }
 
 func defaultRadioMenuItemOverrides(v *RadioMenuItem) RadioMenuItemOverrides {
-	return RadioMenuItemOverrides{
-		GroupChanged: v.groupChanged,
+	var pclass *C.GtkRadioMenuItemClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeRadioMenuItem)) != C.FALSE {
+			pclass = (*C.GtkRadioMenuItemClass)(parentClass)
+		}
 	}
+
+	overrides := RadioMenuItemOverrides{
+
+		GroupChanged: noop_RadioMenuItem_GroupChanged,
+	}
+	if pclass != nil {
+
+		if pclass.group_changed != nil {
+			overrides.GroupChanged = v.groupChanged
+		}
+	}
+
+	return overrides
 }
+
+func noop_RadioMenuItem_GroupChanged() {}
 
 // RadioMenuItem: radio menu item is a check menu item that belongs to a group.
 // At each instant exactly one of the radio menu items from a group is selected.
@@ -98022,7 +100015,10 @@ type RadioMenuItemAccessibleOverrides struct {
 }
 
 func defaultRadioMenuItemAccessibleOverrides(v *RadioMenuItemAccessible) RadioMenuItemAccessibleOverrides {
-	return RadioMenuItemAccessibleOverrides{}
+
+	overrides := RadioMenuItemAccessibleOverrides{}
+
+	return overrides
 }
 
 type RadioMenuItemAccessible struct {
@@ -98087,7 +100083,10 @@ type RadioToolButtonOverrides struct {
 }
 
 func defaultRadioToolButtonOverrides(v *RadioToolButton) RadioToolButtonOverrides {
-	return RadioToolButtonOverrides{}
+
+	overrides := RadioToolButtonOverrides{}
+
+	return overrides
 }
 
 // RadioToolButton is a ToolItem that contains a radio button, that is, a button
@@ -98378,7 +100377,7 @@ type RangeOverrides struct {
 	//
 	//   - scroll
 	//   - newValue
-	ChangeValue func(scroll ScrollType, newValue float64) bool
+	ChangeValue func(scroll ScrollType, newValue float64) bool // optional
 	RangeBorder func(border_ *Border)
 	// The function takes the following parameters:
 	//
@@ -98391,15 +100390,55 @@ type RangeOverrides struct {
 }
 
 func defaultRangeOverrides(v *Range) RangeOverrides {
-	return RangeOverrides{
-		AdjustBounds:     v.adjustBounds,
-		ChangeValue:      v.changeValue,
-		RangeBorder:      v.rangeBorder,
-		RangeSizeRequest: v.rangeSizeRequest,
-		MoveSlider:       v.moveSlider,
-		ValueChanged:     v.valueChanged,
+	var pclass *C.GtkRangeClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeRange)) != C.FALSE {
+			pclass = (*C.GtkRangeClass)(parentClass)
+		}
 	}
+
+	overrides := RangeOverrides{
+
+		AdjustBounds:     noop_Range_AdjustBounds,
+		RangeBorder:      noop_Range_RangeBorder,
+		RangeSizeRequest: noop_Range_RangeSizeRequest,
+		MoveSlider:       noop_Range_MoveSlider,
+		ValueChanged:     noop_Range_ValueChanged,
+	}
+	if pclass != nil {
+
+		if pclass.adjust_bounds != nil {
+			overrides.AdjustBounds = v.adjustBounds
+		}
+		if pclass.change_value != nil {
+			overrides.ChangeValue = v.changeValue
+		}
+		if pclass.get_range_border != nil {
+			overrides.RangeBorder = v.rangeBorder
+		}
+		if pclass.get_range_size_request != nil {
+			overrides.RangeSizeRequest = v.rangeSizeRequest
+		}
+		if pclass.move_slider != nil {
+			overrides.MoveSlider = v.moveSlider
+		}
+		if pclass.value_changed != nil {
+			overrides.ValueChanged = v.valueChanged
+		}
+	}
+
+	return overrides
 }
+
+func noop_Range_AdjustBounds(newValue float64) {}
+
+func noop_Range_RangeBorder(border_ *Border) {}
+
+func noop_Range_RangeSizeRequest(orientation Orientation, minimum, natural *int) {}
+
+func noop_Range_MoveSlider(scroll ScrollType) {}
+
+func noop_Range_ValueChanged() {}
 
 // Range is the common base class for widgets which visualize an adjustment,
 // e.g Scale or Scrollbar.
@@ -99286,7 +101325,10 @@ type RangeAccessibleOverrides struct {
 }
 
 func defaultRangeAccessibleOverrides(v *RangeAccessible) RangeAccessibleOverrides {
-	return RangeAccessibleOverrides{}
+
+	overrides := RangeAccessibleOverrides{}
+
+	return overrides
 }
 
 type RangeAccessible struct {
@@ -99345,15 +101387,35 @@ type RCStyleOverrides struct {
 	//
 	//   - settings
 	//   - scanner
-	Parse func(settings *Settings, scanner *glib.Scanner) uint
+	Parse func(settings *Settings, scanner *glib.Scanner) uint // optional
 }
 
 func defaultRCStyleOverrides(v *RCStyle) RCStyleOverrides {
-	return RCStyleOverrides{
-		Merge: v.merge,
-		Parse: v.parse,
+	var pclass *C.GtkRcStyleClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeRCStyle)) != C.FALSE {
+			pclass = (*C.GtkRcStyleClass)(parentClass)
+		}
 	}
+
+	overrides := RCStyleOverrides{
+
+		Merge: noop_RCStyle_Merge,
+	}
+	if pclass != nil {
+
+		if pclass.merge != nil {
+			overrides.Merge = v.merge
+		}
+		if pclass.parse != nil {
+			overrides.Parse = v.parse
+		}
+	}
+
+	return overrides
 }
+
+func noop_RCStyle_Merge(src *RCStyle) {}
 
 // RCStyle is used to represent a set of information about the appearance of a
 // widget. This can later be composited together with other RcStyle-struct<!--
@@ -99496,7 +101558,10 @@ type RecentActionOverrides struct {
 }
 
 func defaultRecentActionOverrides(v *RecentAction) RecentActionOverrides {
-	return RecentActionOverrides{}
+
+	overrides := RecentActionOverrides{}
+
+	return overrides
 }
 
 // RecentAction represents a list of recently used files, which can be shown by
@@ -99718,7 +101783,10 @@ type RecentChooserDialogOverrides struct {
 }
 
 func defaultRecentChooserDialogOverrides(v *RecentChooserDialog) RecentChooserDialogOverrides {
-	return RecentChooserDialogOverrides{}
+
+	overrides := RecentChooserDialogOverrides{}
+
+	return overrides
 }
 
 // RecentChooserDialog is a dialog box suitable for displaying the recently
@@ -99827,7 +101895,10 @@ type RecentChooserMenuOverrides struct {
 }
 
 func defaultRecentChooserMenuOverrides(v *RecentChooserMenu) RecentChooserMenuOverrides {
-	return RecentChooserMenuOverrides{}
+
+	overrides := RecentChooserMenuOverrides{}
+
+	return overrides
 }
 
 // RecentChooserMenu is a widget suitable for displaying recently used
@@ -100020,7 +102091,10 @@ type RecentChooserWidgetOverrides struct {
 }
 
 func defaultRecentChooserWidgetOverrides(v *RecentChooserWidget) RecentChooserWidgetOverrides {
-	return RecentChooserWidgetOverrides{}
+
+	overrides := RecentChooserWidgetOverrides{}
+
+	return overrides
 }
 
 // RecentChooserWidget is a widget suitable for selecting recently used files.
@@ -100488,10 +102562,28 @@ type RecentManagerOverrides struct {
 }
 
 func defaultRecentManagerOverrides(v *RecentManager) RecentManagerOverrides {
-	return RecentManagerOverrides{
-		Changed: v.changed,
+	var pclass *C.GtkRecentManagerClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeRecentManager)) != C.FALSE {
+			pclass = (*C.GtkRecentManagerClass)(parentClass)
+		}
 	}
+
+	overrides := RecentManagerOverrides{
+
+		Changed: noop_RecentManager_Changed,
+	}
+	if pclass != nil {
+
+		if pclass.changed != nil {
+			overrides.Changed = v.changed
+		}
+	}
+
+	return overrides
 }
+
+func noop_RecentManager_Changed() {}
 
 // RecentManager provides a facility for adding, removing and looking up
 // recently used files. Each recently used file is identified by its URI,
@@ -100939,7 +103031,10 @@ type RendererCellAccessibleOverrides struct {
 }
 
 func defaultRendererCellAccessibleOverrides(v *RendererCellAccessible) RendererCellAccessibleOverrides {
-	return RendererCellAccessibleOverrides{}
+
+	overrides := RendererCellAccessibleOverrides{}
+
+	return overrides
 }
 
 type RendererCellAccessible struct {
@@ -101019,7 +103114,10 @@ type RevealerOverrides struct {
 }
 
 func defaultRevealerOverrides(v *Revealer) RevealerOverrides {
-	return RevealerOverrides{}
+
+	overrides := RevealerOverrides{}
+
+	return overrides
 }
 
 // Revealer widget is a container which animates the transition of its child
@@ -101258,7 +103356,7 @@ func (revealer *Revealer) SetTransitionType(transition RevealerTransitionType) {
 // ScaleOverrides contains methods that are overridable.
 type ScaleOverrides struct {
 	DrawValue   func()
-	FormatValue func(value float64) string
+	FormatValue func(value float64) string // optional
 	// LayoutOffsets obtains the coordinates where the scale will draw the
 	// Layout representing the text in the scale. Remember when using the Layout
 	// function you need to convert to and from pixels using PANGO_PIXELS() or
@@ -101271,16 +103369,38 @@ type ScaleOverrides struct {
 	//
 	//   - x (optional): location to store X offset of layout, or NULL.
 	//   - y (optional): location to store Y offset of layout, or NULL.
-	LayoutOffsets func() (x, y int)
+	LayoutOffsets func() (x, y int) // optional
 }
 
 func defaultScaleOverrides(v *Scale) ScaleOverrides {
-	return ScaleOverrides{
-		DrawValue:     v.drawValue,
-		FormatValue:   v.formatValue,
-		LayoutOffsets: v.layoutOffsets,
+	var pclass *C.GtkScaleClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeScale)) != C.FALSE {
+			pclass = (*C.GtkScaleClass)(parentClass)
+		}
 	}
+
+	overrides := ScaleOverrides{
+
+		DrawValue: noop_Scale_DrawValue,
+	}
+	if pclass != nil {
+
+		if pclass.draw_value != nil {
+			overrides.DrawValue = v.drawValue
+		}
+		if pclass.format_value != nil {
+			overrides.FormatValue = v.formatValue
+		}
+		if pclass.get_layout_offsets != nil {
+			overrides.LayoutOffsets = v.layoutOffsets
+		}
+	}
+
+	return overrides
 }
+
+func noop_Scale_DrawValue() {}
 
 // Scale is a slider control used to select a numeric value. To use it,
 // you’ll probably want to investigate the methods on its base class, Range,
@@ -101869,7 +103989,10 @@ type ScaleAccessibleOverrides struct {
 }
 
 func defaultScaleAccessibleOverrides(v *ScaleAccessible) ScaleAccessibleOverrides {
-	return ScaleAccessibleOverrides{}
+
+	overrides := ScaleAccessibleOverrides{}
+
+	return overrides
 }
 
 type ScaleAccessible struct {
@@ -101927,10 +104050,28 @@ type ScaleButtonOverrides struct {
 }
 
 func defaultScaleButtonOverrides(v *ScaleButton) ScaleButtonOverrides {
-	return ScaleButtonOverrides{
-		ValueChanged: v.valueChanged,
+	var pclass *C.GtkScaleButtonClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeScaleButton)) != C.FALSE {
+			pclass = (*C.GtkScaleButtonClass)(parentClass)
+		}
 	}
+
+	overrides := ScaleButtonOverrides{
+
+		ValueChanged: noop_ScaleButton_ValueChanged,
+	}
+	if pclass != nil {
+
+		if pclass.value_changed != nil {
+			overrides.ValueChanged = v.valueChanged
+		}
+	}
+
+	return overrides
 }
+
+func noop_ScaleButton_ValueChanged(value float64) {}
 
 // ScaleButton provides a button which pops up a scale widget. This kind of
 // widget is commonly used for volume controls in multimedia applications,
@@ -102313,7 +104454,10 @@ type ScaleButtonAccessibleOverrides struct {
 }
 
 func defaultScaleButtonAccessibleOverrides(v *ScaleButtonAccessible) ScaleButtonAccessibleOverrides {
-	return ScaleButtonAccessibleOverrides{}
+
+	overrides := ScaleButtonAccessibleOverrides{}
+
+	return overrides
 }
 
 type ScaleButtonAccessible struct {
@@ -102383,7 +104527,10 @@ type ScrollbarOverrides struct {
 }
 
 func defaultScrollbarOverrides(v *Scrollbar) ScrollbarOverrides {
-	return ScrollbarOverrides{}
+
+	overrides := ScrollbarOverrides{}
+
+	return overrides
 }
 
 // Scrollbar widget is a horizontal or vertical scrollbar, depending on the
@@ -102519,15 +104666,35 @@ type ScrolledWindowOverrides struct {
 	//
 	//   - scroll
 	//   - horizontal
-	ScrollChild func(scroll ScrollType, horizontal bool) bool
+	ScrollChild func(scroll ScrollType, horizontal bool) bool // optional
 }
 
 func defaultScrolledWindowOverrides(v *ScrolledWindow) ScrolledWindowOverrides {
-	return ScrolledWindowOverrides{
-		MoveFocusOut: v.moveFocusOut,
-		ScrollChild:  v.scrollChild,
+	var pclass *C.GtkScrolledWindowClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeScrolledWindow)) != C.FALSE {
+			pclass = (*C.GtkScrolledWindowClass)(parentClass)
+		}
 	}
+
+	overrides := ScrolledWindowOverrides{
+
+		MoveFocusOut: noop_ScrolledWindow_MoveFocusOut,
+	}
+	if pclass != nil {
+
+		if pclass.move_focus_out != nil {
+			overrides.MoveFocusOut = v.moveFocusOut
+		}
+		if pclass.scroll_child != nil {
+			overrides.ScrollChild = v.scrollChild
+		}
+	}
+
+	return overrides
 }
+
+func noop_ScrolledWindow_MoveFocusOut(direction DirectionType) {}
 
 // ScrolledWindow is a container that accepts a single child widget and makes
 // that child scrollable using either internally added scrollbars or externally
@@ -103562,7 +105729,10 @@ type ScrolledWindowAccessibleOverrides struct {
 }
 
 func defaultScrolledWindowAccessibleOverrides(v *ScrolledWindowAccessible) ScrolledWindowAccessibleOverrides {
-	return ScrolledWindowAccessibleOverrides{}
+
+	overrides := ScrolledWindowAccessibleOverrides{}
+
+	return overrides
 }
 
 type ScrolledWindowAccessible struct {
@@ -103616,7 +105786,10 @@ type SearchBarOverrides struct {
 }
 
 func defaultSearchBarOverrides(v *SearchBar) SearchBarOverrides {
-	return SearchBarOverrides{}
+
+	overrides := SearchBarOverrides{}
+
+	return overrides
 }
 
 // SearchBar is a container made to have a search entry (possibly with
@@ -103890,13 +106063,46 @@ type SearchEntryOverrides struct {
 }
 
 func defaultSearchEntryOverrides(v *SearchEntry) SearchEntryOverrides {
-	return SearchEntryOverrides{
-		NextMatch:     v.nextMatch,
-		PreviousMatch: v.previousMatch,
-		SearchChanged: v.searchChanged,
-		StopSearch:    v.stopSearch,
+	var pclass *C.GtkSearchEntryClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeSearchEntry)) != C.FALSE {
+			pclass = (*C.GtkSearchEntryClass)(parentClass)
+		}
 	}
+
+	overrides := SearchEntryOverrides{
+
+		NextMatch:     noop_SearchEntry_NextMatch,
+		PreviousMatch: noop_SearchEntry_PreviousMatch,
+		SearchChanged: noop_SearchEntry_SearchChanged,
+		StopSearch:    noop_SearchEntry_StopSearch,
+	}
+	if pclass != nil {
+
+		if pclass.next_match != nil {
+			overrides.NextMatch = v.nextMatch
+		}
+		if pclass.previous_match != nil {
+			overrides.PreviousMatch = v.previousMatch
+		}
+		if pclass.search_changed != nil {
+			overrides.SearchChanged = v.searchChanged
+		}
+		if pclass.stop_search != nil {
+			overrides.StopSearch = v.stopSearch
+		}
+	}
+
+	return overrides
 }
+
+func noop_SearchEntry_NextMatch() {}
+
+func noop_SearchEntry_PreviousMatch() {}
+
+func noop_SearchEntry_SearchChanged() {}
+
+func noop_SearchEntry_StopSearch() {}
 
 // SearchEntry is a subclass of Entry that has been tailored for use as a search
 // entry.
@@ -104155,7 +106361,10 @@ type SeparatorOverrides struct {
 }
 
 func defaultSeparatorOverrides(v *Separator) SeparatorOverrides {
-	return SeparatorOverrides{}
+
+	overrides := SeparatorOverrides{}
+
+	return overrides
 }
 
 // Separator is a horizontal or vertical separator widget, depending on the
@@ -104251,7 +106460,10 @@ type SeparatorMenuItemOverrides struct {
 }
 
 func defaultSeparatorMenuItemOverrides(v *SeparatorMenuItem) SeparatorMenuItemOverrides {
-	return SeparatorMenuItemOverrides{}
+
+	overrides := SeparatorMenuItemOverrides{}
+
+	return overrides
 }
 
 // SeparatorMenuItem is a separator used to group items within a menu.
@@ -104354,7 +106566,10 @@ type SeparatorToolItemOverrides struct {
 }
 
 func defaultSeparatorToolItemOverrides(v *SeparatorToolItem) SeparatorToolItemOverrides {
-	return SeparatorToolItemOverrides{}
+
+	overrides := SeparatorToolItemOverrides{}
+
+	return overrides
 }
 
 // SeparatorToolItem is a ToolItem that separates groups of other ToolItems.
@@ -104494,7 +106709,10 @@ type SettingsOverrides struct {
 }
 
 func defaultSettingsOverrides(v *Settings) SettingsOverrides {
-	return SettingsOverrides{}
+
+	overrides := SettingsOverrides{}
+
+	return overrides
 }
 
 // Settings provide a mechanism to share global settings between applications.
@@ -105034,11 +107252,34 @@ type ShortcutsWindowOverrides struct {
 }
 
 func defaultShortcutsWindowOverrides(v *ShortcutsWindow) ShortcutsWindowOverrides {
-	return ShortcutsWindowOverrides{
-		Close:  v.close,
-		Search: v.search,
+	var pclass *C.GtkShortcutsWindowClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeShortcutsWindow)) != C.FALSE {
+			pclass = (*C.GtkShortcutsWindowClass)(parentClass)
+		}
 	}
+
+	overrides := ShortcutsWindowOverrides{
+
+		Close:  noop_ShortcutsWindow_Close,
+		Search: noop_ShortcutsWindow_Search,
+	}
+	if pclass != nil {
+
+		if pclass.close != nil {
+			overrides.Close = v.close
+		}
+		if pclass.search != nil {
+			overrides.Search = v.search
+		}
+	}
+
+	return overrides
 }
+
+func noop_ShortcutsWindow_Close() {}
+
+func noop_ShortcutsWindow_Search() {}
 
 // ShortcutsWindow shows brief information about the keyboard shortcuts and
 // gestures of an application. The shortcuts can be grouped, and you can have
@@ -105190,7 +107431,10 @@ type SizeGroupOverrides struct {
 }
 
 func defaultSizeGroupOverrides(v *SizeGroup) SizeGroupOverrides {
-	return SizeGroupOverrides{}
+
+	overrides := SizeGroupOverrides{}
+
+	return overrides
 }
 
 // SizeGroup provides a mechanism for grouping a number of widgets together so
@@ -105506,15 +107750,35 @@ func (sizeGroup *SizeGroup) SetMode(mode SizeGroupMode) {
 // SocketOverrides contains methods that are overridable.
 type SocketOverrides struct {
 	PlugAdded   func()
-	PlugRemoved func() bool
+	PlugRemoved func() bool // optional
 }
 
 func defaultSocketOverrides(v *Socket) SocketOverrides {
-	return SocketOverrides{
-		PlugAdded:   v.plugAdded,
-		PlugRemoved: v.plugRemoved,
+	var pclass *C.GtkSocketClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeSocket)) != C.FALSE {
+			pclass = (*C.GtkSocketClass)(parentClass)
+		}
 	}
+
+	overrides := SocketOverrides{
+
+		PlugAdded: noop_Socket_PlugAdded,
+	}
+	if pclass != nil {
+
+		if pclass.plug_added != nil {
+			overrides.PlugAdded = v.plugAdded
+		}
+		if pclass.plug_removed != nil {
+			overrides.PlugRemoved = v.plugRemoved
+		}
+	}
+
+	return overrides
 }
+
+func noop_Socket_PlugAdded() {}
 
 // Socket: together with Plug, Socket provides the ability to embed widgets
 // from one process into another process in a fashion that is transparent to the
@@ -105725,7 +107989,10 @@ type SocketAccessibleOverrides struct {
 }
 
 func defaultSocketAccessibleOverrides(v *SocketAccessible) SocketAccessibleOverrides {
-	return SocketAccessibleOverrides{}
+
+	overrides := SocketAccessibleOverrides{}
+
+	return overrides
 }
 
 type SocketAccessible struct {
@@ -105790,21 +108057,53 @@ func (socket *SocketAccessible) Embed(path string) {
 // SpinButtonOverrides contains methods that are overridable.
 type SpinButtonOverrides struct {
 	ChangeValue  func(scroll ScrollType)
-	Input        func(newValue *float64) int
-	Output       func() int
+	Input        func(newValue *float64) int // optional
+	Output       func() int                  // optional
 	ValueChanged func()
 	Wrapped      func()
 }
 
 func defaultSpinButtonOverrides(v *SpinButton) SpinButtonOverrides {
-	return SpinButtonOverrides{
-		ChangeValue:  v.changeValue,
-		Input:        v.input,
-		Output:       v.output,
-		ValueChanged: v.valueChanged,
-		Wrapped:      v.wrapped,
+	var pclass *C.GtkSpinButtonClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeSpinButton)) != C.FALSE {
+			pclass = (*C.GtkSpinButtonClass)(parentClass)
+		}
 	}
+
+	overrides := SpinButtonOverrides{
+
+		ChangeValue:  noop_SpinButton_ChangeValue,
+		ValueChanged: noop_SpinButton_ValueChanged,
+		Wrapped:      noop_SpinButton_Wrapped,
+	}
+	if pclass != nil {
+
+		if pclass.change_value != nil {
+			overrides.ChangeValue = v.changeValue
+		}
+		if pclass.input != nil {
+			overrides.Input = v.input
+		}
+		if pclass.output != nil {
+			overrides.Output = v.output
+		}
+		if pclass.value_changed != nil {
+			overrides.ValueChanged = v.valueChanged
+		}
+		if pclass.wrapped != nil {
+			overrides.Wrapped = v.wrapped
+		}
+	}
+
+	return overrides
 }
+
+func noop_SpinButton_ChangeValue(scroll ScrollType) {}
+
+func noop_SpinButton_ValueChanged() {}
+
+func noop_SpinButton_Wrapped() {}
 
 // SpinButton is an ideal way to allow the user to set the value of some
 // attribute. Rather than having to directly type a number into a Entry,
@@ -106625,7 +108924,10 @@ type SpinButtonAccessibleOverrides struct {
 }
 
 func defaultSpinButtonAccessibleOverrides(v *SpinButtonAccessible) SpinButtonAccessibleOverrides {
-	return SpinButtonAccessibleOverrides{}
+
+	overrides := SpinButtonAccessibleOverrides{}
+
+	return overrides
 }
 
 type SpinButtonAccessible struct {
@@ -106696,7 +108998,10 @@ type SpinnerOverrides struct {
 }
 
 func defaultSpinnerOverrides(v *Spinner) SpinnerOverrides {
-	return SpinnerOverrides{}
+
+	overrides := SpinnerOverrides{}
+
+	return overrides
 }
 
 // Spinner widget displays an icon-size spinning animation. It is often used
@@ -106798,7 +109103,10 @@ type SpinnerAccessibleOverrides struct {
 }
 
 func defaultSpinnerAccessibleOverrides(v *SpinnerAccessible) SpinnerAccessibleOverrides {
-	return SpinnerAccessibleOverrides{}
+
+	overrides := SpinnerAccessibleOverrides{}
+
+	return overrides
 }
 
 type SpinnerAccessible struct {
@@ -106855,7 +109163,10 @@ type StackOverrides struct {
 }
 
 func defaultStackOverrides(v *Stack) StackOverrides {
-	return StackOverrides{}
+
+	overrides := StackOverrides{}
+
+	return overrides
 }
 
 // Stack widget is a container which only shows one of its children at a time.
@@ -107466,7 +109777,10 @@ type StackAccessibleOverrides struct {
 }
 
 func defaultStackAccessibleOverrides(v *StackAccessible) StackAccessibleOverrides {
-	return StackAccessibleOverrides{}
+
+	overrides := StackAccessibleOverrides{}
+
+	return overrides
 }
 
 type StackAccessible struct {
@@ -107520,7 +109834,10 @@ type StackSidebarOverrides struct {
 }
 
 func defaultStackSidebarOverrides(v *StackSidebar) StackSidebarOverrides {
-	return StackSidebarOverrides{}
+
+	overrides := StackSidebarOverrides{}
+
+	return overrides
 }
 
 // StackSidebar enables you to quickly and easily provide a consistent "sidebar"
@@ -107653,7 +109970,10 @@ type StackSwitcherOverrides struct {
 }
 
 func defaultStackSwitcherOverrides(v *StackSwitcher) StackSwitcherOverrides {
-	return StackSwitcherOverrides{}
+
+	overrides := StackSwitcherOverrides{}
+
+	return overrides
 }
 
 // StackSwitcher widget acts as a controller for a Stack; it shows a row of
@@ -107792,8 +110112,8 @@ func (switcher *StackSwitcher) SetStack(stack *Stack) {
 // StatusIconOverrides contains methods that are overridable.
 type StatusIconOverrides struct {
 	Activate           func()
-	ButtonPressEvent   func(event *gdk.EventButton) bool
-	ButtonReleaseEvent func(event *gdk.EventButton) bool
+	ButtonPressEvent   func(event *gdk.EventButton) bool // optional
+	ButtonReleaseEvent func(event *gdk.EventButton) bool // optional
 	// The function takes the following parameters:
 	//
 	//   - button
@@ -107805,22 +110125,55 @@ type StatusIconOverrides struct {
 	//   - y
 	//   - keyboardMode
 	//   - tooltip
-	QueryTooltip func(x, y int, keyboardMode bool, tooltip *Tooltip) bool
-	ScrollEvent  func(event *gdk.EventScroll) bool
-	SizeChanged  func(size int) bool
+	QueryTooltip func(x, y int, keyboardMode bool, tooltip *Tooltip) bool // optional
+	ScrollEvent  func(event *gdk.EventScroll) bool                        // optional
+	SizeChanged  func(size int) bool                                      // optional
 }
 
 func defaultStatusIconOverrides(v *StatusIcon) StatusIconOverrides {
-	return StatusIconOverrides{
-		Activate:           v.activate,
-		ButtonPressEvent:   v.buttonPressEvent,
-		ButtonReleaseEvent: v.buttonReleaseEvent,
-		PopupMenu:          v.popupMenu,
-		QueryTooltip:       v.queryTooltip,
-		ScrollEvent:        v.scrollEvent,
-		SizeChanged:        v.sizeChanged,
+	var pclass *C.GtkStatusIconClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeStatusIcon)) != C.FALSE {
+			pclass = (*C.GtkStatusIconClass)(parentClass)
+		}
 	}
+
+	overrides := StatusIconOverrides{
+
+		Activate:  noop_StatusIcon_Activate,
+		PopupMenu: noop_StatusIcon_PopupMenu,
+	}
+	if pclass != nil {
+
+		if pclass.activate != nil {
+			overrides.Activate = v.activate
+		}
+		if pclass.button_press_event != nil {
+			overrides.ButtonPressEvent = v.buttonPressEvent
+		}
+		if pclass.button_release_event != nil {
+			overrides.ButtonReleaseEvent = v.buttonReleaseEvent
+		}
+		if pclass.popup_menu != nil {
+			overrides.PopupMenu = v.popupMenu
+		}
+		if pclass.query_tooltip != nil {
+			overrides.QueryTooltip = v.queryTooltip
+		}
+		if pclass.scroll_event != nil {
+			overrides.ScrollEvent = v.scrollEvent
+		}
+		if pclass.size_changed != nil {
+			overrides.SizeChanged = v.sizeChanged
+		}
+	}
+
+	return overrides
 }
+
+func noop_StatusIcon_Activate() {}
+
+func noop_StatusIcon_PopupMenu(button uint, activateTime uint32) {}
 
 // StatusIcon: “system tray” or notification area is normally used for transient
 // icons that indicate some special state. For example, a system tray icon might
@@ -109122,11 +111475,34 @@ type StatusbarOverrides struct {
 }
 
 func defaultStatusbarOverrides(v *Statusbar) StatusbarOverrides {
-	return StatusbarOverrides{
-		TextPopped: v.textPopped,
-		TextPushed: v.textPushed,
+	var pclass *C.GtkStatusbarClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeStatusbar)) != C.FALSE {
+			pclass = (*C.GtkStatusbarClass)(parentClass)
+		}
 	}
+
+	overrides := StatusbarOverrides{
+
+		TextPopped: noop_Statusbar_TextPopped,
+		TextPushed: noop_Statusbar_TextPushed,
+	}
+	if pclass != nil {
+
+		if pclass.text_popped != nil {
+			overrides.TextPopped = v.textPopped
+		}
+		if pclass.text_pushed != nil {
+			overrides.TextPushed = v.textPushed
+		}
+	}
+
+	return overrides
 }
+
+func noop_Statusbar_TextPopped(contextId uint, text string) {}
+
+func noop_Statusbar_TextPushed(contextId uint, text string) {}
 
 // Statusbar is usually placed along the bottom of an application's main Window.
 // It may provide a regular commentary of the application's status (as is
@@ -109451,7 +111827,10 @@ type StatusbarAccessibleOverrides struct {
 }
 
 func defaultStatusbarAccessibleOverrides(v *StatusbarAccessible) StatusbarAccessibleOverrides {
-	return StatusbarAccessibleOverrides{}
+
+	overrides := StatusbarAccessibleOverrides{}
+
+	return overrides
 }
 
 type StatusbarAccessible struct {
@@ -109766,7 +112145,7 @@ type StyleOverrides struct {
 	// The function returns the following values:
 	//
 	//   - pixbuf: newly-created Pixbuf containing the rendered icon.
-	RenderIcon func(source *IconSource, direction TextDirection, state StateType, size int, widget Widgetter, detail string) *gdkpixbuf.Pixbuf
+	RenderIcon func(source *IconSource, direction TextDirection, state StateType, size int, widget Widgetter, detail string) *gdkpixbuf.Pixbuf // optional
 	// SetBackground sets the background of window to the background color or
 	// pixmap specified by style for the given state.
 	//
@@ -109781,35 +112160,195 @@ type StyleOverrides struct {
 }
 
 func defaultStyleOverrides(v *Style) StyleOverrides {
-	return StyleOverrides{
-		Copy:           v.copy,
-		DrawArrow:      v.drawArrow,
-		DrawBox:        v.drawBox,
-		DrawBoxGap:     v.drawBoxGap,
-		DrawCheck:      v.drawCheck,
-		DrawDiamond:    v.drawDiamond,
-		DrawExpander:   v.drawExpander,
-		DrawExtension:  v.drawExtension,
-		DrawFlatBox:    v.drawFlatBox,
-		DrawFocus:      v.drawFocus,
-		DrawHandle:     v.drawHandle,
-		DrawHline:      v.drawHline,
-		DrawLayout:     v.drawLayout,
-		DrawOption:     v.drawOption,
-		DrawResizeGrip: v.drawResizeGrip,
-		DrawShadow:     v.drawShadow,
-		DrawShadowGap:  v.drawShadowGap,
-		DrawSlider:     v.drawSlider,
-		DrawSpinner:    v.drawSpinner,
-		DrawTab:        v.drawTab,
-		DrawVline:      v.drawVline,
-		InitFromRC:     v.initFromRC,
-		Realize:        v.realize,
-		RenderIcon:     v.renderIcon,
-		SetBackground:  v.setBackground,
-		Unrealize:      v.unrealize,
+	var pclass *C.GtkStyleClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeStyle)) != C.FALSE {
+			pclass = (*C.GtkStyleClass)(parentClass)
+		}
 	}
+
+	overrides := StyleOverrides{
+
+		Copy:           noop_Style_Copy,
+		DrawArrow:      noop_Style_DrawArrow,
+		DrawBox:        noop_Style_DrawBox,
+		DrawBoxGap:     noop_Style_DrawBoxGap,
+		DrawCheck:      noop_Style_DrawCheck,
+		DrawDiamond:    noop_Style_DrawDiamond,
+		DrawExpander:   noop_Style_DrawExpander,
+		DrawExtension:  noop_Style_DrawExtension,
+		DrawFlatBox:    noop_Style_DrawFlatBox,
+		DrawFocus:      noop_Style_DrawFocus,
+		DrawHandle:     noop_Style_DrawHandle,
+		DrawHline:      noop_Style_DrawHline,
+		DrawLayout:     noop_Style_DrawLayout,
+		DrawOption:     noop_Style_DrawOption,
+		DrawResizeGrip: noop_Style_DrawResizeGrip,
+		DrawShadow:     noop_Style_DrawShadow,
+		DrawShadowGap:  noop_Style_DrawShadowGap,
+		DrawSlider:     noop_Style_DrawSlider,
+		DrawSpinner:    noop_Style_DrawSpinner,
+		DrawTab:        noop_Style_DrawTab,
+		DrawVline:      noop_Style_DrawVline,
+		InitFromRC:     noop_Style_InitFromRC,
+		Realize:        noop_Style_Realize,
+		SetBackground:  noop_Style_SetBackground,
+		Unrealize:      noop_Style_Unrealize,
+	}
+	if pclass != nil {
+
+		if pclass.copy != nil {
+			overrides.Copy = v.copy
+		}
+		if pclass.draw_arrow != nil {
+			overrides.DrawArrow = v.drawArrow
+		}
+		if pclass.draw_box != nil {
+			overrides.DrawBox = v.drawBox
+		}
+		if pclass.draw_box_gap != nil {
+			overrides.DrawBoxGap = v.drawBoxGap
+		}
+		if pclass.draw_check != nil {
+			overrides.DrawCheck = v.drawCheck
+		}
+		if pclass.draw_diamond != nil {
+			overrides.DrawDiamond = v.drawDiamond
+		}
+		if pclass.draw_expander != nil {
+			overrides.DrawExpander = v.drawExpander
+		}
+		if pclass.draw_extension != nil {
+			overrides.DrawExtension = v.drawExtension
+		}
+		if pclass.draw_flat_box != nil {
+			overrides.DrawFlatBox = v.drawFlatBox
+		}
+		if pclass.draw_focus != nil {
+			overrides.DrawFocus = v.drawFocus
+		}
+		if pclass.draw_handle != nil {
+			overrides.DrawHandle = v.drawHandle
+		}
+		if pclass.draw_hline != nil {
+			overrides.DrawHline = v.drawHline
+		}
+		if pclass.draw_layout != nil {
+			overrides.DrawLayout = v.drawLayout
+		}
+		if pclass.draw_option != nil {
+			overrides.DrawOption = v.drawOption
+		}
+		if pclass.draw_resize_grip != nil {
+			overrides.DrawResizeGrip = v.drawResizeGrip
+		}
+		if pclass.draw_shadow != nil {
+			overrides.DrawShadow = v.drawShadow
+		}
+		if pclass.draw_shadow_gap != nil {
+			overrides.DrawShadowGap = v.drawShadowGap
+		}
+		if pclass.draw_slider != nil {
+			overrides.DrawSlider = v.drawSlider
+		}
+		if pclass.draw_spinner != nil {
+			overrides.DrawSpinner = v.drawSpinner
+		}
+		if pclass.draw_tab != nil {
+			overrides.DrawTab = v.drawTab
+		}
+		if pclass.draw_vline != nil {
+			overrides.DrawVline = v.drawVline
+		}
+		if pclass.init_from_rc != nil {
+			overrides.InitFromRC = v.initFromRC
+		}
+		if pclass.realize != nil {
+			overrides.Realize = v.realize
+		}
+		if pclass.render_icon != nil {
+			overrides.RenderIcon = v.renderIcon
+		}
+		if pclass.set_background != nil {
+			overrides.SetBackground = v.setBackground
+		}
+		if pclass.unrealize != nil {
+			overrides.Unrealize = v.unrealize
+		}
+	}
+
+	return overrides
 }
+
+func noop_Style_Copy(src *Style) {}
+
+func noop_Style_DrawArrow(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, arrowType ArrowType, fill bool, x, y, width, height int) {
+}
+
+func noop_Style_DrawBox(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int) {
+}
+
+func noop_Style_DrawBoxGap(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, gapSide PositionType, gapX, gapWidth int) {
+}
+
+func noop_Style_DrawCheck(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int) {
+}
+
+func noop_Style_DrawDiamond(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int) {
+}
+
+func noop_Style_DrawExpander(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x, y int, expanderStyle ExpanderStyle) {
+}
+
+func noop_Style_DrawExtension(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, gapSide PositionType) {
+}
+
+func noop_Style_DrawFlatBox(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int) {
+}
+
+func noop_Style_DrawFocus(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x, y, width, height int) {
+}
+
+func noop_Style_DrawHandle(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, orientation Orientation) {
+}
+
+func noop_Style_DrawHline(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, x1, x2, y int) {
+}
+
+func noop_Style_DrawLayout(cr *cairo.Context, stateType StateType, useText bool, widget Widgetter, detail string, x, y int, layout *pango.Layout) {
+}
+
+func noop_Style_DrawOption(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int) {
+}
+
+func noop_Style_DrawResizeGrip(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, edge gdk.WindowEdge, x, y, width, height int) {
+}
+
+func noop_Style_DrawShadow(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int) {
+}
+
+func noop_Style_DrawShadowGap(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, gapSide PositionType, gapX, gapWidth int) {
+}
+
+func noop_Style_DrawSlider(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int, orientation Orientation) {
+}
+
+func noop_Style_DrawSpinner(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, step uint, x, y, width, height int) {
+}
+
+func noop_Style_DrawTab(cr *cairo.Context, stateType StateType, shadowType ShadowType, widget Widgetter, detail string, x, y, width, height int) {
+}
+
+func noop_Style_DrawVline(cr *cairo.Context, stateType StateType, widget Widgetter, detail string, y1, y2, x int) {
+}
+
+func noop_Style_InitFromRC(rcStyle *RCStyle) {}
+
+func noop_Style_Realize() {}
+
+func noop_Style_SetBackground(window gdk.Windower, stateType StateType) {}
+
+func noop_Style_Unrealize() {}
 
 // Style object encapsulates the information that provides the look and feel for
 // a widget.
@@ -111498,10 +114037,28 @@ type StyleContextOverrides struct {
 }
 
 func defaultStyleContextOverrides(v *StyleContext) StyleContextOverrides {
-	return StyleContextOverrides{
-		Changed: v.changed,
+	var pclass *C.GtkStyleContextClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeStyleContext)) != C.FALSE {
+			pclass = (*C.GtkStyleContextClass)(parentClass)
+		}
 	}
+
+	overrides := StyleContextOverrides{
+
+		Changed: noop_StyleContext_Changed,
+	}
+	if pclass != nil {
+
+		if pclass.changed != nil {
+			overrides.Changed = v.changed
+		}
+	}
+
+	return overrides
 }
+
+func noop_StyleContext_Changed() {}
 
 // StyleContext is an object that stores styling information affecting a widget
 // defined by WidgetPath.
@@ -113100,7 +115657,10 @@ type StylePropertiesOverrides struct {
 }
 
 func defaultStylePropertiesOverrides(v *StyleProperties) StylePropertiesOverrides {
-	return StylePropertiesOverrides{}
+
+	overrides := StylePropertiesOverrides{}
+
+	return overrides
 }
 
 // StyleProperties provides the storage for style information that is used by
@@ -113380,15 +115940,35 @@ type SwitchOverrides struct {
 	// Activate: action signal and emitting it causes the switch to animate.
 	Activate func()
 	// StateSet class handler for the ::state-set signal.
-	StateSet func(state bool) bool
+	StateSet func(state bool) bool // optional
 }
 
 func defaultSwitchOverrides(v *Switch) SwitchOverrides {
-	return SwitchOverrides{
-		Activate: v.activate,
-		StateSet: v.stateSet,
+	var pclass *C.GtkSwitchClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeSwitch)) != C.FALSE {
+			pclass = (*C.GtkSwitchClass)(parentClass)
+		}
 	}
+
+	overrides := SwitchOverrides{
+
+		Activate: noop_Switch_Activate,
+	}
+	if pclass != nil {
+
+		if pclass.activate != nil {
+			overrides.Activate = v.activate
+		}
+		if pclass.state_set != nil {
+			overrides.StateSet = v.stateSet
+		}
+	}
+
+	return overrides
 }
+
+func noop_Switch_Activate() {}
 
 // Switch is a widget that has two states: on or off. The user can control which
 // state should be active by clicking the empty area, or by dragging the handle.
@@ -113657,7 +116237,10 @@ type SwitchAccessibleOverrides struct {
 }
 
 func defaultSwitchAccessibleOverrides(v *SwitchAccessible) SwitchAccessibleOverrides {
-	return SwitchAccessibleOverrides{}
+
+	overrides := SwitchAccessibleOverrides{}
+
+	return overrides
 }
 
 type SwitchAccessible struct {
@@ -113714,7 +116297,10 @@ type TableOverrides struct {
 }
 
 func defaultTableOverrides(v *Table) TableOverrides {
-	return TableOverrides{}
+
+	overrides := TableOverrides{}
+
+	return overrides
 }
 
 // Table functions allow the programmer to arrange widgets in rows and columns,
@@ -114252,7 +116838,10 @@ type TearoffMenuItemOverrides struct {
 }
 
 func defaultTearoffMenuItemOverrides(v *TearoffMenuItem) TearoffMenuItemOverrides {
-	return TearoffMenuItemOverrides{}
+
+	overrides := TearoffMenuItemOverrides{}
+
+	return overrides
 }
 
 // TearoffMenuItem is a special MenuItem which is used to tear off and reattach
@@ -114466,22 +117055,100 @@ type TextBufferOverrides struct {
 }
 
 func defaultTextBufferOverrides(v *TextBuffer) TextBufferOverrides {
-	return TextBufferOverrides{
-		ApplyTag:          v.applyTag,
-		BeginUserAction:   v.beginUserAction,
-		Changed:           v.changed,
-		DeleteRange:       v.deleteRange,
-		EndUserAction:     v.endUserAction,
-		InsertChildAnchor: v.insertChildAnchor,
-		InsertPixbuf:      v.insertPixbuf,
-		InsertText:        v.insertText,
-		MarkDeleted:       v.markDeleted,
-		MarkSet:           v.markSet,
-		ModifiedChanged:   v.modifiedChanged,
-		PasteDone:         v.pasteDone,
-		RemoveTag:         v.removeTag,
+	var pclass *C.GtkTextBufferClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeTextBuffer)) != C.FALSE {
+			pclass = (*C.GtkTextBufferClass)(parentClass)
+		}
 	}
+
+	overrides := TextBufferOverrides{
+
+		ApplyTag:          noop_TextBuffer_ApplyTag,
+		BeginUserAction:   noop_TextBuffer_BeginUserAction,
+		Changed:           noop_TextBuffer_Changed,
+		DeleteRange:       noop_TextBuffer_DeleteRange,
+		EndUserAction:     noop_TextBuffer_EndUserAction,
+		InsertChildAnchor: noop_TextBuffer_InsertChildAnchor,
+		InsertPixbuf:      noop_TextBuffer_InsertPixbuf,
+		InsertText:        noop_TextBuffer_InsertText,
+		MarkDeleted:       noop_TextBuffer_MarkDeleted,
+		MarkSet:           noop_TextBuffer_MarkSet,
+		ModifiedChanged:   noop_TextBuffer_ModifiedChanged,
+		PasteDone:         noop_TextBuffer_PasteDone,
+		RemoveTag:         noop_TextBuffer_RemoveTag,
+	}
+	if pclass != nil {
+
+		if pclass.apply_tag != nil {
+			overrides.ApplyTag = v.applyTag
+		}
+		if pclass.begin_user_action != nil {
+			overrides.BeginUserAction = v.beginUserAction
+		}
+		if pclass.changed != nil {
+			overrides.Changed = v.changed
+		}
+		if pclass.delete_range != nil {
+			overrides.DeleteRange = v.deleteRange
+		}
+		if pclass.end_user_action != nil {
+			overrides.EndUserAction = v.endUserAction
+		}
+		if pclass.insert_child_anchor != nil {
+			overrides.InsertChildAnchor = v.insertChildAnchor
+		}
+		if pclass.insert_pixbuf != nil {
+			overrides.InsertPixbuf = v.insertPixbuf
+		}
+		if pclass.insert_text != nil {
+			overrides.InsertText = v.insertText
+		}
+		if pclass.mark_deleted != nil {
+			overrides.MarkDeleted = v.markDeleted
+		}
+		if pclass.mark_set != nil {
+			overrides.MarkSet = v.markSet
+		}
+		if pclass.modified_changed != nil {
+			overrides.ModifiedChanged = v.modifiedChanged
+		}
+		if pclass.paste_done != nil {
+			overrides.PasteDone = v.pasteDone
+		}
+		if pclass.remove_tag != nil {
+			overrides.RemoveTag = v.removeTag
+		}
+	}
+
+	return overrides
 }
+
+func noop_TextBuffer_ApplyTag(tag *TextTag, start, end *TextIter) {}
+
+func noop_TextBuffer_BeginUserAction() {}
+
+func noop_TextBuffer_Changed() {}
+
+func noop_TextBuffer_DeleteRange(start, end *TextIter) {}
+
+func noop_TextBuffer_EndUserAction() {}
+
+func noop_TextBuffer_InsertChildAnchor(iter *TextIter, anchor *TextChildAnchor) {}
+
+func noop_TextBuffer_InsertPixbuf(iter *TextIter, pixbuf *gdkpixbuf.Pixbuf) {}
+
+func noop_TextBuffer_InsertText(pos *TextIter, newText string, newTextLength int) {}
+
+func noop_TextBuffer_MarkDeleted(mark *TextMark) {}
+
+func noop_TextBuffer_MarkSet(location *TextIter, mark *TextMark) {}
+
+func noop_TextBuffer_ModifiedChanged() {}
+
+func noop_TextBuffer_PasteDone(clipboard *Clipboard) {}
+
+func noop_TextBuffer_RemoveTag(tag *TextTag, start, end *TextIter) {}
 
 // TextBuffer: you may wish to begin by reading the text widget conceptual
 // overview (TextWidget.html) which gives an overview of all the objects and
@@ -116751,7 +119418,10 @@ type TextCellAccessibleOverrides struct {
 }
 
 func defaultTextCellAccessibleOverrides(v *TextCellAccessible) TextCellAccessibleOverrides {
-	return TextCellAccessibleOverrides{}
+
+	overrides := TextCellAccessibleOverrides{}
+
+	return overrides
 }
 
 type TextCellAccessible struct {
@@ -116828,7 +119498,10 @@ type TextChildAnchorOverrides struct {
 }
 
 func defaultTextChildAnchorOverrides(v *TextChildAnchor) TextChildAnchorOverrides {
-	return TextChildAnchorOverrides{}
+
+	overrides := TextChildAnchorOverrides{}
+
+	return overrides
 }
 
 // TextChildAnchor is a spot in the buffer where child widgets can be “anchored”
@@ -116965,7 +119638,10 @@ type TextMarkOverrides struct {
 }
 
 func defaultTextMarkOverrides(v *TextMark) TextMarkOverrides {
-	return TextMarkOverrides{}
+
+	overrides := TextMarkOverrides{}
+
+	return overrides
 }
 
 // TextMark: you may wish to begin by reading the text widget conceptual
@@ -117224,13 +119900,26 @@ type TextTagOverrides struct {
 	// The function returns the following values:
 	//
 	//   - ok: result of signal emission (whether the event was handled).
-	Event func(eventObject *coreglib.Object, event *gdk.Event, iter *TextIter) bool
+	Event func(eventObject *coreglib.Object, event *gdk.Event, iter *TextIter) bool // optional
 }
 
 func defaultTextTagOverrides(v *TextTag) TextTagOverrides {
-	return TextTagOverrides{
-		Event: v.event,
+	var pclass *C.GtkTextTagClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeTextTag)) != C.FALSE {
+			pclass = (*C.GtkTextTagClass)(parentClass)
+		}
 	}
+
+	overrides := TextTagOverrides{}
+	if pclass != nil {
+
+		if pclass.event != nil {
+			overrides.Event = v.event
+		}
+	}
+
+	return overrides
 }
 
 // TextTag: you may wish to begin by reading the text widget conceptual overview
@@ -117484,12 +120173,40 @@ type TextTagTableOverrides struct {
 }
 
 func defaultTextTagTableOverrides(v *TextTagTable) TextTagTableOverrides {
-	return TextTagTableOverrides{
-		TagAdded:   v.tagAdded,
-		TagChanged: v.tagChanged,
-		TagRemoved: v.tagRemoved,
+	var pclass *C.GtkTextTagTableClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeTextTagTable)) != C.FALSE {
+			pclass = (*C.GtkTextTagTableClass)(parentClass)
+		}
 	}
+
+	overrides := TextTagTableOverrides{
+
+		TagAdded:   noop_TextTagTable_TagAdded,
+		TagChanged: noop_TextTagTable_TagChanged,
+		TagRemoved: noop_TextTagTable_TagRemoved,
+	}
+	if pclass != nil {
+
+		if pclass.tag_added != nil {
+			overrides.TagAdded = v.tagAdded
+		}
+		if pclass.tag_changed != nil {
+			overrides.TagChanged = v.tagChanged
+		}
+		if pclass.tag_removed != nil {
+			overrides.TagRemoved = v.tagRemoved
+		}
+	}
+
+	return overrides
 }
+
+func noop_TextTagTable_TagAdded(tag *TextTag) {}
+
+func noop_TextTagTable_TagChanged(tag *TextTag, sizeChanged bool) {}
+
+func noop_TextTagTable_TagRemoved(tag *TextTag) {}
 
 // TextTagTable: you may wish to begin by reading the text widget conceptual
 // overview (TextWidget.html) which gives an overview of all the objects and
@@ -117813,7 +120530,7 @@ type TextViewOverrides struct {
 	//   - location
 	//   - start
 	//   - end
-	ExtendSelection func(granularity TextExtendSelection, location, start, end *TextIter) bool
+	ExtendSelection func(granularity TextExtendSelection, location, start, end *TextIter) bool // optional
 	// InsertAtCursor class handler for the TextView::insert-at-cursor
 	// keybinding signal.
 	InsertAtCursor func(str string)
@@ -117839,22 +120556,97 @@ type TextViewOverrides struct {
 }
 
 func defaultTextViewOverrides(v *TextView) TextViewOverrides {
-	return TextViewOverrides{
-		Backspace:        v.backspace,
-		CopyClipboard:    v.copyClipboard,
-		CutClipboard:     v.cutClipboard,
-		DeleteFromCursor: v.deleteFromCursor,
-		DrawLayer:        v.drawLayer,
-		ExtendSelection:  v.extendSelection,
-		InsertAtCursor:   v.insertAtCursor,
-		InsertEmoji:      v.insertEmoji,
-		MoveCursor:       v.moveCursor,
-		PasteClipboard:   v.pasteClipboard,
-		PopulatePopup:    v.populatePopup,
-		SetAnchor:        v.setAnchor,
-		ToggleOverwrite:  v.toggleOverwrite,
+	var pclass *C.GtkTextViewClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeTextView)) != C.FALSE {
+			pclass = (*C.GtkTextViewClass)(parentClass)
+		}
 	}
+
+	overrides := TextViewOverrides{
+
+		Backspace:        noop_TextView_Backspace,
+		CopyClipboard:    noop_TextView_CopyClipboard,
+		CutClipboard:     noop_TextView_CutClipboard,
+		DeleteFromCursor: noop_TextView_DeleteFromCursor,
+		DrawLayer:        noop_TextView_DrawLayer,
+		InsertAtCursor:   noop_TextView_InsertAtCursor,
+		InsertEmoji:      noop_TextView_InsertEmoji,
+		MoveCursor:       noop_TextView_MoveCursor,
+		PasteClipboard:   noop_TextView_PasteClipboard,
+		PopulatePopup:    noop_TextView_PopulatePopup,
+		SetAnchor:        noop_TextView_SetAnchor,
+		ToggleOverwrite:  noop_TextView_ToggleOverwrite,
+	}
+	if pclass != nil {
+
+		if pclass.backspace != nil {
+			overrides.Backspace = v.backspace
+		}
+		if pclass.copy_clipboard != nil {
+			overrides.CopyClipboard = v.copyClipboard
+		}
+		if pclass.cut_clipboard != nil {
+			overrides.CutClipboard = v.cutClipboard
+		}
+		if pclass.delete_from_cursor != nil {
+			overrides.DeleteFromCursor = v.deleteFromCursor
+		}
+		if pclass.draw_layer != nil {
+			overrides.DrawLayer = v.drawLayer
+		}
+		if pclass.extend_selection != nil {
+			overrides.ExtendSelection = v.extendSelection
+		}
+		if pclass.insert_at_cursor != nil {
+			overrides.InsertAtCursor = v.insertAtCursor
+		}
+		if pclass.insert_emoji != nil {
+			overrides.InsertEmoji = v.insertEmoji
+		}
+		if pclass.move_cursor != nil {
+			overrides.MoveCursor = v.moveCursor
+		}
+		if pclass.paste_clipboard != nil {
+			overrides.PasteClipboard = v.pasteClipboard
+		}
+		if pclass.populate_popup != nil {
+			overrides.PopulatePopup = v.populatePopup
+		}
+		if pclass.set_anchor != nil {
+			overrides.SetAnchor = v.setAnchor
+		}
+		if pclass.toggle_overwrite != nil {
+			overrides.ToggleOverwrite = v.toggleOverwrite
+		}
+	}
+
+	return overrides
 }
+
+func noop_TextView_Backspace() {}
+
+func noop_TextView_CopyClipboard() {}
+
+func noop_TextView_CutClipboard() {}
+
+func noop_TextView_DeleteFromCursor(typ DeleteType, count int) {}
+
+func noop_TextView_DrawLayer(layer TextViewLayer, cr *cairo.Context) {}
+
+func noop_TextView_InsertAtCursor(str string) {}
+
+func noop_TextView_InsertEmoji() {}
+
+func noop_TextView_MoveCursor(step MovementStep, count int, extendSelection bool) {}
+
+func noop_TextView_PasteClipboard() {}
+
+func noop_TextView_PopulatePopup(popup Widgetter) {}
+
+func noop_TextView_SetAnchor() {}
+
+func noop_TextView_ToggleOverwrite() {}
 
 // TextView: you may wish to begin by reading the text widget conceptual
 // overview (TextWidget.html) which gives an overview of all the objects and
@@ -120395,7 +123187,10 @@ type TextViewAccessibleOverrides struct {
 }
 
 func defaultTextViewAccessibleOverrides(v *TextViewAccessible) TextViewAccessibleOverrides {
-	return TextViewAccessibleOverrides{}
+
+	overrides := TextViewAccessibleOverrides{}
+
+	return overrides
 }
 
 type TextViewAccessible struct {
@@ -120628,24 +123423,120 @@ type ThemingEngineOverrides struct {
 }
 
 func defaultThemingEngineOverrides(v *ThemingEngine) ThemingEngineOverrides {
-	return ThemingEngineOverrides{
-		RenderActivity:    v.renderActivity,
-		RenderArrow:       v.renderArrow,
-		RenderBackground:  v.renderBackground,
-		RenderCheck:       v.renderCheck,
-		RenderExpander:    v.renderExpander,
-		RenderExtension:   v.renderExtension,
-		RenderFocus:       v.renderFocus,
-		RenderFrame:       v.renderFrame,
-		RenderFrameGap:    v.renderFrameGap,
-		RenderHandle:      v.renderHandle,
-		RenderIcon:        v.renderIcon,
-		RenderIconSurface: v.renderIconSurface,
-		RenderLayout:      v.renderLayout,
-		RenderLine:        v.renderLine,
-		RenderOption:      v.renderOption,
-		RenderSlider:      v.renderSlider,
+	var pclass *C.GtkThemingEngineClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeThemingEngine)) != C.FALSE {
+			pclass = (*C.GtkThemingEngineClass)(parentClass)
+		}
 	}
+
+	overrides := ThemingEngineOverrides{
+
+		RenderActivity:    noop_ThemingEngine_RenderActivity,
+		RenderArrow:       noop_ThemingEngine_RenderArrow,
+		RenderBackground:  noop_ThemingEngine_RenderBackground,
+		RenderCheck:       noop_ThemingEngine_RenderCheck,
+		RenderExpander:    noop_ThemingEngine_RenderExpander,
+		RenderExtension:   noop_ThemingEngine_RenderExtension,
+		RenderFocus:       noop_ThemingEngine_RenderFocus,
+		RenderFrame:       noop_ThemingEngine_RenderFrame,
+		RenderFrameGap:    noop_ThemingEngine_RenderFrameGap,
+		RenderHandle:      noop_ThemingEngine_RenderHandle,
+		RenderIcon:        noop_ThemingEngine_RenderIcon,
+		RenderIconSurface: noop_ThemingEngine_RenderIconSurface,
+		RenderLayout:      noop_ThemingEngine_RenderLayout,
+		RenderLine:        noop_ThemingEngine_RenderLine,
+		RenderOption:      noop_ThemingEngine_RenderOption,
+		RenderSlider:      noop_ThemingEngine_RenderSlider,
+	}
+	if pclass != nil {
+
+		if pclass.render_activity != nil {
+			overrides.RenderActivity = v.renderActivity
+		}
+		if pclass.render_arrow != nil {
+			overrides.RenderArrow = v.renderArrow
+		}
+		if pclass.render_background != nil {
+			overrides.RenderBackground = v.renderBackground
+		}
+		if pclass.render_check != nil {
+			overrides.RenderCheck = v.renderCheck
+		}
+		if pclass.render_expander != nil {
+			overrides.RenderExpander = v.renderExpander
+		}
+		if pclass.render_extension != nil {
+			overrides.RenderExtension = v.renderExtension
+		}
+		if pclass.render_focus != nil {
+			overrides.RenderFocus = v.renderFocus
+		}
+		if pclass.render_frame != nil {
+			overrides.RenderFrame = v.renderFrame
+		}
+		if pclass.render_frame_gap != nil {
+			overrides.RenderFrameGap = v.renderFrameGap
+		}
+		if pclass.render_handle != nil {
+			overrides.RenderHandle = v.renderHandle
+		}
+		if pclass.render_icon != nil {
+			overrides.RenderIcon = v.renderIcon
+		}
+		if pclass.render_icon_surface != nil {
+			overrides.RenderIconSurface = v.renderIconSurface
+		}
+		if pclass.render_layout != nil {
+			overrides.RenderLayout = v.renderLayout
+		}
+		if pclass.render_line != nil {
+			overrides.RenderLine = v.renderLine
+		}
+		if pclass.render_option != nil {
+			overrides.RenderOption = v.renderOption
+		}
+		if pclass.render_slider != nil {
+			overrides.RenderSlider = v.renderSlider
+		}
+	}
+
+	return overrides
+}
+
+func noop_ThemingEngine_RenderActivity(cr *cairo.Context, x, y, width, height float64) {}
+
+func noop_ThemingEngine_RenderArrow(cr *cairo.Context, angle, x, y, size float64) {}
+
+func noop_ThemingEngine_RenderBackground(cr *cairo.Context, x, y, width, height float64) {}
+
+func noop_ThemingEngine_RenderCheck(cr *cairo.Context, x, y, width, height float64) {}
+
+func noop_ThemingEngine_RenderExpander(cr *cairo.Context, x, y, width, height float64) {}
+
+func noop_ThemingEngine_RenderExtension(cr *cairo.Context, x, y, width, height float64, gapSide PositionType) {
+}
+
+func noop_ThemingEngine_RenderFocus(cr *cairo.Context, x, y, width, height float64) {}
+
+func noop_ThemingEngine_RenderFrame(cr *cairo.Context, x, y, width, height float64) {}
+
+func noop_ThemingEngine_RenderFrameGap(cr *cairo.Context, x, y, width, height float64, gapSide PositionType, xy0Gap, xy1Gap float64) {
+}
+
+func noop_ThemingEngine_RenderHandle(cr *cairo.Context, x, y, width, height float64) {}
+
+func noop_ThemingEngine_RenderIcon(cr *cairo.Context, pixbuf *gdkpixbuf.Pixbuf, x, y float64) {}
+
+func noop_ThemingEngine_RenderIconSurface(cr *cairo.Context, surface *cairo.Surface, x, y float64) {}
+
+func noop_ThemingEngine_RenderLayout(cr *cairo.Context, x, y float64, layout *pango.Layout) {}
+
+func noop_ThemingEngine_RenderLine(cr *cairo.Context, x0, y0, x1, y1 float64) {}
+
+func noop_ThemingEngine_RenderOption(cr *cairo.Context, x, y, width, height float64) {}
+
+func noop_ThemingEngine_RenderSlider(cr *cairo.Context, x, y, width, height float64, orientation Orientation) {
 }
 
 // ThemingEngine was the object used for rendering themed content in GTK+
@@ -121949,10 +124840,28 @@ type ToggleActionOverrides struct {
 }
 
 func defaultToggleActionOverrides(v *ToggleAction) ToggleActionOverrides {
-	return ToggleActionOverrides{
-		Toggled: v.toggled,
+	var pclass *C.GtkToggleActionClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeToggleAction)) != C.FALSE {
+			pclass = (*C.GtkToggleActionClass)(parentClass)
+		}
 	}
+
+	overrides := ToggleActionOverrides{
+
+		Toggled: noop_ToggleAction_Toggled,
+	}
+	if pclass != nil {
+
+		if pclass.toggled != nil {
+			overrides.Toggled = v.toggled
+		}
+	}
+
+	return overrides
 }
+
+func noop_ToggleAction_Toggled() {}
 
 // ToggleAction corresponds roughly to a CheckMenuItem. It has an “active” state
 // specifying whether the action has been checked or not.
@@ -122189,10 +125098,28 @@ type ToggleButtonOverrides struct {
 }
 
 func defaultToggleButtonOverrides(v *ToggleButton) ToggleButtonOverrides {
-	return ToggleButtonOverrides{
-		Toggled: v.toggled,
+	var pclass *C.GtkToggleButtonClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeToggleButton)) != C.FALSE {
+			pclass = (*C.GtkToggleButtonClass)(parentClass)
+		}
 	}
+
+	overrides := ToggleButtonOverrides{
+
+		Toggled: noop_ToggleButton_Toggled,
+	}
+	if pclass != nil {
+
+		if pclass.toggled != nil {
+			overrides.Toggled = v.toggled
+		}
+	}
+
+	return overrides
 }
+
+func noop_ToggleButton_Toggled() {}
 
 // ToggleButton is a Button which will remain “pressed-in” when clicked.
 // Clicking again will cause the toggle button to return to its normal state.
@@ -122586,7 +125513,10 @@ type ToggleButtonAccessibleOverrides struct {
 }
 
 func defaultToggleButtonAccessibleOverrides(v *ToggleButtonAccessible) ToggleButtonAccessibleOverrides {
-	return ToggleButtonAccessibleOverrides{}
+
+	overrides := ToggleButtonAccessibleOverrides{}
+
+	return overrides
 }
 
 type ToggleButtonAccessible struct {
@@ -122651,10 +125581,28 @@ type ToggleToolButtonOverrides struct {
 }
 
 func defaultToggleToolButtonOverrides(v *ToggleToolButton) ToggleToolButtonOverrides {
-	return ToggleToolButtonOverrides{
-		Toggled: v.toggled,
+	var pclass *C.GtkToggleToolButtonClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeToggleToolButton)) != C.FALSE {
+			pclass = (*C.GtkToggleToolButtonClass)(parentClass)
+		}
 	}
+
+	overrides := ToggleToolButtonOverrides{
+
+		Toggled: noop_ToggleToolButton_Toggled,
+	}
+	if pclass != nil {
+
+		if pclass.toggled != nil {
+			overrides.Toggled = v.toggled
+		}
+	}
+
+	return overrides
 }
+
+func noop_ToggleToolButton_Toggled() {}
 
 // ToggleToolButton is a ToolItem that contains a toggle button.
 //
@@ -122863,10 +125811,28 @@ type ToolButtonOverrides struct {
 }
 
 func defaultToolButtonOverrides(v *ToolButton) ToolButtonOverrides {
-	return ToolButtonOverrides{
-		Clicked: v.clicked,
+	var pclass *C.GtkToolButtonClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeToolButton)) != C.FALSE {
+			pclass = (*C.GtkToolButtonClass)(parentClass)
+		}
 	}
+
+	overrides := ToolButtonOverrides{
+
+		Clicked: noop_ToolButton_Clicked,
+	}
+	if pclass != nil {
+
+		if pclass.clicked != nil {
+			overrides.Clicked = v.clicked
+		}
+	}
+
+	return overrides
 }
+
+func noop_ToolButton_Clicked() {}
 
 // ToolButton are ToolItems containing buttons.
 //
@@ -123380,7 +126346,7 @@ type ToolItemOverrides struct {
 	// CreateMenuProxy: signal emitted when the toolbar needs information from
 	// tool_item about whether the item should appear in the toolbar overflow
 	// menu.
-	CreateMenuProxy func() bool
+	CreateMenuProxy func() bool // optional
 	// ToolbarReconfigured emits the signal ToolItem::toolbar_reconfigured on
 	// tool_item. Toolbar and other ToolShell implementations use this function
 	// to notify children, when some aspect of their configuration changes.
@@ -123388,11 +126354,31 @@ type ToolItemOverrides struct {
 }
 
 func defaultToolItemOverrides(v *ToolItem) ToolItemOverrides {
-	return ToolItemOverrides{
-		CreateMenuProxy:     v.createMenuProxy,
-		ToolbarReconfigured: v.toolbarReconfigured,
+	var pclass *C.GtkToolItemClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeToolItem)) != C.FALSE {
+			pclass = (*C.GtkToolItemClass)(parentClass)
+		}
 	}
+
+	overrides := ToolItemOverrides{
+
+		ToolbarReconfigured: noop_ToolItem_ToolbarReconfigured,
+	}
+	if pclass != nil {
+
+		if pclass.create_menu_proxy != nil {
+			overrides.CreateMenuProxy = v.createMenuProxy
+		}
+		if pclass.toolbar_reconfigured != nil {
+			overrides.ToolbarReconfigured = v.toolbarReconfigured
+		}
+	}
+
+	return overrides
 }
+
+func noop_ToolItem_ToolbarReconfigured() {}
 
 // ToolItem are widgets that can appear on a toolbar. To create a toolbar
 // item that contain something else than a button, use gtk_tool_item_new().
@@ -124227,7 +127213,10 @@ type ToolItemGroupOverrides struct {
 }
 
 func defaultToolItemGroupOverrides(v *ToolItemGroup) ToolItemGroupOverrides {
-	return ToolItemGroupOverrides{}
+
+	overrides := ToolItemGroupOverrides{}
+
+	return overrides
 }
 
 // ToolItemGroup is used together with ToolPalette to add ToolItems to a palette
@@ -124731,7 +127720,10 @@ type ToolPaletteOverrides struct {
 }
 
 func defaultToolPaletteOverrides(v *ToolPalette) ToolPaletteOverrides {
-	return ToolPaletteOverrides{}
+
+	overrides := ToolPaletteOverrides{}
+
+	return overrides
 }
 
 // ToolPalette allows you to add ToolItems to a palette-like container with
@@ -125373,17 +128365,42 @@ type ToolbarOverrides struct {
 	//   - x
 	//   - y
 	//   - buttonNumber
-	PopupContextMenu func(x, y, buttonNumber int) bool
+	PopupContextMenu func(x, y, buttonNumber int) bool // optional
 	StyleChanged     func(style ToolbarStyle)
 }
 
 func defaultToolbarOverrides(v *Toolbar) ToolbarOverrides {
-	return ToolbarOverrides{
-		OrientationChanged: v.orientationChanged,
-		PopupContextMenu:   v.popupContextMenu,
-		StyleChanged:       v.styleChanged,
+	var pclass *C.GtkToolbarClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeToolbar)) != C.FALSE {
+			pclass = (*C.GtkToolbarClass)(parentClass)
+		}
 	}
+
+	overrides := ToolbarOverrides{
+
+		OrientationChanged: noop_Toolbar_OrientationChanged,
+		StyleChanged:       noop_Toolbar_StyleChanged,
+	}
+	if pclass != nil {
+
+		if pclass.orientation_changed != nil {
+			overrides.OrientationChanged = v.orientationChanged
+		}
+		if pclass.popup_context_menu != nil {
+			overrides.PopupContextMenu = v.popupContextMenu
+		}
+		if pclass.style_changed != nil {
+			overrides.StyleChanged = v.styleChanged
+		}
+	}
+
+	return overrides
 }
+
+func noop_Toolbar_OrientationChanged(orientation Orientation) {}
+
+func noop_Toolbar_StyleChanged(style ToolbarStyle) {}
 
 // Toolbar: toolbar is created with a call to gtk_toolbar_new().
 //
@@ -126240,7 +129257,10 @@ type ToplevelAccessibleOverrides struct {
 }
 
 func defaultToplevelAccessibleOverrides(v *ToplevelAccessible) ToplevelAccessibleOverrides {
-	return ToplevelAccessibleOverrides{}
+
+	overrides := ToplevelAccessibleOverrides{}
+
+	return overrides
 }
 
 type ToplevelAccessible struct {
@@ -126318,14 +129338,35 @@ type TreeModelFilterOverrides struct {
 	//
 	//   - childModel
 	//   - iter
-	Visible func(childModel TreeModeller, iter *TreeIter) bool
+	Visible func(childModel TreeModeller, iter *TreeIter) bool // optional
 }
 
 func defaultTreeModelFilterOverrides(v *TreeModelFilter) TreeModelFilterOverrides {
-	return TreeModelFilterOverrides{
-		Modify:  v.modify,
-		Visible: v.visible,
+	var pclass *C.GtkTreeModelFilterClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeTreeModelFilter)) != C.FALSE {
+			pclass = (*C.GtkTreeModelFilterClass)(parentClass)
+		}
 	}
+
+	overrides := TreeModelFilterOverrides{
+
+		Modify: noop_TreeModelFilter_Modify,
+	}
+	if pclass != nil {
+
+		if pclass.modify != nil {
+			overrides.Modify = v.modify
+		}
+		if pclass.visible != nil {
+			overrides.Visible = v.visible
+		}
+	}
+
+	return overrides
+}
+
+func noop_TreeModelFilter_Modify(childModel TreeModeller, iter *TreeIter, value *coreglib.Value, column int) {
 }
 
 // TreeModelFilter is a tree model which wraps another tree model, and can do
@@ -126820,7 +129861,10 @@ type TreeModelSortOverrides struct {
 }
 
 func defaultTreeModelSortOverrides(v *TreeModelSort) TreeModelSortOverrides {
-	return TreeModelSortOverrides{}
+
+	overrides := TreeModelSortOverrides{}
+
+	return overrides
 }
 
 // TreeModelSort is a model which implements the TreeSortable interface.
@@ -127184,10 +130228,28 @@ type TreeSelectionOverrides struct {
 }
 
 func defaultTreeSelectionOverrides(v *TreeSelection) TreeSelectionOverrides {
-	return TreeSelectionOverrides{
-		Changed: v.changed,
+	var pclass *C.GtkTreeSelectionClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeTreeSelection)) != C.FALSE {
+			pclass = (*C.GtkTreeSelectionClass)(parentClass)
+		}
 	}
+
+	overrides := TreeSelectionOverrides{
+
+		Changed: noop_TreeSelection_Changed,
+	}
+	if pclass != nil {
+
+		if pclass.changed != nil {
+			overrides.Changed = v.changed
+		}
+	}
+
+	return overrides
 }
+
+func noop_TreeSelection_Changed() {}
 
 // TreeSelection object is a helper object to manage the selection for a
 // TreeView widget. The TreeSelection object is automatically created when a new
@@ -127695,7 +130757,10 @@ type TreeStoreOverrides struct {
 }
 
 func defaultTreeStoreOverrides(v *TreeStore) TreeStoreOverrides {
-	return TreeStoreOverrides{}
+
+	overrides := TreeStoreOverrides{}
+
+	return overrides
 }
 
 // TreeStore object is a list model for use with a TreeView widget.
@@ -128388,12 +131453,12 @@ type TreeViewOverrides struct {
 	//   - logical
 	//   - expand
 	//   - openAll
-	ExpandCollapseCursorRow func(logical, expand, openAll bool) bool
+	ExpandCollapseCursorRow func(logical, expand, openAll bool) bool // optional
 	// The function takes the following parameters:
 	//
 	//   - step
 	//   - count
-	MoveCursor func(step MovementStep, count int) bool
+	MoveCursor func(step MovementStep, count int) bool // optional
 	// RowActivated activates the cell determined by path and column.
 	//
 	// The function takes the following parameters:
@@ -128411,43 +131476,101 @@ type TreeViewOverrides struct {
 	//   - iter
 	//   - path
 	RowExpanded            func(iter *TreeIter, path *TreePath)
-	SelectAll              func() bool
-	SelectCursorParent     func() bool
-	SelectCursorRow        func(startEditing bool) bool
-	StartInteractiveSearch func() bool
+	SelectAll              func() bool                  // optional
+	SelectCursorParent     func() bool                  // optional
+	SelectCursorRow        func(startEditing bool) bool // optional
+	StartInteractiveSearch func() bool                  // optional
 	// The function takes the following parameters:
 	//
 	//   - iter
 	//   - path
-	TestCollapseRow func(iter *TreeIter, path *TreePath) bool
+	TestCollapseRow func(iter *TreeIter, path *TreePath) bool // optional
 	// The function takes the following parameters:
 	//
 	//   - iter
 	//   - path
-	TestExpandRow   func(iter *TreeIter, path *TreePath) bool
-	ToggleCursorRow func() bool
-	UnselectAll     func() bool
+	TestExpandRow   func(iter *TreeIter, path *TreePath) bool // optional
+	ToggleCursorRow func() bool                               // optional
+	UnselectAll     func() bool                               // optional
 }
 
 func defaultTreeViewOverrides(v *TreeView) TreeViewOverrides {
-	return TreeViewOverrides{
-		ColumnsChanged:          v.columnsChanged,
-		CursorChanged:           v.cursorChanged,
-		ExpandCollapseCursorRow: v.expandCollapseCursorRow,
-		MoveCursor:              v.moveCursor,
-		RowActivated:            v.rowActivated,
-		RowCollapsed:            v.rowCollapsed,
-		RowExpanded:             v.rowExpanded,
-		SelectAll:               v.selectAll,
-		SelectCursorParent:      v.selectCursorParent,
-		SelectCursorRow:         v.selectCursorRow,
-		StartInteractiveSearch:  v.startInteractiveSearch,
-		TestCollapseRow:         v.testCollapseRow,
-		TestExpandRow:           v.testExpandRow,
-		ToggleCursorRow:         v.toggleCursorRow,
-		UnselectAll:             v.unselectAll,
+	var pclass *C.GtkTreeViewClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeTreeView)) != C.FALSE {
+			pclass = (*C.GtkTreeViewClass)(parentClass)
+		}
 	}
+
+	overrides := TreeViewOverrides{
+
+		ColumnsChanged: noop_TreeView_ColumnsChanged,
+		CursorChanged:  noop_TreeView_CursorChanged,
+		RowActivated:   noop_TreeView_RowActivated,
+		RowCollapsed:   noop_TreeView_RowCollapsed,
+		RowExpanded:    noop_TreeView_RowExpanded,
+	}
+	if pclass != nil {
+
+		if pclass.columns_changed != nil {
+			overrides.ColumnsChanged = v.columnsChanged
+		}
+		if pclass.cursor_changed != nil {
+			overrides.CursorChanged = v.cursorChanged
+		}
+		if pclass.expand_collapse_cursor_row != nil {
+			overrides.ExpandCollapseCursorRow = v.expandCollapseCursorRow
+		}
+		if pclass.move_cursor != nil {
+			overrides.MoveCursor = v.moveCursor
+		}
+		if pclass.row_activated != nil {
+			overrides.RowActivated = v.rowActivated
+		}
+		if pclass.row_collapsed != nil {
+			overrides.RowCollapsed = v.rowCollapsed
+		}
+		if pclass.row_expanded != nil {
+			overrides.RowExpanded = v.rowExpanded
+		}
+		if pclass.select_all != nil {
+			overrides.SelectAll = v.selectAll
+		}
+		if pclass.select_cursor_parent != nil {
+			overrides.SelectCursorParent = v.selectCursorParent
+		}
+		if pclass.select_cursor_row != nil {
+			overrides.SelectCursorRow = v.selectCursorRow
+		}
+		if pclass.start_interactive_search != nil {
+			overrides.StartInteractiveSearch = v.startInteractiveSearch
+		}
+		if pclass.test_collapse_row != nil {
+			overrides.TestCollapseRow = v.testCollapseRow
+		}
+		if pclass.test_expand_row != nil {
+			overrides.TestExpandRow = v.testExpandRow
+		}
+		if pclass.toggle_cursor_row != nil {
+			overrides.ToggleCursorRow = v.toggleCursorRow
+		}
+		if pclass.unselect_all != nil {
+			overrides.UnselectAll = v.unselectAll
+		}
+	}
+
+	return overrides
 }
+
+func noop_TreeView_ColumnsChanged() {}
+
+func noop_TreeView_CursorChanged() {}
+
+func noop_TreeView_RowActivated(path *TreePath, column *TreeViewColumn) {}
+
+func noop_TreeView_RowCollapsed(iter *TreeIter, path *TreePath) {}
+
+func noop_TreeView_RowExpanded(iter *TreeIter, path *TreePath) {}
 
 // TreeView: widget that displays any object that implements the TreeModel
 // interface.
@@ -131777,7 +134900,10 @@ type TreeViewAccessibleOverrides struct {
 }
 
 func defaultTreeViewAccessibleOverrides(v *TreeViewAccessible) TreeViewAccessibleOverrides {
-	return TreeViewAccessibleOverrides{}
+
+	overrides := TreeViewAccessibleOverrides{}
+
+	return overrides
 }
 
 type TreeViewAccessible struct {
@@ -131849,10 +134975,28 @@ type TreeViewColumnOverrides struct {
 }
 
 func defaultTreeViewColumnOverrides(v *TreeViewColumn) TreeViewColumnOverrides {
-	return TreeViewColumnOverrides{
-		Clicked: v.clicked,
+	var pclass *C.GtkTreeViewColumnClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeTreeViewColumn)) != C.FALSE {
+			pclass = (*C.GtkTreeViewColumnClass)(parentClass)
+		}
 	}
+
+	overrides := TreeViewColumnOverrides{
+
+		Clicked: noop_TreeViewColumn_Clicked,
+	}
+	if pclass != nil {
+
+		if pclass.clicked != nil {
+			overrides.Clicked = v.clicked
+		}
+	}
+
+	return overrides
 }
+
+func noop_TreeViewColumn_Clicked() {}
 
 // TreeViewColumn object represents a visible column in a TreeView widget.
 // It allows to set properties of the column header, and functions as a holding
@@ -133155,7 +136299,7 @@ type UIManagerOverrides struct {
 	//
 	//   - action whose proxy widget is found by following the path, or NULL if
 	//     no widget was found.
-	Action func(path string) *Action
+	Action func(path string) *Action // optional
 	// Widget looks up a widget by following a path. The path consists of the
 	// names specified in the XML description of the UI. separated by “/”.
 	// Elements which don’t have a name or action attribute in the XML (e.g.
@@ -133180,23 +136324,70 @@ type UIManagerOverrides struct {
 	// The function returns the following values:
 	//
 	//   - widget found by following the path, or NULL if no widget was found.
-	Widget       func(path string) Widgetter
+	Widget       func(path string) Widgetter // optional
 	PostActivate func(action *Action)
 	PreActivate  func(action *Action)
 }
 
 func defaultUIManagerOverrides(v *UIManager) UIManagerOverrides {
-	return UIManagerOverrides{
-		ActionsChanged:  v.actionsChanged,
-		AddWidget:       v.addWidget,
-		ConnectProxy:    v.connectProxy,
-		DisconnectProxy: v.disconnectProxy,
-		Action:          v.action,
-		Widget:          v.widget,
-		PostActivate:    v.postActivate,
-		PreActivate:     v.preActivate,
+	var pclass *C.GtkUIManagerClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeUIManager)) != C.FALSE {
+			pclass = (*C.GtkUIManagerClass)(parentClass)
+		}
 	}
+
+	overrides := UIManagerOverrides{
+
+		ActionsChanged:  noop_UIManager_ActionsChanged,
+		AddWidget:       noop_UIManager_AddWidget,
+		ConnectProxy:    noop_UIManager_ConnectProxy,
+		DisconnectProxy: noop_UIManager_DisconnectProxy,
+		PostActivate:    noop_UIManager_PostActivate,
+		PreActivate:     noop_UIManager_PreActivate,
+	}
+	if pclass != nil {
+
+		if pclass.actions_changed != nil {
+			overrides.ActionsChanged = v.actionsChanged
+		}
+		if pclass.add_widget != nil {
+			overrides.AddWidget = v.addWidget
+		}
+		if pclass.connect_proxy != nil {
+			overrides.ConnectProxy = v.connectProxy
+		}
+		if pclass.disconnect_proxy != nil {
+			overrides.DisconnectProxy = v.disconnectProxy
+		}
+		if pclass.get_action != nil {
+			overrides.Action = v.action
+		}
+		if pclass.get_widget != nil {
+			overrides.Widget = v.widget
+		}
+		if pclass.post_activate != nil {
+			overrides.PostActivate = v.postActivate
+		}
+		if pclass.pre_activate != nil {
+			overrides.PreActivate = v.preActivate
+		}
+	}
+
+	return overrides
 }
+
+func noop_UIManager_ActionsChanged() {}
+
+func noop_UIManager_AddWidget(widget Widgetter) {}
+
+func noop_UIManager_ConnectProxy(action *Action, proxy Widgetter) {}
+
+func noop_UIManager_DisconnectProxy(action *Action, proxy Widgetter) {}
+
+func noop_UIManager_PostActivate(action *Action) {}
+
+func noop_UIManager_PreActivate(action *Action) {}
 
 // UIManager constructs a user interface (menus and toolbars) from one or more
 // UI definitions, which reference actions from one or more action groups.
@@ -134195,7 +137386,10 @@ type VBoxOverrides struct {
 }
 
 func defaultVBoxOverrides(v *VBox) VBoxOverrides {
-	return VBoxOverrides{}
+
+	overrides := VBoxOverrides{}
+
+	return overrides
 }
 
 // VBox is a container that organizes child widgets into a single column.
@@ -134315,7 +137509,10 @@ type VButtonBoxOverrides struct {
 }
 
 func defaultVButtonBoxOverrides(v *VButtonBox) VButtonBoxOverrides {
-	return VButtonBoxOverrides{}
+
+	overrides := VButtonBoxOverrides{}
+
+	return overrides
 }
 
 type VButtonBox struct {
@@ -134399,7 +137596,10 @@ type VPanedOverrides struct {
 }
 
 func defaultVPanedOverrides(v *VPaned) VPanedOverrides {
-	return VPanedOverrides{}
+
+	overrides := VPanedOverrides{}
+
+	return overrides
 }
 
 // VPaned widget is a container widget with two children arranged vertically.
@@ -134486,7 +137686,10 @@ type VScaleOverrides struct {
 }
 
 func defaultVScaleOverrides(v *VScale) VScaleOverrides {
-	return VScaleOverrides{}
+
+	overrides := VScaleOverrides{}
+
+	return overrides
 }
 
 // VScale widget is used to allow the user to select a value using a vertical
@@ -134625,7 +137828,10 @@ type VScrollbarOverrides struct {
 }
 
 func defaultVScrollbarOverrides(v *VScrollbar) VScrollbarOverrides {
-	return VScrollbarOverrides{}
+
+	overrides := VScrollbarOverrides{}
+
+	return overrides
 }
 
 // VScrollbar widget is a widget arranged vertically creating a scrollbar.
@@ -134723,7 +137929,10 @@ type VSeparatorOverrides struct {
 }
 
 func defaultVSeparatorOverrides(v *VSeparator) VSeparatorOverrides {
-	return VSeparatorOverrides{}
+
+	overrides := VSeparatorOverrides{}
+
+	return overrides
 }
 
 // VSeparator widget is a vertical separator, used to group the widgets within
@@ -134808,7 +138017,10 @@ type ViewportOverrides struct {
 }
 
 func defaultViewportOverrides(v *Viewport) ViewportOverrides {
-	return ViewportOverrides{}
+
+	overrides := ViewportOverrides{}
+
+	return overrides
 }
 
 // Viewport widget acts as an adaptor class, implementing scrollability for
@@ -135126,7 +138338,10 @@ type VolumeButtonOverrides struct {
 }
 
 func defaultVolumeButtonOverrides(v *VolumeButton) VolumeButtonOverrides {
-	return VolumeButtonOverrides{}
+
+	overrides := VolumeButtonOverrides{}
+
+	return overrides
 }
 
 // VolumeButton is a subclass of ScaleButton that has been tailored for use as a
@@ -135280,10 +138495,10 @@ type WidgetOverrides struct {
 	AdjustSizeRequest func(orientation Orientation, minimumSize, naturalSize *int)
 	// ButtonPressEvent: signal will be emitted when a button (typically from a
 	// mouse) is pressed.
-	ButtonPressEvent func(event *gdk.EventButton) bool
+	ButtonPressEvent func(event *gdk.EventButton) bool // optional
 	// ButtonReleaseEvent: signal will be emitted when a button (typically from
 	// a mouse) is released.
-	ButtonReleaseEvent func(event *gdk.EventButton) bool
+	ButtonReleaseEvent func(event *gdk.EventButton) bool // optional
 	// CanActivateAccel determines whether an accelerator that activates
 	// the signal identified by signal_id can currently be activated.
 	// This is done by emitting the Widget::can-activate-accel signal on widget;
@@ -135298,19 +138513,19 @@ type WidgetOverrides struct {
 	// The function returns the following values:
 	//
 	//   - ok: TRUE if the accelerator can be activated.
-	CanActivateAccel func(signalId uint) bool
+	CanActivateAccel func(signalId uint) bool // optional
 	// CompositedChanged: signal emitted when the composited status of widgets
 	// screen changes. See gdk_screen_is_composited().
 	CompositedChanged func()
 	// ConfigureEvent: signal will be emitted when the size, position or
 	// stacking of the widget’s window has changed.
-	ConfigureEvent func(event *gdk.EventConfigure) bool
+	ConfigureEvent func(event *gdk.EventConfigure) bool // optional
 	// DamageEvent: signal emitted when a redirected window belonging to widget
 	// gets drawn into.
-	DamageEvent func(event *gdk.EventExpose) bool
+	DamageEvent func(event *gdk.EventExpose) bool // optional
 	// DeleteEvent: signal emitted if a user requests that a toplevel window is
 	// closed.
-	DeleteEvent func(event *gdk.EventAny) bool
+	DeleteEvent func(event *gdk.EventAny) bool // optional
 	// Destroy destroys a widget.
 	//
 	// When a widget is destroyed all references it holds on other objects will
@@ -135344,7 +138559,7 @@ type WidgetOverrides struct {
 	// See also: gtk_container_remove().
 	Destroy func()
 	// DestroyEvent: signal is emitted when a Window is destroyed.
-	DestroyEvent func(event *gdk.EventAny) bool
+	DestroyEvent func(event *gdk.EventAny) bool // optional
 	// DirectionChanged: signal emitted when the text direction of a widget
 	// changes.
 	DirectionChanged func(previousDirection TextDirection)
@@ -135384,7 +138599,7 @@ type WidgetOverrides struct {
 	//   - x
 	//   - y
 	//   - time_
-	DragDrop func(context *gdk.DragContext, x, y int, time_ uint) bool
+	DragDrop func(context *gdk.DragContext, x, y int, time_ uint) bool // optional
 	// DragEnd: signal emitted on the drag source when a drag is finished.
 	DragEnd func(context *gdk.DragContext)
 	// DragFailed: signal emitted on the drag source when a drag has failed.
@@ -135393,7 +138608,7 @@ type WidgetOverrides struct {
 	//
 	//   - context
 	//   - result
-	DragFailed func(context *gdk.DragContext, result DragResult) bool
+	DragFailed func(context *gdk.DragContext, result DragResult) bool // optional
 	// DragLeave: signal emitted on the drop site when the cursor leaves the
 	// widget.
 	//
@@ -135411,12 +138626,12 @@ type WidgetOverrides struct {
 	//   - x
 	//   - y
 	//   - time_
-	DragMotion func(context *gdk.DragContext, x, y int, time_ uint) bool
+	DragMotion func(context *gdk.DragContext, x, y int, time_ uint) bool // optional
 	// Draw: signal emitted when a widget is supposed to render itself.
-	Draw func(cr *cairo.Context) bool
+	Draw func(cr *cairo.Context) bool // optional
 	// EnterNotifyEvent: signal event will be emitted when the pointer enters
 	// the widget’s window.
-	EnterNotifyEvent func(event *gdk.EventCrossing) bool
+	EnterNotifyEvent func(event *gdk.EventCrossing) bool // optional
 	// Event: rarely-used function. This function is used to emit the event
 	// signals on a widget (those signals should never be emitted without using
 	// this function to do so). If you want to synthesize an event though, don’t
@@ -135433,14 +138648,14 @@ type WidgetOverrides struct {
 	//
 	//   - ok: return from the event signal emission (TRUE if the event was
 	//     handled).
-	Event func(event *gdk.Event) bool
-	Focus func(direction DirectionType) bool
+	Event func(event *gdk.Event) bool        // optional
+	Focus func(direction DirectionType) bool // optional
 	// FocusInEvent: signal emitted when the keyboard focus enters the widget’s
 	// window.
-	FocusInEvent func(event *gdk.EventFocus) bool
+	FocusInEvent func(event *gdk.EventFocus) bool // optional
 	// FocusOutEvent: signal emitted when the keyboard focus leaves the widget’s
 	// window.
-	FocusOutEvent func(event *gdk.EventFocus) bool
+	FocusOutEvent func(event *gdk.EventFocus) bool // optional
 	// Accessible returns the accessible object that describes the widget to an
 	// assistive technology.
 	//
@@ -135457,7 +138672,7 @@ type WidgetOverrides struct {
 	// The function returns the following values:
 	//
 	//   - object associated with widget.
-	Accessible func() *atk.AtkObject
+	Accessible func() *atk.AtkObject // optional
 	// PreferredHeight retrieves a widget’s initial minimum and natural height.
 	//
 	// This call is specific to width-for-height requests.
@@ -135474,7 +138689,7 @@ type WidgetOverrides struct {
 	//     or NULL.
 	//   - naturalHeight (optional): location to store the natural height,
 	//     or NULL.
-	PreferredHeight func() (minimumHeight, naturalHeight int)
+	PreferredHeight func() (minimumHeight, naturalHeight int) // optional
 	// PreferredHeightAndBaselineForWidth retrieves a widget’s minimum and
 	// natural height and the corresponding baselines if it would be given the
 	// specified width, or the default height if width is -1. The baselines may
@@ -135501,7 +138716,7 @@ type WidgetOverrides struct {
 	//     minimum height, or NULL.
 	//   - naturalBaseline (optional): location for storing the baseline for the
 	//     natural height, or NULL.
-	PreferredHeightAndBaselineForWidth func(width int) (minimumHeight, naturalHeight, minimumBaseline, naturalBaseline int)
+	PreferredHeightAndBaselineForWidth func(width int) (minimumHeight, naturalHeight, minimumBaseline, naturalBaseline int) // optional
 	// PreferredHeightForWidth retrieves a widget’s minimum and natural height
 	// if it would be given the specified width.
 	//
@@ -135521,7 +138736,7 @@ type WidgetOverrides struct {
 	//     or NULL.
 	//   - naturalHeight (optional): location for storing the natural height,
 	//     or NULL.
-	PreferredHeightForWidth func(width int) (minimumHeight, naturalHeight int)
+	PreferredHeightForWidth func(width int) (minimumHeight, naturalHeight int) // optional
 	// PreferredWidth retrieves a widget’s initial minimum and natural width.
 	//
 	// This call is specific to height-for-width requests.
@@ -135538,7 +138753,7 @@ type WidgetOverrides struct {
 	//     or NULL.
 	//   - naturalWidth (optional): location to store the natural width,
 	//     or NULL.
-	PreferredWidth func() (minimumWidth, naturalWidth int)
+	PreferredWidth func() (minimumWidth, naturalWidth int) // optional
 	// PreferredWidthForHeight retrieves a widget’s minimum and natural width if
 	// it would be given the specified height.
 	//
@@ -135558,7 +138773,7 @@ type WidgetOverrides struct {
 	//     or NULL.
 	//   - naturalWidth (optional): location for storing the natural width,
 	//     or NULL.
-	PreferredWidthForHeight func(height int) (minimumWidth, naturalWidth int)
+	PreferredWidthForHeight func(height int) (minimumWidth, naturalWidth int) // optional
 	// RequestMode gets whether the widget prefers a height-for-width layout or
 	// a width-for-height layout.
 	//
@@ -135569,10 +138784,10 @@ type WidgetOverrides struct {
 	// The function returns the following values:
 	//
 	//   - sizeRequestMode preferred by widget.
-	RequestMode func() SizeRequestMode
+	RequestMode func() SizeRequestMode // optional
 	// GrabBrokenEvent: signal emitted when a pointer or keyboard grab on a
 	// window belonging to widget gets broken.
-	GrabBrokenEvent func(event *gdk.EventGrabBroken) bool
+	GrabBrokenEvent func(event *gdk.EventGrabBroken) bool // optional
 	// GrabFocus causes widget to have the keyboard focus for the Window it's
 	// inside. widget must be a focusable widget, such as a Entry; something
 	// like Frame won’t work.
@@ -135595,9 +138810,9 @@ type WidgetOverrides struct {
 	// changes.
 	HierarchyChanged func(previousToplevel Widgetter)
 	// KeyPressEvent: signal emitted when a key is pressed.
-	KeyPressEvent func(event *gdk.EventKey) bool
+	KeyPressEvent func(event *gdk.EventKey) bool // optional
 	// KeyReleaseEvent: signal is emitted when a key is released.
-	KeyReleaseEvent func(event *gdk.EventKey) bool
+	KeyReleaseEvent func(event *gdk.EventKey) bool // optional
 	// KeynavFailed: this function should be called whenever keyboard
 	// navigation within a single widget hits a boundary. The function
 	// emits the Widget::keynav-failed signal on the widget and its return
@@ -135634,15 +138849,15 @@ type WidgetOverrides struct {
 	//   - ok: TRUE if stopping keyboard navigation is fine, FALSE if the
 	//     emitting widget should try to handle the keyboard navigation attempt
 	//     in its parent container(s).
-	KeynavFailed func(direction DirectionType) bool
+	KeynavFailed func(direction DirectionType) bool // optional
 	// LeaveNotifyEvent will be emitted when the pointer leaves the widget’s
 	// window.
-	LeaveNotifyEvent func(event *gdk.EventCrossing) bool
+	LeaveNotifyEvent func(event *gdk.EventCrossing) bool // optional
 	// Map: this function is only for use in widget implementations. Causes a
 	// widget to be mapped if it isn’t already.
 	Map func()
 	// MapEvent: signal emitted when the widget’s window is mapped.
-	MapEvent func(event *gdk.EventAny) bool
+	MapEvent func(event *gdk.EventAny) bool // optional
 	// MnemonicActivate emits the Widget::mnemonic-activate signal.
 	//
 	// The function takes the following parameters:
@@ -135652,21 +138867,21 @@ type WidgetOverrides struct {
 	// The function returns the following values:
 	//
 	//   - ok: TRUE if the signal has been handled.
-	MnemonicActivate func(groupCycling bool) bool
+	MnemonicActivate func(groupCycling bool) bool // optional
 	// MotionNotifyEvent: signal emitted when the pointer moves over the
 	// widget’s Window.
-	MotionNotifyEvent func(event *gdk.EventMotion) bool
+	MotionNotifyEvent func(event *gdk.EventMotion) bool // optional
 	// MoveFocus: signal emitted when a change of focus is requested.
 	MoveFocus func(direction DirectionType)
 	// ParentSet: signal emitted when a new parent has been set on a widget.
 	ParentSet func(previousParent Widgetter)
 	// PopupMenu: signal emitted whenever a widget should pop up a context menu.
-	PopupMenu func() bool
+	PopupMenu func() bool // optional
 	// PropertyNotifyEvent: signal will be emitted when a property on the
 	// widget’s window has been changed or deleted.
-	PropertyNotifyEvent func(event *gdk.EventProperty) bool
-	ProximityInEvent    func(event *gdk.EventProximity) bool
-	ProximityOutEvent   func(event *gdk.EventProximity) bool
+	PropertyNotifyEvent func(event *gdk.EventProperty) bool  // optional
+	ProximityInEvent    func(event *gdk.EventProximity) bool // optional
+	ProximityOutEvent   func(event *gdk.EventProximity) bool // optional
 	// QueryTooltip: signal emitted when “has-tooltip” is TRUE and the hover
 	// timeout has expired with the cursor hovering “above” widget; or emitted
 	// when widget got focus in keyboard mode.
@@ -135677,7 +138892,7 @@ type WidgetOverrides struct {
 	//   - y
 	//   - keyboardTooltip
 	//   - tooltip
-	QueryTooltip func(x, y int, keyboardTooltip bool, tooltip *Tooltip) bool
+	QueryTooltip func(x, y int, keyboardTooltip bool, tooltip *Tooltip) bool // optional
 	// QueueDrawRegion invalidates the area of widget defined by region by
 	// calling gdk_window_invalidate_region() on the widget’s window and all its
 	// child windows. Once the main loop becomes idle (after the current batch
@@ -135712,17 +138927,17 @@ type WidgetOverrides struct {
 	// ScreenChanged: signal emitted when the screen of a widget has changed.
 	ScreenChanged func(previousScreen *gdk.Screen)
 	// ScrollEvent: signal emitted when a button in the 4 to 7 range is pressed.
-	ScrollEvent func(event *gdk.EventScroll) bool
+	ScrollEvent func(event *gdk.EventScroll) bool // optional
 	// SelectionClearEvent: signal will be emitted when the the widget’s window
 	// has lost ownership of a selection.
-	SelectionClearEvent func(event *gdk.EventSelection) bool
+	SelectionClearEvent func(event *gdk.EventSelection) bool // optional
 	// The function takes the following parameters:
 	//
 	//   - selectionData
 	//   - info
 	//   - time_
 	SelectionGet         func(selectionData *SelectionData, info, time_ uint)
-	SelectionNotifyEvent func(event *gdk.EventSelection) bool
+	SelectionNotifyEvent func(event *gdk.EventSelection) bool // optional
 	// The function takes the following parameters:
 	//
 	//   - selectionData
@@ -135730,7 +138945,7 @@ type WidgetOverrides struct {
 	SelectionReceived func(selectionData *SelectionData, time_ uint)
 	// SelectionRequestEvent: signal will be emitted when another client
 	// requests ownership of the selection owned by the widget's window.
-	SelectionRequestEvent func(event *gdk.EventSelection) bool
+	SelectionRequestEvent func(event *gdk.EventSelection) bool // optional
 	// Show flags a widget to be displayed. Any widget that isn’t shown will not
 	// appear on the screen. If you want to show all the widgets in a container,
 	// it’s easier to call gtk_widget_show_all() on the container, instead of
@@ -135746,7 +138961,7 @@ type WidgetOverrides struct {
 	// ShowAll: recursively shows a widget, and any child widgets (if the widget
 	// is a container).
 	ShowAll  func()
-	ShowHelp func(helpType WidgetHelpType) bool
+	ShowHelp func(helpType WidgetHelpType) bool // optional
 	// SizeAllocate: this function is only used by Container subclasses,
 	// to assign a size and position to their child widgets.
 	//
@@ -135776,107 +138991,383 @@ type WidgetOverrides struct {
 	// changed.
 	StyleUpdated func()
 	// TouchEvent: signal emitted when a touch event happens.
-	TouchEvent func(event *gdk.EventTouch) bool
+	TouchEvent func(event *gdk.EventTouch) bool // optional
 	// Unmap: this function is only for use in widget implementations. Causes a
 	// widget to be unmapped if it’s currently mapped.
 	Unmap func()
 	// UnmapEvent: signal will be emitted when the widget’s window is unmapped.
-	UnmapEvent func(event *gdk.EventAny) bool
+	UnmapEvent func(event *gdk.EventAny) bool // optional
 	// Unrealize: this function is only useful in widget implementations.
 	// Causes a widget to be unrealized (frees all GDK resources associated with
 	// the widget, such as widget->window).
 	Unrealize func()
 	// VisibilityNotifyEvent: signal emitted when the widget’s window is
 	// obscured or unobscured.
-	VisibilityNotifyEvent func(event *gdk.EventVisibility) bool
+	VisibilityNotifyEvent func(event *gdk.EventVisibility) bool // optional
 	// WindowStateEvent: signal emitted when the state of the toplevel window
 	// associated to the widget changes.
-	WindowStateEvent func(event *gdk.EventWindowState) bool
+	WindowStateEvent func(event *gdk.EventWindowState) bool // optional
 }
 
 func defaultWidgetOverrides(v *Widget) WidgetOverrides {
-	return WidgetOverrides{
-		AdjustBaselineAllocation:           v.adjustBaselineAllocation,
-		AdjustBaselineRequest:              v.adjustBaselineRequest,
-		AdjustSizeAllocation:               v.adjustSizeAllocation,
-		AdjustSizeRequest:                  v.adjustSizeRequest,
-		ButtonPressEvent:                   v.buttonPressEvent,
-		ButtonReleaseEvent:                 v.buttonReleaseEvent,
-		CanActivateAccel:                   v.canActivateAccel,
-		CompositedChanged:                  v.compositedChanged,
-		ConfigureEvent:                     v.configureEvent,
-		DamageEvent:                        v.damageEvent,
-		DeleteEvent:                        v.deleteEvent,
-		Destroy:                            v.destroy,
-		DestroyEvent:                       v.destroyEvent,
-		DirectionChanged:                   v.directionChanged,
-		DragBegin:                          v.dragBegin,
-		DragDataDelete:                     v.dragDataDelete,
-		DragDataGet:                        v.dragDataGet,
-		DragDataReceived:                   v.dragDataReceived,
-		DragDrop:                           v.dragDrop,
-		DragEnd:                            v.dragEnd,
-		DragFailed:                         v.dragFailed,
-		DragLeave:                          v.dragLeave,
-		DragMotion:                         v.dragMotion,
-		Draw:                               v.draw,
-		EnterNotifyEvent:                   v.enterNotifyEvent,
-		Event:                              v.event,
-		Focus:                              v.focus,
-		FocusInEvent:                       v.focusInEvent,
-		FocusOutEvent:                      v.focusOutEvent,
-		Accessible:                         v.accessible,
-		PreferredHeight:                    v.preferredHeight,
-		PreferredHeightAndBaselineForWidth: v.preferredHeightAndBaselineForWidth,
-		PreferredHeightForWidth:            v.preferredHeightForWidth,
-		PreferredWidth:                     v.preferredWidth,
-		PreferredWidthForHeight:            v.preferredWidthForHeight,
-		RequestMode:                        v.requestMode,
-		GrabBrokenEvent:                    v.grabBrokenEvent,
-		GrabFocus:                          v.grabFocus,
-		GrabNotify:                         v.grabNotify,
-		Hide:                               v.hide,
-		HierarchyChanged:                   v.hierarchyChanged,
-		KeyPressEvent:                      v.keyPressEvent,
-		KeyReleaseEvent:                    v.keyReleaseEvent,
-		KeynavFailed:                       v.keynavFailed,
-		LeaveNotifyEvent:                   v.leaveNotifyEvent,
-		Map:                                v._map,
-		MapEvent:                           v.mapEvent,
-		MnemonicActivate:                   v.mnemonicActivate,
-		MotionNotifyEvent:                  v.motionNotifyEvent,
-		MoveFocus:                          v.moveFocus,
-		ParentSet:                          v.parentSet,
-		PopupMenu:                          v.popupMenu,
-		PropertyNotifyEvent:                v.propertyNotifyEvent,
-		ProximityInEvent:                   v.proximityInEvent,
-		ProximityOutEvent:                  v.proximityOutEvent,
-		QueryTooltip:                       v.queryTooltip,
-		QueueDrawRegion:                    v.queueDrawRegion,
-		Realize:                            v.realize,
-		ScreenChanged:                      v.screenChanged,
-		ScrollEvent:                        v.scrollEvent,
-		SelectionClearEvent:                v.selectionClearEvent,
-		SelectionGet:                       v.selectionGet,
-		SelectionNotifyEvent:               v.selectionNotifyEvent,
-		SelectionReceived:                  v.selectionReceived,
-		SelectionRequestEvent:              v.selectionRequestEvent,
-		Show:                               v.show,
-		ShowAll:                            v.showAll,
-		ShowHelp:                           v.showHelp,
-		SizeAllocate:                       v.sizeAllocate,
-		StateChanged:                       v.stateChanged,
-		StateFlagsChanged:                  v.stateFlagsChanged,
-		StyleSet:                           v.styleSet,
-		StyleUpdated:                       v.styleUpdated,
-		TouchEvent:                         v.touchEvent,
-		Unmap:                              v.unmap,
-		UnmapEvent:                         v.unmapEvent,
-		Unrealize:                          v.unrealize,
-		VisibilityNotifyEvent:              v.visibilityNotifyEvent,
-		WindowStateEvent:                   v.windowStateEvent,
+	var pclass *C.GtkWidgetClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeWidget)) != C.FALSE {
+			pclass = (*C.GtkWidgetClass)(parentClass)
+		}
 	}
+
+	overrides := WidgetOverrides{
+
+		AdjustBaselineAllocation: noop_Widget_AdjustBaselineAllocation,
+		AdjustBaselineRequest:    noop_Widget_AdjustBaselineRequest,
+		AdjustSizeAllocation:     noop_Widget_AdjustSizeAllocation,
+		AdjustSizeRequest:        noop_Widget_AdjustSizeRequest,
+		CompositedChanged:        noop_Widget_CompositedChanged,
+		Destroy:                  noop_Widget_Destroy,
+		DirectionChanged:         noop_Widget_DirectionChanged,
+		DragBegin:                noop_Widget_DragBegin,
+		DragDataDelete:           noop_Widget_DragDataDelete,
+		DragDataGet:              noop_Widget_DragDataGet,
+		DragDataReceived:         noop_Widget_DragDataReceived,
+		DragEnd:                  noop_Widget_DragEnd,
+		DragLeave:                noop_Widget_DragLeave,
+		GrabFocus:                noop_Widget_GrabFocus,
+		GrabNotify:               noop_Widget_GrabNotify,
+		Hide:                     noop_Widget_Hide,
+		HierarchyChanged:         noop_Widget_HierarchyChanged,
+		Map:                      noop_Widget_Map,
+		MoveFocus:                noop_Widget_MoveFocus,
+		ParentSet:                noop_Widget_ParentSet,
+		QueueDrawRegion:          noop_Widget_QueueDrawRegion,
+		Realize:                  noop_Widget_Realize,
+		ScreenChanged:            noop_Widget_ScreenChanged,
+		SelectionGet:             noop_Widget_SelectionGet,
+		SelectionReceived:        noop_Widget_SelectionReceived,
+		Show:                     noop_Widget_Show,
+		ShowAll:                  noop_Widget_ShowAll,
+		SizeAllocate:             noop_Widget_SizeAllocate,
+		StateChanged:             noop_Widget_StateChanged,
+		StateFlagsChanged:        noop_Widget_StateFlagsChanged,
+		StyleSet:                 noop_Widget_StyleSet,
+		StyleUpdated:             noop_Widget_StyleUpdated,
+		Unmap:                    noop_Widget_Unmap,
+		Unrealize:                noop_Widget_Unrealize,
+	}
+	if pclass != nil {
+
+		if pclass.adjust_baseline_allocation != nil {
+			overrides.AdjustBaselineAllocation = v.adjustBaselineAllocation
+		}
+		if pclass.adjust_baseline_request != nil {
+			overrides.AdjustBaselineRequest = v.adjustBaselineRequest
+		}
+		if pclass.adjust_size_allocation != nil {
+			overrides.AdjustSizeAllocation = v.adjustSizeAllocation
+		}
+		if pclass.adjust_size_request != nil {
+			overrides.AdjustSizeRequest = v.adjustSizeRequest
+		}
+		if pclass.button_press_event != nil {
+			overrides.ButtonPressEvent = v.buttonPressEvent
+		}
+		if pclass.button_release_event != nil {
+			overrides.ButtonReleaseEvent = v.buttonReleaseEvent
+		}
+		if pclass.can_activate_accel != nil {
+			overrides.CanActivateAccel = v.canActivateAccel
+		}
+		if pclass.composited_changed != nil {
+			overrides.CompositedChanged = v.compositedChanged
+		}
+		if pclass.configure_event != nil {
+			overrides.ConfigureEvent = v.configureEvent
+		}
+		if pclass.damage_event != nil {
+			overrides.DamageEvent = v.damageEvent
+		}
+		if pclass.delete_event != nil {
+			overrides.DeleteEvent = v.deleteEvent
+		}
+		if pclass.destroy != nil {
+			overrides.Destroy = v.destroy
+		}
+		if pclass.destroy_event != nil {
+			overrides.DestroyEvent = v.destroyEvent
+		}
+		if pclass.direction_changed != nil {
+			overrides.DirectionChanged = v.directionChanged
+		}
+		if pclass.drag_begin != nil {
+			overrides.DragBegin = v.dragBegin
+		}
+		if pclass.drag_data_delete != nil {
+			overrides.DragDataDelete = v.dragDataDelete
+		}
+		if pclass.drag_data_get != nil {
+			overrides.DragDataGet = v.dragDataGet
+		}
+		if pclass.drag_data_received != nil {
+			overrides.DragDataReceived = v.dragDataReceived
+		}
+		if pclass.drag_drop != nil {
+			overrides.DragDrop = v.dragDrop
+		}
+		if pclass.drag_end != nil {
+			overrides.DragEnd = v.dragEnd
+		}
+		if pclass.drag_failed != nil {
+			overrides.DragFailed = v.dragFailed
+		}
+		if pclass.drag_leave != nil {
+			overrides.DragLeave = v.dragLeave
+		}
+		if pclass.drag_motion != nil {
+			overrides.DragMotion = v.dragMotion
+		}
+		if pclass.draw != nil {
+			overrides.Draw = v.draw
+		}
+		if pclass.enter_notify_event != nil {
+			overrides.EnterNotifyEvent = v.enterNotifyEvent
+		}
+		if pclass.event != nil {
+			overrides.Event = v.event
+		}
+		if pclass.focus != nil {
+			overrides.Focus = v.focus
+		}
+		if pclass.focus_in_event != nil {
+			overrides.FocusInEvent = v.focusInEvent
+		}
+		if pclass.focus_out_event != nil {
+			overrides.FocusOutEvent = v.focusOutEvent
+		}
+		if pclass.get_accessible != nil {
+			overrides.Accessible = v.accessible
+		}
+		if pclass.get_preferred_height != nil {
+			overrides.PreferredHeight = v.preferredHeight
+		}
+		if pclass.get_preferred_height_and_baseline_for_width != nil {
+			overrides.PreferredHeightAndBaselineForWidth = v.preferredHeightAndBaselineForWidth
+		}
+		if pclass.get_preferred_height_for_width != nil {
+			overrides.PreferredHeightForWidth = v.preferredHeightForWidth
+		}
+		if pclass.get_preferred_width != nil {
+			overrides.PreferredWidth = v.preferredWidth
+		}
+		if pclass.get_preferred_width_for_height != nil {
+			overrides.PreferredWidthForHeight = v.preferredWidthForHeight
+		}
+		if pclass.get_request_mode != nil {
+			overrides.RequestMode = v.requestMode
+		}
+		if pclass.grab_broken_event != nil {
+			overrides.GrabBrokenEvent = v.grabBrokenEvent
+		}
+		if pclass.grab_focus != nil {
+			overrides.GrabFocus = v.grabFocus
+		}
+		if pclass.grab_notify != nil {
+			overrides.GrabNotify = v.grabNotify
+		}
+		if pclass.hide != nil {
+			overrides.Hide = v.hide
+		}
+		if pclass.hierarchy_changed != nil {
+			overrides.HierarchyChanged = v.hierarchyChanged
+		}
+		if pclass.key_press_event != nil {
+			overrides.KeyPressEvent = v.keyPressEvent
+		}
+		if pclass.key_release_event != nil {
+			overrides.KeyReleaseEvent = v.keyReleaseEvent
+		}
+		if pclass.keynav_failed != nil {
+			overrides.KeynavFailed = v.keynavFailed
+		}
+		if pclass.leave_notify_event != nil {
+			overrides.LeaveNotifyEvent = v.leaveNotifyEvent
+		}
+		if pclass._map != nil {
+			overrides.Map = v._map
+		}
+		if pclass.map_event != nil {
+			overrides.MapEvent = v.mapEvent
+		}
+		if pclass.mnemonic_activate != nil {
+			overrides.MnemonicActivate = v.mnemonicActivate
+		}
+		if pclass.motion_notify_event != nil {
+			overrides.MotionNotifyEvent = v.motionNotifyEvent
+		}
+		if pclass.move_focus != nil {
+			overrides.MoveFocus = v.moveFocus
+		}
+		if pclass.parent_set != nil {
+			overrides.ParentSet = v.parentSet
+		}
+		if pclass.popup_menu != nil {
+			overrides.PopupMenu = v.popupMenu
+		}
+		if pclass.property_notify_event != nil {
+			overrides.PropertyNotifyEvent = v.propertyNotifyEvent
+		}
+		if pclass.proximity_in_event != nil {
+			overrides.ProximityInEvent = v.proximityInEvent
+		}
+		if pclass.proximity_out_event != nil {
+			overrides.ProximityOutEvent = v.proximityOutEvent
+		}
+		if pclass.query_tooltip != nil {
+			overrides.QueryTooltip = v.queryTooltip
+		}
+		if pclass.queue_draw_region != nil {
+			overrides.QueueDrawRegion = v.queueDrawRegion
+		}
+		if pclass.realize != nil {
+			overrides.Realize = v.realize
+		}
+		if pclass.screen_changed != nil {
+			overrides.ScreenChanged = v.screenChanged
+		}
+		if pclass.scroll_event != nil {
+			overrides.ScrollEvent = v.scrollEvent
+		}
+		if pclass.selection_clear_event != nil {
+			overrides.SelectionClearEvent = v.selectionClearEvent
+		}
+		if pclass.selection_get != nil {
+			overrides.SelectionGet = v.selectionGet
+		}
+		if pclass.selection_notify_event != nil {
+			overrides.SelectionNotifyEvent = v.selectionNotifyEvent
+		}
+		if pclass.selection_received != nil {
+			overrides.SelectionReceived = v.selectionReceived
+		}
+		if pclass.selection_request_event != nil {
+			overrides.SelectionRequestEvent = v.selectionRequestEvent
+		}
+		if pclass.show != nil {
+			overrides.Show = v.show
+		}
+		if pclass.show_all != nil {
+			overrides.ShowAll = v.showAll
+		}
+		if pclass.show_help != nil {
+			overrides.ShowHelp = v.showHelp
+		}
+		if pclass.size_allocate != nil {
+			overrides.SizeAllocate = v.sizeAllocate
+		}
+		if pclass.state_changed != nil {
+			overrides.StateChanged = v.stateChanged
+		}
+		if pclass.state_flags_changed != nil {
+			overrides.StateFlagsChanged = v.stateFlagsChanged
+		}
+		if pclass.style_set != nil {
+			overrides.StyleSet = v.styleSet
+		}
+		if pclass.style_updated != nil {
+			overrides.StyleUpdated = v.styleUpdated
+		}
+		if pclass.touch_event != nil {
+			overrides.TouchEvent = v.touchEvent
+		}
+		if pclass.unmap != nil {
+			overrides.Unmap = v.unmap
+		}
+		if pclass.unmap_event != nil {
+			overrides.UnmapEvent = v.unmapEvent
+		}
+		if pclass.unrealize != nil {
+			overrides.Unrealize = v.unrealize
+		}
+		if pclass.visibility_notify_event != nil {
+			overrides.VisibilityNotifyEvent = v.visibilityNotifyEvent
+		}
+		if pclass.window_state_event != nil {
+			overrides.WindowStateEvent = v.windowStateEvent
+		}
+	}
+
+	return overrides
 }
+
+func noop_Widget_AdjustBaselineAllocation(baseline *int) {}
+
+func noop_Widget_AdjustBaselineRequest(minimumBaseline, naturalBaseline *int) {}
+
+func noop_Widget_AdjustSizeAllocation(orientation Orientation, minimumSize, naturalSize, allocatedPos, allocatedSize *int) {
+}
+
+func noop_Widget_AdjustSizeRequest(orientation Orientation, minimumSize, naturalSize *int) {}
+
+func noop_Widget_CompositedChanged() {}
+
+func noop_Widget_Destroy() {}
+
+func noop_Widget_DirectionChanged(previousDirection TextDirection) {}
+
+func noop_Widget_DragBegin(context *gdk.DragContext) {}
+
+func noop_Widget_DragDataDelete(context *gdk.DragContext) {}
+
+func noop_Widget_DragDataGet(context *gdk.DragContext, selectionData *SelectionData, info, time_ uint) {
+}
+
+func noop_Widget_DragDataReceived(context *gdk.DragContext, x, y int, selectionData *SelectionData, info, time_ uint) {
+}
+
+func noop_Widget_DragEnd(context *gdk.DragContext) {}
+
+func noop_Widget_DragLeave(context *gdk.DragContext, time_ uint) {}
+
+func noop_Widget_GrabFocus() {}
+
+func noop_Widget_GrabNotify(wasGrabbed bool) {}
+
+func noop_Widget_Hide() {}
+
+func noop_Widget_HierarchyChanged(previousToplevel Widgetter) {}
+
+func noop_Widget_Map() {}
+
+func noop_Widget_MoveFocus(direction DirectionType) {}
+
+func noop_Widget_ParentSet(previousParent Widgetter) {}
+
+func noop_Widget_QueueDrawRegion(region *cairo.Region) {}
+
+func noop_Widget_Realize() {}
+
+func noop_Widget_ScreenChanged(previousScreen *gdk.Screen) {}
+
+func noop_Widget_SelectionGet(selectionData *SelectionData, info, time_ uint) {}
+
+func noop_Widget_SelectionReceived(selectionData *SelectionData, time_ uint) {}
+
+func noop_Widget_Show() {}
+
+func noop_Widget_ShowAll() {}
+
+func noop_Widget_SizeAllocate(allocation *Allocation) {}
+
+func noop_Widget_StateChanged(previousState StateType) {}
+
+func noop_Widget_StateFlagsChanged(previousStateFlags StateFlags) {}
+
+func noop_Widget_StyleSet(previousStyle *Style) {}
+
+func noop_Widget_StyleUpdated() {}
+
+func noop_Widget_Unmap() {}
+
+func noop_Widget_Unrealize() {}
 
 // Widget is the base class all widgets in GTK+ derive from. It manages the
 // widget lifecycle, states and style.
@@ -146347,7 +149838,10 @@ type WidgetAccessibleOverrides struct {
 }
 
 func defaultWidgetAccessibleOverrides(v *WidgetAccessible) WidgetAccessibleOverrides {
-	return WidgetAccessibleOverrides{}
+
+	overrides := WidgetAccessibleOverrides{}
+
+	return overrides
 }
 
 type WidgetAccessible struct {
@@ -146402,7 +149896,7 @@ type WindowOverrides struct {
 	ActivateFocus func()
 	// EnableDebugging class handler for the Window::enable-debugging keybinding
 	// signal. Since: 3.14.
-	EnableDebugging func(toggle bool) bool
+	EnableDebugging func(toggle bool) bool // optional
 	// KeysChanged: signal gets emitted when the set of accelerators or
 	// mnemonics that are associated with window changes.
 	KeysChanged func()
@@ -146420,14 +149914,49 @@ type WindowOverrides struct {
 }
 
 func defaultWindowOverrides(v *Window) WindowOverrides {
-	return WindowOverrides{
-		ActivateDefault: v.activateDefault,
-		ActivateFocus:   v.activateFocus,
-		EnableDebugging: v.enableDebugging,
-		KeysChanged:     v.keysChanged,
-		SetFocus:        v.setFocus,
+	var pclass *C.GtkWindowClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeWindow)) != C.FALSE {
+			pclass = (*C.GtkWindowClass)(parentClass)
+		}
 	}
+
+	overrides := WindowOverrides{
+
+		ActivateDefault: noop_Window_ActivateDefault,
+		ActivateFocus:   noop_Window_ActivateFocus,
+		KeysChanged:     noop_Window_KeysChanged,
+		SetFocus:        noop_Window_SetFocus,
+	}
+	if pclass != nil {
+
+		if pclass.activate_default != nil {
+			overrides.ActivateDefault = v.activateDefault
+		}
+		if pclass.activate_focus != nil {
+			overrides.ActivateFocus = v.activateFocus
+		}
+		if pclass.enable_debugging != nil {
+			overrides.EnableDebugging = v.enableDebugging
+		}
+		if pclass.keys_changed != nil {
+			overrides.KeysChanged = v.keysChanged
+		}
+		if pclass.set_focus != nil {
+			overrides.SetFocus = v.setFocus
+		}
+	}
+
+	return overrides
 }
+
+func noop_Window_ActivateDefault() {}
+
+func noop_Window_ActivateFocus() {}
+
+func noop_Window_KeysChanged() {}
+
+func noop_Window_SetFocus(focus Widgetter) {}
 
 // Window is a toplevel window which can contain other widgets. Windows normally
 // have decorations that are under the control of the windowing system and allow
@@ -149917,7 +153446,10 @@ type WindowAccessibleOverrides struct {
 }
 
 func defaultWindowAccessibleOverrides(v *WindowAccessible) WindowAccessibleOverrides {
-	return WindowAccessibleOverrides{}
+
+	overrides := WindowAccessibleOverrides{}
+
+	return overrides
 }
 
 type WindowAccessible struct {
@@ -149978,7 +153510,10 @@ type WindowGroupOverrides struct {
 }
 
 func defaultWindowGroupOverrides(v *WindowGroup) WindowGroupOverrides {
-	return WindowGroupOverrides{}
+
+	overrides := WindowGroupOverrides{}
+
+	return overrides
 }
 
 // WindowGroup restricts the effect of grabs to windows in the same group,

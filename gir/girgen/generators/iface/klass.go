@@ -117,7 +117,7 @@ func (ts *TypeStruct) virtualMethod(virtual *gir.VirtualMethod, vmethod *Method)
 			h.Import("unsafe")
 
 			p.Linef("instance0 := coreglib.Take(unsafe.Pointer(arg0))")
-			p.Linef("overrides := coreglib.OverridesFromObj[%sOverrides](instance0)", ts.igen.StructName)
+			p.Linef("overrides := coreglib.OverridesFromGType[%sOverrides](instance0)", ts.igen.StructName)
 			p.Linef("if overrides.%s == nil {", method.Go.Name)
 			p.Linef(`  panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected %sOverrides.%s, got none")`, ts.igen.StructName, method.Go.Name)
 			p.Linef("}")

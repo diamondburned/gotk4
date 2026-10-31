@@ -25,6 +25,7 @@ type Method struct {
 	Results    []typeconv.ValueConverted
 	ParamDocs  []cmt.ParamDoc
 	ReturnDocs []cmt.ParamDoc
+	HasReturns bool
 }
 
 type ParamDoc struct {
@@ -46,6 +47,7 @@ func newMethod(cgen *callable.Generator) Method {
 		Results:    cgen.Results,
 		ParamDocs:  cgen.ParamDocs,
 		ReturnDocs: cgen.ReturnDocs,
+		HasReturns: cgen.GoRets.Len() > 0,
 	}
 }
 

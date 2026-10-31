@@ -15,23 +15,81 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 
 	{{ if .GLibTypeStruct }}
 	{{ if .IsClass }}
+	{{ Import . "unsafe" }}
+
 	// {{ .StructName }}Overrides contains methods that are overridable.
 	type {{ .StructName }}Overrides struct {
 		{{ range .GLibTypeStruct.VirtualMethods -}}
 		{{ if $.IsInSameFile . -}}
 		{{- GoDoc .Go 1 TrailingNewLine -}}
-		{{- .Go.Name }} func{{ .Go.Tail }}
+		{{- .Go.Name }} func{{ .Go.Tail }}{{ if .Go.HasReturns }} // optional{{ end }}
 		{{ end -}}
 		{{ end -}}
 	}
 
-	func default{{ .StructName }}Overrides(v *{{ .StructName }}) {{ .StructName }}Overrides{
-		return {{ .StructName }}Overrides{
+	func default{{ .StructName }}Overrides(v *{{ .StructName }}) {{ .StructName }}Overrides {
+		{{- if .GLibTypeStruct.VirtualMethods }}
+		{{- if .IsRuntimeLinkMode }}
+			{{- ImportCore . "girepository" -}}
+			classt := girepository.MustFind({{ Quote .Root.Namespace.Name }}, {{ Quote .GLibTypeStruct.Record.Name }})
+			var pclass unsafe.Pointer
+			if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+				if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GType{{ .StructName }})) != C.FALSE {
+					pclass = parentClass
+				}
+			}
+		{{- else }}
+			var pclass *C.{{ .GLibTypeStruct.CType }}
+			if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+				if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GType{{ .StructName }})) != C.FALSE {
+					pclass = (*C.{{ .GLibTypeStruct.CType }})(parentClass)
+				}
+			}
+		{{- end }}
+		{{- end }}
+
+		overrides := {{ .StructName }}Overrides{
 			{{ range .GLibTypeStruct.VirtualMethods -}}
-			{{ .Go.Name }}: v.{{ UnexportPascal .Go.Name }},
-			{{ end -}}
+			{{ if $.IsInSameFile . -}}
+			{{- if not .Go.HasReturns }}
+			{{ .Go.Name }}: noop_{{ $.StructName }}_{{ .Go.Name }},
+			{{- end }}
+			{{- end }}
+			{{- end }}
 		}
+
+		{{- if .GLibTypeStruct.VirtualMethods }}
+		if pclass != nil {
+			{{- if .IsRuntimeLinkMode }}
+			{{ range .GLibTypeStruct.VirtualMethods }}
+			{{ if $.IsInSameFile . -}}
+			if *(*unsafe.Pointer)(unsafe.Add(pclass, classt.StructFieldOffset({{ Quote .FieldName }}))) != nil {
+				overrides.{{ .Go.Name }} = v.{{ UnexportPascal .Go.Name }}
+			}
+			{{- end }}
+			{{- end }}
+			{{- else }}
+			{{ range .GLibTypeStruct.VirtualMethods }}
+			{{ if $.IsInSameFile . -}}
+			if pclass.{{ CGoField .FieldName }} != nil {
+				overrides.{{ .Go.Name }} = v.{{ UnexportPascal .Go.Name }}
+			}
+			{{- end }}
+			{{- end }}
+			{{- end }}
+		}
+		{{- end }}
+
+		return overrides
 	}
+
+	{{ range .GLibTypeStruct.VirtualMethods }}
+	{{ if $.IsInSameFile . -}}
+	{{- if not .Go.HasReturns }}
+	func noop_{{ $.StructName }}_{{ .Go.Name }}{{ .Go.Tail }} {}
+	{{- end }}
+	{{- end }}
+	{{- end }}
 	{{ else }}
 	// {{ .StructName }}Overrider contains methods that are overridable.
 	type {{ .StructName }}Overrider interface {

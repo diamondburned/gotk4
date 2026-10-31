@@ -124,7 +124,7 @@ func _gotk4_pango1_FontsetForEachFunc(arg1 *C.PangoFontset, arg2 *C.PangoFont, a
 //export _gotk4_pango1_FontClass_describe
 func _gotk4_pango1_FontClass_describe(arg0 *C.PangoFont) (cret *C.PangoFontDescription) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FontOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FontOverrides](instance0)
 	if overrides.Describe == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FontOverrides.Describe, got none")
 	}
@@ -142,7 +142,7 @@ func _gotk4_pango1_FontClass_describe(arg0 *C.PangoFont) (cret *C.PangoFontDescr
 //export _gotk4_pango1_FontClass_describe_absolute
 func _gotk4_pango1_FontClass_describe_absolute(arg0 *C.PangoFont) (cret *C.PangoFontDescription) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FontOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FontOverrides](instance0)
 	if overrides.DescribeAbsolute == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FontOverrides.DescribeAbsolute, got none")
 	}
@@ -160,7 +160,7 @@ func _gotk4_pango1_FontClass_describe_absolute(arg0 *C.PangoFont) (cret *C.Pango
 //export _gotk4_pango1_FontClass_get_coverage
 func _gotk4_pango1_FontClass_get_coverage(arg0 *C.PangoFont, arg1 *C.PangoLanguage) (cret *C.PangoCoverage) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FontOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FontOverrides](instance0)
 	if overrides.Coverage == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FontOverrides.Coverage, got none")
 	}
@@ -182,7 +182,7 @@ func _gotk4_pango1_FontClass_get_coverage(arg0 *C.PangoFont, arg1 *C.PangoLangua
 //export _gotk4_pango1_FontClass_get_font_map
 func _gotk4_pango1_FontClass_get_font_map(arg0 *C.PangoFont) (cret *C.PangoFontMap) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FontOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FontOverrides](instance0)
 	if overrides.FontMap == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FontOverrides.FontMap, got none")
 	}
@@ -201,7 +201,7 @@ func _gotk4_pango1_FontClass_get_font_map(arg0 *C.PangoFont) (cret *C.PangoFontM
 //export _gotk4_pango1_FontClass_get_glyph_extents
 func _gotk4_pango1_FontClass_get_glyph_extents(arg0 *C.PangoFont, arg1 C.PangoGlyph, arg2 *C.PangoRectangle, arg3 *C.PangoRectangle) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FontOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FontOverrides](instance0)
 	if overrides.GlyphExtents == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FontOverrides.GlyphExtents, got none")
 	}
@@ -230,7 +230,7 @@ func _gotk4_pango1_FontClass_get_glyph_extents(arg0 *C.PangoFont, arg1 C.PangoGl
 //export _gotk4_pango1_FontClass_get_metrics
 func _gotk4_pango1_FontClass_get_metrics(arg0 *C.PangoFont, arg1 *C.PangoLanguage) (cret *C.PangoFontMetrics) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FontOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FontOverrides](instance0)
 	if overrides.Metrics == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FontOverrides.Metrics, got none")
 	}
@@ -253,7 +253,7 @@ func _gotk4_pango1_FontClass_get_metrics(arg0 *C.PangoFont, arg1 *C.PangoLanguag
 //export _gotk4_pango1_FontFaceClass_describe
 func _gotk4_pango1_FontFaceClass_describe(arg0 *C.PangoFontFace) (cret *C.PangoFontDescription) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FontFaceOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FontFaceOverrides](instance0)
 	if overrides.Describe == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FontFaceOverrides.Describe, got none")
 	}
@@ -271,7 +271,7 @@ func _gotk4_pango1_FontFaceClass_describe(arg0 *C.PangoFontFace) (cret *C.PangoF
 //export _gotk4_pango1_FontFaceClass_get_face_name
 func _gotk4_pango1_FontFaceClass_get_face_name(arg0 *C.PangoFontFace) (cret *C.char) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FontFaceOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FontFaceOverrides](instance0)
 	if overrides.FaceName == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FontFaceOverrides.FaceName, got none")
 	}
@@ -289,7 +289,7 @@ func _gotk4_pango1_FontFaceClass_get_face_name(arg0 *C.PangoFontFace) (cret *C.c
 //export _gotk4_pango1_FontFaceClass_get_family
 func _gotk4_pango1_FontFaceClass_get_family(arg0 *C.PangoFontFace) (cret *C.PangoFontFamily) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FontFaceOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FontFaceOverrides](instance0)
 	if overrides.Family == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FontFaceOverrides.Family, got none")
 	}
@@ -306,7 +306,7 @@ func _gotk4_pango1_FontFaceClass_get_family(arg0 *C.PangoFontFace) (cret *C.Pang
 //export _gotk4_pango1_FontFaceClass_is_synthesized
 func _gotk4_pango1_FontFaceClass_is_synthesized(arg0 *C.PangoFontFace) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FontFaceOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FontFaceOverrides](instance0)
 	if overrides.IsSynthesized == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FontFaceOverrides.IsSynthesized, got none")
 	}
@@ -325,7 +325,7 @@ func _gotk4_pango1_FontFaceClass_is_synthesized(arg0 *C.PangoFontFace) (cret C.g
 //export _gotk4_pango1_FontFaceClass_list_sizes
 func _gotk4_pango1_FontFaceClass_list_sizes(arg0 *C.PangoFontFace, arg1 **C.int, arg2 *C.int) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FontFaceOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FontFaceOverrides](instance0)
 	if overrides.ListSizes == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FontFaceOverrides.ListSizes, got none")
 	}
@@ -347,7 +347,7 @@ func _gotk4_pango1_FontFaceClass_list_sizes(arg0 *C.PangoFontFace, arg1 **C.int,
 //export _gotk4_pango1_FontFamilyClass_get_face
 func _gotk4_pango1_FontFamilyClass_get_face(arg0 *C.PangoFontFamily, arg1 *C.char) (cret *C.PangoFontFace) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FontFamilyOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FontFamilyOverrides](instance0)
 	if overrides.Face == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FontFamilyOverrides.Face, got none")
 	}
@@ -372,7 +372,7 @@ func _gotk4_pango1_FontFamilyClass_get_face(arg0 *C.PangoFontFamily, arg1 *C.cha
 //export _gotk4_pango1_FontFamilyClass_get_name
 func _gotk4_pango1_FontFamilyClass_get_name(arg0 *C.PangoFontFamily) (cret *C.char) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FontFamilyOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FontFamilyOverrides](instance0)
 	if overrides.Name == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FontFamilyOverrides.Name, got none")
 	}
@@ -390,7 +390,7 @@ func _gotk4_pango1_FontFamilyClass_get_name(arg0 *C.PangoFontFamily) (cret *C.ch
 //export _gotk4_pango1_FontFamilyClass_is_monospace
 func _gotk4_pango1_FontFamilyClass_is_monospace(arg0 *C.PangoFontFamily) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FontFamilyOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FontFamilyOverrides](instance0)
 	if overrides.IsMonospace == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FontFamilyOverrides.IsMonospace, got none")
 	}
@@ -409,7 +409,7 @@ func _gotk4_pango1_FontFamilyClass_is_monospace(arg0 *C.PangoFontFamily) (cret C
 //export _gotk4_pango1_FontFamilyClass_is_variable
 func _gotk4_pango1_FontFamilyClass_is_variable(arg0 *C.PangoFontFamily) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FontFamilyOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FontFamilyOverrides](instance0)
 	if overrides.IsVariable == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FontFamilyOverrides.IsVariable, got none")
 	}
@@ -428,7 +428,7 @@ func _gotk4_pango1_FontFamilyClass_is_variable(arg0 *C.PangoFontFamily) (cret C.
 //export _gotk4_pango1_FontFamilyClass_list_faces
 func _gotk4_pango1_FontFamilyClass_list_faces(arg0 *C.PangoFontFamily, arg1 ***C.PangoFontFace, arg2 *C.int) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FontFamilyOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FontFamilyOverrides](instance0)
 	if overrides.ListFaces == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FontFamilyOverrides.ListFaces, got none")
 	}
@@ -452,7 +452,7 @@ func _gotk4_pango1_FontFamilyClass_list_faces(arg0 *C.PangoFontFamily, arg1 ***C
 //export _gotk4_pango1_FontMapClass_changed
 func _gotk4_pango1_FontMapClass_changed(arg0 *C.PangoFontMap) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FontMapOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FontMapOverrides](instance0)
 	if overrides.Changed == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FontMapOverrides.Changed, got none")
 	}
@@ -463,7 +463,7 @@ func _gotk4_pango1_FontMapClass_changed(arg0 *C.PangoFontMap) {
 //export _gotk4_pango1_FontMapClass_get_family
 func _gotk4_pango1_FontMapClass_get_family(arg0 *C.PangoFontMap, arg1 *C.char) (cret *C.PangoFontFamily) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FontMapOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FontMapOverrides](instance0)
 	if overrides.Family == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FontMapOverrides.Family, got none")
 	}
@@ -486,7 +486,7 @@ func _gotk4_pango1_FontMapClass_get_family(arg0 *C.PangoFontMap, arg1 *C.char) (
 //export _gotk4_pango1_FontMapClass_get_serial
 func _gotk4_pango1_FontMapClass_get_serial(arg0 *C.PangoFontMap) (cret C.guint) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FontMapOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FontMapOverrides](instance0)
 	if overrides.Serial == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FontMapOverrides.Serial, got none")
 	}
@@ -503,7 +503,7 @@ func _gotk4_pango1_FontMapClass_get_serial(arg0 *C.PangoFontMap) (cret C.guint) 
 //export _gotk4_pango1_FontMapClass_list_families
 func _gotk4_pango1_FontMapClass_list_families(arg0 *C.PangoFontMap, arg1 ***C.PangoFontFamily, arg2 *C.int) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FontMapOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FontMapOverrides](instance0)
 	if overrides.ListFamilies == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FontMapOverrides.ListFamilies, got none")
 	}
@@ -525,7 +525,7 @@ func _gotk4_pango1_FontMapClass_list_families(arg0 *C.PangoFontMap, arg1 ***C.Pa
 //export _gotk4_pango1_FontMapClass_load_font
 func _gotk4_pango1_FontMapClass_load_font(arg0 *C.PangoFontMap, arg1 *C.PangoContext, arg2 *C.PangoFontDescription) (cret *C.PangoFont) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FontMapOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FontMapOverrides](instance0)
 	if overrides.LoadFont == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FontMapOverrides.LoadFont, got none")
 	}
@@ -551,7 +551,7 @@ func _gotk4_pango1_FontMapClass_load_font(arg0 *C.PangoFontMap, arg1 *C.PangoCon
 //export _gotk4_pango1_FontMapClass_load_fontset
 func _gotk4_pango1_FontMapClass_load_fontset(arg0 *C.PangoFontMap, arg1 *C.PangoContext, arg2 *C.PangoFontDescription, arg3 *C.PangoLanguage) (cret *C.PangoFontset) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FontMapOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FontMapOverrides](instance0)
 	if overrides.LoadFontset == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FontMapOverrides.LoadFontset, got none")
 	}
@@ -579,7 +579,7 @@ func _gotk4_pango1_FontMapClass_load_fontset(arg0 *C.PangoFontMap, arg1 *C.Pango
 //export _gotk4_pango1_FontsetClass_get_font
 func _gotk4_pango1_FontsetClass_get_font(arg0 *C.PangoFontset, arg1 C.guint) (cret *C.PangoFont) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FontsetOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FontsetOverrides](instance0)
 	if overrides.Font == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FontsetOverrides.Font, got none")
 	}
@@ -601,7 +601,7 @@ func _gotk4_pango1_FontsetClass_get_font(arg0 *C.PangoFontset, arg1 C.guint) (cr
 //export _gotk4_pango1_FontsetClass_get_language
 func _gotk4_pango1_FontsetClass_get_language(arg0 *C.PangoFontset) (cret *C.PangoLanguage) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FontsetOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FontsetOverrides](instance0)
 	if overrides.Language == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FontsetOverrides.Language, got none")
 	}
@@ -619,7 +619,7 @@ func _gotk4_pango1_FontsetClass_get_language(arg0 *C.PangoFontset) (cret *C.Pang
 //export _gotk4_pango1_FontsetClass_get_metrics
 func _gotk4_pango1_FontsetClass_get_metrics(arg0 *C.PangoFontset) (cret *C.PangoFontMetrics) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FontsetOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FontsetOverrides](instance0)
 	if overrides.Metrics == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FontsetOverrides.Metrics, got none")
 	}
@@ -636,7 +636,7 @@ func _gotk4_pango1_FontsetClass_get_metrics(arg0 *C.PangoFontset) (cret *C.Pango
 //export _gotk4_pango1_RendererClass_begin
 func _gotk4_pango1_RendererClass_begin(arg0 *C.PangoRenderer) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[RendererOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[RendererOverrides](instance0)
 	if overrides.Begin == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected RendererOverrides.Begin, got none")
 	}
@@ -647,7 +647,7 @@ func _gotk4_pango1_RendererClass_begin(arg0 *C.PangoRenderer) {
 //export _gotk4_pango1_RendererClass_draw_error_underline
 func _gotk4_pango1_RendererClass_draw_error_underline(arg0 *C.PangoRenderer, arg1 C.int, arg2 C.int, arg3 C.int, arg4 C.int) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[RendererOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[RendererOverrides](instance0)
 	if overrides.DrawErrorUnderline == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected RendererOverrides.DrawErrorUnderline, got none")
 	}
@@ -668,7 +668,7 @@ func _gotk4_pango1_RendererClass_draw_error_underline(arg0 *C.PangoRenderer, arg
 //export _gotk4_pango1_RendererClass_draw_glyph
 func _gotk4_pango1_RendererClass_draw_glyph(arg0 *C.PangoRenderer, arg1 *C.PangoFont, arg2 C.PangoGlyph, arg3 C.double, arg4 C.double) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[RendererOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[RendererOverrides](instance0)
 	if overrides.DrawGlyph == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected RendererOverrides.DrawGlyph, got none")
 	}
@@ -705,7 +705,7 @@ func _gotk4_pango1_RendererClass_draw_glyph(arg0 *C.PangoRenderer, arg1 *C.Pango
 //export _gotk4_pango1_RendererClass_draw_glyph_item
 func _gotk4_pango1_RendererClass_draw_glyph_item(arg0 *C.PangoRenderer, arg1 *C.char, arg2 *C.PangoGlyphItem, arg3 C.int, arg4 C.int) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[RendererOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[RendererOverrides](instance0)
 	if overrides.DrawGlyphItem == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected RendererOverrides.DrawGlyphItem, got none")
 	}
@@ -728,7 +728,7 @@ func _gotk4_pango1_RendererClass_draw_glyph_item(arg0 *C.PangoRenderer, arg1 *C.
 //export _gotk4_pango1_RendererClass_draw_glyphs
 func _gotk4_pango1_RendererClass_draw_glyphs(arg0 *C.PangoRenderer, arg1 *C.PangoFont, arg2 *C.PangoGlyphString, arg3 C.int, arg4 C.int) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[RendererOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[RendererOverrides](instance0)
 	if overrides.DrawGlyphs == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected RendererOverrides.DrawGlyphs, got none")
 	}
@@ -765,7 +765,7 @@ func _gotk4_pango1_RendererClass_draw_glyphs(arg0 *C.PangoRenderer, arg1 *C.Pang
 //export _gotk4_pango1_RendererClass_draw_rectangle
 func _gotk4_pango1_RendererClass_draw_rectangle(arg0 *C.PangoRenderer, arg1 C.PangoRenderPart, arg2 C.int, arg3 C.int, arg4 C.int, arg5 C.int) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[RendererOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[RendererOverrides](instance0)
 	if overrides.DrawRectangle == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected RendererOverrides.DrawRectangle, got none")
 	}
@@ -788,7 +788,7 @@ func _gotk4_pango1_RendererClass_draw_rectangle(arg0 *C.PangoRenderer, arg1 C.Pa
 //export _gotk4_pango1_RendererClass_draw_shape
 func _gotk4_pango1_RendererClass_draw_shape(arg0 *C.PangoRenderer, arg1 *C.PangoAttrShape, arg2 C.int, arg3 C.int) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[RendererOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[RendererOverrides](instance0)
 	if overrides.DrawShape == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected RendererOverrides.DrawShape, got none")
 	}
@@ -807,7 +807,7 @@ func _gotk4_pango1_RendererClass_draw_shape(arg0 *C.PangoRenderer, arg1 *C.Pango
 //export _gotk4_pango1_RendererClass_draw_trapezoid
 func _gotk4_pango1_RendererClass_draw_trapezoid(arg0 *C.PangoRenderer, arg1 C.PangoRenderPart, arg2 C.double, arg3 C.double, arg4 C.double, arg5 C.double, arg6 C.double, arg7 C.double) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[RendererOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[RendererOverrides](instance0)
 	if overrides.DrawTrapezoid == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected RendererOverrides.DrawTrapezoid, got none")
 	}
@@ -834,7 +834,7 @@ func _gotk4_pango1_RendererClass_draw_trapezoid(arg0 *C.PangoRenderer, arg1 C.Pa
 //export _gotk4_pango1_RendererClass_end
 func _gotk4_pango1_RendererClass_end(arg0 *C.PangoRenderer) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[RendererOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[RendererOverrides](instance0)
 	if overrides.End == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected RendererOverrides.End, got none")
 	}
@@ -845,7 +845,7 @@ func _gotk4_pango1_RendererClass_end(arg0 *C.PangoRenderer) {
 //export _gotk4_pango1_RendererClass_part_changed
 func _gotk4_pango1_RendererClass_part_changed(arg0 *C.PangoRenderer, arg1 C.PangoRenderPart) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[RendererOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[RendererOverrides](instance0)
 	if overrides.PartChanged == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected RendererOverrides.PartChanged, got none")
 	}
@@ -860,7 +860,7 @@ func _gotk4_pango1_RendererClass_part_changed(arg0 *C.PangoRenderer, arg1 C.Pang
 //export _gotk4_pango1_RendererClass_prepare_run
 func _gotk4_pango1_RendererClass_prepare_run(arg0 *C.PangoRenderer, arg1 *C.PangoLayoutRun) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[RendererOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[RendererOverrides](instance0)
 	if overrides.PrepareRun == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected RendererOverrides.PrepareRun, got none")
 	}

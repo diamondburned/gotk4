@@ -12683,7 +12683,10 @@ type GObjectAccessibleOverrides struct {
 }
 
 func defaultGObjectAccessibleOverrides(v *GObjectAccessible) GObjectAccessibleOverrides {
-	return GObjectAccessibleOverrides{}
+
+	overrides := GObjectAccessibleOverrides{}
+
+	return overrides
 }
 
 // GObjectAccessible: this object class is derived from AtkObject and can be
@@ -12784,13 +12787,13 @@ type HyperlinkOverrides struct {
 	// The function returns the following values:
 	//
 	//   - gint: index with the hypertext document at which this link ends.
-	EndIndex func() int
+	EndIndex func() int // optional
 	// NAnchors gets the number of anchors associated with this hyperlink.
 	//
 	// The function returns the following values:
 	//
 	//   - gint: number of anchors associated with this hyperlink.
-	NAnchors func() int
+	NAnchors func() int // optional
 	// GetObject returns the item associated with this hyperlinks nth anchor.
 	// For instance, the returned Object will implement Text if link_ is a text
 	// hyperlink, Image if link_ is an image hyperlink etc.
@@ -12804,14 +12807,14 @@ type HyperlinkOverrides struct {
 	// The function returns the following values:
 	//
 	//   - object associated with this hyperlinks i-th anchor.
-	GetObject func(i int) *AtkObject
+	GetObject func(i int) *AtkObject // optional
 	// StartIndex gets the index with the hypertext document at which this link
 	// begins.
 	//
 	// The function returns the following values:
 	//
 	//   - gint: index with the hypertext document at which this link begins.
-	StartIndex func() int
+	StartIndex func() int // optional
 	// URI: get a the URI associated with the anchor specified by i of link_.
 	//
 	// Multiple anchors are primarily used by client-side image maps.
@@ -12823,7 +12826,7 @@ type HyperlinkOverrides struct {
 	// The function returns the following values:
 	//
 	//   - utf8: string specifying the URI.
-	URI func(i int) string
+	URI func(i int) string // optional
 	// IsSelectedLink determines whether this AtkHyperlink is selected
 	//
 	// Deprecated: Please use ATK_STATE_FOCUSABLE for all links, and
@@ -12832,7 +12835,7 @@ type HyperlinkOverrides struct {
 	// The function returns the following values:
 	//
 	//   - ok: true if the AtkHyperlink is selected, False otherwise.
-	IsSelectedLink func() bool
+	IsSelectedLink func() bool // optional
 	// IsValid: since the document that a link is associated with may have
 	// changed this method returns TRUE if the link is still valid (with respect
 	// to the document it references) and FALSE otherwise.
@@ -12840,24 +12843,58 @@ type HyperlinkOverrides struct {
 	// The function returns the following values:
 	//
 	//   - ok: whether or not this link is still valid.
-	IsValid       func() bool
+	IsValid       func() bool // optional
 	LinkActivated func()
-	LinkState     func() uint
+	LinkState     func() uint // optional
 }
 
 func defaultHyperlinkOverrides(v *Hyperlink) HyperlinkOverrides {
-	return HyperlinkOverrides{
-		EndIndex:       v.endIndex,
-		NAnchors:       v.nAnchors,
-		GetObject:      v.getObject,
-		StartIndex:     v.startIndex,
-		URI:            v.urI,
-		IsSelectedLink: v.isSelectedLink,
-		IsValid:        v.isValid,
-		LinkActivated:  v.linkActivated,
-		LinkState:      v.linkState,
+	var pclass *C.AtkHyperlinkClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeHyperlink)) != C.FALSE {
+			pclass = (*C.AtkHyperlinkClass)(parentClass)
+		}
 	}
+
+	overrides := HyperlinkOverrides{
+
+		LinkActivated: noop_Hyperlink_LinkActivated,
+	}
+	if pclass != nil {
+
+		if pclass.get_end_index != nil {
+			overrides.EndIndex = v.endIndex
+		}
+		if pclass.get_n_anchors != nil {
+			overrides.NAnchors = v.nAnchors
+		}
+		if pclass.get_object != nil {
+			overrides.GetObject = v.getObject
+		}
+		if pclass.get_start_index != nil {
+			overrides.StartIndex = v.startIndex
+		}
+		if pclass.get_uri != nil {
+			overrides.URI = v.urI
+		}
+		if pclass.is_selected_link != nil {
+			overrides.IsSelectedLink = v.isSelectedLink
+		}
+		if pclass.is_valid != nil {
+			overrides.IsValid = v.isValid
+		}
+		if pclass.link_activated != nil {
+			overrides.LinkActivated = v.linkActivated
+		}
+		if pclass.link_state != nil {
+			overrides.LinkState = v.linkState
+		}
+	}
+
+	return overrides
 }
+
+func noop_Hyperlink_LinkActivated() {}
 
 // Hyperlink: ATK object which encapsulates a link or set of links in a
 // hypertext document.
@@ -13407,11 +13444,34 @@ type MiscOverrides struct {
 }
 
 func defaultMiscOverrides(v *Misc) MiscOverrides {
-	return MiscOverrides{
-		ThreadsEnter: v.threadsEnter,
-		ThreadsLeave: v.threadsLeave,
+	var pclass *C.AtkMiscClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeMisc)) != C.FALSE {
+			pclass = (*C.AtkMiscClass)(parentClass)
+		}
 	}
+
+	overrides := MiscOverrides{
+
+		ThreadsEnter: noop_Misc_ThreadsEnter,
+		ThreadsLeave: noop_Misc_ThreadsLeave,
+	}
+	if pclass != nil {
+
+		if pclass.threads_enter != nil {
+			overrides.ThreadsEnter = v.threadsEnter
+		}
+		if pclass.threads_leave != nil {
+			overrides.ThreadsLeave = v.threadsLeave
+		}
+	}
+
+	return overrides
 }
+
+func noop_Misc_ThreadsEnter() {}
+
+func noop_Misc_ThreadsLeave() {}
 
 // Misc: set of ATK utility functions for thread locking
 //
@@ -13559,7 +13619,10 @@ type NoOpObjectOverrides struct {
 }
 
 func defaultNoOpObjectOverrides(v *NoOpObject) NoOpObjectOverrides {
-	return NoOpObjectOverrides{}
+
+	overrides := NoOpObjectOverrides{}
+
+	return overrides
 }
 
 // NoOpObject: atkObject which purports to implement all ATK interfaces.
@@ -13691,7 +13754,10 @@ type NoOpObjectFactoryOverrides struct {
 }
 
 func defaultNoOpObjectFactoryOverrides(v *NoOpObjectFactory) NoOpObjectFactoryOverrides {
-	return NoOpObjectFactoryOverrides{}
+
+	overrides := NoOpObjectFactoryOverrides{}
+
+	return overrides
 }
 
 // NoOpObjectFactory: atkObjectFactory which creates an AtkNoOpObject.
@@ -13773,14 +13839,14 @@ type AtkObjectOverrides struct {
 	//
 	//   - utf8: character string representing the accessible description of the
 	//     accessible.
-	Description func() string
+	Description func() string // optional
 	// IndexInParent gets the 0-based index of this accessible in its parent;
 	// returns -1 if the accessible does not have an accessible parent.
 	//
 	// The function returns the following values:
 	//
 	//   - gint: integer which is the index of the accessible in its parent.
-	IndexInParent func() int
+	IndexInParent func() int // optional
 	// Layer gets the layer of the accessible.
 	//
 	// Deprecated: Use atk_component_get_layer instead.
@@ -13788,7 +13854,7 @@ type AtkObjectOverrides struct {
 	// The function returns the following values:
 	//
 	//   - layer which is the layer of the accessible.
-	Layer func() Layer
+	Layer func() Layer // optional
 	// MDIZOrder gets the zorder of the accessible. The value G_MININT will be
 	// returned if the layer of the accessible is not ATK_LAYER_MDI.
 	//
@@ -13799,15 +13865,15 @@ type AtkObjectOverrides struct {
 	//   - gint which is the zorder of the accessible, i.e. the depth at which
 	//     the component is shown in relation to other components in the same
 	//     container.
-	MDIZOrder func() int
-	NChildren func() int
+	MDIZOrder func() int // optional
+	NChildren func() int // optional
 	// Name gets the accessible name of the accessible.
 	//
 	// The function returns the following values:
 	//
 	//   - utf8: character string representing the accessible name of the
 	//     object.
-	Name func() string
+	Name func() string // optional
 	// ObjectLocale gets a UTF-8 string indicating the POSIX-style LC_MESSAGES
 	// locale of accessible.
 	//
@@ -13815,7 +13881,7 @@ type AtkObjectOverrides struct {
 	//
 	//   - utf8: UTF-8 string indicating the POSIX-style LC_MESSAGES locale of
 	//     accessible.
-	ObjectLocale func() string
+	ObjectLocale func() string // optional
 	// Parent gets the accessible parent of the accessible. By default this is
 	// the one assigned with atk_object_set_parent(), but it is assumed that ATK
 	// implementors have ways to get the parent of the object without the need
@@ -13828,13 +13894,13 @@ type AtkObjectOverrides struct {
 	// The function returns the following values:
 	//
 	//   - object representing the accessible parent of the accessible.
-	Parent func() *AtkObject
+	Parent func() *AtkObject // optional
 	// Role gets the role of the accessible.
 	//
 	// The function returns the following values:
 	//
 	//   - role which is the role of the accessible.
-	Role func() Role
+	Role func() Role // optional
 	// Initialize: this function is called when implementing subclasses of
 	// Object. It does initialization required for the new object. It is
 	// intended that this function should called only in the ..._new() functions
@@ -13851,7 +13917,7 @@ type AtkObjectOverrides struct {
 	// The function returns the following values:
 	//
 	//   - relationSet representing the relation set of the object.
-	RefRelationSet func() *RelationSet
+	RefRelationSet func() *RelationSet // optional
 	// RefStateSet gets a reference to the state set of the accessible;
 	// the caller must unreference it when it is no longer needed.
 	//
@@ -13859,7 +13925,7 @@ type AtkObjectOverrides struct {
 	//
 	//   - stateSet: reference to an StateSet which is the state set of the
 	//     accessible.
-	RefStateSet func() *StateSet
+	RefStateSet func() *StateSet // optional
 	// RemovePropertyChangeHandler removes a property change handler.
 	//
 	// Deprecated: See atk_object_connect_property_change_handler().
@@ -13909,32 +13975,127 @@ type AtkObjectOverrides struct {
 }
 
 func defaultAtkObjectOverrides(v *AtkObject) AtkObjectOverrides {
-	return AtkObjectOverrides{
-		ActiveDescendantChanged:     v.activeDescendantChanged,
-		ChildrenChanged:             v.childrenChanged,
-		FocusEvent:                  v.focusEvent,
-		Description:                 v.description,
-		IndexInParent:               v.indexInParent,
-		Layer:                       v.layer,
-		MDIZOrder:                   v.mdizOrder,
-		NChildren:                   v.nChildren,
-		Name:                        v.name,
-		ObjectLocale:                v.objectLocale,
-		Parent:                      v.parent,
-		Role:                        v.role,
-		Initialize:                  v.initialize,
-		PropertyChange:              v.propertyChange,
-		RefRelationSet:              v.refRelationSet,
-		RefStateSet:                 v.refStateSet,
-		RemovePropertyChangeHandler: v.removePropertyChangeHandler,
-		SetDescription:              v.setDescription,
-		SetName:                     v.setName,
-		SetParent:                   v.setParent,
-		SetRole:                     v.setRole,
-		StateChange:                 v.stateChange,
-		VisibleDataChanged:          v.visibleDataChanged,
+	var pclass *C.AtkObjectClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeAtkObject)) != C.FALSE {
+			pclass = (*C.AtkObjectClass)(parentClass)
+		}
 	}
+
+	overrides := AtkObjectOverrides{
+
+		ActiveDescendantChanged:     noop_AtkObject_ActiveDescendantChanged,
+		ChildrenChanged:             noop_AtkObject_ChildrenChanged,
+		FocusEvent:                  noop_AtkObject_FocusEvent,
+		Initialize:                  noop_AtkObject_Initialize,
+		PropertyChange:              noop_AtkObject_PropertyChange,
+		RemovePropertyChangeHandler: noop_AtkObject_RemovePropertyChangeHandler,
+		SetDescription:              noop_AtkObject_SetDescription,
+		SetName:                     noop_AtkObject_SetName,
+		SetParent:                   noop_AtkObject_SetParent,
+		SetRole:                     noop_AtkObject_SetRole,
+		StateChange:                 noop_AtkObject_StateChange,
+		VisibleDataChanged:          noop_AtkObject_VisibleDataChanged,
+	}
+	if pclass != nil {
+
+		if pclass.active_descendant_changed != nil {
+			overrides.ActiveDescendantChanged = v.activeDescendantChanged
+		}
+		if pclass.children_changed != nil {
+			overrides.ChildrenChanged = v.childrenChanged
+		}
+		if pclass.focus_event != nil {
+			overrides.FocusEvent = v.focusEvent
+		}
+		if pclass.get_description != nil {
+			overrides.Description = v.description
+		}
+		if pclass.get_index_in_parent != nil {
+			overrides.IndexInParent = v.indexInParent
+		}
+		if pclass.get_layer != nil {
+			overrides.Layer = v.layer
+		}
+		if pclass.get_mdi_zorder != nil {
+			overrides.MDIZOrder = v.mdizOrder
+		}
+		if pclass.get_n_children != nil {
+			overrides.NChildren = v.nChildren
+		}
+		if pclass.get_name != nil {
+			overrides.Name = v.name
+		}
+		if pclass.get_object_locale != nil {
+			overrides.ObjectLocale = v.objectLocale
+		}
+		if pclass.get_parent != nil {
+			overrides.Parent = v.parent
+		}
+		if pclass.get_role != nil {
+			overrides.Role = v.role
+		}
+		if pclass.initialize != nil {
+			overrides.Initialize = v.initialize
+		}
+		if pclass.property_change != nil {
+			overrides.PropertyChange = v.propertyChange
+		}
+		if pclass.ref_relation_set != nil {
+			overrides.RefRelationSet = v.refRelationSet
+		}
+		if pclass.ref_state_set != nil {
+			overrides.RefStateSet = v.refStateSet
+		}
+		if pclass.remove_property_change_handler != nil {
+			overrides.RemovePropertyChangeHandler = v.removePropertyChangeHandler
+		}
+		if pclass.set_description != nil {
+			overrides.SetDescription = v.setDescription
+		}
+		if pclass.set_name != nil {
+			overrides.SetName = v.setName
+		}
+		if pclass.set_parent != nil {
+			overrides.SetParent = v.setParent
+		}
+		if pclass.set_role != nil {
+			overrides.SetRole = v.setRole
+		}
+		if pclass.state_change != nil {
+			overrides.StateChange = v.stateChange
+		}
+		if pclass.visible_data_changed != nil {
+			overrides.VisibleDataChanged = v.visibleDataChanged
+		}
+	}
+
+	return overrides
 }
+
+func noop_AtkObject_ActiveDescendantChanged(child *unsafe.Pointer) {}
+
+func noop_AtkObject_ChildrenChanged(changeIndex uint, changedChild unsafe.Pointer) {}
+
+func noop_AtkObject_FocusEvent(focusIn bool) {}
+
+func noop_AtkObject_Initialize(data unsafe.Pointer) {}
+
+func noop_AtkObject_PropertyChange(values *PropertyValues) {}
+
+func noop_AtkObject_RemovePropertyChangeHandler(handlerId uint) {}
+
+func noop_AtkObject_SetDescription(description string) {}
+
+func noop_AtkObject_SetName(name string) {}
+
+func noop_AtkObject_SetParent(parent *AtkObject) {}
+
+func noop_AtkObject_SetRole(role Role) {}
+
+func noop_AtkObject_StateChange(name string, stateSet bool) {}
+
+func noop_AtkObject_VisibleDataChanged() {}
 
 // AtkObject: base object class for the Accessibility Toolkit API.
 //
@@ -15291,10 +15452,28 @@ type ObjectFactoryOverrides struct {
 }
 
 func defaultObjectFactoryOverrides(v *ObjectFactory) ObjectFactoryOverrides {
-	return ObjectFactoryOverrides{
-		Invalidate: v.invalidate,
+	var pclass *C.AtkObjectFactoryClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeObjectFactory)) != C.FALSE {
+			pclass = (*C.AtkObjectFactoryClass)(parentClass)
+		}
 	}
+
+	overrides := ObjectFactoryOverrides{
+
+		Invalidate: noop_ObjectFactory_Invalidate,
+	}
+	if pclass != nil {
+
+		if pclass.invalidate != nil {
+			overrides.Invalidate = v.invalidate
+		}
+	}
+
+	return overrides
 }
+
+func noop_ObjectFactory_Invalidate() {}
 
 // ObjectFactory: base object class for a factory used to create accessible
 // objects for objects of a specific GType.
@@ -15427,13 +15606,26 @@ func (factory *ObjectFactory) invalidate() {
 
 // PlugOverrides contains methods that are overridable.
 type PlugOverrides struct {
-	ObjectID func() string
+	ObjectID func() string // optional
 }
 
 func defaultPlugOverrides(v *Plug) PlugOverrides {
-	return PlugOverrides{
-		ObjectID: v.objectID,
+	var pclass *C.AtkPlugClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypePlug)) != C.FALSE {
+			pclass = (*C.AtkPlugClass)(parentClass)
+		}
 	}
+
+	overrides := PlugOverrides{}
+	if pclass != nil {
+
+		if pclass.get_object_id != nil {
+			overrides.ObjectID = v.objectID
+		}
+	}
+
+	return overrides
 }
 
 // Plug: toplevel for embedding into other processes
@@ -15584,7 +15776,10 @@ type RegistryOverrides struct {
 }
 
 func defaultRegistryOverrides(v *Registry) RegistryOverrides {
-	return RegistryOverrides{}
+
+	overrides := RegistryOverrides{}
+
+	return overrides
 }
 
 // Registry: object used to store the GType of the factories used to create an
@@ -15717,7 +15912,10 @@ type RelationOverrides struct {
 }
 
 func defaultRelationOverrides(v *Relation) RelationOverrides {
-	return RelationOverrides{}
+
+	overrides := RelationOverrides{}
+
+	return overrides
 }
 
 // Relation: object used to describe a relation between a object and one or more
@@ -15875,7 +16073,10 @@ type RelationSetOverrides struct {
 }
 
 func defaultRelationSetOverrides(v *RelationSet) RelationSetOverrides {
-	return RelationSetOverrides{}
+
+	overrides := RelationSetOverrides{}
+
+	return overrides
 }
 
 // RelationSet: set of AtkRelations, normally the set of AtkRelations which an
@@ -16165,10 +16366,28 @@ type SocketOverrides struct {
 }
 
 func defaultSocketOverrides(v *Socket) SocketOverrides {
-	return SocketOverrides{
-		Embed: v.embed,
+	var pclass *C.AtkSocketClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeSocket)) != C.FALSE {
+			pclass = (*C.AtkSocketClass)(parentClass)
+		}
 	}
+
+	overrides := SocketOverrides{
+
+		Embed: noop_Socket_Embed,
+	}
+	if pclass != nil {
+
+		if pclass.embed != nil {
+			overrides.Embed = v.embed
+		}
+	}
+
+	return overrides
 }
+
+func noop_Socket_Embed(plugId string) {}
 
 // Socket: container for AtkPlug objects from other processes
 //
@@ -16342,7 +16561,10 @@ type StateSetOverrides struct {
 }
 
 func defaultStateSetOverrides(v *StateSet) StateSetOverrides {
-	return StateSetOverrides{}
+
+	overrides := StateSetOverrides{}
+
+	return overrides
 }
 
 // StateSet contains the states of an object.
@@ -16694,7 +16916,10 @@ type UtilOverrides struct {
 }
 
 func defaultUtilOverrides(v *Util) UtilOverrides {
-	return UtilOverrides{}
+
+	overrides := UtilOverrides{}
+
+	return overrides
 }
 
 // Util: set of ATK utility functions for event and toolkit support.

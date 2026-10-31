@@ -7,6 +7,7 @@ package glib
 // extern void _gotk4_gobject_init_class(gpointer, gpointer);
 // extern void _gotk4_gobject_init_instance(GTypeInstance*, gpointer);
 // extern void _gotk4_gobject_dispose(GObject*);
+// extern void _gotk4_gobject_constructed(GObject*);
 // extern void _gotk4_gobject_get_property(GObject*, guint, GValue*, GParamSpec*);
 // extern void _gotk4_gobject_set_property(GObject*, guint, GValue*, GParamSpec*);
 import "C"
@@ -39,8 +40,9 @@ func init() {
 			// caller choose anything. Instead, we will always do our thing in
 			// the C callback.
 			return ObjectOverrides{
-				Init:    func() {},
-				Dispose: func() {},
+				Init:        func() {},
+				Constructed: func() {},
+				Dispose:     func() {},
 			}
 		},
 	)
@@ -52,6 +54,8 @@ type ObjectOverrides struct {
 	// Init is called during init_instance, which is actually when a
 	// GTypeInstance is instantiated, not GObject.
 	Init func()
+	// Constructed is called after all construct properties have been set.
+	Constructed func()
 	// Dispose is called during GObject's dispose.
 	Dispose func()
 }
@@ -62,6 +66,7 @@ func initObjectClass(gclass unsafe.Pointer, overrides ObjectOverrides, initFunc 
 	gobjectClass.dispose = (*[0]byte)(C._gotk4_gobject_dispose)
 	gobjectClass.get_property = (*[0]byte)(C._gotk4_gobject_get_property)
 	gobjectClass.set_property = (*[0]byte)(C._gotk4_gobject_set_property)
+	gobjectClass.constructed = (*[0]byte)(C._gotk4_gobject_constructed)
 }
 
 // RegisteredSubclass is a type that described a registered Go subclass type.
@@ -241,6 +246,10 @@ func (r *RegisteredSubclass[T]) NewWithProperties(properties map[string]any) T {
 		C.guint(len(properties)),
 		names_, values_,
 	)
+
+	if C.g_type_is_a(C.GType(r.gType), C.g_initially_unowned_get_type()) == C.FALSE {
+		C.g_object_unref(C.gpointer(cval))
+	}
 
 	// So we created an instance. We have the instance in private. We can just
 	// dig it up and avoid the whole type-casting mess.
@@ -580,7 +589,7 @@ func Overrides[OverridesT any](obj Objector) OverridesT {
 	}
 
 	obase := BaseObject(obj)
-	return OverridesFromObj[OverridesT](obase)
+	return OverridesFromGType[OverridesT](obase)
 }
 
 // subclassOverrides gets the OverridesT instance that the subclass added using
@@ -604,24 +613,31 @@ func subclassOverrides[OverridesT any](subclass *registeredSubclass, obj Objecto
 	return overrides
 }
 
-// OverridesFromObj is like Overrides, except it specifically takes the base
-// object. The GType is asked for instead of using the underlying Go type.
-func OverridesFromObj[OverridesT any](obj *Object) OverridesT {
-	gtype := obj.TypeFromInstance()
+// OverridesFromGType queries the GType of the object instance from GLib to
+// look up the overrides, rather than inspecting the Go reflect type of obj.
+// This is used by Cgo trampolines where obj is wrapped as a generic base *Object
+// or interface, or when the dynamic subclass type is only known to GLib.
+func OverridesFromGType[OverridesT any](obj Objector) OverridesT {
+	base := obj.baseObject()
+	gtype := base.TypeFromInstance()
 
 	if subclass, ok := knownGTypes[gtype]; ok {
-		return subclassOverrides[OverridesT](subclass, obj)
+		private := privateFromInstance(unsafe.Pointer(base.Native()))
+		if inst := private.instance(); inst != nil {
+			return subclassOverrides[OverridesT](subclass, inst.(Objector))
+		}
+		return subclassOverrides[OverridesT](subclass, base)
 	}
 
 	if typeInfo, ok := classGTypes[gtype]; ok {
-		overrides, ok := typeInfo.Overrides(obj).(OverridesT)
+		overrides, ok := typeInfo.Overrides(base).(OverridesT)
 		if ok {
 			return overrides
 		}
 
 		var z OverridesT
 		log.Panicf(
-			"gotk4: OverridesFromObj: object type %s's overrides type is %s, cannot assert to %T",
+			"gotk4: OverridesFromGType: object type %s's overrides type is %s, cannot assert to %T",
 			gtype, typeInfo.GoOverridesType, z)
 	}
 
@@ -629,39 +645,45 @@ func OverridesFromObj[OverridesT any](obj *Object) OverridesT {
 	return z
 }
 
+// OverridesFromObj is an alias for OverridesFromGType.
+func OverridesFromObj[OverridesT any](obj Objector) OverridesT {
+	return OverridesFromGType[OverridesT](obj)
+}
+
 // ParentOverrides is similar to Overrides, except the object's parent type is
 // used instead of the object's type.
 func ParentOverrides[OverridesT any](obj Objector) OverridesT {
-	rtype := rtypeElemV(obj)
-
-	subclass, ok := knownTypes[rtype]
-	if !ok {
-		log.Panicf(
-			"gotk4: cannot get ParentOverrides of non-subclass type %s (unsupported)",
-			rtype)
-	}
-
-	typeInfo, ok := classInstanceTypes[subclass.parentType.GoInstanceType]
-	if ok {
-		overrides, ok := typeInfo.Overrides(obj).(OverridesT)
-		if ok {
-			return overrides
-		}
-		var z OverridesT
-		log.Panicf(
-			"gotk4: object type %s's overrides type is %s, cannot assert to %T",
-			rtype, typeInfo.GoOverridesType, z)
-	}
-
 	var z OverridesT
+
+	typeInfo, ok := classOverridesTypes[rtypeElem[OverridesT]()]
+	if !ok {
+		return z
+	}
+
+	base := BaseObject(obj)
+	parentObj := typeInfo.WrapClass(base)
+	overrides, ok := typeInfo.Overrides(parentObj).(OverridesT)
+	if ok {
+		return overrides
+	}
+
 	return z
 }
 
 // PeekParentClass returns the C.TClass type using peek_parent, which is free of
 // any subclassing changes.
 func PeekParentClass(obj Objector) unsafe.Pointer {
+	if obj == nil {
+		return nil
+	}
 	base := BaseObject(obj)
+	if base == nil || base.native() == nil {
+		return nil
+	}
 	parentGType := base.TypeFromInstance().Parent()
+	if parentGType == 0 {
+		return nil
+	}
 	return unsafe.Pointer(C.g_type_class_peek(C.GType(parentGType)))
 }
 
@@ -706,7 +728,14 @@ func RegisterClassInfo[InstanceT Objector, ClassT, OverridesT any](
 		GoOverridesType: rtypeElem[OverridesT](),
 		InitClass: func(gclass unsafe.Pointer, overridesV, initFuncV any) {
 			overrides, _ := overridesV.(OverridesT)
-			initFunc, _ := initFuncV.(func(ClassT))
+			var initFunc func(ClassT)
+			if initFuncA, ok := initFuncV.(func(any)); ok && initFuncA != nil {
+				initFunc = func(class ClassT) {
+					initFuncA(class)
+				}
+			} else if initFuncT, ok := initFuncV.(func(ClassT)); ok && initFuncT != nil {
+				initFunc = initFuncT
+			}
 			initClassFunc(gclass, overrides, initFunc)
 		},
 		WrapClass: func(obj *Object) Objector {
@@ -753,6 +782,9 @@ func (p *privateGoInstance) subclass() *registeredSubclass {
 }
 
 func (p *privateGoInstance) instance() any {
+	if p.instanceID == nil {
+		return nil
+	}
 	return gbox.Get(uintptr(p.instanceID))
 }
 
@@ -783,6 +815,11 @@ func _gotk4_gobject_init_class(gclass, data C.gpointer) {
 	// deprecation notices because GLib is a fucking clown.
 	C.g_type_class_add_private(gclass, C.gsize(unsafe.Sizeof(privateGoInstance{})))
 
+	// Always initialize GObjectClass (dispose, get_property, set_property, constructed)
+	// for every subclass so properties and lifecycle hooks work even if the user didn't
+	// explicitly specify WithOverrides[glib.ObjectOverrides].
+	initObjectClass(unsafe.Pointer(gclass), ObjectOverrides{}, nil)
+
 	for parentType, topt := range subclass.opts.typeOpts {
 		if parentType == nil {
 			parentType = subclass.parentType
@@ -790,7 +827,8 @@ func _gotk4_gobject_init_class(gclass, data C.gpointer) {
 
 		var overrides any
 		if topt.override != nil {
-			overrides = topt.override(nil)
+			val := reflect.New(subclass.goType).Interface().(Objector)
+			overrides = topt.override(val)
 		}
 
 		parentType.InitClass(unsafe.Pointer(gclass), overrides, topt.classInit)
@@ -857,16 +895,34 @@ func _gotk4_gobject_init_instance(obj *C.GTypeInstance, gclass C.gpointer) {
 //export _gotk4_gobject_dispose
 func _gotk4_gobject_dispose(obj *C.GObject) {
 	private := privateFromInstance(unsafe.Pointer(obj))
-	instance := private.instance().(Objector)
-
-	// Call its disposal function.
-	if overrides := Overrides[ObjectOverrides](instance); overrides.Dispose != nil {
-		overrides.Dispose()
+	if inst := private.instance(); inst != nil {
+		if instance, ok := inst.(Objector); ok {
+			if overrides := Overrides[ObjectOverrides](instance); overrides.Dispose != nil {
+				overrides.Dispose()
+			}
+		}
 	}
 
-	// Unbind our instance from the global store.
-	// TODO: should we do this in Finalize or Dispose?
-	gbox.Delete(uintptr(private.instanceID))
+	C._gotk4_gobject_chainup_dispose(obj)
+
+	if private.instanceID != nil {
+		gbox.Delete(uintptr(private.instanceID))
+		private.instanceID = nil
+	}
+}
+
+//export _gotk4_gobject_constructed
+func _gotk4_gobject_constructed(obj *C.GObject) {
+	C._gotk4_gobject_chainup_constructed(obj)
+
+	private := privateFromInstance(unsafe.Pointer(obj))
+	if inst := private.instance(); inst != nil {
+		if instance, ok := inst.(Objector); ok {
+			if overrides := Overrides[ObjectOverrides](instance); overrides.Constructed != nil {
+				overrides.Constructed()
+			}
+		}
+	}
 }
 
 func getAndValidateProperty(obj *C.GObject, spec *C.GParamSpec) propertyInstance {

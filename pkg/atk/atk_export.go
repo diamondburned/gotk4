@@ -633,7 +633,7 @@ func _gotk4_atk1_Window_ConnectRestore(arg0 C.gpointer, arg1 C.guintptr) {
 //export _gotk4_atk1_HyperlinkClass_get_end_index
 func _gotk4_atk1_HyperlinkClass_get_end_index(arg0 *C.AtkHyperlink) (cret C.gint) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[HyperlinkOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[HyperlinkOverrides](instance0)
 	if overrides.EndIndex == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected HyperlinkOverrides.EndIndex, got none")
 	}
@@ -650,7 +650,7 @@ func _gotk4_atk1_HyperlinkClass_get_end_index(arg0 *C.AtkHyperlink) (cret C.gint
 //export _gotk4_atk1_HyperlinkClass_get_n_anchors
 func _gotk4_atk1_HyperlinkClass_get_n_anchors(arg0 *C.AtkHyperlink) (cret C.gint) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[HyperlinkOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[HyperlinkOverrides](instance0)
 	if overrides.NAnchors == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected HyperlinkOverrides.NAnchors, got none")
 	}
@@ -667,7 +667,7 @@ func _gotk4_atk1_HyperlinkClass_get_n_anchors(arg0 *C.AtkHyperlink) (cret C.gint
 //export _gotk4_atk1_HyperlinkClass_get_object
 func _gotk4_atk1_HyperlinkClass_get_object(arg0 *C.AtkHyperlink, arg1 C.gint) (cret *C.AtkObject) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[HyperlinkOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[HyperlinkOverrides](instance0)
 	if overrides.GetObject == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected HyperlinkOverrides.GetObject, got none")
 	}
@@ -688,7 +688,7 @@ func _gotk4_atk1_HyperlinkClass_get_object(arg0 *C.AtkHyperlink, arg1 C.gint) (c
 //export _gotk4_atk1_HyperlinkClass_get_start_index
 func _gotk4_atk1_HyperlinkClass_get_start_index(arg0 *C.AtkHyperlink) (cret C.gint) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[HyperlinkOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[HyperlinkOverrides](instance0)
 	if overrides.StartIndex == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected HyperlinkOverrides.StartIndex, got none")
 	}
@@ -705,7 +705,7 @@ func _gotk4_atk1_HyperlinkClass_get_start_index(arg0 *C.AtkHyperlink) (cret C.gi
 //export _gotk4_atk1_HyperlinkClass_get_uri
 func _gotk4_atk1_HyperlinkClass_get_uri(arg0 *C.AtkHyperlink, arg1 C.gint) (cret *C.gchar) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[HyperlinkOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[HyperlinkOverrides](instance0)
 	if overrides.URI == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected HyperlinkOverrides.URI, got none")
 	}
@@ -726,7 +726,7 @@ func _gotk4_atk1_HyperlinkClass_get_uri(arg0 *C.AtkHyperlink, arg1 C.gint) (cret
 //export _gotk4_atk1_HyperlinkClass_is_selected_link
 func _gotk4_atk1_HyperlinkClass_is_selected_link(arg0 *C.AtkHyperlink) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[HyperlinkOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[HyperlinkOverrides](instance0)
 	if overrides.IsSelectedLink == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected HyperlinkOverrides.IsSelectedLink, got none")
 	}
@@ -745,7 +745,7 @@ func _gotk4_atk1_HyperlinkClass_is_selected_link(arg0 *C.AtkHyperlink) (cret C.g
 //export _gotk4_atk1_HyperlinkClass_is_valid
 func _gotk4_atk1_HyperlinkClass_is_valid(arg0 *C.AtkHyperlink) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[HyperlinkOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[HyperlinkOverrides](instance0)
 	if overrides.IsValid == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected HyperlinkOverrides.IsValid, got none")
 	}
@@ -764,7 +764,7 @@ func _gotk4_atk1_HyperlinkClass_is_valid(arg0 *C.AtkHyperlink) (cret C.gboolean)
 //export _gotk4_atk1_HyperlinkClass_link_activated
 func _gotk4_atk1_HyperlinkClass_link_activated(arg0 *C.AtkHyperlink) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[HyperlinkOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[HyperlinkOverrides](instance0)
 	if overrides.LinkActivated == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected HyperlinkOverrides.LinkActivated, got none")
 	}
@@ -775,7 +775,7 @@ func _gotk4_atk1_HyperlinkClass_link_activated(arg0 *C.AtkHyperlink) {
 //export _gotk4_atk1_HyperlinkClass_link_state
 func _gotk4_atk1_HyperlinkClass_link_state(arg0 *C.AtkHyperlink) (cret C.guint) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[HyperlinkOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[HyperlinkOverrides](instance0)
 	if overrides.LinkState == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected HyperlinkOverrides.LinkState, got none")
 	}
@@ -808,7 +808,7 @@ func _gotk4_atk1_Hyperlink_ConnectLinkActivated(arg0 C.gpointer, arg1 C.guintptr
 //export _gotk4_atk1_MiscClass_threads_enter
 func _gotk4_atk1_MiscClass_threads_enter(arg0 *C.AtkMisc) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[MiscOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[MiscOverrides](instance0)
 	if overrides.ThreadsEnter == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected MiscOverrides.ThreadsEnter, got none")
 	}
@@ -819,7 +819,7 @@ func _gotk4_atk1_MiscClass_threads_enter(arg0 *C.AtkMisc) {
 //export _gotk4_atk1_MiscClass_threads_leave
 func _gotk4_atk1_MiscClass_threads_leave(arg0 *C.AtkMisc) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[MiscOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[MiscOverrides](instance0)
 	if overrides.ThreadsLeave == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected MiscOverrides.ThreadsLeave, got none")
 	}
@@ -830,7 +830,7 @@ func _gotk4_atk1_MiscClass_threads_leave(arg0 *C.AtkMisc) {
 //export _gotk4_atk1_ObjectClass_active_descendant_changed
 func _gotk4_atk1_ObjectClass_active_descendant_changed(arg0 *C.AtkObject, arg1 *C.gpointer) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[AtkObjectOverrides](instance0)
 	if overrides.ActiveDescendantChanged == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.ActiveDescendantChanged, got none")
 	}
@@ -847,7 +847,7 @@ func _gotk4_atk1_ObjectClass_active_descendant_changed(arg0 *C.AtkObject, arg1 *
 //export _gotk4_atk1_ObjectClass_children_changed
 func _gotk4_atk1_ObjectClass_children_changed(arg0 *C.AtkObject, arg1 C.guint, arg2 C.gpointer) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[AtkObjectOverrides](instance0)
 	if overrides.ChildrenChanged == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.ChildrenChanged, got none")
 	}
@@ -864,7 +864,7 @@ func _gotk4_atk1_ObjectClass_children_changed(arg0 *C.AtkObject, arg1 C.guint, a
 //export _gotk4_atk1_ObjectClass_focus_event
 func _gotk4_atk1_ObjectClass_focus_event(arg0 *C.AtkObject, arg1 C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[AtkObjectOverrides](instance0)
 	if overrides.FocusEvent == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.FocusEvent, got none")
 	}
@@ -881,7 +881,7 @@ func _gotk4_atk1_ObjectClass_focus_event(arg0 *C.AtkObject, arg1 C.gboolean) {
 //export _gotk4_atk1_ObjectClass_get_description
 func _gotk4_atk1_ObjectClass_get_description(arg0 *C.AtkObject) (cret *C.gchar) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[AtkObjectOverrides](instance0)
 	if overrides.Description == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.Description, got none")
 	}
@@ -899,7 +899,7 @@ func _gotk4_atk1_ObjectClass_get_description(arg0 *C.AtkObject) (cret *C.gchar) 
 //export _gotk4_atk1_ObjectClass_get_index_in_parent
 func _gotk4_atk1_ObjectClass_get_index_in_parent(arg0 *C.AtkObject) (cret C.gint) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[AtkObjectOverrides](instance0)
 	if overrides.IndexInParent == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.IndexInParent, got none")
 	}
@@ -916,7 +916,7 @@ func _gotk4_atk1_ObjectClass_get_index_in_parent(arg0 *C.AtkObject) (cret C.gint
 //export _gotk4_atk1_ObjectClass_get_layer
 func _gotk4_atk1_ObjectClass_get_layer(arg0 *C.AtkObject) (cret C.AtkLayer) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[AtkObjectOverrides](instance0)
 	if overrides.Layer == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.Layer, got none")
 	}
@@ -933,7 +933,7 @@ func _gotk4_atk1_ObjectClass_get_layer(arg0 *C.AtkObject) (cret C.AtkLayer) {
 //export _gotk4_atk1_ObjectClass_get_mdi_zorder
 func _gotk4_atk1_ObjectClass_get_mdi_zorder(arg0 *C.AtkObject) (cret C.gint) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[AtkObjectOverrides](instance0)
 	if overrides.MDIZOrder == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.MDIZOrder, got none")
 	}
@@ -950,7 +950,7 @@ func _gotk4_atk1_ObjectClass_get_mdi_zorder(arg0 *C.AtkObject) (cret C.gint) {
 //export _gotk4_atk1_ObjectClass_get_n_children
 func _gotk4_atk1_ObjectClass_get_n_children(arg0 *C.AtkObject) (cret C.gint) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[AtkObjectOverrides](instance0)
 	if overrides.NChildren == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.NChildren, got none")
 	}
@@ -967,7 +967,7 @@ func _gotk4_atk1_ObjectClass_get_n_children(arg0 *C.AtkObject) (cret C.gint) {
 //export _gotk4_atk1_ObjectClass_get_name
 func _gotk4_atk1_ObjectClass_get_name(arg0 *C.AtkObject) (cret *C.gchar) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[AtkObjectOverrides](instance0)
 	if overrides.Name == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.Name, got none")
 	}
@@ -985,7 +985,7 @@ func _gotk4_atk1_ObjectClass_get_name(arg0 *C.AtkObject) (cret *C.gchar) {
 //export _gotk4_atk1_ObjectClass_get_object_locale
 func _gotk4_atk1_ObjectClass_get_object_locale(arg0 *C.AtkObject) (cret *C.gchar) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[AtkObjectOverrides](instance0)
 	if overrides.ObjectLocale == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.ObjectLocale, got none")
 	}
@@ -1003,7 +1003,7 @@ func _gotk4_atk1_ObjectClass_get_object_locale(arg0 *C.AtkObject) (cret *C.gchar
 //export _gotk4_atk1_ObjectClass_get_parent
 func _gotk4_atk1_ObjectClass_get_parent(arg0 *C.AtkObject) (cret *C.AtkObject) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[AtkObjectOverrides](instance0)
 	if overrides.Parent == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.Parent, got none")
 	}
@@ -1020,7 +1020,7 @@ func _gotk4_atk1_ObjectClass_get_parent(arg0 *C.AtkObject) (cret *C.AtkObject) {
 //export _gotk4_atk1_ObjectClass_get_role
 func _gotk4_atk1_ObjectClass_get_role(arg0 *C.AtkObject) (cret C.AtkRole) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[AtkObjectOverrides](instance0)
 	if overrides.Role == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.Role, got none")
 	}
@@ -1037,7 +1037,7 @@ func _gotk4_atk1_ObjectClass_get_role(arg0 *C.AtkObject) (cret C.AtkRole) {
 //export _gotk4_atk1_ObjectClass_initialize
 func _gotk4_atk1_ObjectClass_initialize(arg0 *C.AtkObject, arg1 C.gpointer) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[AtkObjectOverrides](instance0)
 	if overrides.Initialize == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.Initialize, got none")
 	}
@@ -1052,7 +1052,7 @@ func _gotk4_atk1_ObjectClass_initialize(arg0 *C.AtkObject, arg1 C.gpointer) {
 //export _gotk4_atk1_ObjectClass_property_change
 func _gotk4_atk1_ObjectClass_property_change(arg0 *C.AtkObject, arg1 *C.AtkPropertyValues) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[AtkObjectOverrides](instance0)
 	if overrides.PropertyChange == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.PropertyChange, got none")
 	}
@@ -1067,7 +1067,7 @@ func _gotk4_atk1_ObjectClass_property_change(arg0 *C.AtkObject, arg1 *C.AtkPrope
 //export _gotk4_atk1_ObjectClass_ref_relation_set
 func _gotk4_atk1_ObjectClass_ref_relation_set(arg0 *C.AtkObject) (cret *C.AtkRelationSet) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[AtkObjectOverrides](instance0)
 	if overrides.RefRelationSet == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.RefRelationSet, got none")
 	}
@@ -1085,7 +1085,7 @@ func _gotk4_atk1_ObjectClass_ref_relation_set(arg0 *C.AtkObject) (cret *C.AtkRel
 //export _gotk4_atk1_ObjectClass_ref_state_set
 func _gotk4_atk1_ObjectClass_ref_state_set(arg0 *C.AtkObject) (cret *C.AtkStateSet) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[AtkObjectOverrides](instance0)
 	if overrides.RefStateSet == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.RefStateSet, got none")
 	}
@@ -1103,7 +1103,7 @@ func _gotk4_atk1_ObjectClass_ref_state_set(arg0 *C.AtkObject) (cret *C.AtkStateS
 //export _gotk4_atk1_ObjectClass_remove_property_change_handler
 func _gotk4_atk1_ObjectClass_remove_property_change_handler(arg0 *C.AtkObject, arg1 C.guint) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[AtkObjectOverrides](instance0)
 	if overrides.RemovePropertyChangeHandler == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.RemovePropertyChangeHandler, got none")
 	}
@@ -1118,7 +1118,7 @@ func _gotk4_atk1_ObjectClass_remove_property_change_handler(arg0 *C.AtkObject, a
 //export _gotk4_atk1_ObjectClass_set_description
 func _gotk4_atk1_ObjectClass_set_description(arg0 *C.AtkObject, arg1 *C.gchar) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[AtkObjectOverrides](instance0)
 	if overrides.SetDescription == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.SetDescription, got none")
 	}
@@ -1133,7 +1133,7 @@ func _gotk4_atk1_ObjectClass_set_description(arg0 *C.AtkObject, arg1 *C.gchar) {
 //export _gotk4_atk1_ObjectClass_set_name
 func _gotk4_atk1_ObjectClass_set_name(arg0 *C.AtkObject, arg1 *C.gchar) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[AtkObjectOverrides](instance0)
 	if overrides.SetName == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.SetName, got none")
 	}
@@ -1148,7 +1148,7 @@ func _gotk4_atk1_ObjectClass_set_name(arg0 *C.AtkObject, arg1 *C.gchar) {
 //export _gotk4_atk1_ObjectClass_set_parent
 func _gotk4_atk1_ObjectClass_set_parent(arg0 *C.AtkObject, arg1 *C.AtkObject) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[AtkObjectOverrides](instance0)
 	if overrides.SetParent == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.SetParent, got none")
 	}
@@ -1163,7 +1163,7 @@ func _gotk4_atk1_ObjectClass_set_parent(arg0 *C.AtkObject, arg1 *C.AtkObject) {
 //export _gotk4_atk1_ObjectClass_set_role
 func _gotk4_atk1_ObjectClass_set_role(arg0 *C.AtkObject, arg1 C.AtkRole) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[AtkObjectOverrides](instance0)
 	if overrides.SetRole == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.SetRole, got none")
 	}
@@ -1178,7 +1178,7 @@ func _gotk4_atk1_ObjectClass_set_role(arg0 *C.AtkObject, arg1 C.AtkRole) {
 //export _gotk4_atk1_ObjectClass_state_change
 func _gotk4_atk1_ObjectClass_state_change(arg0 *C.AtkObject, arg1 *C.gchar, arg2 C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[AtkObjectOverrides](instance0)
 	if overrides.StateChange == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.StateChange, got none")
 	}
@@ -1197,7 +1197,7 @@ func _gotk4_atk1_ObjectClass_state_change(arg0 *C.AtkObject, arg1 *C.gchar, arg2
 //export _gotk4_atk1_ObjectClass_visible_data_changed
 func _gotk4_atk1_ObjectClass_visible_data_changed(arg0 *C.AtkObject) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[AtkObjectOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[AtkObjectOverrides](instance0)
 	if overrides.VisibleDataChanged == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AtkObjectOverrides.VisibleDataChanged, got none")
 	}
@@ -1396,7 +1396,7 @@ func _gotk4_atk1_Object_ConnectVisibleDataChanged(arg0 C.gpointer, arg1 C.guintp
 //export _gotk4_atk1_ObjectFactoryClass_invalidate
 func _gotk4_atk1_ObjectFactoryClass_invalidate(arg0 *C.AtkObjectFactory) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ObjectFactoryOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ObjectFactoryOverrides](instance0)
 	if overrides.Invalidate == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ObjectFactoryOverrides.Invalidate, got none")
 	}
@@ -1407,7 +1407,7 @@ func _gotk4_atk1_ObjectFactoryClass_invalidate(arg0 *C.AtkObjectFactory) {
 //export _gotk4_atk1_PlugClass_get_object_id
 func _gotk4_atk1_PlugClass_get_object_id(arg0 *C.AtkPlug) (cret *C.gchar) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[PlugOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[PlugOverrides](instance0)
 	if overrides.ObjectID == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected PlugOverrides.ObjectID, got none")
 	}
@@ -1424,7 +1424,7 @@ func _gotk4_atk1_PlugClass_get_object_id(arg0 *C.AtkPlug) (cret *C.gchar) {
 //export _gotk4_atk1_SocketClass_embed
 func _gotk4_atk1_SocketClass_embed(arg0 *C.AtkSocket, arg1 *C.gchar) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[SocketOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[SocketOverrides](instance0)
 	if overrides.Embed == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected SocketOverrides.Embed, got none")
 	}

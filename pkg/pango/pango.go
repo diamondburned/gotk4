@@ -6118,8 +6118,8 @@ type FontOverrides struct {
 	// The function returns the following values:
 	//
 	//   - fontDescription: newly-allocated PangoFontDescription object.
-	Describe         func() *FontDescription
-	DescribeAbsolute func() *FontDescription
+	Describe         func() *FontDescription // optional
+	DescribeAbsolute func() *FontDescription // optional
 	// Coverage computes the coverage map for a given font and language tag.
 	//
 	// The function takes the following parameters:
@@ -6129,7 +6129,7 @@ type FontOverrides struct {
 	// The function returns the following values:
 	//
 	//   - coverage: newly-allocated PangoCoverage object.
-	Coverage func(language *Language) *Coverage
+	Coverage func(language *Language) *Coverage // optional
 	// FontMap gets the font map for which the font was created.
 	//
 	// Note that the font maintains a *weak* reference to the font map, so if
@@ -6144,7 +6144,7 @@ type FontOverrides struct {
 	// The function returns the following values:
 	//
 	//   - fontMap (optional): PangoFontMap for the font.
-	FontMap func() FontMapper
+	FontMap func() FontMapper // optional
 	// GlyphExtents gets the logical and ink extents of a glyph within a font.
 	//
 	// The coordinate system for each rectangle has its origin at the
@@ -6167,7 +6167,7 @@ type FontOverrides struct {
 	//     as drawn.
 	//   - logicalRect (optional): rectangle used to store the logical extents
 	//     of the glyph.
-	GlyphExtents func(glyph Glyph) (inkRect, logicalRect *Rectangle)
+	GlyphExtents func(glyph Glyph) (inkRect, logicalRect *Rectangle) // optional
 	// Metrics gets overall metric information for a font.
 	//
 	// Since the metrics may be substantially different for different scripts,
@@ -6187,18 +6187,41 @@ type FontOverrides struct {
 	//
 	//   - fontMetrics: PangoFontMetrics object. The caller must call
 	//     pango.FontMetrics.Unref() when finished using the object.
-	Metrics func(language *Language) *FontMetrics
+	Metrics func(language *Language) *FontMetrics // optional
 }
 
 func defaultFontOverrides(v *Font) FontOverrides {
-	return FontOverrides{
-		Describe:         v.describe,
-		DescribeAbsolute: v.describeAbsolute,
-		Coverage:         v.coverage,
-		FontMap:          v.fontMap,
-		GlyphExtents:     v.glyphExtents,
-		Metrics:          v.metrics,
+	var pclass *C.PangoFontClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeFont)) != C.FALSE {
+			pclass = (*C.PangoFontClass)(parentClass)
+		}
 	}
+
+	overrides := FontOverrides{}
+	if pclass != nil {
+
+		if pclass.describe != nil {
+			overrides.Describe = v.describe
+		}
+		if pclass.describe_absolute != nil {
+			overrides.DescribeAbsolute = v.describeAbsolute
+		}
+		if pclass.get_coverage != nil {
+			overrides.Coverage = v.coverage
+		}
+		if pclass.get_font_map != nil {
+			overrides.FontMap = v.fontMap
+		}
+		if pclass.get_glyph_extents != nil {
+			overrides.GlyphExtents = v.glyphExtents
+		}
+		if pclass.get_metrics != nil {
+			overrides.Metrics = v.metrics
+		}
+	}
+
+	return overrides
 }
 
 // Font: PangoFont is used to represent a font in a rendering-system-independent
@@ -6963,7 +6986,7 @@ type FontFaceOverrides struct {
 	//   - fontDescription: newly-created PangoFontDescription structure holding
 	//     the description of the face. Use pango.FontDescription.Free() to free
 	//     the result.
-	Describe func() *FontDescription
+	Describe func() *FontDescription // optional
 	// FaceName gets a name representing the style of this face.
 	//
 	// Note that a font family may contain multiple faces with the same name
@@ -6973,13 +6996,13 @@ type FontFaceOverrides struct {
 	//
 	//   - utf8: face name for the face. This string is owned by the face object
 	//     and must not be modified or freed.
-	FaceName func() string
+	FaceName func() string // optional
 	// Family gets the PangoFontFamily that face belongs to.
 	//
 	// The function returns the following values:
 	//
 	//   - fontFamily: PangoFontFamily.
-	Family func() FontFamilier
+	Family func() FontFamilier // optional
 	// IsSynthesized returns whether a PangoFontFace is synthesized.
 	//
 	// This will be the case if the underlying font rendering engine creates
@@ -6989,7 +7012,7 @@ type FontFaceOverrides struct {
 	// The function returns the following values:
 	//
 	//   - ok: whether face is synthesized.
-	IsSynthesized func() bool
+	IsSynthesized func() bool // optional
 	// ListSizes: list the available sizes for a font.
 	//
 	// This is only applicable to bitmap fonts. For scalable fonts, stores
@@ -7001,17 +7024,38 @@ type FontFaceOverrides struct {
 	//
 	//   - sizes (optional): location to store a pointer to an array of int.
 	//     This array should be freed with g_free().
-	ListSizes func() []int
+	ListSizes func() []int // optional
 }
 
 func defaultFontFaceOverrides(v *FontFace) FontFaceOverrides {
-	return FontFaceOverrides{
-		Describe:      v.describe,
-		FaceName:      v.faceName,
-		Family:        v.family,
-		IsSynthesized: v.isSynthesized,
-		ListSizes:     v.listSizes,
+	var pclass *C.PangoFontFaceClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeFontFace)) != C.FALSE {
+			pclass = (*C.PangoFontFaceClass)(parentClass)
+		}
 	}
+
+	overrides := FontFaceOverrides{}
+	if pclass != nil {
+
+		if pclass.describe != nil {
+			overrides.Describe = v.describe
+		}
+		if pclass.get_face_name != nil {
+			overrides.FaceName = v.faceName
+		}
+		if pclass.get_family != nil {
+			overrides.Family = v.family
+		}
+		if pclass.is_synthesized != nil {
+			overrides.IsSynthesized = v.isSynthesized
+		}
+		if pclass.list_sizes != nil {
+			overrides.ListSizes = v.listSizes
+		}
+	}
+
+	return overrides
 }
 
 // FontFace: PangoFontFace is used to represent a group of fonts with the same
@@ -7435,7 +7479,7 @@ type FontFamilyOverrides struct {
 	//
 	//   - fontFace (optional): PangoFontFace, or NULL if no face with the given
 	//     name exists.
-	Face func(name string) FontFacer
+	Face func(name string) FontFacer // optional
 	// Name gets the name of the family.
 	//
 	// The name is unique among all fonts for the font backend and can be used
@@ -7446,7 +7490,7 @@ type FontFamilyOverrides struct {
 	//
 	//   - utf8: name of the family. This string is owned by the family object
 	//     and must not be modified or freed.
-	Name func() string
+	Name func() string // optional
 	// IsMonospace: monospace font is a font designed for text display where the
 	// the characters form a regular grid.
 	//
@@ -7464,7 +7508,7 @@ type FontFamilyOverrides struct {
 	// The function returns the following values:
 	//
 	//   - ok: TRUE if the family is monospace.
-	IsMonospace func() bool
+	IsMonospace func() bool // optional
 	// IsVariable: variable font is a font which has axes that can be modified
 	// to produce different faces.
 	//
@@ -7474,7 +7518,7 @@ type FontFamilyOverrides struct {
 	// The function returns the following values:
 	//
 	//   - ok: TRUE if the family is variable.
-	IsVariable func() bool
+	IsVariable func() bool // optional
 	// ListFaces lists the different font faces that make up family.
 	//
 	// The faces in a family share a common design, but differ in slant, weight,
@@ -7491,17 +7535,38 @@ type FontFamilyOverrides struct {
 	//   - faces (optional): location to store an array of pointers to
 	//     PangoFontFace objects, or NULL. This array should be freed with
 	//     g_free() when it is no longer needed.
-	ListFaces func() []FontFacer
+	ListFaces func() []FontFacer // optional
 }
 
 func defaultFontFamilyOverrides(v *FontFamily) FontFamilyOverrides {
-	return FontFamilyOverrides{
-		Face:        v.face,
-		Name:        v.name,
-		IsMonospace: v.isMonospace,
-		IsVariable:  v.isVariable,
-		ListFaces:   v.listFaces,
+	var pclass *C.PangoFontFamilyClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeFontFamily)) != C.FALSE {
+			pclass = (*C.PangoFontFamilyClass)(parentClass)
+		}
 	}
+
+	overrides := FontFamilyOverrides{}
+	if pclass != nil {
+
+		if pclass.get_face != nil {
+			overrides.Face = v.face
+		}
+		if pclass.get_name != nil {
+			overrides.Name = v.name
+		}
+		if pclass.is_monospace != nil {
+			overrides.IsMonospace = v.isMonospace
+		}
+		if pclass.is_variable != nil {
+			overrides.IsVariable = v.isVariable
+		}
+		if pclass.list_faces != nil {
+			overrides.ListFaces = v.listFaces
+		}
+	}
+
+	return overrides
 }
 
 // FontFamily: PangoFontFamily is used to represent a family of related font
@@ -8010,7 +8075,7 @@ type FontMapOverrides struct {
 	// The function returns the following values:
 	//
 	//   - fontFamily (optional): PangoFontFamily.
-	Family func(name string) FontFamilier
+	Family func(name string) FontFamilier // optional
 	// Serial returns the current serial number of fontmap.
 	//
 	// The serial number is initialized to an small number larger than zero
@@ -8027,7 +8092,7 @@ type FontMapOverrides struct {
 	// The function returns the following values:
 	//
 	//   - guint: current serial number of fontmap.
-	Serial func() uint
+	Serial func() uint // optional
 	// ListFamilies: list all families for a fontmap.
 	//
 	// Note that the returned families are not in any particular order.
@@ -8039,7 +8104,7 @@ type FontMapOverrides struct {
 	//
 	//   - families: location to store a pointer to an array of PangoFontFamily
 	//     *. This array should be freed with g_free().
-	ListFamilies func() []FontFamilier
+	ListFamilies func() []FontFamilier // optional
 	// LoadFont: load the font in the fontmap that is the closest match for
 	// desc.
 	//
@@ -8052,7 +8117,7 @@ type FontMapOverrides struct {
 	//
 	//   - font (optional): newly allocated PangoFont loaded, or NULL if no font
 	//     matched.
-	LoadFont func(context *Context, desc *FontDescription) Fonter
+	LoadFont func(context *Context, desc *FontDescription) Fonter // optional
 	// LoadFontset: load a set of fonts in the fontmap that can be used to
 	// render a font matching desc.
 	//
@@ -8066,19 +8131,47 @@ type FontMapOverrides struct {
 	//
 	//   - fontset (optional): newly allocated PangoFontset loaded, or NULL if
 	//     no font matched.
-	LoadFontset func(context *Context, desc *FontDescription, language *Language) Fontsetter
+	LoadFontset func(context *Context, desc *FontDescription, language *Language) Fontsetter // optional
 }
 
 func defaultFontMapOverrides(v *FontMap) FontMapOverrides {
-	return FontMapOverrides{
-		Changed:      v.changed,
-		Family:       v.family,
-		Serial:       v.serial,
-		ListFamilies: v.listFamilies,
-		LoadFont:     v.loadFont,
-		LoadFontset:  v.loadFontset,
+	var pclass *C.PangoFontMapClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeFontMap)) != C.FALSE {
+			pclass = (*C.PangoFontMapClass)(parentClass)
+		}
 	}
+
+	overrides := FontMapOverrides{
+
+		Changed: noop_FontMap_Changed,
+	}
+	if pclass != nil {
+
+		if pclass.changed != nil {
+			overrides.Changed = v.changed
+		}
+		if pclass.get_family != nil {
+			overrides.Family = v.family
+		}
+		if pclass.get_serial != nil {
+			overrides.Serial = v.serial
+		}
+		if pclass.list_families != nil {
+			overrides.ListFamilies = v.listFamilies
+		}
+		if pclass.load_font != nil {
+			overrides.LoadFont = v.loadFont
+		}
+		if pclass.load_fontset != nil {
+			overrides.LoadFontset = v.loadFontset
+		}
+	}
+
+	return overrides
 }
+
+func noop_FontMap_Changed() {}
 
 // FontMap: PangoFontMap represents the set of fonts available for a particular
 // rendering system.
@@ -8813,23 +8906,40 @@ type FontsetOverrides struct {
 	// The function returns the following values:
 	//
 	//   - font: PangoFont.
-	Font func(wc uint) Fonter
+	Font func(wc uint) Fonter // optional
 	// Language: function to get the language of the fontset.
-	Language func() *Language
+	Language func() *Language // optional
 	// Metrics: get overall metric information for the fonts in the fontset.
 	//
 	// The function returns the following values:
 	//
 	//   - fontMetrics: PangoFontMetrics object.
-	Metrics func() *FontMetrics
+	Metrics func() *FontMetrics // optional
 }
 
 func defaultFontsetOverrides(v *Fontset) FontsetOverrides {
-	return FontsetOverrides{
-		Font:     v.font,
-		Language: v.language,
-		Metrics:  v.metrics,
+	var pclass *C.PangoFontsetClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeFontset)) != C.FALSE {
+			pclass = (*C.PangoFontsetClass)(parentClass)
+		}
 	}
+
+	overrides := FontsetOverrides{}
+	if pclass != nil {
+
+		if pclass.get_font != nil {
+			overrides.Font = v.font
+		}
+		if pclass.get_language != nil {
+			overrides.Language = v.language
+		}
+		if pclass.get_metrics != nil {
+			overrides.Metrics = v.metrics
+		}
+	}
+
+	return overrides
 }
 
 // Fontset: PangoFontset represents a set of PangoFont to use when rendering
@@ -11418,20 +11528,88 @@ type RendererOverrides struct {
 }
 
 func defaultRendererOverrides(v *Renderer) RendererOverrides {
-	return RendererOverrides{
-		Begin:              v.begin,
-		DrawErrorUnderline: v.drawErrorUnderline,
-		DrawGlyph:          v.drawGlyph,
-		DrawGlyphItem:      v.drawGlyphItem,
-		DrawGlyphs:         v.drawGlyphs,
-		DrawRectangle:      v.drawRectangle,
-		DrawShape:          v.drawShape,
-		DrawTrapezoid:      v.drawTrapezoid,
-		End:                v.end,
-		PartChanged:        v.partChanged,
-		PrepareRun:         v.prepareRun,
+	var pclass *C.PangoRendererClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypeRenderer)) != C.FALSE {
+			pclass = (*C.PangoRendererClass)(parentClass)
+		}
 	}
+
+	overrides := RendererOverrides{
+
+		Begin:              noop_Renderer_Begin,
+		DrawErrorUnderline: noop_Renderer_DrawErrorUnderline,
+		DrawGlyph:          noop_Renderer_DrawGlyph,
+		DrawGlyphItem:      noop_Renderer_DrawGlyphItem,
+		DrawGlyphs:         noop_Renderer_DrawGlyphs,
+		DrawRectangle:      noop_Renderer_DrawRectangle,
+		DrawShape:          noop_Renderer_DrawShape,
+		DrawTrapezoid:      noop_Renderer_DrawTrapezoid,
+		End:                noop_Renderer_End,
+		PartChanged:        noop_Renderer_PartChanged,
+		PrepareRun:         noop_Renderer_PrepareRun,
+	}
+	if pclass != nil {
+
+		if pclass.begin != nil {
+			overrides.Begin = v.begin
+		}
+		if pclass.draw_error_underline != nil {
+			overrides.DrawErrorUnderline = v.drawErrorUnderline
+		}
+		if pclass.draw_glyph != nil {
+			overrides.DrawGlyph = v.drawGlyph
+		}
+		if pclass.draw_glyph_item != nil {
+			overrides.DrawGlyphItem = v.drawGlyphItem
+		}
+		if pclass.draw_glyphs != nil {
+			overrides.DrawGlyphs = v.drawGlyphs
+		}
+		if pclass.draw_rectangle != nil {
+			overrides.DrawRectangle = v.drawRectangle
+		}
+		if pclass.draw_shape != nil {
+			overrides.DrawShape = v.drawShape
+		}
+		if pclass.draw_trapezoid != nil {
+			overrides.DrawTrapezoid = v.drawTrapezoid
+		}
+		if pclass.end != nil {
+			overrides.End = v.end
+		}
+		if pclass.part_changed != nil {
+			overrides.PartChanged = v.partChanged
+		}
+		if pclass.prepare_run != nil {
+			overrides.PrepareRun = v.prepareRun
+		}
+	}
+
+	return overrides
 }
+
+func noop_Renderer_Begin() {}
+
+func noop_Renderer_DrawErrorUnderline(x, y, width, height int) {}
+
+func noop_Renderer_DrawGlyph(font Fonter, glyph Glyph, x, y float64) {}
+
+func noop_Renderer_DrawGlyphItem(text string, glyphItem *GlyphItem, x, y int) {}
+
+func noop_Renderer_DrawGlyphs(font Fonter, glyphs *GlyphString, x, y int) {}
+
+func noop_Renderer_DrawRectangle(part RenderPart, x, y, width, height int) {}
+
+func noop_Renderer_DrawShape(attr *AttrShape, x, y int) {}
+
+func noop_Renderer_DrawTrapezoid(part RenderPart, y1, x11, x21, y2, x12, x22 float64) {}
+
+func noop_Renderer_End() {}
+
+func noop_Renderer_PartChanged(part RenderPart) {}
+
+func noop_Renderer_PrepareRun(run *LayoutRun) {}
 
 // Renderer: PangoRenderer is a base class for objects that can render text
 // provided as PangoGlyphString or PangoLayout.

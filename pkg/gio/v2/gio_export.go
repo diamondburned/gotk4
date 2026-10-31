@@ -1219,7 +1219,7 @@ func _gotk4_gio2_AppInfoMonitor_ConnectChanged(arg0 C.gpointer, arg1 C.guintptr)
 //export _gotk4_gio2_AppLaunchContextClass_get_display
 func _gotk4_gio2_AppLaunchContextClass_get_display(arg0 *C.GAppLaunchContext, arg1 *C.GAppInfo, arg2 *C.GList) (cret *C.char) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[AppLaunchContextOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[AppLaunchContextOverrides](instance0)
 	if overrides.Display == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AppLaunchContextOverrides.Display, got none")
 	}
@@ -1282,7 +1282,7 @@ func _gotk4_gio2_AppLaunchContextClass_get_display(arg0 *C.GAppLaunchContext, ar
 //export _gotk4_gio2_AppLaunchContextClass_get_startup_notify_id
 func _gotk4_gio2_AppLaunchContextClass_get_startup_notify_id(arg0 *C.GAppLaunchContext, arg1 *C.GAppInfo, arg2 *C.GList) (cret *C.char) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[AppLaunchContextOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[AppLaunchContextOverrides](instance0)
 	if overrides.StartupNotifyID == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AppLaunchContextOverrides.StartupNotifyID, got none")
 	}
@@ -1346,7 +1346,7 @@ func _gotk4_gio2_AppLaunchContextClass_get_startup_notify_id(arg0 *C.GAppLaunchC
 //export _gotk4_gio2_AppLaunchContextClass_launch_failed
 func _gotk4_gio2_AppLaunchContextClass_launch_failed(arg0 *C.GAppLaunchContext, arg1 *C.char) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[AppLaunchContextOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[AppLaunchContextOverrides](instance0)
 	if overrides.LaunchFailed == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AppLaunchContextOverrides.LaunchFailed, got none")
 	}
@@ -1361,7 +1361,7 @@ func _gotk4_gio2_AppLaunchContextClass_launch_failed(arg0 *C.GAppLaunchContext, 
 //export _gotk4_gio2_AppLaunchContextClass_launch_started
 func _gotk4_gio2_AppLaunchContextClass_launch_started(arg0 *C.GAppLaunchContext, arg1 *C.GAppInfo, arg2 *C.GVariant) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[AppLaunchContextOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[AppLaunchContextOverrides](instance0)
 	if overrides.LaunchStarted == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AppLaunchContextOverrides.LaunchStarted, got none")
 	}
@@ -1401,7 +1401,7 @@ func _gotk4_gio2_AppLaunchContextClass_launch_started(arg0 *C.GAppLaunchContext,
 //export _gotk4_gio2_AppLaunchContextClass_launched
 func _gotk4_gio2_AppLaunchContextClass_launched(arg0 *C.GAppLaunchContext, arg1 *C.GAppInfo, arg2 *C.GVariant) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[AppLaunchContextOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[AppLaunchContextOverrides](instance0)
 	if overrides.Launched == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected AppLaunchContextOverrides.Launched, got none")
 	}
@@ -1553,7 +1553,7 @@ func _gotk4_gio2_AppLaunchContext_ConnectLaunched(arg0 C.gpointer, arg1 *C.GAppI
 //export _gotk4_gio2_ApplicationClass_activate
 func _gotk4_gio2_ApplicationClass_activate(arg0 *C.GApplication) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ApplicationOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ApplicationOverrides](instance0)
 	if overrides.Activate == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ApplicationOverrides.Activate, got none")
 	}
@@ -1564,7 +1564,7 @@ func _gotk4_gio2_ApplicationClass_activate(arg0 *C.GApplication) {
 //export _gotk4_gio2_ApplicationClass_add_platform_data
 func _gotk4_gio2_ApplicationClass_add_platform_data(arg0 *C.GApplication, arg1 *C.GVariantBuilder) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ApplicationOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ApplicationOverrides](instance0)
 	if overrides.AddPlatformData == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ApplicationOverrides.AddPlatformData, got none")
 	}
@@ -1586,7 +1586,7 @@ func _gotk4_gio2_ApplicationClass_add_platform_data(arg0 *C.GApplication, arg1 *
 //export _gotk4_gio2_ApplicationClass_after_emit
 func _gotk4_gio2_ApplicationClass_after_emit(arg0 *C.GApplication, arg1 *C.GVariant) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ApplicationOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ApplicationOverrides](instance0)
 	if overrides.AfterEmit == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ApplicationOverrides.AfterEmit, got none")
 	}
@@ -1608,7 +1608,7 @@ func _gotk4_gio2_ApplicationClass_after_emit(arg0 *C.GApplication, arg1 *C.GVari
 //export _gotk4_gio2_ApplicationClass_before_emit
 func _gotk4_gio2_ApplicationClass_before_emit(arg0 *C.GApplication, arg1 *C.GVariant) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ApplicationOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ApplicationOverrides](instance0)
 	if overrides.BeforeEmit == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ApplicationOverrides.BeforeEmit, got none")
 	}
@@ -1630,7 +1630,7 @@ func _gotk4_gio2_ApplicationClass_before_emit(arg0 *C.GApplication, arg1 *C.GVar
 //export _gotk4_gio2_ApplicationClass_command_line
 func _gotk4_gio2_ApplicationClass_command_line(arg0 *C.GApplication, arg1 *C.GApplicationCommandLine) (cret C.int) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ApplicationOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ApplicationOverrides](instance0)
 	if overrides.CommandLine == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ApplicationOverrides.CommandLine, got none")
 	}
@@ -1651,7 +1651,7 @@ func _gotk4_gio2_ApplicationClass_command_line(arg0 *C.GApplication, arg1 *C.GAp
 //export _gotk4_gio2_ApplicationClass_dbus_register
 func _gotk4_gio2_ApplicationClass_dbus_register(arg0 *C.GApplication, arg1 *C.GDBusConnection, arg2 *C.gchar, _cerr **C.GError) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ApplicationOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ApplicationOverrides](instance0)
 	if overrides.DBusRegister == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ApplicationOverrides.DBusRegister, got none")
 	}
@@ -1676,7 +1676,7 @@ func _gotk4_gio2_ApplicationClass_dbus_register(arg0 *C.GApplication, arg1 *C.GD
 //export _gotk4_gio2_ApplicationClass_dbus_unregister
 func _gotk4_gio2_ApplicationClass_dbus_unregister(arg0 *C.GApplication, arg1 *C.GDBusConnection, arg2 *C.gchar) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ApplicationOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ApplicationOverrides](instance0)
 	if overrides.DBusUnregister == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ApplicationOverrides.DBusUnregister, got none")
 	}
@@ -1693,7 +1693,7 @@ func _gotk4_gio2_ApplicationClass_dbus_unregister(arg0 *C.GApplication, arg1 *C.
 //export _gotk4_gio2_ApplicationClass_handle_local_options
 func _gotk4_gio2_ApplicationClass_handle_local_options(arg0 *C.GApplication, arg1 *C.GVariantDict) (cret C.gint) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ApplicationOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ApplicationOverrides](instance0)
 	if overrides.HandleLocalOptions == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ApplicationOverrides.HandleLocalOptions, got none")
 	}
@@ -1721,7 +1721,7 @@ func _gotk4_gio2_ApplicationClass_handle_local_options(arg0 *C.GApplication, arg
 //export _gotk4_gio2_ApplicationClass_name_lost
 func _gotk4_gio2_ApplicationClass_name_lost(arg0 *C.GApplication) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ApplicationOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ApplicationOverrides](instance0)
 	if overrides.NameLost == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ApplicationOverrides.NameLost, got none")
 	}
@@ -1740,7 +1740,7 @@ func _gotk4_gio2_ApplicationClass_name_lost(arg0 *C.GApplication) (cret C.gboole
 //export _gotk4_gio2_ApplicationClass_open
 func _gotk4_gio2_ApplicationClass_open(arg0 *C.GApplication, arg1 **C.GFile, arg2 C.gint, arg3 *C.gchar) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ApplicationOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ApplicationOverrides](instance0)
 	if overrides.Open == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ApplicationOverrides.Open, got none")
 	}
@@ -1779,7 +1779,7 @@ func _gotk4_gio2_ApplicationClass_open(arg0 *C.GApplication, arg1 **C.GFile, arg
 //export _gotk4_gio2_ApplicationClass_quit_mainloop
 func _gotk4_gio2_ApplicationClass_quit_mainloop(arg0 *C.GApplication) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ApplicationOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ApplicationOverrides](instance0)
 	if overrides.QuitMainloop == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ApplicationOverrides.QuitMainloop, got none")
 	}
@@ -1790,7 +1790,7 @@ func _gotk4_gio2_ApplicationClass_quit_mainloop(arg0 *C.GApplication) {
 //export _gotk4_gio2_ApplicationClass_run_mainloop
 func _gotk4_gio2_ApplicationClass_run_mainloop(arg0 *C.GApplication) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ApplicationOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ApplicationOverrides](instance0)
 	if overrides.RunMainloop == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ApplicationOverrides.RunMainloop, got none")
 	}
@@ -1801,7 +1801,7 @@ func _gotk4_gio2_ApplicationClass_run_mainloop(arg0 *C.GApplication) {
 //export _gotk4_gio2_ApplicationClass_shutdown
 func _gotk4_gio2_ApplicationClass_shutdown(arg0 *C.GApplication) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ApplicationOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ApplicationOverrides](instance0)
 	if overrides.Shutdown == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ApplicationOverrides.Shutdown, got none")
 	}
@@ -1812,7 +1812,7 @@ func _gotk4_gio2_ApplicationClass_shutdown(arg0 *C.GApplication) {
 //export _gotk4_gio2_ApplicationClass_startup
 func _gotk4_gio2_ApplicationClass_startup(arg0 *C.GApplication) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ApplicationOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ApplicationOverrides](instance0)
 	if overrides.Startup == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ApplicationOverrides.Startup, got none")
 	}
@@ -1998,7 +1998,7 @@ func _gotk4_gio2_Application_ConnectStartup(arg0 C.gpointer, arg1 C.guintptr) {
 //export _gotk4_gio2_ApplicationCommandLineClass_done
 func _gotk4_gio2_ApplicationCommandLineClass_done(arg0 *C.GApplicationCommandLine) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ApplicationCommandLineOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ApplicationCommandLineOverrides](instance0)
 	if overrides.Done == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ApplicationCommandLineOverrides.Done, got none")
 	}
@@ -2009,7 +2009,7 @@ func _gotk4_gio2_ApplicationCommandLineClass_done(arg0 *C.GApplicationCommandLin
 //export _gotk4_gio2_ApplicationCommandLineClass_get_stdin
 func _gotk4_gio2_ApplicationCommandLineClass_get_stdin(arg0 *C.GApplicationCommandLine) (cret *C.GInputStream) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ApplicationCommandLineOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ApplicationCommandLineOverrides](instance0)
 	if overrides.Stdin == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ApplicationCommandLineOverrides.Stdin, got none")
 	}
@@ -2029,7 +2029,7 @@ func _gotk4_gio2_ApplicationCommandLineClass_get_stdin(arg0 *C.GApplicationComma
 //export _gotk4_gio2_ApplicationCommandLineClass_print_literal
 func _gotk4_gio2_ApplicationCommandLineClass_print_literal(arg0 *C.GApplicationCommandLine, arg1 *C.gchar) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ApplicationCommandLineOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ApplicationCommandLineOverrides](instance0)
 	if overrides.PrintLiteral == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ApplicationCommandLineOverrides.PrintLiteral, got none")
 	}
@@ -2044,7 +2044,7 @@ func _gotk4_gio2_ApplicationCommandLineClass_print_literal(arg0 *C.GApplicationC
 //export _gotk4_gio2_ApplicationCommandLineClass_printerr_literal
 func _gotk4_gio2_ApplicationCommandLineClass_printerr_literal(arg0 *C.GApplicationCommandLine, arg1 *C.gchar) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ApplicationCommandLineOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ApplicationCommandLineOverrides](instance0)
 	if overrides.PrinterrLiteral == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ApplicationCommandLineOverrides.PrinterrLiteral, got none")
 	}
@@ -2059,7 +2059,7 @@ func _gotk4_gio2_ApplicationCommandLineClass_printerr_literal(arg0 *C.GApplicati
 //export _gotk4_gio2_BufferedInputStreamClass_fill
 func _gotk4_gio2_BufferedInputStreamClass_fill(arg0 *C.GBufferedInputStream, arg1 C.gssize, arg2 *C.GCancellable, _cerr **C.GError) (cret C.gssize) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[BufferedInputStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[BufferedInputStreamOverrides](instance0)
 	if overrides.Fill == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected BufferedInputStreamOverrides.Fill, got none")
 	}
@@ -2088,7 +2088,7 @@ func _gotk4_gio2_BufferedInputStreamClass_fill(arg0 *C.GBufferedInputStream, arg
 //export _gotk4_gio2_BufferedInputStreamClass_fill_finish
 func _gotk4_gio2_BufferedInputStreamClass_fill_finish(arg0 *C.GBufferedInputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gssize) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[BufferedInputStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[BufferedInputStreamOverrides](instance0)
 	if overrides.FillFinish == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected BufferedInputStreamOverrides.FillFinish, got none")
 	}
@@ -2129,7 +2129,7 @@ func _gotk4_gio2_BufferedInputStreamClass_fill_finish(arg0 *C.GBufferedInputStre
 //export _gotk4_gio2_CancellableClass_cancelled
 func _gotk4_gio2_CancellableClass_cancelled(arg0 *C.GCancellable) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[CancellableOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[CancellableOverrides](instance0)
 	if overrides.Cancelled == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected CancellableOverrides.Cancelled, got none")
 	}
@@ -2258,7 +2258,7 @@ func _gotk4_gio2_DBusConnection_ConnectClosed(arg0 C.gpointer, arg1 C.gboolean, 
 //export _gotk4_gio2_DBusInterfaceSkeletonClass_flush
 func _gotk4_gio2_DBusInterfaceSkeletonClass_flush(arg0 *C.GDBusInterfaceSkeleton) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[DBusInterfaceSkeletonOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[DBusInterfaceSkeletonOverrides](instance0)
 	if overrides.Flush == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected DBusInterfaceSkeletonOverrides.Flush, got none")
 	}
@@ -2269,7 +2269,7 @@ func _gotk4_gio2_DBusInterfaceSkeletonClass_flush(arg0 *C.GDBusInterfaceSkeleton
 //export _gotk4_gio2_DBusInterfaceSkeletonClass_g_authorize_method
 func _gotk4_gio2_DBusInterfaceSkeletonClass_g_authorize_method(arg0 *C.GDBusInterfaceSkeleton, arg1 *C.GDBusMethodInvocation) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[DBusInterfaceSkeletonOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[DBusInterfaceSkeletonOverrides](instance0)
 	if overrides.GAuthorizeMethod == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected DBusInterfaceSkeletonOverrides.GAuthorizeMethod, got none")
 	}
@@ -2292,7 +2292,7 @@ func _gotk4_gio2_DBusInterfaceSkeletonClass_g_authorize_method(arg0 *C.GDBusInte
 //export _gotk4_gio2_DBusInterfaceSkeletonClass_get_info
 func _gotk4_gio2_DBusInterfaceSkeletonClass_get_info(arg0 *C.GDBusInterfaceSkeleton) (cret *C.GDBusInterfaceInfo) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[DBusInterfaceSkeletonOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[DBusInterfaceSkeletonOverrides](instance0)
 	if overrides.Info == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected DBusInterfaceSkeletonOverrides.Info, got none")
 	}
@@ -2309,7 +2309,7 @@ func _gotk4_gio2_DBusInterfaceSkeletonClass_get_info(arg0 *C.GDBusInterfaceSkele
 //export _gotk4_gio2_DBusInterfaceSkeletonClass_get_properties
 func _gotk4_gio2_DBusInterfaceSkeletonClass_get_properties(arg0 *C.GDBusInterfaceSkeleton) (cret *C.GVariant) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[DBusInterfaceSkeletonOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[DBusInterfaceSkeletonOverrides](instance0)
 	if overrides.Properties == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected DBusInterfaceSkeletonOverrides.Properties, got none")
 	}
@@ -2326,7 +2326,7 @@ func _gotk4_gio2_DBusInterfaceSkeletonClass_get_properties(arg0 *C.GDBusInterfac
 //export _gotk4_gio2_DBusInterfaceSkeletonClass_get_vtable
 func _gotk4_gio2_DBusInterfaceSkeletonClass_get_vtable(arg0 *C.GDBusInterfaceSkeleton) (cret *C.GDBusInterfaceVTable) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[DBusInterfaceSkeletonOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[DBusInterfaceSkeletonOverrides](instance0)
 	if overrides.Vtable == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected DBusInterfaceSkeletonOverrides.Vtable, got none")
 	}
@@ -2371,7 +2371,7 @@ func _gotk4_gio2_DBusInterfaceSkeleton_ConnectGAuthorizeMethod(arg0 C.gpointer, 
 //export _gotk4_gio2_DBusObjectManagerClientClass_interface_proxy_signal
 func _gotk4_gio2_DBusObjectManagerClientClass_interface_proxy_signal(arg0 *C.GDBusObjectManagerClient, arg1 *C.GDBusObjectProxy, arg2 *C.GDBusProxy, arg3 *C.gchar, arg4 *C.gchar, arg5 *C.GVariant) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[DBusObjectManagerClientOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[DBusObjectManagerClientOverrides](instance0)
 	if overrides.InterfaceProxySignal == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected DBusObjectManagerClientOverrides.InterfaceProxySignal, got none")
 	}
@@ -2481,7 +2481,7 @@ func _gotk4_gio2_DBusObjectManagerClient_ConnectInterfaceProxySignal(arg0 C.gpoi
 //export _gotk4_gio2_DBusObjectSkeletonClass_authorize_method
 func _gotk4_gio2_DBusObjectSkeletonClass_authorize_method(arg0 *C.GDBusObjectSkeleton, arg1 *C.GDBusInterfaceSkeleton, arg2 *C.GDBusMethodInvocation) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[DBusObjectSkeletonOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[DBusObjectSkeletonOverrides](instance0)
 	if overrides.AuthorizeMethod == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected DBusObjectSkeletonOverrides.AuthorizeMethod, got none")
 	}
@@ -2568,7 +2568,7 @@ func _gotk4_gio2_DBusObjectSkeleton_ConnectAuthorizeMethod(arg0 C.gpointer, arg1
 //export _gotk4_gio2_DBusProxyClass_g_signal
 func _gotk4_gio2_DBusProxyClass_g_signal(arg0 *C.GDBusProxy, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.GVariant) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[DBusProxyOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[DBusProxyOverrides](instance0)
 	if overrides.GSignal == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected DBusProxyOverrides.GSignal, got none")
 	}
@@ -2696,7 +2696,7 @@ func _gotk4_gio2_DBusServer_ConnectNewConnection(arg0 C.gpointer, arg1 *C.GDBusC
 //export _gotk4_gio2_DebugControllerDBusClass_authorize
 func _gotk4_gio2_DebugControllerDBusClass_authorize(arg0 *C.GDebugControllerDBus, arg1 *C.GDBusMethodInvocation) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[DebugControllerDBusOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[DebugControllerDBusOverrides](instance0)
 	if overrides.Authorize == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected DebugControllerDBusOverrides.Authorize, got none")
 	}
@@ -2747,7 +2747,7 @@ func _gotk4_gio2_DebugControllerDBus_ConnectAuthorize(arg0 C.gpointer, arg1 *C.G
 //export _gotk4_gio2_FileEnumeratorClass_close_finish
 func _gotk4_gio2_FileEnumeratorClass_close_finish(arg0 *C.GFileEnumerator, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FileEnumeratorOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FileEnumeratorOverrides](instance0)
 	if overrides.CloseFinish == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FileEnumeratorOverrides.CloseFinish, got none")
 	}
@@ -2786,7 +2786,7 @@ func _gotk4_gio2_FileEnumeratorClass_close_finish(arg0 *C.GFileEnumerator, arg1 
 //export _gotk4_gio2_FileEnumeratorClass_close_fn
 func _gotk4_gio2_FileEnumeratorClass_close_fn(arg0 *C.GFileEnumerator, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FileEnumeratorOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FileEnumeratorOverrides](instance0)
 	if overrides.CloseFn == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FileEnumeratorOverrides.CloseFn, got none")
 	}
@@ -2811,7 +2811,7 @@ func _gotk4_gio2_FileEnumeratorClass_close_fn(arg0 *C.GFileEnumerator, arg1 *C.G
 //export _gotk4_gio2_FileEnumeratorClass_next_file
 func _gotk4_gio2_FileEnumeratorClass_next_file(arg0 *C.GFileEnumerator, arg1 *C.GCancellable, _cerr **C.GError) (cret *C.GFileInfo) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FileEnumeratorOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FileEnumeratorOverrides](instance0)
 	if overrides.NextFile == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FileEnumeratorOverrides.NextFile, got none")
 	}
@@ -2841,7 +2841,7 @@ func _gotk4_gio2_FileEnumeratorClass_next_file(arg0 *C.GFileEnumerator, arg1 *C.
 //export _gotk4_gio2_FileEnumeratorClass_next_files_finish
 func _gotk4_gio2_FileEnumeratorClass_next_files_finish(arg0 *C.GFileEnumerator, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GList) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FileEnumeratorOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FileEnumeratorOverrides](instance0)
 	if overrides.NextFilesFinish == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FileEnumeratorOverrides.NextFilesFinish, got none")
 	}
@@ -2888,7 +2888,7 @@ func _gotk4_gio2_FileEnumeratorClass_next_files_finish(arg0 *C.GFileEnumerator, 
 //export _gotk4_gio2_FileIOStreamClass_can_seek
 func _gotk4_gio2_FileIOStreamClass_can_seek(arg0 *C.GFileIOStream) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FileIOStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FileIOStreamOverrides](instance0)
 	if overrides.CanSeek == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FileIOStreamOverrides.CanSeek, got none")
 	}
@@ -2907,7 +2907,7 @@ func _gotk4_gio2_FileIOStreamClass_can_seek(arg0 *C.GFileIOStream) (cret C.gbool
 //export _gotk4_gio2_FileIOStreamClass_can_truncate
 func _gotk4_gio2_FileIOStreamClass_can_truncate(arg0 *C.GFileIOStream) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FileIOStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FileIOStreamOverrides](instance0)
 	if overrides.CanTruncate == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FileIOStreamOverrides.CanTruncate, got none")
 	}
@@ -2926,7 +2926,7 @@ func _gotk4_gio2_FileIOStreamClass_can_truncate(arg0 *C.GFileIOStream) (cret C.g
 //export _gotk4_gio2_FileIOStreamClass_get_etag
 func _gotk4_gio2_FileIOStreamClass_get_etag(arg0 *C.GFileIOStream) (cret *C.char) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FileIOStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FileIOStreamOverrides](instance0)
 	if overrides.ETag == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FileIOStreamOverrides.ETag, got none")
 	}
@@ -2945,7 +2945,7 @@ func _gotk4_gio2_FileIOStreamClass_get_etag(arg0 *C.GFileIOStream) (cret *C.char
 //export _gotk4_gio2_FileIOStreamClass_query_info
 func _gotk4_gio2_FileIOStreamClass_query_info(arg0 *C.GFileIOStream, arg1 *C.char, arg2 *C.GCancellable, _cerr **C.GError) (cret *C.GFileInfo) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FileIOStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FileIOStreamOverrides](instance0)
 	if overrides.QueryInfo == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FileIOStreamOverrides.QueryInfo, got none")
 	}
@@ -2975,7 +2975,7 @@ func _gotk4_gio2_FileIOStreamClass_query_info(arg0 *C.GFileIOStream, arg1 *C.cha
 //export _gotk4_gio2_FileIOStreamClass_query_info_finish
 func _gotk4_gio2_FileIOStreamClass_query_info_finish(arg0 *C.GFileIOStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GFileInfo) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FileIOStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FileIOStreamOverrides](instance0)
 	if overrides.QueryInfoFinish == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FileIOStreamOverrides.QueryInfoFinish, got none")
 	}
@@ -3017,7 +3017,7 @@ func _gotk4_gio2_FileIOStreamClass_query_info_finish(arg0 *C.GFileIOStream, arg1
 //export _gotk4_gio2_FileIOStreamClass_seek
 func _gotk4_gio2_FileIOStreamClass_seek(arg0 *C.GFileIOStream, arg1 C.goffset, arg2 C.GSeekType, arg3 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FileIOStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FileIOStreamOverrides](instance0)
 	if overrides.Seek == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FileIOStreamOverrides.Seek, got none")
 	}
@@ -3046,7 +3046,7 @@ func _gotk4_gio2_FileIOStreamClass_seek(arg0 *C.GFileIOStream, arg1 C.goffset, a
 //export _gotk4_gio2_FileIOStreamClass_tell
 func _gotk4_gio2_FileIOStreamClass_tell(arg0 *C.GFileIOStream) (cret C.goffset) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FileIOStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FileIOStreamOverrides](instance0)
 	if overrides.Tell == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FileIOStreamOverrides.Tell, got none")
 	}
@@ -3063,7 +3063,7 @@ func _gotk4_gio2_FileIOStreamClass_tell(arg0 *C.GFileIOStream) (cret C.goffset) 
 //export _gotk4_gio2_FileIOStreamClass_truncate_fn
 func _gotk4_gio2_FileIOStreamClass_truncate_fn(arg0 *C.GFileIOStream, arg1 C.goffset, arg2 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FileIOStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FileIOStreamOverrides](instance0)
 	if overrides.TruncateFn == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FileIOStreamOverrides.TruncateFn, got none")
 	}
@@ -3090,7 +3090,7 @@ func _gotk4_gio2_FileIOStreamClass_truncate_fn(arg0 *C.GFileIOStream, arg1 C.gof
 //export _gotk4_gio2_FileInputStreamClass_can_seek
 func _gotk4_gio2_FileInputStreamClass_can_seek(arg0 *C.GFileInputStream) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FileInputStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FileInputStreamOverrides](instance0)
 	if overrides.CanSeek == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FileInputStreamOverrides.CanSeek, got none")
 	}
@@ -3109,7 +3109,7 @@ func _gotk4_gio2_FileInputStreamClass_can_seek(arg0 *C.GFileInputStream) (cret C
 //export _gotk4_gio2_FileInputStreamClass_query_info
 func _gotk4_gio2_FileInputStreamClass_query_info(arg0 *C.GFileInputStream, arg1 *C.char, arg2 *C.GCancellable, _cerr **C.GError) (cret *C.GFileInfo) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FileInputStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FileInputStreamOverrides](instance0)
 	if overrides.QueryInfo == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FileInputStreamOverrides.QueryInfo, got none")
 	}
@@ -3139,7 +3139,7 @@ func _gotk4_gio2_FileInputStreamClass_query_info(arg0 *C.GFileInputStream, arg1 
 //export _gotk4_gio2_FileInputStreamClass_query_info_finish
 func _gotk4_gio2_FileInputStreamClass_query_info_finish(arg0 *C.GFileInputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GFileInfo) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FileInputStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FileInputStreamOverrides](instance0)
 	if overrides.QueryInfoFinish == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FileInputStreamOverrides.QueryInfoFinish, got none")
 	}
@@ -3181,7 +3181,7 @@ func _gotk4_gio2_FileInputStreamClass_query_info_finish(arg0 *C.GFileInputStream
 //export _gotk4_gio2_FileInputStreamClass_seek
 func _gotk4_gio2_FileInputStreamClass_seek(arg0 *C.GFileInputStream, arg1 C.goffset, arg2 C.GSeekType, arg3 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FileInputStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FileInputStreamOverrides](instance0)
 	if overrides.Seek == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FileInputStreamOverrides.Seek, got none")
 	}
@@ -3210,7 +3210,7 @@ func _gotk4_gio2_FileInputStreamClass_seek(arg0 *C.GFileInputStream, arg1 C.goff
 //export _gotk4_gio2_FileInputStreamClass_tell
 func _gotk4_gio2_FileInputStreamClass_tell(arg0 *C.GFileInputStream) (cret C.goffset) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FileInputStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FileInputStreamOverrides](instance0)
 	if overrides.Tell == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FileInputStreamOverrides.Tell, got none")
 	}
@@ -3227,7 +3227,7 @@ func _gotk4_gio2_FileInputStreamClass_tell(arg0 *C.GFileInputStream) (cret C.gof
 //export _gotk4_gio2_FileMonitorClass_cancel
 func _gotk4_gio2_FileMonitorClass_cancel(arg0 *C.GFileMonitor) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FileMonitorOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FileMonitorOverrides](instance0)
 	if overrides.Cancel == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FileMonitorOverrides.Cancel, got none")
 	}
@@ -3246,7 +3246,7 @@ func _gotk4_gio2_FileMonitorClass_cancel(arg0 *C.GFileMonitor) (cret C.gboolean)
 //export _gotk4_gio2_FileMonitorClass_changed
 func _gotk4_gio2_FileMonitorClass_changed(arg0 *C.GFileMonitor, arg1 *C.GFile, arg2 *C.GFile, arg3 C.GFileMonitorEvent) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FileMonitorOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FileMonitorOverrides](instance0)
 	if overrides.Changed == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FileMonitorOverrides.Changed, got none")
 	}
@@ -3352,7 +3352,7 @@ func _gotk4_gio2_FileMonitor_ConnectChanged(arg0 C.gpointer, arg1 *C.GFile, arg2
 //export _gotk4_gio2_FileOutputStreamClass_can_seek
 func _gotk4_gio2_FileOutputStreamClass_can_seek(arg0 *C.GFileOutputStream) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FileOutputStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FileOutputStreamOverrides](instance0)
 	if overrides.CanSeek == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FileOutputStreamOverrides.CanSeek, got none")
 	}
@@ -3371,7 +3371,7 @@ func _gotk4_gio2_FileOutputStreamClass_can_seek(arg0 *C.GFileOutputStream) (cret
 //export _gotk4_gio2_FileOutputStreamClass_can_truncate
 func _gotk4_gio2_FileOutputStreamClass_can_truncate(arg0 *C.GFileOutputStream) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FileOutputStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FileOutputStreamOverrides](instance0)
 	if overrides.CanTruncate == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FileOutputStreamOverrides.CanTruncate, got none")
 	}
@@ -3390,7 +3390,7 @@ func _gotk4_gio2_FileOutputStreamClass_can_truncate(arg0 *C.GFileOutputStream) (
 //export _gotk4_gio2_FileOutputStreamClass_get_etag
 func _gotk4_gio2_FileOutputStreamClass_get_etag(arg0 *C.GFileOutputStream) (cret *C.char) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FileOutputStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FileOutputStreamOverrides](instance0)
 	if overrides.ETag == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FileOutputStreamOverrides.ETag, got none")
 	}
@@ -3409,7 +3409,7 @@ func _gotk4_gio2_FileOutputStreamClass_get_etag(arg0 *C.GFileOutputStream) (cret
 //export _gotk4_gio2_FileOutputStreamClass_query_info
 func _gotk4_gio2_FileOutputStreamClass_query_info(arg0 *C.GFileOutputStream, arg1 *C.char, arg2 *C.GCancellable, _cerr **C.GError) (cret *C.GFileInfo) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FileOutputStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FileOutputStreamOverrides](instance0)
 	if overrides.QueryInfo == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FileOutputStreamOverrides.QueryInfo, got none")
 	}
@@ -3439,7 +3439,7 @@ func _gotk4_gio2_FileOutputStreamClass_query_info(arg0 *C.GFileOutputStream, arg
 //export _gotk4_gio2_FileOutputStreamClass_query_info_finish
 func _gotk4_gio2_FileOutputStreamClass_query_info_finish(arg0 *C.GFileOutputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GFileInfo) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FileOutputStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FileOutputStreamOverrides](instance0)
 	if overrides.QueryInfoFinish == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FileOutputStreamOverrides.QueryInfoFinish, got none")
 	}
@@ -3481,7 +3481,7 @@ func _gotk4_gio2_FileOutputStreamClass_query_info_finish(arg0 *C.GFileOutputStre
 //export _gotk4_gio2_FileOutputStreamClass_seek
 func _gotk4_gio2_FileOutputStreamClass_seek(arg0 *C.GFileOutputStream, arg1 C.goffset, arg2 C.GSeekType, arg3 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FileOutputStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FileOutputStreamOverrides](instance0)
 	if overrides.Seek == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FileOutputStreamOverrides.Seek, got none")
 	}
@@ -3510,7 +3510,7 @@ func _gotk4_gio2_FileOutputStreamClass_seek(arg0 *C.GFileOutputStream, arg1 C.go
 //export _gotk4_gio2_FileOutputStreamClass_tell
 func _gotk4_gio2_FileOutputStreamClass_tell(arg0 *C.GFileOutputStream) (cret C.goffset) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FileOutputStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FileOutputStreamOverrides](instance0)
 	if overrides.Tell == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FileOutputStreamOverrides.Tell, got none")
 	}
@@ -3527,7 +3527,7 @@ func _gotk4_gio2_FileOutputStreamClass_tell(arg0 *C.GFileOutputStream) (cret C.g
 //export _gotk4_gio2_FileOutputStreamClass_truncate_fn
 func _gotk4_gio2_FileOutputStreamClass_truncate_fn(arg0 *C.GFileOutputStream, arg1 C.goffset, arg2 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FileOutputStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FileOutputStreamOverrides](instance0)
 	if overrides.TruncateFn == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FileOutputStreamOverrides.TruncateFn, got none")
 	}
@@ -3554,7 +3554,7 @@ func _gotk4_gio2_FileOutputStreamClass_truncate_fn(arg0 *C.GFileOutputStream, ar
 //export _gotk4_gio2_FilenameCompleterClass_got_completion_data
 func _gotk4_gio2_FilenameCompleterClass_got_completion_data(arg0 *C.GFilenameCompleter) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[FilenameCompleterOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[FilenameCompleterOverrides](instance0)
 	if overrides.GotCompletionData == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected FilenameCompleterOverrides.GotCompletionData, got none")
 	}
@@ -3581,7 +3581,7 @@ func _gotk4_gio2_FilenameCompleter_ConnectGotCompletionData(arg0 C.gpointer, arg
 //export _gotk4_gio2_IOStreamClass_close_finish
 func _gotk4_gio2_IOStreamClass_close_finish(arg0 *C.GIOStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[IOStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[IOStreamOverrides](instance0)
 	if overrides.CloseFinish == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected IOStreamOverrides.CloseFinish, got none")
 	}
@@ -3620,7 +3620,7 @@ func _gotk4_gio2_IOStreamClass_close_finish(arg0 *C.GIOStream, arg1 *C.GAsyncRes
 //export _gotk4_gio2_IOStreamClass_close_fn
 func _gotk4_gio2_IOStreamClass_close_fn(arg0 *C.GIOStream, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[IOStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[IOStreamOverrides](instance0)
 	if overrides.CloseFn == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected IOStreamOverrides.CloseFn, got none")
 	}
@@ -3645,7 +3645,7 @@ func _gotk4_gio2_IOStreamClass_close_fn(arg0 *C.GIOStream, arg1 *C.GCancellable,
 //export _gotk4_gio2_IOStreamClass_get_input_stream
 func _gotk4_gio2_IOStreamClass_get_input_stream(arg0 *C.GIOStream) (cret *C.GInputStream) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[IOStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[IOStreamOverrides](instance0)
 	if overrides.InputStream == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected IOStreamOverrides.InputStream, got none")
 	}
@@ -3662,7 +3662,7 @@ func _gotk4_gio2_IOStreamClass_get_input_stream(arg0 *C.GIOStream) (cret *C.GInp
 //export _gotk4_gio2_IOStreamClass_get_output_stream
 func _gotk4_gio2_IOStreamClass_get_output_stream(arg0 *C.GIOStream) (cret *C.GOutputStream) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[IOStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[IOStreamOverrides](instance0)
 	if overrides.OutputStream == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected IOStreamOverrides.OutputStream, got none")
 	}
@@ -3679,7 +3679,7 @@ func _gotk4_gio2_IOStreamClass_get_output_stream(arg0 *C.GIOStream) (cret *C.GOu
 //export _gotk4_gio2_InetAddressClass_to_string
 func _gotk4_gio2_InetAddressClass_to_string(arg0 *C.GInetAddress) (cret *C.gchar) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[InetAddressOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[InetAddressOverrides](instance0)
 	if overrides.String == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected InetAddressOverrides.String, got none")
 	}
@@ -3696,7 +3696,7 @@ func _gotk4_gio2_InetAddressClass_to_string(arg0 *C.GInetAddress) (cret *C.gchar
 //export _gotk4_gio2_InputStreamClass_close_finish
 func _gotk4_gio2_InputStreamClass_close_finish(arg0 *C.GInputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[InputStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[InputStreamOverrides](instance0)
 	if overrides.CloseFinish == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected InputStreamOverrides.CloseFinish, got none")
 	}
@@ -3735,7 +3735,7 @@ func _gotk4_gio2_InputStreamClass_close_finish(arg0 *C.GInputStream, arg1 *C.GAs
 //export _gotk4_gio2_InputStreamClass_close_fn
 func _gotk4_gio2_InputStreamClass_close_fn(arg0 *C.GInputStream, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[InputStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[InputStreamOverrides](instance0)
 	if overrides.CloseFn == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected InputStreamOverrides.CloseFn, got none")
 	}
@@ -3760,7 +3760,7 @@ func _gotk4_gio2_InputStreamClass_close_fn(arg0 *C.GInputStream, arg1 *C.GCancel
 //export _gotk4_gio2_InputStreamClass_read_finish
 func _gotk4_gio2_InputStreamClass_read_finish(arg0 *C.GInputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gssize) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[InputStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[InputStreamOverrides](instance0)
 	if overrides.ReadFinish == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected InputStreamOverrides.ReadFinish, got none")
 	}
@@ -3801,7 +3801,7 @@ func _gotk4_gio2_InputStreamClass_read_finish(arg0 *C.GInputStream, arg1 *C.GAsy
 //export _gotk4_gio2_InputStreamClass_skip
 func _gotk4_gio2_InputStreamClass_skip(arg0 *C.GInputStream, arg1 C.gsize, arg2 *C.GCancellable, _cerr **C.GError) (cret C.gssize) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[InputStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[InputStreamOverrides](instance0)
 	if overrides.Skip == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected InputStreamOverrides.Skip, got none")
 	}
@@ -3830,7 +3830,7 @@ func _gotk4_gio2_InputStreamClass_skip(arg0 *C.GInputStream, arg1 C.gsize, arg2 
 //export _gotk4_gio2_InputStreamClass_skip_finish
 func _gotk4_gio2_InputStreamClass_skip_finish(arg0 *C.GInputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gssize) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[InputStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[InputStreamOverrides](instance0)
 	if overrides.SkipFinish == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected InputStreamOverrides.SkipFinish, got none")
 	}
@@ -3871,7 +3871,7 @@ func _gotk4_gio2_InputStreamClass_skip_finish(arg0 *C.GInputStream, arg1 *C.GAsy
 //export _gotk4_gio2_MenuAttributeIterClass_get_next
 func _gotk4_gio2_MenuAttributeIterClass_get_next(arg0 *C.GMenuAttributeIter, arg1 **C.gchar, arg2 **C.GVariant) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[MenuAttributeIterOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[MenuAttributeIterOverrides](instance0)
 	if overrides.Next == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected MenuAttributeIterOverrides.Next, got none")
 	}
@@ -3901,7 +3901,7 @@ func _gotk4_gio2_MenuAttributeIterClass_get_next(arg0 *C.GMenuAttributeIter, arg
 //export _gotk4_gio2_MenuLinkIterClass_get_next
 func _gotk4_gio2_MenuLinkIterClass_get_next(arg0 *C.GMenuLinkIter, arg1 **C.gchar, arg2 **C.GMenuModel) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[MenuLinkIterOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[MenuLinkIterOverrides](instance0)
 	if overrides.Next == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected MenuLinkIterOverrides.Next, got none")
 	}
@@ -3932,7 +3932,7 @@ func _gotk4_gio2_MenuLinkIterClass_get_next(arg0 *C.GMenuLinkIter, arg1 **C.gcha
 //export _gotk4_gio2_MenuModelClass_get_item_attribute_value
 func _gotk4_gio2_MenuModelClass_get_item_attribute_value(arg0 *C.GMenuModel, arg1 C.gint, arg2 *C.gchar, arg3 *C.GVariantType) (cret *C.GVariant) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[MenuModelOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[MenuModelOverrides](instance0)
 	if overrides.ItemAttributeValue == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected MenuModelOverrides.ItemAttributeValue, got none")
 	}
@@ -3961,7 +3961,7 @@ func _gotk4_gio2_MenuModelClass_get_item_attribute_value(arg0 *C.GMenuModel, arg
 //export _gotk4_gio2_MenuModelClass_get_item_attributes
 func _gotk4_gio2_MenuModelClass_get_item_attributes(arg0 *C.GMenuModel, arg1 C.gint, arg2 **C.GHashTable) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[MenuModelOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[MenuModelOverrides](instance0)
 	if overrides.ItemAttributes == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected MenuModelOverrides.ItemAttributes, got none")
 	}
@@ -3988,7 +3988,7 @@ func _gotk4_gio2_MenuModelClass_get_item_attributes(arg0 *C.GMenuModel, arg1 C.g
 //export _gotk4_gio2_MenuModelClass_get_item_link
 func _gotk4_gio2_MenuModelClass_get_item_link(arg0 *C.GMenuModel, arg1 C.gint, arg2 *C.gchar) (cret *C.GMenuModel) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[MenuModelOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[MenuModelOverrides](instance0)
 	if overrides.ItemLink == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected MenuModelOverrides.ItemLink, got none")
 	}
@@ -4014,7 +4014,7 @@ func _gotk4_gio2_MenuModelClass_get_item_link(arg0 *C.GMenuModel, arg1 C.gint, a
 //export _gotk4_gio2_MenuModelClass_get_item_links
 func _gotk4_gio2_MenuModelClass_get_item_links(arg0 *C.GMenuModel, arg1 C.gint, arg2 **C.GHashTable) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[MenuModelOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[MenuModelOverrides](instance0)
 	if overrides.ItemLinks == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected MenuModelOverrides.ItemLinks, got none")
 	}
@@ -4041,7 +4041,7 @@ func _gotk4_gio2_MenuModelClass_get_item_links(arg0 *C.GMenuModel, arg1 C.gint, 
 //export _gotk4_gio2_MenuModelClass_get_n_items
 func _gotk4_gio2_MenuModelClass_get_n_items(arg0 *C.GMenuModel) (cret C.gint) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[MenuModelOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[MenuModelOverrides](instance0)
 	if overrides.NItems == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected MenuModelOverrides.NItems, got none")
 	}
@@ -4058,7 +4058,7 @@ func _gotk4_gio2_MenuModelClass_get_n_items(arg0 *C.GMenuModel) (cret C.gint) {
 //export _gotk4_gio2_MenuModelClass_is_mutable
 func _gotk4_gio2_MenuModelClass_is_mutable(arg0 *C.GMenuModel) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[MenuModelOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[MenuModelOverrides](instance0)
 	if overrides.IsMutable == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected MenuModelOverrides.IsMutable, got none")
 	}
@@ -4077,7 +4077,7 @@ func _gotk4_gio2_MenuModelClass_is_mutable(arg0 *C.GMenuModel) (cret C.gboolean)
 //export _gotk4_gio2_MenuModelClass_iterate_item_attributes
 func _gotk4_gio2_MenuModelClass_iterate_item_attributes(arg0 *C.GMenuModel, arg1 C.gint) (cret *C.GMenuAttributeIter) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[MenuModelOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[MenuModelOverrides](instance0)
 	if overrides.IterateItemAttributes == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected MenuModelOverrides.IterateItemAttributes, got none")
 	}
@@ -4099,7 +4099,7 @@ func _gotk4_gio2_MenuModelClass_iterate_item_attributes(arg0 *C.GMenuModel, arg1
 //export _gotk4_gio2_MenuModelClass_iterate_item_links
 func _gotk4_gio2_MenuModelClass_iterate_item_links(arg0 *C.GMenuModel, arg1 C.gint) (cret *C.GMenuLinkIter) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[MenuModelOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[MenuModelOverrides](instance0)
 	if overrides.IterateItemLinks == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected MenuModelOverrides.IterateItemLinks, got none")
 	}
@@ -4145,7 +4145,7 @@ func _gotk4_gio2_MenuModel_ConnectItemsChanged(arg0 C.gpointer, arg1 C.gint, arg
 //export _gotk4_gio2_MountOperationClass_aborted
 func _gotk4_gio2_MountOperationClass_aborted(arg0 *C.GMountOperation) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[MountOperationOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[MountOperationOverrides](instance0)
 	if overrides.Aborted == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected MountOperationOverrides.Aborted, got none")
 	}
@@ -4156,7 +4156,7 @@ func _gotk4_gio2_MountOperationClass_aborted(arg0 *C.GMountOperation) {
 //export _gotk4_gio2_MountOperationClass_ask_password
 func _gotk4_gio2_MountOperationClass_ask_password(arg0 *C.GMountOperation, arg1 *C.char, arg2 *C.char, arg3 *C.char, arg4 C.GAskPasswordFlags) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[MountOperationOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[MountOperationOverrides](instance0)
 	if overrides.AskPassword == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected MountOperationOverrides.AskPassword, got none")
 	}
@@ -4177,7 +4177,7 @@ func _gotk4_gio2_MountOperationClass_ask_password(arg0 *C.GMountOperation, arg1 
 //export _gotk4_gio2_MountOperationClass_ask_question
 func _gotk4_gio2_MountOperationClass_ask_question(arg0 *C.GMountOperation, arg1 *C.char, arg2 **C.char) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[MountOperationOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[MountOperationOverrides](instance0)
 	if overrides.AskQuestion == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected MountOperationOverrides.AskQuestion, got none")
 	}
@@ -4206,7 +4206,7 @@ func _gotk4_gio2_MountOperationClass_ask_question(arg0 *C.GMountOperation, arg1 
 //export _gotk4_gio2_MountOperationClass_reply
 func _gotk4_gio2_MountOperationClass_reply(arg0 *C.GMountOperation, arg1 C.GMountOperationResult) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[MountOperationOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[MountOperationOverrides](instance0)
 	if overrides.Reply == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected MountOperationOverrides.Reply, got none")
 	}
@@ -4221,7 +4221,7 @@ func _gotk4_gio2_MountOperationClass_reply(arg0 *C.GMountOperation, arg1 C.GMoun
 //export _gotk4_gio2_MountOperationClass_show_unmount_progress
 func _gotk4_gio2_MountOperationClass_show_unmount_progress(arg0 *C.GMountOperation, arg1 *C.gchar, arg2 C.gint64, arg3 C.gint64) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[MountOperationOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[MountOperationOverrides](instance0)
 	if overrides.ShowUnmountProgress == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected MountOperationOverrides.ShowUnmountProgress, got none")
 	}
@@ -4360,7 +4360,7 @@ func _gotk4_gio2_MountOperation_ConnectShowUnmountProgress(arg0 C.gpointer, arg1
 //export _gotk4_gio2_OutputStreamClass_close_finish
 func _gotk4_gio2_OutputStreamClass_close_finish(arg0 *C.GOutputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[OutputStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[OutputStreamOverrides](instance0)
 	if overrides.CloseFinish == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected OutputStreamOverrides.CloseFinish, got none")
 	}
@@ -4399,7 +4399,7 @@ func _gotk4_gio2_OutputStreamClass_close_finish(arg0 *C.GOutputStream, arg1 *C.G
 //export _gotk4_gio2_OutputStreamClass_close_fn
 func _gotk4_gio2_OutputStreamClass_close_fn(arg0 *C.GOutputStream, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[OutputStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[OutputStreamOverrides](instance0)
 	if overrides.CloseFn == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected OutputStreamOverrides.CloseFn, got none")
 	}
@@ -4424,7 +4424,7 @@ func _gotk4_gio2_OutputStreamClass_close_fn(arg0 *C.GOutputStream, arg1 *C.GCanc
 //export _gotk4_gio2_OutputStreamClass_flush
 func _gotk4_gio2_OutputStreamClass_flush(arg0 *C.GOutputStream, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[OutputStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[OutputStreamOverrides](instance0)
 	if overrides.Flush == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected OutputStreamOverrides.Flush, got none")
 	}
@@ -4449,7 +4449,7 @@ func _gotk4_gio2_OutputStreamClass_flush(arg0 *C.GOutputStream, arg1 *C.GCancell
 //export _gotk4_gio2_OutputStreamClass_flush_finish
 func _gotk4_gio2_OutputStreamClass_flush_finish(arg0 *C.GOutputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[OutputStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[OutputStreamOverrides](instance0)
 	if overrides.FlushFinish == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected OutputStreamOverrides.FlushFinish, got none")
 	}
@@ -4488,7 +4488,7 @@ func _gotk4_gio2_OutputStreamClass_flush_finish(arg0 *C.GOutputStream, arg1 *C.G
 //export _gotk4_gio2_OutputStreamClass_splice
 func _gotk4_gio2_OutputStreamClass_splice(arg0 *C.GOutputStream, arg1 *C.GInputStream, arg2 C.GOutputStreamSpliceFlags, arg3 *C.GCancellable, _cerr **C.GError) (cret C.gssize) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[OutputStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[OutputStreamOverrides](instance0)
 	if overrides.Splice == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected OutputStreamOverrides.Splice, got none")
 	}
@@ -4535,7 +4535,7 @@ func _gotk4_gio2_OutputStreamClass_splice(arg0 *C.GOutputStream, arg1 *C.GInputS
 //export _gotk4_gio2_OutputStreamClass_splice_finish
 func _gotk4_gio2_OutputStreamClass_splice_finish(arg0 *C.GOutputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gssize) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[OutputStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[OutputStreamOverrides](instance0)
 	if overrides.SpliceFinish == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected OutputStreamOverrides.SpliceFinish, got none")
 	}
@@ -4576,7 +4576,7 @@ func _gotk4_gio2_OutputStreamClass_splice_finish(arg0 *C.GOutputStream, arg1 *C.
 //export _gotk4_gio2_OutputStreamClass_write_finish
 func _gotk4_gio2_OutputStreamClass_write_finish(arg0 *C.GOutputStream, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gssize) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[OutputStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[OutputStreamOverrides](instance0)
 	if overrides.WriteFinish == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected OutputStreamOverrides.WriteFinish, got none")
 	}
@@ -4617,7 +4617,7 @@ func _gotk4_gio2_OutputStreamClass_write_finish(arg0 *C.GOutputStream, arg1 *C.G
 //export _gotk4_gio2_OutputStreamClass_writev_finish
 func _gotk4_gio2_OutputStreamClass_writev_finish(arg0 *C.GOutputStream, arg1 *C.GAsyncResult, arg2 *C.gsize, _cerr **C.GError) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[OutputStreamOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[OutputStreamOverrides](instance0)
 	if overrides.WritevFinish == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected OutputStreamOverrides.WritevFinish, got none")
 	}
@@ -4658,7 +4658,7 @@ func _gotk4_gio2_OutputStreamClass_writev_finish(arg0 *C.GOutputStream, arg1 *C.
 //export _gotk4_gio2_PermissionClass_acquire
 func _gotk4_gio2_PermissionClass_acquire(arg0 *C.GPermission, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[PermissionOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[PermissionOverrides](instance0)
 	if overrides.Acquire == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected PermissionOverrides.Acquire, got none")
 	}
@@ -4683,7 +4683,7 @@ func _gotk4_gio2_PermissionClass_acquire(arg0 *C.GPermission, arg1 *C.GCancellab
 //export _gotk4_gio2_PermissionClass_acquire_finish
 func _gotk4_gio2_PermissionClass_acquire_finish(arg0 *C.GPermission, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[PermissionOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[PermissionOverrides](instance0)
 	if overrides.AcquireFinish == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected PermissionOverrides.AcquireFinish, got none")
 	}
@@ -4722,7 +4722,7 @@ func _gotk4_gio2_PermissionClass_acquire_finish(arg0 *C.GPermission, arg1 *C.GAs
 //export _gotk4_gio2_PermissionClass_release
 func _gotk4_gio2_PermissionClass_release(arg0 *C.GPermission, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[PermissionOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[PermissionOverrides](instance0)
 	if overrides.Release == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected PermissionOverrides.Release, got none")
 	}
@@ -4747,7 +4747,7 @@ func _gotk4_gio2_PermissionClass_release(arg0 *C.GPermission, arg1 *C.GCancellab
 //export _gotk4_gio2_PermissionClass_release_finish
 func _gotk4_gio2_PermissionClass_release_finish(arg0 *C.GPermission, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[PermissionOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[PermissionOverrides](instance0)
 	if overrides.ReleaseFinish == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected PermissionOverrides.ReleaseFinish, got none")
 	}
@@ -4786,7 +4786,7 @@ func _gotk4_gio2_PermissionClass_release_finish(arg0 *C.GPermission, arg1 *C.GAs
 //export _gotk4_gio2_ResolverClass_lookup_by_address
 func _gotk4_gio2_ResolverClass_lookup_by_address(arg0 *C.GResolver, arg1 *C.GInetAddress, arg2 *C.GCancellable, _cerr **C.GError) (cret *C.gchar) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ResolverOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ResolverOverrides](instance0)
 	if overrides.LookupByAddress == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ResolverOverrides.LookupByAddress, got none")
 	}
@@ -4815,7 +4815,7 @@ func _gotk4_gio2_ResolverClass_lookup_by_address(arg0 *C.GResolver, arg1 *C.GIne
 //export _gotk4_gio2_ResolverClass_lookup_by_address_finish
 func _gotk4_gio2_ResolverClass_lookup_by_address_finish(arg0 *C.GResolver, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.gchar) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ResolverOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ResolverOverrides](instance0)
 	if overrides.LookupByAddressFinish == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ResolverOverrides.LookupByAddressFinish, got none")
 	}
@@ -4856,7 +4856,7 @@ func _gotk4_gio2_ResolverClass_lookup_by_address_finish(arg0 *C.GResolver, arg1 
 //export _gotk4_gio2_ResolverClass_lookup_by_name
 func _gotk4_gio2_ResolverClass_lookup_by_name(arg0 *C.GResolver, arg1 *C.gchar, arg2 *C.GCancellable, _cerr **C.GError) (cret *C.GList) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ResolverOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ResolverOverrides](instance0)
 	if overrides.LookupByName == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ResolverOverrides.LookupByName, got none")
 	}
@@ -4891,7 +4891,7 @@ func _gotk4_gio2_ResolverClass_lookup_by_name(arg0 *C.GResolver, arg1 *C.gchar, 
 //export _gotk4_gio2_ResolverClass_lookup_by_name_finish
 func _gotk4_gio2_ResolverClass_lookup_by_name_finish(arg0 *C.GResolver, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GList) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ResolverOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ResolverOverrides](instance0)
 	if overrides.LookupByNameFinish == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ResolverOverrides.LookupByNameFinish, got none")
 	}
@@ -4938,7 +4938,7 @@ func _gotk4_gio2_ResolverClass_lookup_by_name_finish(arg0 *C.GResolver, arg1 *C.
 //export _gotk4_gio2_ResolverClass_lookup_by_name_with_flags
 func _gotk4_gio2_ResolverClass_lookup_by_name_with_flags(arg0 *C.GResolver, arg1 *C.gchar, arg2 C.GResolverNameLookupFlags, arg3 *C.GCancellable, _cerr **C.GError) (cret *C.GList) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ResolverOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ResolverOverrides](instance0)
 	if overrides.LookupByNameWithFlags == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ResolverOverrides.LookupByNameWithFlags, got none")
 	}
@@ -4975,7 +4975,7 @@ func _gotk4_gio2_ResolverClass_lookup_by_name_with_flags(arg0 *C.GResolver, arg1
 //export _gotk4_gio2_ResolverClass_lookup_by_name_with_flags_finish
 func _gotk4_gio2_ResolverClass_lookup_by_name_with_flags_finish(arg0 *C.GResolver, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GList) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ResolverOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ResolverOverrides](instance0)
 	if overrides.LookupByNameWithFlagsFinish == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ResolverOverrides.LookupByNameWithFlagsFinish, got none")
 	}
@@ -5022,7 +5022,7 @@ func _gotk4_gio2_ResolverClass_lookup_by_name_with_flags_finish(arg0 *C.GResolve
 //export _gotk4_gio2_ResolverClass_lookup_records
 func _gotk4_gio2_ResolverClass_lookup_records(arg0 *C.GResolver, arg1 *C.gchar, arg2 C.GResolverRecordType, arg3 *C.GCancellable, _cerr **C.GError) (cret *C.GList) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ResolverOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ResolverOverrides](instance0)
 	if overrides.LookupRecords == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ResolverOverrides.LookupRecords, got none")
 	}
@@ -5058,7 +5058,7 @@ func _gotk4_gio2_ResolverClass_lookup_records(arg0 *C.GResolver, arg1 *C.gchar, 
 //export _gotk4_gio2_ResolverClass_lookup_records_finish
 func _gotk4_gio2_ResolverClass_lookup_records_finish(arg0 *C.GResolver, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GList) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ResolverOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ResolverOverrides](instance0)
 	if overrides.LookupRecordsFinish == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ResolverOverrides.LookupRecordsFinish, got none")
 	}
@@ -5104,7 +5104,7 @@ func _gotk4_gio2_ResolverClass_lookup_records_finish(arg0 *C.GResolver, arg1 *C.
 //export _gotk4_gio2_ResolverClass_lookup_service_finish
 func _gotk4_gio2_ResolverClass_lookup_service_finish(arg0 *C.GResolver, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GList) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ResolverOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ResolverOverrides](instance0)
 	if overrides.LookupServiceFinish == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ResolverOverrides.LookupServiceFinish, got none")
 	}
@@ -5151,7 +5151,7 @@ func _gotk4_gio2_ResolverClass_lookup_service_finish(arg0 *C.GResolver, arg1 *C.
 //export _gotk4_gio2_ResolverClass_reload
 func _gotk4_gio2_ResolverClass_reload(arg0 *C.GResolver) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ResolverOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ResolverOverrides](instance0)
 	if overrides.Reload == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ResolverOverrides.Reload, got none")
 	}
@@ -5178,7 +5178,7 @@ func _gotk4_gio2_Resolver_ConnectReload(arg0 C.gpointer, arg1 C.guintptr) {
 //export _gotk4_gio2_SettingsClass_change_event
 func _gotk4_gio2_SettingsClass_change_event(arg0 *C.GSettings, arg1 *C.GQuark, arg2 C.gint) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[SettingsOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[SettingsOverrides](instance0)
 	if overrides.ChangeEvent == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected SettingsOverrides.ChangeEvent, got none")
 	}
@@ -5203,7 +5203,7 @@ func _gotk4_gio2_SettingsClass_change_event(arg0 *C.GSettings, arg1 *C.GQuark, a
 //export _gotk4_gio2_SettingsClass_changed
 func _gotk4_gio2_SettingsClass_changed(arg0 *C.GSettings, arg1 *C.gchar) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[SettingsOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[SettingsOverrides](instance0)
 	if overrides.Changed == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected SettingsOverrides.Changed, got none")
 	}
@@ -5218,7 +5218,7 @@ func _gotk4_gio2_SettingsClass_changed(arg0 *C.GSettings, arg1 *C.gchar) {
 //export _gotk4_gio2_SettingsClass_writable_change_event
 func _gotk4_gio2_SettingsClass_writable_change_event(arg0 *C.GSettings, arg1 C.GQuark) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[SettingsOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[SettingsOverrides](instance0)
 	if overrides.WritableChangeEvent == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected SettingsOverrides.WritableChangeEvent, got none")
 	}
@@ -5241,7 +5241,7 @@ func _gotk4_gio2_SettingsClass_writable_change_event(arg0 *C.GSettings, arg1 C.G
 //export _gotk4_gio2_SettingsClass_writable_changed
 func _gotk4_gio2_SettingsClass_writable_changed(arg0 *C.GSettings, arg1 *C.gchar) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[SettingsOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[SettingsOverrides](instance0)
 	if overrides.WritableChanged == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected SettingsOverrides.WritableChanged, got none")
 	}
@@ -5411,7 +5411,7 @@ func _gotk4_gio2_SimpleAction_ConnectChangeState(arg0 C.gpointer, arg1 *C.GVaria
 //export _gotk4_gio2_SocketAddressClass_get_family
 func _gotk4_gio2_SocketAddressClass_get_family(arg0 *C.GSocketAddress) (cret C.GSocketFamily) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[SocketAddressOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[SocketAddressOverrides](instance0)
 	if overrides.Family == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected SocketAddressOverrides.Family, got none")
 	}
@@ -5428,7 +5428,7 @@ func _gotk4_gio2_SocketAddressClass_get_family(arg0 *C.GSocketAddress) (cret C.G
 //export _gotk4_gio2_SocketAddressClass_get_native_size
 func _gotk4_gio2_SocketAddressClass_get_native_size(arg0 *C.GSocketAddress) (cret C.gssize) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[SocketAddressOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[SocketAddressOverrides](instance0)
 	if overrides.NativeSize == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected SocketAddressOverrides.NativeSize, got none")
 	}
@@ -5445,7 +5445,7 @@ func _gotk4_gio2_SocketAddressClass_get_native_size(arg0 *C.GSocketAddress) (cre
 //export _gotk4_gio2_SocketAddressClass_to_native
 func _gotk4_gio2_SocketAddressClass_to_native(arg0 *C.GSocketAddress, arg1 C.gpointer, arg2 C.gsize, _cerr **C.GError) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[SocketAddressOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[SocketAddressOverrides](instance0)
 	if overrides.ToNative == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected SocketAddressOverrides.ToNative, got none")
 	}
@@ -5470,7 +5470,7 @@ func _gotk4_gio2_SocketAddressClass_to_native(arg0 *C.GSocketAddress, arg1 C.gpo
 //export _gotk4_gio2_SocketAddressEnumeratorClass_next
 func _gotk4_gio2_SocketAddressEnumeratorClass_next(arg0 *C.GSocketAddressEnumerator, arg1 *C.GCancellable, _cerr **C.GError) (cret *C.GSocketAddress) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[SocketAddressEnumeratorOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[SocketAddressEnumeratorOverrides](instance0)
 	if overrides.Next == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected SocketAddressEnumeratorOverrides.Next, got none")
 	}
@@ -5500,7 +5500,7 @@ func _gotk4_gio2_SocketAddressEnumeratorClass_next(arg0 *C.GSocketAddressEnumera
 //export _gotk4_gio2_SocketAddressEnumeratorClass_next_finish
 func _gotk4_gio2_SocketAddressEnumeratorClass_next_finish(arg0 *C.GSocketAddressEnumerator, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GSocketAddress) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[SocketAddressEnumeratorOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[SocketAddressEnumeratorOverrides](instance0)
 	if overrides.NextFinish == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected SocketAddressEnumeratorOverrides.NextFinish, got none")
 	}
@@ -5544,7 +5544,7 @@ func _gotk4_gio2_SocketAddressEnumeratorClass_next_finish(arg0 *C.GSocketAddress
 //export _gotk4_gio2_SocketClientClass_event
 func _gotk4_gio2_SocketClientClass_event(arg0 *C.GSocketClient, arg1 C.GSocketClientEvent, arg2 *C.GSocketConnectable, arg3 *C.GIOStream) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[SocketClientOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[SocketClientOverrides](instance0)
 	if overrides.Event == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected SocketClientOverrides.Event, got none")
 	}
@@ -5650,7 +5650,7 @@ func _gotk4_gio2_SocketClient_ConnectEvent(arg0 C.gpointer, arg1 C.GSocketClient
 //export _gotk4_gio2_SocketControlMessageClass_get_level
 func _gotk4_gio2_SocketControlMessageClass_get_level(arg0 *C.GSocketControlMessage) (cret C.int) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[SocketControlMessageOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[SocketControlMessageOverrides](instance0)
 	if overrides.Level == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected SocketControlMessageOverrides.Level, got none")
 	}
@@ -5667,7 +5667,7 @@ func _gotk4_gio2_SocketControlMessageClass_get_level(arg0 *C.GSocketControlMessa
 //export _gotk4_gio2_SocketControlMessageClass_get_size
 func _gotk4_gio2_SocketControlMessageClass_get_size(arg0 *C.GSocketControlMessage) (cret C.gsize) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[SocketControlMessageOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[SocketControlMessageOverrides](instance0)
 	if overrides.Size == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected SocketControlMessageOverrides.Size, got none")
 	}
@@ -5684,7 +5684,7 @@ func _gotk4_gio2_SocketControlMessageClass_get_size(arg0 *C.GSocketControlMessag
 //export _gotk4_gio2_SocketControlMessageClass_get_type
 func _gotk4_gio2_SocketControlMessageClass_get_type(arg0 *C.GSocketControlMessage) (cret C.int) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[SocketControlMessageOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[SocketControlMessageOverrides](instance0)
 	if overrides.Type == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected SocketControlMessageOverrides.Type, got none")
 	}
@@ -5701,7 +5701,7 @@ func _gotk4_gio2_SocketControlMessageClass_get_type(arg0 *C.GSocketControlMessag
 //export _gotk4_gio2_SocketControlMessageClass_serialize
 func _gotk4_gio2_SocketControlMessageClass_serialize(arg0 *C.GSocketControlMessage, arg1 C.gpointer) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[SocketControlMessageOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[SocketControlMessageOverrides](instance0)
 	if overrides.Serialize == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected SocketControlMessageOverrides.Serialize, got none")
 	}
@@ -5716,7 +5716,7 @@ func _gotk4_gio2_SocketControlMessageClass_serialize(arg0 *C.GSocketControlMessa
 //export _gotk4_gio2_SocketListenerClass_changed
 func _gotk4_gio2_SocketListenerClass_changed(arg0 *C.GSocketListener) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[SocketListenerOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[SocketListenerOverrides](instance0)
 	if overrides.Changed == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected SocketListenerOverrides.Changed, got none")
 	}
@@ -5727,7 +5727,7 @@ func _gotk4_gio2_SocketListenerClass_changed(arg0 *C.GSocketListener) {
 //export _gotk4_gio2_SocketListenerClass_event
 func _gotk4_gio2_SocketListenerClass_event(arg0 *C.GSocketListener, arg1 C.GSocketListenerEvent, arg2 *C.GSocket) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[SocketListenerOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[SocketListenerOverrides](instance0)
 	if overrides.Event == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected SocketListenerOverrides.Event, got none")
 	}
@@ -5766,7 +5766,7 @@ func _gotk4_gio2_SocketListener_ConnectEvent(arg0 C.gpointer, arg1 C.GSocketList
 //export _gotk4_gio2_SocketServiceClass_incoming
 func _gotk4_gio2_SocketServiceClass_incoming(arg0 *C.GSocketService, arg1 *C.GSocketConnection, arg2 *C.GObject) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[SocketServiceOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[SocketServiceOverrides](instance0)
 	if overrides.Incoming == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected SocketServiceOverrides.Incoming, got none")
 	}
@@ -5823,7 +5823,7 @@ func _gotk4_gio2_SocketService_ConnectIncoming(arg0 C.gpointer, arg1 *C.GSocketC
 //export _gotk4_gio2_ThreadedSocketServiceClass_run
 func _gotk4_gio2_ThreadedSocketServiceClass_run(arg0 *C.GThreadedSocketService, arg1 *C.GSocketConnection, arg2 *C.GObject) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[ThreadedSocketServiceOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[ThreadedSocketServiceOverrides](instance0)
 	if overrides.Run == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ThreadedSocketServiceOverrides.Run, got none")
 	}
@@ -5880,7 +5880,7 @@ func _gotk4_gio2_ThreadedSocketService_ConnectRun(arg0 C.gpointer, arg1 *C.GSock
 //export _gotk4_gio2_TlsCertificateClass_verify
 func _gotk4_gio2_TlsCertificateClass_verify(arg0 *C.GTlsCertificate, arg1 *C.GSocketConnectable, arg2 *C.GTlsCertificate) (cret C.GTlsCertificateFlags) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[TLSCertificateOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[TLSCertificateOverrides](instance0)
 	if overrides.Verify == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TLSCertificateOverrides.Verify, got none")
 	}
@@ -5933,7 +5933,7 @@ func _gotk4_gio2_TlsCertificateClass_verify(arg0 *C.GTlsCertificate, arg1 *C.GSo
 //export _gotk4_gio2_TlsConnectionClass_accept_certificate
 func _gotk4_gio2_TlsConnectionClass_accept_certificate(arg0 *C.GTlsConnection, arg1 *C.GTlsCertificate, arg2 C.GTlsCertificateFlags) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[TLSConnectionOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[TLSConnectionOverrides](instance0)
 	if overrides.AcceptCertificate == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TLSConnectionOverrides.AcceptCertificate, got none")
 	}
@@ -5974,7 +5974,7 @@ func _gotk4_gio2_TlsConnectionClass_accept_certificate(arg0 *C.GTlsConnection, a
 //export _gotk4_gio2_TlsConnectionClass_get_binding_data
 func _gotk4_gio2_TlsConnectionClass_get_binding_data(arg0 *C.GTlsConnection, arg1 C.GTlsChannelBindingType, arg2 *C.GByteArray, _cerr **C.GError) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[TLSConnectionOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[TLSConnectionOverrides](instance0)
 	if overrides.BindingData == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TLSConnectionOverrides.BindingData, got none")
 	}
@@ -6000,7 +6000,7 @@ func _gotk4_gio2_TlsConnectionClass_get_binding_data(arg0 *C.GTlsConnection, arg
 //export _gotk4_gio2_TlsConnectionClass_get_negotiated_protocol
 func _gotk4_gio2_TlsConnectionClass_get_negotiated_protocol(arg0 *C.GTlsConnection) (cret *C.gchar) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[TLSConnectionOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[TLSConnectionOverrides](instance0)
 	if overrides.NegotiatedProtocol == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TLSConnectionOverrides.NegotiatedProtocol, got none")
 	}
@@ -6020,7 +6020,7 @@ func _gotk4_gio2_TlsConnectionClass_get_negotiated_protocol(arg0 *C.GTlsConnecti
 //export _gotk4_gio2_TlsConnectionClass_handshake
 func _gotk4_gio2_TlsConnectionClass_handshake(arg0 *C.GTlsConnection, arg1 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[TLSConnectionOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[TLSConnectionOverrides](instance0)
 	if overrides.Handshake == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TLSConnectionOverrides.Handshake, got none")
 	}
@@ -6045,7 +6045,7 @@ func _gotk4_gio2_TlsConnectionClass_handshake(arg0 *C.GTlsConnection, arg1 *C.GC
 //export _gotk4_gio2_TlsConnectionClass_handshake_finish
 func _gotk4_gio2_TlsConnectionClass_handshake_finish(arg0 *C.GTlsConnection, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[TLSConnectionOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[TLSConnectionOverrides](instance0)
 	if overrides.HandshakeFinish == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TLSConnectionOverrides.HandshakeFinish, got none")
 	}
@@ -6130,7 +6130,7 @@ func _gotk4_gio2_TlsConnection_ConnectAcceptCertificate(arg0 C.gpointer, arg1 *C
 //export _gotk4_gio2_TlsDatabaseClass_create_certificate_handle
 func _gotk4_gio2_TlsDatabaseClass_create_certificate_handle(arg0 *C.GTlsDatabase, arg1 *C.GTlsCertificate) (cret *C.gchar) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[TLSDatabaseOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[TLSDatabaseOverrides](instance0)
 	if overrides.CreateCertificateHandle == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TLSDatabaseOverrides.CreateCertificateHandle, got none")
 	}
@@ -6169,7 +6169,7 @@ func _gotk4_gio2_TlsDatabaseClass_create_certificate_handle(arg0 *C.GTlsDatabase
 //export _gotk4_gio2_TlsDatabaseClass_lookup_certificate_for_handle
 func _gotk4_gio2_TlsDatabaseClass_lookup_certificate_for_handle(arg0 *C.GTlsDatabase, arg1 *C.gchar, arg2 *C.GTlsInteraction, arg3 C.GTlsDatabaseLookupFlags, arg4 *C.GCancellable, _cerr **C.GError) (cret *C.GTlsCertificate) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[TLSDatabaseOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[TLSDatabaseOverrides](instance0)
 	if overrides.LookupCertificateForHandle == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TLSDatabaseOverrides.LookupCertificateForHandle, got none")
 	}
@@ -6207,7 +6207,7 @@ func _gotk4_gio2_TlsDatabaseClass_lookup_certificate_for_handle(arg0 *C.GTlsData
 //export _gotk4_gio2_TlsDatabaseClass_lookup_certificate_for_handle_finish
 func _gotk4_gio2_TlsDatabaseClass_lookup_certificate_for_handle_finish(arg0 *C.GTlsDatabase, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GTlsCertificate) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[TLSDatabaseOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[TLSDatabaseOverrides](instance0)
 	if overrides.LookupCertificateForHandleFinish == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TLSDatabaseOverrides.LookupCertificateForHandleFinish, got none")
 	}
@@ -6249,7 +6249,7 @@ func _gotk4_gio2_TlsDatabaseClass_lookup_certificate_for_handle_finish(arg0 *C.G
 //export _gotk4_gio2_TlsDatabaseClass_lookup_certificate_issuer
 func _gotk4_gio2_TlsDatabaseClass_lookup_certificate_issuer(arg0 *C.GTlsDatabase, arg1 *C.GTlsCertificate, arg2 *C.GTlsInteraction, arg3 C.GTlsDatabaseLookupFlags, arg4 *C.GCancellable, _cerr **C.GError) (cret *C.GTlsCertificate) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[TLSDatabaseOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[TLSDatabaseOverrides](instance0)
 	if overrides.LookupCertificateIssuer == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TLSDatabaseOverrides.LookupCertificateIssuer, got none")
 	}
@@ -6301,7 +6301,7 @@ func _gotk4_gio2_TlsDatabaseClass_lookup_certificate_issuer(arg0 *C.GTlsDatabase
 //export _gotk4_gio2_TlsDatabaseClass_lookup_certificate_issuer_finish
 func _gotk4_gio2_TlsDatabaseClass_lookup_certificate_issuer_finish(arg0 *C.GTlsDatabase, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GTlsCertificate) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[TLSDatabaseOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[TLSDatabaseOverrides](instance0)
 	if overrides.LookupCertificateIssuerFinish == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TLSDatabaseOverrides.LookupCertificateIssuerFinish, got none")
 	}
@@ -6343,7 +6343,7 @@ func _gotk4_gio2_TlsDatabaseClass_lookup_certificate_issuer_finish(arg0 *C.GTlsD
 //export _gotk4_gio2_TlsDatabaseClass_lookup_certificates_issued_by
 func _gotk4_gio2_TlsDatabaseClass_lookup_certificates_issued_by(arg0 *C.GTlsDatabase, arg1 *C.GByteArray, arg2 *C.GTlsInteraction, arg3 C.GTlsDatabaseLookupFlags, arg4 *C.GCancellable, _cerr **C.GError) (cret *C.GList) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[TLSDatabaseOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[TLSDatabaseOverrides](instance0)
 	if overrides.LookupCertificatesIssuedBy == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TLSDatabaseOverrides.LookupCertificatesIssuedBy, got none")
 	}
@@ -6385,7 +6385,7 @@ func _gotk4_gio2_TlsDatabaseClass_lookup_certificates_issued_by(arg0 *C.GTlsData
 //export _gotk4_gio2_TlsDatabaseClass_lookup_certificates_issued_by_finish
 func _gotk4_gio2_TlsDatabaseClass_lookup_certificates_issued_by_finish(arg0 *C.GTlsDatabase, arg1 *C.GAsyncResult, _cerr **C.GError) (cret *C.GList) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[TLSDatabaseOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[TLSDatabaseOverrides](instance0)
 	if overrides.LookupCertificatesIssuedByFinish == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TLSDatabaseOverrides.LookupCertificatesIssuedByFinish, got none")
 	}
@@ -6432,7 +6432,7 @@ func _gotk4_gio2_TlsDatabaseClass_lookup_certificates_issued_by_finish(arg0 *C.G
 //export _gotk4_gio2_TlsDatabaseClass_verify_chain
 func _gotk4_gio2_TlsDatabaseClass_verify_chain(arg0 *C.GTlsDatabase, arg1 *C.GTlsCertificate, arg2 *C.gchar, arg3 *C.GSocketConnectable, arg4 *C.GTlsInteraction, arg5 C.GTlsDatabaseVerifyFlags, arg6 *C.GCancellable, _cerr **C.GError) (cret C.GTlsCertificateFlags) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[TLSDatabaseOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[TLSDatabaseOverrides](instance0)
 	if overrides.VerifyChain == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TLSDatabaseOverrides.VerifyChain, got none")
 	}
@@ -6502,7 +6502,7 @@ func _gotk4_gio2_TlsDatabaseClass_verify_chain(arg0 *C.GTlsDatabase, arg1 *C.GTl
 //export _gotk4_gio2_TlsDatabaseClass_verify_chain_finish
 func _gotk4_gio2_TlsDatabaseClass_verify_chain_finish(arg0 *C.GTlsDatabase, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.GTlsCertificateFlags) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[TLSDatabaseOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[TLSDatabaseOverrides](instance0)
 	if overrides.VerifyChainFinish == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TLSDatabaseOverrides.VerifyChainFinish, got none")
 	}
@@ -6543,7 +6543,7 @@ func _gotk4_gio2_TlsDatabaseClass_verify_chain_finish(arg0 *C.GTlsDatabase, arg1
 //export _gotk4_gio2_TlsInteractionClass_ask_password
 func _gotk4_gio2_TlsInteractionClass_ask_password(arg0 *C.GTlsInteraction, arg1 *C.GTlsPassword, arg2 *C.GCancellable, _cerr **C.GError) (cret C.GTlsInteractionResult) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[TLSInteractionOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[TLSInteractionOverrides](instance0)
 	if overrides.AskPassword == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TLSInteractionOverrides.AskPassword, got none")
 	}
@@ -6572,7 +6572,7 @@ func _gotk4_gio2_TlsInteractionClass_ask_password(arg0 *C.GTlsInteraction, arg1 
 //export _gotk4_gio2_TlsInteractionClass_ask_password_finish
 func _gotk4_gio2_TlsInteractionClass_ask_password_finish(arg0 *C.GTlsInteraction, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.GTlsInteractionResult) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[TLSInteractionOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[TLSInteractionOverrides](instance0)
 	if overrides.AskPasswordFinish == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TLSInteractionOverrides.AskPasswordFinish, got none")
 	}
@@ -6613,7 +6613,7 @@ func _gotk4_gio2_TlsInteractionClass_ask_password_finish(arg0 *C.GTlsInteraction
 //export _gotk4_gio2_TlsInteractionClass_request_certificate
 func _gotk4_gio2_TlsInteractionClass_request_certificate(arg0 *C.GTlsInteraction, arg1 *C.GTlsConnection, arg2 C.GTlsCertificateRequestFlags, arg3 *C.GCancellable, _cerr **C.GError) (cret C.GTlsInteractionResult) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[TLSInteractionOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[TLSInteractionOverrides](instance0)
 	if overrides.RequestCertificate == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TLSInteractionOverrides.RequestCertificate, got none")
 	}
@@ -6660,7 +6660,7 @@ func _gotk4_gio2_TlsInteractionClass_request_certificate(arg0 *C.GTlsInteraction
 //export _gotk4_gio2_TlsInteractionClass_request_certificate_finish
 func _gotk4_gio2_TlsInteractionClass_request_certificate_finish(arg0 *C.GTlsInteraction, arg1 *C.GAsyncResult, _cerr **C.GError) (cret C.GTlsInteractionResult) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[TLSInteractionOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[TLSInteractionOverrides](instance0)
 	if overrides.RequestCertificateFinish == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TLSInteractionOverrides.RequestCertificateFinish, got none")
 	}
@@ -6701,7 +6701,7 @@ func _gotk4_gio2_TlsInteractionClass_request_certificate_finish(arg0 *C.GTlsInte
 //export _gotk4_gio2_TlsPasswordClass_get_default_warning
 func _gotk4_gio2_TlsPasswordClass_get_default_warning(arg0 *C.GTlsPassword) (cret *C.gchar) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[TLSPasswordOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[TLSPasswordOverrides](instance0)
 	if overrides.DefaultWarning == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TLSPasswordOverrides.DefaultWarning, got none")
 	}
@@ -6719,7 +6719,7 @@ func _gotk4_gio2_TlsPasswordClass_get_default_warning(arg0 *C.GTlsPassword) (cre
 //export _gotk4_gio2_TlsPasswordClass_get_value
 func _gotk4_gio2_TlsPasswordClass_get_value(arg0 *C.GTlsPassword, arg1 *C.gsize) (cret *C.guchar) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[TLSPasswordOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[TLSPasswordOverrides](instance0)
 	if overrides.Value == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TLSPasswordOverrides.Value, got none")
 	}
@@ -6739,7 +6739,7 @@ func _gotk4_gio2_TlsPasswordClass_get_value(arg0 *C.GTlsPassword, arg1 *C.gsize)
 //export _gotk4_gio2_VfsClass_add_writable_namespaces
 func _gotk4_gio2_VfsClass_add_writable_namespaces(arg0 *C.GVfs, arg1 *C.GFileAttributeInfoList) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[VFSOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[VFSOverrides](instance0)
 	if overrides.AddWritableNamespaces == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected VFSOverrides.AddWritableNamespaces, got none")
 	}
@@ -6761,7 +6761,7 @@ func _gotk4_gio2_VfsClass_add_writable_namespaces(arg0 *C.GVfs, arg1 *C.GFileAtt
 //export _gotk4_gio2_VfsClass_get_file_for_path
 func _gotk4_gio2_VfsClass_get_file_for_path(arg0 *C.GVfs, arg1 *C.char) (cret *C.GFile) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[VFSOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[VFSOverrides](instance0)
 	if overrides.FileForPath == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected VFSOverrides.FileForPath, got none")
 	}
@@ -6783,7 +6783,7 @@ func _gotk4_gio2_VfsClass_get_file_for_path(arg0 *C.GVfs, arg1 *C.char) (cret *C
 //export _gotk4_gio2_VfsClass_get_file_for_uri
 func _gotk4_gio2_VfsClass_get_file_for_uri(arg0 *C.GVfs, arg1 *C.char) (cret *C.GFile) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[VFSOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[VFSOverrides](instance0)
 	if overrides.FileForURI == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected VFSOverrides.FileForURI, got none")
 	}
@@ -6805,7 +6805,7 @@ func _gotk4_gio2_VfsClass_get_file_for_uri(arg0 *C.GVfs, arg1 *C.char) (cret *C.
 //export _gotk4_gio2_VfsClass_get_supported_uri_schemes
 func _gotk4_gio2_VfsClass_get_supported_uri_schemes(arg0 *C.GVfs) (cret **C.gchar) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[VFSOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[VFSOverrides](instance0)
 	if overrides.SupportedURISchemes == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected VFSOverrides.SupportedURISchemes, got none")
 	}
@@ -6834,7 +6834,7 @@ func _gotk4_gio2_VfsClass_get_supported_uri_schemes(arg0 *C.GVfs) (cret **C.gcha
 //export _gotk4_gio2_VfsClass_is_active
 func _gotk4_gio2_VfsClass_is_active(arg0 *C.GVfs) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[VFSOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[VFSOverrides](instance0)
 	if overrides.IsActive == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected VFSOverrides.IsActive, got none")
 	}
@@ -6853,7 +6853,7 @@ func _gotk4_gio2_VfsClass_is_active(arg0 *C.GVfs) (cret C.gboolean) {
 //export _gotk4_gio2_VfsClass_local_file_moved
 func _gotk4_gio2_VfsClass_local_file_moved(arg0 *C.GVfs, arg1 *C.char, arg2 *C.char) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[VFSOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[VFSOverrides](instance0)
 	if overrides.LocalFileMoved == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected VFSOverrides.LocalFileMoved, got none")
 	}
@@ -6870,7 +6870,7 @@ func _gotk4_gio2_VfsClass_local_file_moved(arg0 *C.GVfs, arg1 *C.char, arg2 *C.c
 //export _gotk4_gio2_VfsClass_local_file_removed
 func _gotk4_gio2_VfsClass_local_file_removed(arg0 *C.GVfs, arg1 *C.char) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[VFSOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[VFSOverrides](instance0)
 	if overrides.LocalFileRemoved == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected VFSOverrides.LocalFileRemoved, got none")
 	}
@@ -6885,7 +6885,7 @@ func _gotk4_gio2_VfsClass_local_file_removed(arg0 *C.GVfs, arg1 *C.char) {
 //export _gotk4_gio2_VfsClass_local_file_set_attributes
 func _gotk4_gio2_VfsClass_local_file_set_attributes(arg0 *C.GVfs, arg1 *C.char, arg2 *C.GFileInfo, arg3 C.GFileQueryInfoFlags, arg4 *C.GCancellable, _cerr **C.GError) (cret C.gboolean) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[VFSOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[VFSOverrides](instance0)
 	if overrides.LocalFileSetAttributes == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected VFSOverrides.LocalFileSetAttributes, got none")
 	}
@@ -6916,7 +6916,7 @@ func _gotk4_gio2_VfsClass_local_file_set_attributes(arg0 *C.GVfs, arg1 *C.char, 
 //export _gotk4_gio2_VfsClass_parse_name
 func _gotk4_gio2_VfsClass_parse_name(arg0 *C.GVfs, arg1 *C.char) (cret *C.GFile) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[VFSOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[VFSOverrides](instance0)
 	if overrides.ParseName == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected VFSOverrides.ParseName, got none")
 	}
@@ -6938,7 +6938,7 @@ func _gotk4_gio2_VfsClass_parse_name(arg0 *C.GVfs, arg1 *C.char) (cret *C.GFile)
 //export _gotk4_gio2_VolumeMonitorClass_drive_changed
 func _gotk4_gio2_VolumeMonitorClass_drive_changed(arg0 *C.GVolumeMonitor, arg1 *C.GDrive) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[VolumeMonitorOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[VolumeMonitorOverrides](instance0)
 	if overrides.DriveChanged == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected VolumeMonitorOverrides.DriveChanged, got none")
 	}
@@ -6969,7 +6969,7 @@ func _gotk4_gio2_VolumeMonitorClass_drive_changed(arg0 *C.GVolumeMonitor, arg1 *
 //export _gotk4_gio2_VolumeMonitorClass_drive_connected
 func _gotk4_gio2_VolumeMonitorClass_drive_connected(arg0 *C.GVolumeMonitor, arg1 *C.GDrive) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[VolumeMonitorOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[VolumeMonitorOverrides](instance0)
 	if overrides.DriveConnected == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected VolumeMonitorOverrides.DriveConnected, got none")
 	}
@@ -7000,7 +7000,7 @@ func _gotk4_gio2_VolumeMonitorClass_drive_connected(arg0 *C.GVolumeMonitor, arg1
 //export _gotk4_gio2_VolumeMonitorClass_drive_disconnected
 func _gotk4_gio2_VolumeMonitorClass_drive_disconnected(arg0 *C.GVolumeMonitor, arg1 *C.GDrive) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[VolumeMonitorOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[VolumeMonitorOverrides](instance0)
 	if overrides.DriveDisconnected == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected VolumeMonitorOverrides.DriveDisconnected, got none")
 	}
@@ -7031,7 +7031,7 @@ func _gotk4_gio2_VolumeMonitorClass_drive_disconnected(arg0 *C.GVolumeMonitor, a
 //export _gotk4_gio2_VolumeMonitorClass_drive_eject_button
 func _gotk4_gio2_VolumeMonitorClass_drive_eject_button(arg0 *C.GVolumeMonitor, arg1 *C.GDrive) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[VolumeMonitorOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[VolumeMonitorOverrides](instance0)
 	if overrides.DriveEjectButton == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected VolumeMonitorOverrides.DriveEjectButton, got none")
 	}
@@ -7062,7 +7062,7 @@ func _gotk4_gio2_VolumeMonitorClass_drive_eject_button(arg0 *C.GVolumeMonitor, a
 //export _gotk4_gio2_VolumeMonitorClass_drive_stop_button
 func _gotk4_gio2_VolumeMonitorClass_drive_stop_button(arg0 *C.GVolumeMonitor, arg1 *C.GDrive) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[VolumeMonitorOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[VolumeMonitorOverrides](instance0)
 	if overrides.DriveStopButton == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected VolumeMonitorOverrides.DriveStopButton, got none")
 	}
@@ -7093,7 +7093,7 @@ func _gotk4_gio2_VolumeMonitorClass_drive_stop_button(arg0 *C.GVolumeMonitor, ar
 //export _gotk4_gio2_VolumeMonitorClass_get_connected_drives
 func _gotk4_gio2_VolumeMonitorClass_get_connected_drives(arg0 *C.GVolumeMonitor) (cret *C.GList) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[VolumeMonitorOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[VolumeMonitorOverrides](instance0)
 	if overrides.ConnectedDrives == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected VolumeMonitorOverrides.ConnectedDrives, got none")
 	}
@@ -7116,7 +7116,7 @@ func _gotk4_gio2_VolumeMonitorClass_get_connected_drives(arg0 *C.GVolumeMonitor)
 //export _gotk4_gio2_VolumeMonitorClass_get_mount_for_uuid
 func _gotk4_gio2_VolumeMonitorClass_get_mount_for_uuid(arg0 *C.GVolumeMonitor, arg1 *C.char) (cret *C.GMount) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[VolumeMonitorOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[VolumeMonitorOverrides](instance0)
 	if overrides.MountForUUID == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected VolumeMonitorOverrides.MountForUUID, got none")
 	}
@@ -7140,7 +7140,7 @@ func _gotk4_gio2_VolumeMonitorClass_get_mount_for_uuid(arg0 *C.GVolumeMonitor, a
 //export _gotk4_gio2_VolumeMonitorClass_get_mounts
 func _gotk4_gio2_VolumeMonitorClass_get_mounts(arg0 *C.GVolumeMonitor) (cret *C.GList) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[VolumeMonitorOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[VolumeMonitorOverrides](instance0)
 	if overrides.Mounts == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected VolumeMonitorOverrides.Mounts, got none")
 	}
@@ -7163,7 +7163,7 @@ func _gotk4_gio2_VolumeMonitorClass_get_mounts(arg0 *C.GVolumeMonitor) (cret *C.
 //export _gotk4_gio2_VolumeMonitorClass_get_volume_for_uuid
 func _gotk4_gio2_VolumeMonitorClass_get_volume_for_uuid(arg0 *C.GVolumeMonitor, arg1 *C.char) (cret *C.GVolume) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[VolumeMonitorOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[VolumeMonitorOverrides](instance0)
 	if overrides.VolumeForUUID == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected VolumeMonitorOverrides.VolumeForUUID, got none")
 	}
@@ -7187,7 +7187,7 @@ func _gotk4_gio2_VolumeMonitorClass_get_volume_for_uuid(arg0 *C.GVolumeMonitor, 
 //export _gotk4_gio2_VolumeMonitorClass_get_volumes
 func _gotk4_gio2_VolumeMonitorClass_get_volumes(arg0 *C.GVolumeMonitor) (cret *C.GList) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[VolumeMonitorOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[VolumeMonitorOverrides](instance0)
 	if overrides.Volumes == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected VolumeMonitorOverrides.Volumes, got none")
 	}
@@ -7210,7 +7210,7 @@ func _gotk4_gio2_VolumeMonitorClass_get_volumes(arg0 *C.GVolumeMonitor) (cret *C
 //export _gotk4_gio2_VolumeMonitorClass_mount_added
 func _gotk4_gio2_VolumeMonitorClass_mount_added(arg0 *C.GVolumeMonitor, arg1 *C.GMount) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[VolumeMonitorOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[VolumeMonitorOverrides](instance0)
 	if overrides.MountAdded == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected VolumeMonitorOverrides.MountAdded, got none")
 	}
@@ -7241,7 +7241,7 @@ func _gotk4_gio2_VolumeMonitorClass_mount_added(arg0 *C.GVolumeMonitor, arg1 *C.
 //export _gotk4_gio2_VolumeMonitorClass_mount_changed
 func _gotk4_gio2_VolumeMonitorClass_mount_changed(arg0 *C.GVolumeMonitor, arg1 *C.GMount) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[VolumeMonitorOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[VolumeMonitorOverrides](instance0)
 	if overrides.MountChanged == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected VolumeMonitorOverrides.MountChanged, got none")
 	}
@@ -7272,7 +7272,7 @@ func _gotk4_gio2_VolumeMonitorClass_mount_changed(arg0 *C.GVolumeMonitor, arg1 *
 //export _gotk4_gio2_VolumeMonitorClass_mount_pre_unmount
 func _gotk4_gio2_VolumeMonitorClass_mount_pre_unmount(arg0 *C.GVolumeMonitor, arg1 *C.GMount) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[VolumeMonitorOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[VolumeMonitorOverrides](instance0)
 	if overrides.MountPreUnmount == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected VolumeMonitorOverrides.MountPreUnmount, got none")
 	}
@@ -7303,7 +7303,7 @@ func _gotk4_gio2_VolumeMonitorClass_mount_pre_unmount(arg0 *C.GVolumeMonitor, ar
 //export _gotk4_gio2_VolumeMonitorClass_mount_removed
 func _gotk4_gio2_VolumeMonitorClass_mount_removed(arg0 *C.GVolumeMonitor, arg1 *C.GMount) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[VolumeMonitorOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[VolumeMonitorOverrides](instance0)
 	if overrides.MountRemoved == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected VolumeMonitorOverrides.MountRemoved, got none")
 	}
@@ -7334,7 +7334,7 @@ func _gotk4_gio2_VolumeMonitorClass_mount_removed(arg0 *C.GVolumeMonitor, arg1 *
 //export _gotk4_gio2_VolumeMonitorClass_volume_added
 func _gotk4_gio2_VolumeMonitorClass_volume_added(arg0 *C.GVolumeMonitor, arg1 *C.GVolume) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[VolumeMonitorOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[VolumeMonitorOverrides](instance0)
 	if overrides.VolumeAdded == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected VolumeMonitorOverrides.VolumeAdded, got none")
 	}
@@ -7365,7 +7365,7 @@ func _gotk4_gio2_VolumeMonitorClass_volume_added(arg0 *C.GVolumeMonitor, arg1 *C
 //export _gotk4_gio2_VolumeMonitorClass_volume_changed
 func _gotk4_gio2_VolumeMonitorClass_volume_changed(arg0 *C.GVolumeMonitor, arg1 *C.GVolume) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[VolumeMonitorOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[VolumeMonitorOverrides](instance0)
 	if overrides.VolumeChanged == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected VolumeMonitorOverrides.VolumeChanged, got none")
 	}
@@ -7396,7 +7396,7 @@ func _gotk4_gio2_VolumeMonitorClass_volume_changed(arg0 *C.GVolumeMonitor, arg1 
 //export _gotk4_gio2_VolumeMonitorClass_volume_removed
 func _gotk4_gio2_VolumeMonitorClass_volume_removed(arg0 *C.GVolumeMonitor, arg1 *C.GVolume) {
 	instance0 := coreglib.Take(unsafe.Pointer(arg0))
-	overrides := coreglib.OverridesFromObj[VolumeMonitorOverrides](instance0)
+	overrides := coreglib.OverridesFromGType[VolumeMonitorOverrides](instance0)
 	if overrides.VolumeRemoved == nil {
 		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected VolumeMonitorOverrides.VolumeRemoved, got none")
 	}

@@ -3629,13 +3629,46 @@ type PixbufLoaderOverrides struct {
 }
 
 func defaultPixbufLoaderOverrides(v *PixbufLoader) PixbufLoaderOverrides {
-	return PixbufLoaderOverrides{
-		AreaPrepared: v.areaPrepared,
-		AreaUpdated:  v.areaUpdated,
-		Closed:       v.closed,
-		SizePrepared: v.sizePrepared,
+	var pclass *C.GdkPixbufLoaderClass
+	if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+		if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GTypePixbufLoader)) != C.FALSE {
+			pclass = (*C.GdkPixbufLoaderClass)(parentClass)
+		}
 	}
+
+	overrides := PixbufLoaderOverrides{
+
+		AreaPrepared: noop_PixbufLoader_AreaPrepared,
+		AreaUpdated:  noop_PixbufLoader_AreaUpdated,
+		Closed:       noop_PixbufLoader_Closed,
+		SizePrepared: noop_PixbufLoader_SizePrepared,
+	}
+	if pclass != nil {
+
+		if pclass.area_prepared != nil {
+			overrides.AreaPrepared = v.areaPrepared
+		}
+		if pclass.area_updated != nil {
+			overrides.AreaUpdated = v.areaUpdated
+		}
+		if pclass.closed != nil {
+			overrides.Closed = v.closed
+		}
+		if pclass.size_prepared != nil {
+			overrides.SizePrepared = v.sizePrepared
+		}
+	}
+
+	return overrides
 }
+
+func noop_PixbufLoader_AreaPrepared() {}
+
+func noop_PixbufLoader_AreaUpdated(x, y, width, height int) {}
+
+func noop_PixbufLoader_Closed() {}
+
+func noop_PixbufLoader_SizePrepared(width, height int) {}
 
 // PixbufLoader: incremental image loader.
 //

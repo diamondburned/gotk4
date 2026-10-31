@@ -18,6 +18,127 @@ import (
 // #include <glib-object.h>
 import "C"
 
+//export _gotk4_gdk4_PaintableInterface_get_current_image
+func _gotk4_gdk4_PaintableInterface_get_current_image(arg0 *C.GdkPaintable) (cret *C.GdkPaintable) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[PaintableOverrides](instance0)
+	if overrides.CurrentImage == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected PaintableOverrides.CurrentImage, got none")
+	}
+
+	ret := overrides.CurrentImage()
+
+	var _ *Paintable
+
+	cret = (*C.GdkPaintable)(unsafe.Pointer(coreglib.InternObject(ret).Native()))
+	C.g_object_ref(C.gpointer(coreglib.InternObject(ret).Native()))
+
+	return cret
+}
+
+//export _gotk4_gdk4_PaintableInterface_get_flags
+func _gotk4_gdk4_PaintableInterface_get_flags(arg0 *C.GdkPaintable) (cret C.GdkPaintableFlags) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[PaintableOverrides](instance0)
+	if overrides.Flags == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected PaintableOverrides.Flags, got none")
+	}
+
+	paintableFlags := overrides.Flags()
+
+	var _ PaintableFlags
+
+	cret = C.GdkPaintableFlags(paintableFlags)
+
+	return cret
+}
+
+//export _gotk4_gdk4_PaintableInterface_get_intrinsic_aspect_ratio
+func _gotk4_gdk4_PaintableInterface_get_intrinsic_aspect_ratio(arg0 *C.GdkPaintable) (cret C.double) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[PaintableOverrides](instance0)
+	if overrides.IntrinsicAspectRatio == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected PaintableOverrides.IntrinsicAspectRatio, got none")
+	}
+
+	gdouble := overrides.IntrinsicAspectRatio()
+
+	var _ float64
+
+	cret = C.double(gdouble)
+
+	return cret
+}
+
+//export _gotk4_gdk4_PaintableInterface_get_intrinsic_height
+func _gotk4_gdk4_PaintableInterface_get_intrinsic_height(arg0 *C.GdkPaintable) (cret C.int) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[PaintableOverrides](instance0)
+	if overrides.IntrinsicHeight == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected PaintableOverrides.IntrinsicHeight, got none")
+	}
+
+	gint := overrides.IntrinsicHeight()
+
+	var _ int
+
+	cret = C.int(gint)
+
+	return cret
+}
+
+//export _gotk4_gdk4_PaintableInterface_get_intrinsic_width
+func _gotk4_gdk4_PaintableInterface_get_intrinsic_width(arg0 *C.GdkPaintable) (cret C.int) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[PaintableOverrides](instance0)
+	if overrides.IntrinsicWidth == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected PaintableOverrides.IntrinsicWidth, got none")
+	}
+
+	gint := overrides.IntrinsicWidth()
+
+	var _ int
+
+	cret = C.int(gint)
+
+	return cret
+}
+
+//export _gotk4_gdk4_PaintableInterface_snapshot
+func _gotk4_gdk4_PaintableInterface_snapshot(arg0 *C.GdkPaintable, arg1 *C.GdkSnapshot, arg2 C.double, arg3 C.double) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[PaintableOverrides](instance0)
+	if overrides.Snapshot == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected PaintableOverrides.Snapshot, got none")
+	}
+
+	var _snapshot Snapshotter // out
+	var _width float64        // out
+	var _height float64       // out
+
+	{
+		objptr := unsafe.Pointer(arg1)
+		if objptr == nil {
+			panic("object of type gdk.Snapshotter is nil")
+		}
+
+		object := coreglib.Take(objptr)
+		casted := object.WalkCast(func(obj coreglib.Objector) bool {
+			_, ok := obj.(Snapshotter)
+			return ok
+		})
+		rv, ok := casted.(Snapshotter)
+		if !ok {
+			panic("no marshaler for " + object.TypeFromInstance().String() + " matching gdk.Snapshotter")
+		}
+		_snapshot = rv
+	}
+	_width = float64(arg2)
+	_height = float64(arg3)
+
+	overrides.Snapshot(_snapshot, _width, _height)
+}
+
 //export _gotk4_gdk4_Paintable_ConnectInvalidateContents
 func _gotk4_gdk4_Paintable_ConnectInvalidateContents(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()

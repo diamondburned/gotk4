@@ -14,19 +14,25 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	{{ $wrapper := .Tree.WrapName false }}
 
 	{{ if .GLibTypeStruct }}
-	{{ if .IsClass }}
 	{{ Import . "unsafe" }}
 
+	{{ if .IsClass -}}
 	// {{ .StructName }}Overrides contains methods that are overridable.
+	{{- else -}}
+	// {{ .StructName }}Overrides contains methods that a subclass can implement
+	// for the {{ .StructName }} interface. Methods left nil keep the interface's
+	// default implementation.
+	{{- end }}
 	type {{ .StructName }}Overrides struct {
 		{{ range .GLibTypeStruct.VirtualMethods -}}
 		{{ if $.IsInSameFile . -}}
 		{{- GoDoc .Go 1 TrailingNewLine -}}
-		{{- .Go.Name }} func{{ .Go.Tail }}{{ if .Go.HasReturns }} // optional{{ end }}
+		{{- .Go.Name }} func{{ .Go.Tail }}{{ if or .Go.HasReturns (not $.IsClass) }} // optional{{ end }}
 		{{ end -}}
 		{{ end -}}
 	}
 
+	{{ if .IsClass }}
 	func default{{ .StructName }}Overrides(v *{{ .StructName }}) {{ .StructName }}Overrides {
 		{{- if .GLibTypeStruct.VirtualMethods }}
 		{{- if .IsRuntimeLinkMode }}
@@ -90,16 +96,6 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	{{- end }}
 	{{- end }}
 	{{- end }}
-	{{ else }}
-	// {{ .StructName }}Overrider contains methods that are overridable.
-	type {{ .StructName }}Overrider interface {
-		{{ range .GLibTypeStruct.VirtualMethods -}}
-		{{ if $.IsInSameFile . -}}
-		{{- GoDoc .Go 1 TrailingNewLine -}}
-		{{- .Go.Name }}{{ .Go.Tail }}
-		{{ end -}}
-		{{ end -}}
-	}
 	{{ end }}
 	{{ end }}
 
@@ -214,22 +210,32 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	}
 
 	{{ else }}
-	func ifaceInit{{ .InterfaceName }}(gifacePtr, data C.gpointer) {
-		{{- Import . "unsafe" -}}
+	func init() {
+		coreglib.RegisterInterfaceInfo[{{ .StructName }}Overrides](
+			GType{{ .StructName }},
+			init{{ .GLibTypeStruct.Name }},
+		)
+	}
+
+	func init{{ .GLibTypeStruct.Name }}(giface unsafe.Pointer, overrides {{ .StructName }}Overrides) {
 		{{- if .GLibTypeStruct.VirtualMethods }}
-
-		{{- if .IsRuntimeLinkMode}}
-			iface := girepository.MustFind({{ Quote .Root.Namespace.Name }}, {{ Quote .GLibTypeStruct.Record.Name }})
-			{{- range .GLibTypeStruct.VirtualMethods}}
-			*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(gifacePtr), iface.StructFieldOffset({{ Quote .FieldName }}))) = unsafe.Pointer(C.{{ .C.Name }})
-			{{- end }}
+		{{- if .IsRuntimeLinkMode }}
+			{{- ImportCore . "girepository" -}}
+			ifacet := girepository.MustFind({{ Quote .Root.Namespace.Name }}, {{ Quote .GLibTypeStruct.Record.Name }})
+			{{ range .GLibTypeStruct.VirtualMethods }}
+			if overrides.{{ .Go.Name }} != nil {
+				o := ifacet.StructFieldOffset({{ Quote .FieldName }})
+				*(*unsafe.Pointer)(unsafe.Add(giface, o)) = unsafe.Pointer(C.{{ .C.Name }})
+			}
+			{{ end -}}
 		{{- else }}
-			iface := (*C.{{ .GLibTypeStruct.CType }})(unsafe.Pointer(gifacePtr))
-			{{- range .GLibTypeStruct.VirtualMethods }}
-			iface.{{ CGoField .FieldName }} = (*[0]byte)(C.{{ .C.Name }})
-			{{- end }}
+			iface := (*C.{{ .GLibTypeStruct.CType }})(giface)
+			{{ range .GLibTypeStruct.VirtualMethods }}
+			if overrides.{{ .Go.Name }} != nil {
+				iface.{{ CGoField .FieldName }} = (*[0]byte)(C.{{ .C.Name }})
+			}
+			{{ end }}
 		{{- end }}
-
 		{{- end }}
 	}
 	{{ end }}

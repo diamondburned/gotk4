@@ -5,6 +5,7 @@ package glib
 // #include "glib.go.h"
 //
 // extern void _gotk4_gobject_init_class(gpointer, gpointer);
+// extern void _gotk4_gobject_init_interface(gpointer, gpointer);
 // extern void _gotk4_gobject_init_instance(GTypeInstance*, gpointer);
 // extern void _gotk4_gobject_dispose(GObject*);
 // extern void _gotk4_gobject_constructed(GObject*);
@@ -92,6 +93,7 @@ func rtypeElemV(v any) reflect.Type {
 
 type registerOpts struct {
 	typeOpts   map[*classTypeInfo]registerTypeOpts // nil == currentType
+	ifaceOpts  map[*interfaceTypeInfo]func(Objector) any
 	paramSpecs []*ParamSpec
 	gtypeName  string
 }
@@ -148,22 +150,33 @@ func WithClassInit[ClassT any](f func(ClassT)) RegisterOptsFunc {
 // WithOverrides adds one XOverrides instance into the subclass. The user can
 // use this to override any particular virtual method of any of its parent
 // classes.
+//
+// If OverridesT belongs to an interface, then the subclass implements that
+// interface.
 func WithOverrides[T Objector, OverridesT any](f func(T) OverridesT) RegisterOptsFunc {
 	return func(opts *registerOpts) {
-		opts.wantTypeOpts()
 		rtype := rtypeElem[OverridesT]()
+		override := func(obj Objector) any {
+			v, _ := obj.(T)
+			return f(v)
+		}
+
+		if iface, ok := interfaceOverridesTypes[rtype]; ok {
+			if opts.ifaceOpts == nil {
+				opts.ifaceOpts = make(map[*interfaceTypeInfo]func(Objector) any)
+			}
+			opts.ifaceOpts[iface] = override
+			return
+		}
 
 		ptype, ok := classOverridesTypes[rtype]
 		if !ok {
 			log.Panicf("gotk4: cannot add Overrides func for unknown Overrides type %s", rtype)
-			// ptype = nil
 		}
 
+		opts.wantTypeOpts()
 		topt := opts.typeOpts[ptype]
-		topt.override = func(obj Objector) any {
-			v, _ := obj.(T)
-			return f(v)
-		}
+		topt.override = override
 		opts.typeOpts[ptype] = topt
 	}
 }
@@ -393,7 +406,21 @@ func registerSubclass(rtype reflect.Type, ctor func() Objector, optsFuncs []Regi
 		C.GTypeFlags(0))
 	subclass.gType = Type(gtype)
 
+	for iface := range subclass.opts.ifaceOpts {
+		var ifaceInfo C.GInterfaceInfo
+		ifaceInfo.interface_init = C.GInterfaceInitFunc(C._gotk4_gobject_init_interface)
+		ifaceInfo.interface_data = C.gpointer(gbox.Assign(&subclassInterface{subclass, iface}))
+
+		C.g_type_add_interface_static(gtype, C.GType(iface.GType), &ifaceInfo)
+	}
+
 	return subclass
+}
+
+// subclassInterface is an interface that a subclass implements.
+type subclassInterface struct {
+	subclass *registeredSubclass
+	iface    *interfaceTypeInfo
 }
 
 // TODO: autogenerate this:
@@ -599,7 +626,18 @@ func Overrides[OverridesT any](obj Objector) OverridesT {
 func subclassOverrides[OverridesT any](subclass *registeredSubclass, obj Objector) OverridesT {
 	var z OverridesT
 
-	ptype, ok := classOverridesTypes[rtypeElem[OverridesT]()]
+	rtype := rtypeElem[OverridesT]()
+
+	if iface, ok := interfaceOverridesTypes[rtype]; ok {
+		override := subclass.opts.ifaceOpts[iface]
+		if override == nil {
+			return z
+		}
+		overrides, _ := override(obj).(OverridesT)
+		return overrides
+	}
+
+	ptype, ok := classOverridesTypes[rtype]
 	if !ok {
 		return z
 	}
@@ -752,6 +790,36 @@ func RegisterClassInfo[InstanceT Objector, ClassT, OverridesT any](
 	classOverridesTypes[typeInfo.GoOverridesType] = typeInfo
 }
 
+// interfaceTypeInfo describes an interface that Go subclasses can implement.
+type interfaceTypeInfo struct {
+	GType           Type
+	GoOverridesType reflect.Type
+	// InitInterface sets the virtual methods in overrides into giface, which
+	// is the interface's vtable, e.g. a *GdkPaintableInterface.
+	InitInterface func(giface unsafe.Pointer, overrides any)
+}
+
+var interfaceOverridesTypes = make(map[reflect.Type]*interfaceTypeInfo, 256)
+
+// RegisterInterfaceInfo registers the given interface type info, which lets Go
+// subclasses implement the interface by adding its OverridesT using
+// WithOverrides. This function is NOT thread-safe; only call it in init().
+func RegisterInterfaceInfo[OverridesT any](
+	gtype Type,
+	initFunc func(giface unsafe.Pointer, overrides OverridesT),
+) {
+	typeInfo := &interfaceTypeInfo{
+		GType:           gtype,
+		GoOverridesType: rtypeElem[OverridesT](),
+		InitInterface: func(giface unsafe.Pointer, overridesV any) {
+			overrides, _ := overridesV.(OverridesT)
+			initFunc(giface, overrides)
+		},
+	}
+
+	interfaceOverridesTypes[typeInfo.GoOverridesType] = typeInfo
+}
+
 // registeredGClass binds gclass (which is a *GTypeClassInfo describing XClass
 // structs) to data (which is the ID that gets us a *registeredSubclass).
 // It exists for init_instance.
@@ -848,6 +916,18 @@ func _gotk4_gobject_init_class(gclass, data C.gpointer) {
 			&gParamSpecs[0],
 		)
 	}
+}
+
+//export _gotk4_gobject_init_interface
+func _gotk4_gobject_init_interface(giface, data C.gpointer) {
+	impl := gbox.Get(uintptr(data)).(*subclassInterface)
+
+	// Like init_class, find out which methods are overridden using a blank
+	// instance.
+	val := reflect.New(impl.subclass.goType).Interface().(Objector)
+	overrides := impl.subclass.opts.ifaceOpts[impl.iface](val)
+
+	impl.iface.InitInterface(unsafe.Pointer(giface), overrides)
 }
 
 //export _gotk4_gobject_init_instance

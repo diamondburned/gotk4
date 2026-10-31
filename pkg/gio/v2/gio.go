@@ -50,9 +50,12 @@ import (
 // extern void _gotk4_gio2_VolumeMonitorClass_drive_disconnected(GVolumeMonitor*, GDrive*);
 // extern void _gotk4_gio2_VolumeMonitorClass_drive_connected(GVolumeMonitor*, GDrive*);
 // extern void _gotk4_gio2_VolumeMonitorClass_drive_changed(GVolumeMonitor*, GDrive*);
+// extern void _gotk4_gio2_VolumeIface_removed(GVolume*);
+// extern void _gotk4_gio2_VolumeIface_changed(GVolume*);
 // extern void _gotk4_gio2_VfsClass_local_file_removed(GVfs*, char*);
 // extern void _gotk4_gio2_VfsClass_local_file_moved(GVfs*, char*, char*);
 // extern void _gotk4_gio2_VfsClass_add_writable_namespaces(GVfs*, GFileAttributeInfoList*);
+// extern void _gotk4_gio2_TlsClientConnectionInterface_copy_session_state(GTlsClientConnection*, GTlsClientConnection*);
 // extern void _gotk4_gio2_SocketListener_ConnectEvent(gpointer, GSocketListenerEvent, GSocket*, guintptr);
 // extern void _gotk4_gio2_SocketListenerClass_event(GSocketListener*, GSocketListenerEvent, GSocket*);
 // extern void _gotk4_gio2_SocketListenerClass_changed(GSocketListener*);
@@ -67,7 +70,10 @@ import (
 // extern void _gotk4_gio2_SettingsClass_changed(GSettings*, gchar*);
 // extern void _gotk4_gio2_Resolver_ConnectReload(gpointer, guintptr);
 // extern void _gotk4_gio2_ResolverClass_reload(GResolver*);
+// extern void _gotk4_gio2_RemoteActionGroupInterface_change_action_state_full(GRemoteActionGroup*, gchar*, GVariant*, GVariant*);
+// extern void _gotk4_gio2_RemoteActionGroupInterface_activate_action_full(GRemoteActionGroup*, gchar*, GVariant*, GVariant*);
 // extern void _gotk4_gio2_NetworkMonitor_ConnectNetworkChanged(gpointer, gboolean, guintptr);
+// extern void _gotk4_gio2_NetworkMonitorInterface_network_changed(GNetworkMonitor*, gboolean);
 // extern void _gotk4_gio2_Mount_ConnectUnmounted(gpointer, guintptr);
 // extern void _gotk4_gio2_Mount_ConnectPreUnmount(gpointer, guintptr);
 // extern void _gotk4_gio2_Mount_ConnectChanged(gpointer, guintptr);
@@ -81,19 +87,28 @@ import (
 // extern void _gotk4_gio2_MountOperationClass_ask_question(GMountOperation*, char*, char**);
 // extern void _gotk4_gio2_MountOperationClass_ask_password(GMountOperation*, char*, char*, char*, GAskPasswordFlags);
 // extern void _gotk4_gio2_MountOperationClass_aborted(GMountOperation*);
+// extern void _gotk4_gio2_MountIface_unmounted(GMount*);
+// extern void _gotk4_gio2_MountIface_pre_unmount(GMount*);
+// extern void _gotk4_gio2_MountIface_changed(GMount*);
 // extern void _gotk4_gio2_MenuModel_ConnectItemsChanged(gpointer, gint, gint, gint, guintptr);
 // extern void _gotk4_gio2_MenuModelClass_get_item_links(GMenuModel*, gint, GHashTable**);
 // extern void _gotk4_gio2_MenuModelClass_get_item_attributes(GMenuModel*, gint, GHashTable**);
 // extern void _gotk4_gio2_MemoryMonitor_ConnectLowMemoryWarning(gpointer, GMemoryMonitorWarningLevel, guintptr);
+// extern void _gotk4_gio2_MemoryMonitorInterface_low_memory_warning(GMemoryMonitor*, GMemoryMonitorWarningLevel);
 // extern void _gotk4_gio2_ListModel_ConnectItemsChanged(gpointer, guint, guint, guint, guintptr);
 // extern void _gotk4_gio2_FilenameCompleter_ConnectGotCompletionData(gpointer, guintptr);
 // extern void _gotk4_gio2_FilenameCompleterClass_got_completion_data(GFilenameCompleter*);
 // extern void _gotk4_gio2_FileMonitor_ConnectChanged(gpointer, GFile*, GFile*, GFileMonitorEvent, guintptr);
 // extern void _gotk4_gio2_FileMonitorClass_changed(GFileMonitor*, GFile*, GFile*, GFileMonitorEvent);
+// extern void _gotk4_gio2_DtlsConnectionInterface_set_advertised_protocols(GDtlsConnection*, gchar**);
 // extern void _gotk4_gio2_Drive_ConnectStopButton(gpointer, guintptr);
 // extern void _gotk4_gio2_Drive_ConnectEjectButton(gpointer, guintptr);
 // extern void _gotk4_gio2_Drive_ConnectDisconnected(gpointer, guintptr);
 // extern void _gotk4_gio2_Drive_ConnectChanged(gpointer, guintptr);
+// extern void _gotk4_gio2_DriveIface_stop_button(GDrive*);
+// extern void _gotk4_gio2_DriveIface_eject_button(GDrive*);
+// extern void _gotk4_gio2_DriveIface_disconnected(GDrive*);
+// extern void _gotk4_gio2_DriveIface_changed(GDrive*);
 // extern void _gotk4_gio2_DBusSignalCallback(GDBusConnection*, gchar*, gchar*, gchar*, gchar*, GVariant*, gpointer);
 // extern void _gotk4_gio2_DBusProxy_ConnectGSignal(gpointer, gchar*, gchar*, GVariant*, guintptr);
 // extern void _gotk4_gio2_DBusProxy_ConnectGPropertiesChanged(gpointer, GVariant*, gchar**, guintptr);
@@ -104,11 +119,19 @@ import (
 // extern void _gotk4_gio2_DBusObjectManager_ConnectObjectAdded(gpointer, GDBusObject*, guintptr);
 // extern void _gotk4_gio2_DBusObjectManager_ConnectInterfaceRemoved(gpointer, GDBusObject*, GDBusInterface*, guintptr);
 // extern void _gotk4_gio2_DBusObjectManager_ConnectInterfaceAdded(gpointer, GDBusObject*, GDBusInterface*, guintptr);
+// extern void _gotk4_gio2_DBusObjectManagerIface_object_removed(GDBusObjectManager*, GDBusObject*);
+// extern void _gotk4_gio2_DBusObjectManagerIface_object_added(GDBusObjectManager*, GDBusObject*);
+// extern void _gotk4_gio2_DBusObjectManagerIface_interface_removed(GDBusObjectManager*, GDBusObject*, GDBusInterface*);
+// extern void _gotk4_gio2_DBusObjectManagerIface_interface_added(GDBusObjectManager*, GDBusObject*, GDBusInterface*);
 // extern void _gotk4_gio2_DBusObjectManagerClient_ConnectInterfaceProxySignal(gpointer, GDBusObjectProxy*, GDBusProxy*, gchar*, gchar*, GVariant*, guintptr);
 // extern void _gotk4_gio2_DBusObjectManagerClient_ConnectInterfaceProxyPropertiesChanged(gpointer, GDBusObjectProxy*, GDBusProxy*, GVariant*, gchar**, guintptr);
 // extern void _gotk4_gio2_DBusObjectManagerClientClass_interface_proxy_signal(GDBusObjectManagerClient*, GDBusObjectProxy*, GDBusProxy*, gchar*, gchar*, GVariant*);
+// extern void _gotk4_gio2_DBusObjectIface_interface_removed(GDBusObject*, GDBusInterface*);
+// extern void _gotk4_gio2_DBusObjectIface_interface_added(GDBusObject*, GDBusInterface*);
 // extern void _gotk4_gio2_DBusInterfaceSkeletonClass_flush(GDBusInterfaceSkeleton*);
+// extern void _gotk4_gio2_DBusInterfaceIface_set_object(GDBusInterface*, GDBusObject*);
 // extern void _gotk4_gio2_DBusConnection_ConnectClosed(gpointer, gboolean, GError*, guintptr);
+// extern void _gotk4_gio2_ConverterIface_reset(GConverter*);
 // extern void _gotk4_gio2_Cancellable_ConnectCancelled(gpointer, guintptr);
 // extern void _gotk4_gio2_CancellableClass_cancelled(GCancellable*);
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
@@ -136,15 +159,29 @@ import (
 // extern void _gotk4_gio2_AppLaunchContextClass_launch_started(GAppLaunchContext*, GAppInfo*, GVariant*);
 // extern void _gotk4_gio2_AppLaunchContextClass_launch_failed(GAppLaunchContext*, char*);
 // extern void _gotk4_gio2_AppInfoMonitor_ConnectChanged(gpointer, guintptr);
+// extern void _gotk4_gio2_ActionMapInterface_remove_action(GActionMap*, gchar*);
+// extern void _gotk4_gio2_ActionMapInterface_add_action(GActionMap*, GAction*);
+// extern void _gotk4_gio2_ActionInterface_change_state(GAction*, GVariant*);
+// extern void _gotk4_gio2_ActionInterface_activate(GAction*, GVariant*);
 // extern void _gotk4_gio2_ActionGroup_ConnectActionStateChanged(gpointer, gchar*, GVariant*, guintptr);
 // extern void _gotk4_gio2_ActionGroup_ConnectActionRemoved(gpointer, gchar*, guintptr);
 // extern void _gotk4_gio2_ActionGroup_ConnectActionEnabledChanged(gpointer, gchar*, gboolean, guintptr);
 // extern void _gotk4_gio2_ActionGroup_ConnectActionAdded(gpointer, gchar*, guintptr);
+// extern void _gotk4_gio2_ActionGroupInterface_change_action_state(GActionGroup*, gchar*, GVariant*);
+// extern void _gotk4_gio2_ActionGroupInterface_activate_action(GActionGroup*, gchar*, GVariant*);
+// extern void _gotk4_gio2_ActionGroupInterface_action_state_changed(GActionGroup*, gchar*, GVariant*);
+// extern void _gotk4_gio2_ActionGroupInterface_action_removed(GActionGroup*, gchar*);
+// extern void _gotk4_gio2_ActionGroupInterface_action_enabled_changed(GActionGroup*, gchar*, gboolean);
+// extern void _gotk4_gio2_ActionGroupInterface_action_added(GActionGroup*, gchar*);
 // extern int _gotk4_gio2_SocketControlMessageClass_get_type(GSocketControlMessage*);
 // extern int _gotk4_gio2_SocketControlMessageClass_get_level(GSocketControlMessage*);
 // extern int _gotk4_gio2_ApplicationClass_command_line(GApplication*, GApplicationCommandLine*);
+// extern guint _gotk4_gio2_ListModelInterface_get_n_items(GListModel*);
+// extern guint _gotk4_gio2_IconIface_hash(GIcon*);
+// extern guint _gotk4_gio2_FileIface_hash(GFile*);
 // extern guchar* _gotk4_gio2_TlsPasswordClass_get_value(GTlsPassword*, gsize*);
 // extern gssize _gotk4_gio2_SocketAddressClass_get_native_size(GSocketAddress*);
+// extern gssize _gotk4_gio2_PollableOutputStreamInterface_write_nonblocking(GPollableOutputStream*, void*, gsize, GError**);
 // extern gssize _gotk4_gio2_OutputStreamClass_write_finish(GOutputStream*, GAsyncResult*, GError**);
 // extern gssize _gotk4_gio2_OutputStreamClass_splice_finish(GOutputStream*, GAsyncResult*, GError**);
 // extern gssize _gotk4_gio2_OutputStreamClass_splice(GOutputStream*, GInputStream*, GOutputStreamSpliceFlags, GCancellable*, GError**);
@@ -154,23 +191,47 @@ import (
 // extern gssize _gotk4_gio2_BufferedInputStreamClass_fill_finish(GBufferedInputStream*, GAsyncResult*, GError**);
 // extern gssize _gotk4_gio2_BufferedInputStreamClass_fill(GBufferedInputStream*, gssize, GCancellable*, GError**);
 // extern gsize _gotk4_gio2_SocketControlMessageClass_get_size(GSocketControlMessage*);
+// extern gpointer _gotk4_gio2_ListModelInterface_get_item(GListModel*, guint);
+// extern gpointer _gotk4_gio2_AsyncResultIface_get_user_data(GAsyncResult*);
+// extern goffset _gotk4_gio2_SeekableIface_tell(GSeekable*);
 // extern goffset _gotk4_gio2_FileOutputStreamClass_tell(GFileOutputStream*);
 // extern goffset _gotk4_gio2_FileInputStreamClass_tell(GFileInputStream*);
 // extern goffset _gotk4_gio2_FileIOStreamClass_tell(GFileIOStream*);
 // extern gint _gotk4_glib2_CompareDataFunc(gconstpointer, gconstpointer, gpointer);
 // extern gint _gotk4_gio2_MenuModelClass_get_n_items(GMenuModel*);
+// extern gint _gotk4_gio2_DatagramBasedInterface_send_messages(GDatagramBased*, GOutputMessage*, guint, gint, gint64, GCancellable*, GError**);
+// extern gint _gotk4_gio2_DatagramBasedInterface_receive_messages(GDatagramBased*, GInputMessage*, guint, gint, gint64, GCancellable*, GError**);
 // extern gint _gotk4_gio2_CompareDataFunc(gconstpointer, gconstpointer, gpointer);
 // extern gint _gotk4_gio2_Application_ConnectHandleLocalOptions(gpointer, GVariantDict*, guintptr);
 // extern gint _gotk4_gio2_Application_ConnectCommandLine(gpointer, GApplicationCommandLine*, guintptr);
 // extern gint _gotk4_gio2_ApplicationClass_handle_local_options(GApplication*, GVariantDict*);
 // extern gchar** _gotk4_gio2_VfsClass_get_supported_uri_schemes(GVfs*);
+// extern gchar** _gotk4_gio2_ProxyResolverInterface_lookup_finish(GProxyResolver*, GAsyncResult*, GError**);
+// extern gchar** _gotk4_gio2_ProxyResolverInterface_lookup(GProxyResolver*, gchar*, GCancellable*, GError**);
+// extern gchar** _gotk4_gio2_MountIface_guess_content_type_sync(GMount*, gboolean, GCancellable*, GError**);
+// extern gchar** _gotk4_gio2_MountIface_guess_content_type_finish(GMount*, GAsyncResult*, GError**);
+// extern gchar** _gotk4_gio2_ActionGroupInterface_list_actions(GActionGroup*);
+// extern gchar* _gotk4_gio2_VolumeIface_get_sort_key(GVolume*);
 // extern gchar* _gotk4_gio2_TlsPasswordClass_get_default_warning(GTlsPassword*);
 // extern gchar* _gotk4_gio2_TlsDatabaseClass_create_certificate_handle(GTlsDatabase*, GTlsCertificate*);
 // extern gchar* _gotk4_gio2_TlsConnectionClass_get_negotiated_protocol(GTlsConnection*);
+// extern gchar* _gotk4_gio2_SocketConnectableIface_to_string(GSocketConnectable*);
 // extern gchar* _gotk4_gio2_ResolverClass_lookup_by_address_finish(GResolver*, GAsyncResult*, GError**);
 // extern gchar* _gotk4_gio2_ResolverClass_lookup_by_address(GResolver*, GInetAddress*, GCancellable*, GError**);
+// extern gchar* _gotk4_gio2_MountIface_get_sort_key(GMount*);
 // extern gchar* _gotk4_gio2_InetAddressClass_to_string(GInetAddress*);
+// extern gchar* _gotk4_gio2_DtlsConnectionInterface_get_negotiated_protocol(GDtlsConnection*);
+// extern gchar* _gotk4_gio2_DriveIface_get_sort_key(GDrive*);
+// extern gchar* _gotk4_gio2_DBusObjectManagerIface_get_object_path(GDBusObjectManager*);
+// extern gchar* _gotk4_gio2_DBusObjectIface_get_object_path(GDBusObject*);
+// extern gchar* _gotk4_gio2_ActionInterface_get_name(GAction*);
 // extern gboolean _gotk4_glib2_EqualFuncFull(gconstpointer, gconstpointer, gpointer);
+// extern gboolean _gotk4_gio2_VolumeIface_should_automount(GVolume*);
+// extern gboolean _gotk4_gio2_VolumeIface_mount_finish(GVolume*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_VolumeIface_eject_with_operation_finish(GVolume*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_VolumeIface_eject_finish(GVolume*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_VolumeIface_can_mount(GVolume*);
+// extern gboolean _gotk4_gio2_VolumeIface_can_eject(GVolume*);
 // extern gboolean _gotk4_gio2_VfsClass_local_file_set_attributes(GVfs*, char*, GFileInfo*, GFileQueryInfoFlags, GCancellable*, GError**);
 // extern gboolean _gotk4_gio2_VfsClass_is_active(GVfs*);
 // extern gboolean _gotk4_gio2_TlsConnection_ConnectAcceptCertificate(gpointer, GTlsCertificate*, GTlsCertificateFlags, guintptr);
@@ -178,6 +239,8 @@ import (
 // extern gboolean _gotk4_gio2_TlsConnectionClass_handshake(GTlsConnection*, GCancellable*, GError**);
 // extern gboolean _gotk4_gio2_TlsConnectionClass_get_binding_data(GTlsConnection*, GTlsChannelBindingType, GByteArray*, GError**);
 // extern gboolean _gotk4_gio2_TlsConnectionClass_accept_certificate(GTlsConnection*, GTlsCertificate*, GTlsCertificateFlags);
+// extern gboolean _gotk4_gio2_TlsBackendInterface_supports_tls(GTlsBackend*);
+// extern gboolean _gotk4_gio2_TlsBackendInterface_supports_dtls(GTlsBackend*);
 // extern gboolean _gotk4_gio2_ThreadedSocketService_ConnectRun(gpointer, GSocketConnection*, GObject*, guintptr);
 // extern gboolean _gotk4_gio2_ThreadedSocketServiceClass_run(GThreadedSocketService*, GSocketConnection*, GObject*);
 // extern gboolean _gotk4_gio2_SocketService_ConnectIncoming(gpointer, GSocketConnection*, GObject*, guintptr);
@@ -188,6 +251,15 @@ import (
 // extern gboolean _gotk4_gio2_SettingsGetMapping(GVariant*, gpointer*, gpointer);
 // extern gboolean _gotk4_gio2_SettingsClass_writable_change_event(GSettings*, GQuark);
 // extern gboolean _gotk4_gio2_SettingsClass_change_event(GSettings*, GQuark*, gint);
+// extern gboolean _gotk4_gio2_SeekableIface_seek(GSeekable*, goffset, GSeekType, GCancellable*, GError**);
+// extern gboolean _gotk4_gio2_SeekableIface_can_truncate(GSeekable*);
+// extern gboolean _gotk4_gio2_SeekableIface_can_seek(GSeekable*);
+// extern gboolean _gotk4_gio2_ProxyResolverInterface_is_supported(GProxyResolver*);
+// extern gboolean _gotk4_gio2_ProxyInterface_supports_hostname(GProxy*);
+// extern gboolean _gotk4_gio2_PollableOutputStreamInterface_is_writable(GPollableOutputStream*);
+// extern gboolean _gotk4_gio2_PollableOutputStreamInterface_can_poll(GPollableOutputStream*);
+// extern gboolean _gotk4_gio2_PollableInputStreamInterface_is_readable(GPollableInputStream*);
+// extern gboolean _gotk4_gio2_PollableInputStreamInterface_can_poll(GPollableInputStream*);
 // extern gboolean _gotk4_gio2_PermissionClass_release_finish(GPermission*, GAsyncResult*, GError**);
 // extern gboolean _gotk4_gio2_PermissionClass_release(GPermission*, GCancellable*, GError**);
 // extern gboolean _gotk4_gio2_PermissionClass_acquire_finish(GPermission*, GAsyncResult*, GError**);
@@ -197,11 +269,22 @@ import (
 // extern gboolean _gotk4_gio2_OutputStreamClass_flush(GOutputStream*, GCancellable*, GError**);
 // extern gboolean _gotk4_gio2_OutputStreamClass_close_fn(GOutputStream*, GCancellable*, GError**);
 // extern gboolean _gotk4_gio2_OutputStreamClass_close_finish(GOutputStream*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_NetworkMonitorInterface_can_reach_finish(GNetworkMonitor*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_NetworkMonitorInterface_can_reach(GNetworkMonitor*, GSocketConnectable*, GCancellable*, GError**);
+// extern gboolean _gotk4_gio2_MountIface_unmount_with_operation_finish(GMount*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_MountIface_unmount_finish(GMount*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_MountIface_remount_finish(GMount*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_MountIface_eject_with_operation_finish(GMount*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_MountIface_eject_finish(GMount*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_MountIface_can_unmount(GMount*);
+// extern gboolean _gotk4_gio2_MountIface_can_eject(GMount*);
 // extern gboolean _gotk4_gio2_MenuModelClass_is_mutable(GMenuModel*);
 // extern gboolean _gotk4_gio2_MenuLinkIterClass_get_next(GMenuLinkIter*, gchar**, GMenuModel**);
 // extern gboolean _gotk4_gio2_MenuAttributeIterClass_get_next(GMenuAttributeIter*, gchar**, GVariant**);
 // extern gboolean _gotk4_gio2_InputStreamClass_close_fn(GInputStream*, GCancellable*, GError**);
 // extern gboolean _gotk4_gio2_InputStreamClass_close_finish(GInputStream*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_InitableIface_init(GInitable*, GCancellable*, GError**);
+// extern gboolean _gotk4_gio2_IconIface_equal(GIcon*, GIcon*);
 // extern gboolean _gotk4_gio2_IOStreamClass_close_fn(GIOStream*, GCancellable*, GError**);
 // extern gboolean _gotk4_gio2_IOStreamClass_close_finish(GIOStream*, GAsyncResult*, GError**);
 // extern gboolean _gotk4_gio2_FileOutputStreamClass_truncate_fn(GFileOutputStream*, goffset, GCancellable*, GError**);
@@ -211,6 +294,30 @@ import (
 // extern gboolean _gotk4_gio2_FileMonitorClass_cancel(GFileMonitor*);
 // extern gboolean _gotk4_gio2_FileInputStreamClass_seek(GFileInputStream*, goffset, GSeekType, GCancellable*, GError**);
 // extern gboolean _gotk4_gio2_FileInputStreamClass_can_seek(GFileInputStream*);
+// extern gboolean _gotk4_gio2_FileIface_unmount_mountable_with_operation_finish(GFile*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_FileIface_unmount_mountable_finish(GFile*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_FileIface_trash_finish(GFile*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_FileIface_trash(GFile*, GCancellable*, GError**);
+// extern gboolean _gotk4_gio2_FileIface_stop_mountable_finish(GFile*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_FileIface_start_mountable_finish(GFile*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_FileIface_set_attributes_from_info(GFile*, GFileInfo*, GFileQueryInfoFlags, GCancellable*, GError**);
+// extern gboolean _gotk4_gio2_FileIface_set_attributes_finish(GFile*, GAsyncResult*, GFileInfo**, GError**);
+// extern gboolean _gotk4_gio2_FileIface_set_attribute(GFile*, char*, GFileAttributeType, gpointer, GFileQueryInfoFlags, GCancellable*, GError**);
+// extern gboolean _gotk4_gio2_FileIface_query_exists(GFile*, GCancellable*);
+// extern gboolean _gotk4_gio2_FileIface_poll_mountable_finish(GFile*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_FileIface_move_finish(GFile*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_FileIface_mount_enclosing_volume_finish(GFile*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_FileIface_measure_disk_usage_finish(GFile*, GAsyncResult*, guint64*, guint64*, guint64*, GError**);
+// extern gboolean _gotk4_gio2_FileIface_make_symbolic_link_finish(GFile*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_FileIface_make_symbolic_link(GFile*, char*, GCancellable*, GError**);
+// extern gboolean _gotk4_gio2_FileIface_make_directory_finish(GFile*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_FileIface_make_directory(GFile*, GCancellable*, GError**);
+// extern gboolean _gotk4_gio2_FileIface_is_native(GFile*);
+// extern gboolean _gotk4_gio2_FileIface_has_uri_scheme(GFile*, char*);
+// extern gboolean _gotk4_gio2_FileIface_equal(GFile*, GFile*);
+// extern gboolean _gotk4_gio2_FileIface_eject_mountable_with_operation_finish(GFile*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_FileIface_eject_mountable_finish(GFile*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_FileIface_copy_finish(GFile*, GAsyncResult*, GError**);
 // extern gboolean _gotk4_gio2_FileIOStreamClass_truncate_fn(GFileIOStream*, goffset, GCancellable*, GError**);
 // extern gboolean _gotk4_gio2_FileIOStreamClass_seek(GFileIOStream*, goffset, GSeekType, GCancellable*, GError**);
 // extern gboolean _gotk4_gio2_FileIOStreamClass_can_truncate(GFileIOStream*);
@@ -219,8 +326,30 @@ import (
 // extern gboolean _gotk4_gio2_FileEnumeratorClass_close_finish(GFileEnumerator*, GAsyncResult*, GError**);
 // extern gboolean _gotk4_gio2_EqualFuncFull(gconstpointer, gconstpointer, gpointer);
 // extern gboolean _gotk4_gio2_DtlsConnection_ConnectAcceptCertificate(gpointer, GTlsCertificate*, GTlsCertificateFlags, guintptr);
+// extern gboolean _gotk4_gio2_DtlsConnectionInterface_shutdown_finish(GDtlsConnection*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_DtlsConnectionInterface_shutdown(GDtlsConnection*, gboolean, gboolean, GCancellable*, GError**);
+// extern gboolean _gotk4_gio2_DtlsConnectionInterface_handshake_finish(GDtlsConnection*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_DtlsConnectionInterface_handshake(GDtlsConnection*, GCancellable*, GError**);
+// extern gboolean _gotk4_gio2_DtlsConnectionInterface_get_binding_data(GDtlsConnection*, GTlsChannelBindingType, GByteArray*, GError**);
+// extern gboolean _gotk4_gio2_DtlsConnectionInterface_accept_certificate(GDtlsConnection*, GTlsCertificate*, GTlsCertificateFlags);
+// extern gboolean _gotk4_gio2_DriveIface_stop_finish(GDrive*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_DriveIface_start_finish(GDrive*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_DriveIface_poll_for_media_finish(GDrive*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_DriveIface_is_removable(GDrive*);
+// extern gboolean _gotk4_gio2_DriveIface_is_media_removable(GDrive*);
+// extern gboolean _gotk4_gio2_DriveIface_is_media_check_automatic(GDrive*);
+// extern gboolean _gotk4_gio2_DriveIface_has_volumes(GDrive*);
+// extern gboolean _gotk4_gio2_DriveIface_has_media(GDrive*);
+// extern gboolean _gotk4_gio2_DriveIface_eject_with_operation_finish(GDrive*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_DriveIface_eject_finish(GDrive*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_DriveIface_can_stop(GDrive*);
+// extern gboolean _gotk4_gio2_DriveIface_can_start_degraded(GDrive*);
+// extern gboolean _gotk4_gio2_DriveIface_can_start(GDrive*);
+// extern gboolean _gotk4_gio2_DriveIface_can_poll_for_media(GDrive*);
+// extern gboolean _gotk4_gio2_DriveIface_can_eject(GDrive*);
 // extern gboolean _gotk4_gio2_DebugControllerDBus_ConnectAuthorize(gpointer, GDBusMethodInvocation*, guintptr);
 // extern gboolean _gotk4_gio2_DebugControllerDBusClass_authorize(GDebugControllerDBus*, GDBusMethodInvocation*);
+// extern gboolean _gotk4_gio2_DatagramBasedInterface_condition_wait(GDatagramBased*, GIOCondition, gint64, GCancellable*, GError**);
 // extern gboolean _gotk4_gio2_DBusServer_ConnectNewConnection(gpointer, GDBusConnection*, guintptr);
 // extern gboolean _gotk4_gio2_DBusObjectSkeleton_ConnectAuthorizeMethod(gpointer, GDBusInterfaceSkeleton*, GDBusMethodInvocation*, guintptr);
 // extern gboolean _gotk4_gio2_DBusObjectSkeletonClass_authorize_method(GDBusObjectSkeleton*, GDBusInterfaceSkeleton*, GDBusMethodInvocation*);
@@ -228,20 +357,74 @@ import (
 // extern gboolean _gotk4_gio2_DBusInterfaceSkeletonClass_g_authorize_method(GDBusInterfaceSkeleton*, GDBusMethodInvocation*);
 // extern gboolean _gotk4_gio2_DBusAuthObserver_ConnectAuthorizeAuthenticatedPeer(gpointer, GIOStream*, GCredentials*, guintptr);
 // extern gboolean _gotk4_gio2_DBusAuthObserver_ConnectAllowMechanism(gpointer, gchar*, guintptr);
+// extern gboolean _gotk4_gio2_AsyncResultIface_is_tagged(GAsyncResult*, gpointer);
+// extern gboolean _gotk4_gio2_AsyncInitableIface_init_finish(GAsyncInitable*, GAsyncResult*, GError**);
 // extern gboolean _gotk4_gio2_Application_ConnectNameLost(gpointer, guintptr);
 // extern gboolean _gotk4_gio2_ApplicationClass_name_lost(GApplication*);
 // extern gboolean _gotk4_gio2_ApplicationClass_dbus_register(GApplication*, GDBusConnection*, gchar*, GError**);
+// extern gboolean _gotk4_gio2_AppInfoIface_supports_uris(GAppInfo*);
+// extern gboolean _gotk4_gio2_AppInfoIface_supports_files(GAppInfo*);
+// extern gboolean _gotk4_gio2_AppInfoIface_should_show(GAppInfo*);
+// extern gboolean _gotk4_gio2_AppInfoIface_set_as_last_used_for_type(GAppInfo*, char*, GError**);
+// extern gboolean _gotk4_gio2_AppInfoIface_set_as_default_for_type(GAppInfo*, char*, GError**);
+// extern gboolean _gotk4_gio2_AppInfoIface_set_as_default_for_extension(GAppInfo*, char*, GError**);
+// extern gboolean _gotk4_gio2_AppInfoIface_remove_supports_type(GAppInfo*, char*, GError**);
+// extern gboolean _gotk4_gio2_AppInfoIface_launch_uris_finish(GAppInfo*, GAsyncResult*, GError**);
+// extern gboolean _gotk4_gio2_AppInfoIface_launch_uris(GAppInfo*, GList*, GAppLaunchContext*, GError**);
+// extern gboolean _gotk4_gio2_AppInfoIface_launch(GAppInfo*, GList*, GAppLaunchContext*, GError**);
+// extern gboolean _gotk4_gio2_AppInfoIface_equal(GAppInfo*, GAppInfo*);
+// extern gboolean _gotk4_gio2_AppInfoIface_can_remove_supports_type(GAppInfo*);
+// extern gboolean _gotk4_gio2_AppInfoIface_can_delete(GAppInfo*);
+// extern gboolean _gotk4_gio2_AppInfoIface_add_supports_type(GAppInfo*, char*, GError**);
+// extern gboolean _gotk4_gio2_ActionInterface_get_enabled(GAction*);
+// extern gboolean _gotk4_gio2_ActionGroupInterface_query_action(GActionGroup*, gchar*, gboolean*, GVariantType**, GVariantType**, GVariant**, GVariant**);
+// extern gboolean _gotk4_gio2_ActionGroupInterface_has_action(GActionGroup*, gchar*);
+// extern gboolean _gotk4_gio2_ActionGroupInterface_get_action_enabled(GActionGroup*, gchar*);
+// extern char** _gotk4_gio2_VolumeIface_enumerate_identifiers(GVolume*);
+// extern char** _gotk4_gio2_DriveIface_enumerate_identifiers(GDrive*);
+// extern char** _gotk4_gio2_AppInfoIface_get_supported_types(GAppInfo*);
+// extern char* _gotk4_gio2_VolumeIface_get_uuid(GVolume*);
+// extern char* _gotk4_gio2_VolumeIface_get_name(GVolume*);
+// extern char* _gotk4_gio2_VolumeIface_get_identifier(GVolume*, char*);
+// extern char* _gotk4_gio2_MountIface_get_uuid(GMount*);
+// extern char* _gotk4_gio2_MountIface_get_name(GMount*);
 // extern char* _gotk4_gio2_FileOutputStreamClass_get_etag(GFileOutputStream*);
+// extern char* _gotk4_gio2_FileIface_get_uri_scheme(GFile*);
+// extern char* _gotk4_gio2_FileIface_get_uri(GFile*);
+// extern char* _gotk4_gio2_FileIface_get_relative_path(GFile*, GFile*);
+// extern char* _gotk4_gio2_FileIface_get_path(GFile*);
+// extern char* _gotk4_gio2_FileIface_get_parse_name(GFile*);
+// extern char* _gotk4_gio2_FileIface_get_basename(GFile*);
 // extern char* _gotk4_gio2_FileIOStreamClass_get_etag(GFileIOStream*);
+// extern char* _gotk4_gio2_DriveIface_get_name(GDrive*);
+// extern char* _gotk4_gio2_DriveIface_get_identifier(GDrive*, char*);
 // extern char* _gotk4_gio2_AppLaunchContextClass_get_startup_notify_id(GAppLaunchContext*, GAppInfo*, GList*);
 // extern char* _gotk4_gio2_AppLaunchContextClass_get_display(GAppLaunchContext*, GAppInfo*, GList*);
+// extern char* _gotk4_gio2_AppInfoIface_get_name(GAppInfo*);
+// extern char* _gotk4_gio2_AppInfoIface_get_id(GAppInfo*);
+// extern char* _gotk4_gio2_AppInfoIface_get_executable(GAppInfo*);
+// extern char* _gotk4_gio2_AppInfoIface_get_display_name(GAppInfo*);
+// extern char* _gotk4_gio2_AppInfoIface_get_description(GAppInfo*);
+// extern char* _gotk4_gio2_AppInfoIface_get_commandline(GAppInfo*);
 // extern GVolume* _gotk4_gio2_VolumeMonitorClass_get_volume_for_uuid(GVolumeMonitor*, char*);
+// extern GVolume* _gotk4_gio2_MountIface_get_volume(GMount*);
+// extern GVariantType* _gotk4_gio2_ActionInterface_get_state_type(GAction*);
+// extern GVariantType* _gotk4_gio2_ActionInterface_get_parameter_type(GAction*);
+// extern GVariantType* _gotk4_gio2_ActionGroupInterface_get_action_state_type(GActionGroup*, gchar*);
+// extern GVariantType* _gotk4_gio2_ActionGroupInterface_get_action_parameter_type(GActionGroup*, gchar*);
 // extern GVariant* _gotk4_gio2_MenuModelClass_get_item_attribute_value(GMenuModel*, gint, gchar*, GVariantType*);
+// extern GVariant* _gotk4_gio2_IconIface_serialize(GIcon*);
 // extern GVariant* _gotk4_gio2_DBusInterfaceSkeletonClass_get_properties(GDBusInterfaceSkeleton*);
+// extern GVariant* _gotk4_gio2_ActionInterface_get_state_hint(GAction*);
+// extern GVariant* _gotk4_gio2_ActionInterface_get_state(GAction*);
+// extern GVariant* _gotk4_gio2_ActionGroupInterface_get_action_state_hint(GActionGroup*, gchar*);
+// extern GVariant* _gotk4_gio2_ActionGroupInterface_get_action_state(GActionGroup*, gchar*);
+// extern GType _gotk4_gio2_ListModelInterface_get_item_type(GListModel*);
 // extern GTlsInteractionResult _gotk4_gio2_TlsInteractionClass_request_certificate_finish(GTlsInteraction*, GAsyncResult*, GError**);
 // extern GTlsInteractionResult _gotk4_gio2_TlsInteractionClass_request_certificate(GTlsInteraction*, GTlsConnection*, GTlsCertificateRequestFlags, GCancellable*, GError**);
 // extern GTlsInteractionResult _gotk4_gio2_TlsInteractionClass_ask_password_finish(GTlsInteraction*, GAsyncResult*, GError**);
 // extern GTlsInteractionResult _gotk4_gio2_TlsInteractionClass_ask_password(GTlsInteraction*, GTlsPassword*, GCancellable*, GError**);
+// extern GTlsDatabase* _gotk4_gio2_TlsBackendInterface_get_default_database(GTlsBackend*);
 // extern GTlsCertificateFlags _gotk4_gio2_TlsDatabaseClass_verify_chain_finish(GTlsDatabase*, GAsyncResult*, GError**);
 // extern GTlsCertificateFlags _gotk4_gio2_TlsDatabaseClass_verify_chain(GTlsDatabase*, GTlsCertificate*, gchar*, GSocketConnectable*, GTlsInteraction*, GTlsDatabaseVerifyFlags, GCancellable*, GError**);
 // extern GTlsCertificateFlags _gotk4_gio2_TlsCertificateClass_verify(GTlsCertificate*, GSocketConnectable*, GTlsCertificate*);
@@ -249,11 +432,21 @@ import (
 // extern GTlsCertificate* _gotk4_gio2_TlsDatabaseClass_lookup_certificate_issuer(GTlsDatabase*, GTlsCertificate*, GTlsInteraction*, GTlsDatabaseLookupFlags, GCancellable*, GError**);
 // extern GTlsCertificate* _gotk4_gio2_TlsDatabaseClass_lookup_certificate_for_handle_finish(GTlsDatabase*, GAsyncResult*, GError**);
 // extern GTlsCertificate* _gotk4_gio2_TlsDatabaseClass_lookup_certificate_for_handle(GTlsDatabase*, gchar*, GTlsInteraction*, GTlsDatabaseLookupFlags, GCancellable*, GError**);
+// extern GSource* _gotk4_gio2_PollableOutputStreamInterface_create_source(GPollableOutputStream*, GCancellable*);
+// extern GSource* _gotk4_gio2_PollableInputStreamInterface_create_source(GPollableInputStream*, GCancellable*);
+// extern GSource* _gotk4_gio2_DatagramBasedInterface_create_source(GDatagramBased*, GIOCondition, GCancellable*);
 // extern GSocketFamily _gotk4_gio2_SocketAddressClass_get_family(GSocketAddress*);
+// extern GSocketAddressEnumerator* _gotk4_gio2_SocketConnectableIface_proxy_enumerate(GSocketConnectable*);
+// extern GSocketAddressEnumerator* _gotk4_gio2_SocketConnectableIface_enumerate(GSocketConnectable*);
 // extern GSocketAddress* _gotk4_gio2_SocketAddressEnumeratorClass_next_finish(GSocketAddressEnumerator*, GAsyncResult*, GError**);
 // extern GSocketAddress* _gotk4_gio2_SocketAddressEnumeratorClass_next(GSocketAddressEnumerator*, GCancellable*, GError**);
+// extern GPollableReturn _gotk4_gio2_PollableOutputStreamInterface_writev_nonblocking(GPollableOutputStream*, GOutputVector*, gsize, gsize*, GError**);
 // extern GOutputStream* _gotk4_gio2_IOStreamClass_get_output_stream(GIOStream*);
+// extern GObject* _gotk4_gio2_AsyncResultIface_get_source_object(GAsyncResult*);
 // extern GMount* _gotk4_gio2_VolumeMonitorClass_get_mount_for_uuid(GVolumeMonitor*, char*);
+// extern GMount* _gotk4_gio2_VolumeIface_get_mount(GVolume*);
+// extern GMount* _gotk4_gio2_FileIface_find_enclosing_mount_finish(GFile*, GAsyncResult*, GError**);
+// extern GMount* _gotk4_gio2_FileIface_find_enclosing_mount(GFile*, GCancellable*, GError**);
 // extern GMenuModel* _gotk4_gio2_MenuModelClass_get_item_link(GMenuModel*, gint, gchar*);
 // extern GMenuLinkIter* _gotk4_gio2_MenuModelClass_iterate_item_links(GMenuModel*, gint);
 // extern GMenuAttributeIter* _gotk4_gio2_MenuModelClass_iterate_item_attributes(GMenuModel*, gint);
@@ -270,22 +463,80 @@ import (
 // extern GList* _gotk4_gio2_ResolverClass_lookup_by_name_finish(GResolver*, GAsyncResult*, GError**);
 // extern GList* _gotk4_gio2_ResolverClass_lookup_by_name(GResolver*, gchar*, GCancellable*, GError**);
 // extern GList* _gotk4_gio2_FileEnumeratorClass_next_files_finish(GFileEnumerator*, GAsyncResult*, GError**);
+// extern GList* _gotk4_gio2_DriveIface_get_volumes(GDrive*);
+// extern GList* _gotk4_gio2_DBusObjectManagerIface_get_objects(GDBusObjectManager*);
+// extern GList* _gotk4_gio2_DBusObjectIface_get_interfaces(GDBusObject*);
+// extern GInputStream* _gotk4_gio2_LoadableIconIface_load_finish(GLoadableIcon*, GAsyncResult*, char**, GError**);
+// extern GInputStream* _gotk4_gio2_LoadableIconIface_load(GLoadableIcon*, int, char**, GCancellable*, GError**);
 // extern GInputStream* _gotk4_gio2_IOStreamClass_get_input_stream(GIOStream*);
 // extern GInputStream* _gotk4_gio2_ApplicationCommandLineClass_get_stdin(GApplicationCommandLine*);
+// extern GIcon* _gotk4_gio2_VolumeIface_get_symbolic_icon(GVolume*);
+// extern GIcon* _gotk4_gio2_VolumeIface_get_icon(GVolume*);
+// extern GIcon* _gotk4_gio2_MountIface_get_symbolic_icon(GMount*);
+// extern GIcon* _gotk4_gio2_MountIface_get_icon(GMount*);
+// extern GIcon* _gotk4_gio2_DriveIface_get_symbolic_icon(GDrive*);
+// extern GIcon* _gotk4_gio2_DriveIface_get_icon(GDrive*);
+// extern GIcon* _gotk4_gio2_AppInfoIface_get_icon(GAppInfo*);
+// extern GIOStream* _gotk4_gio2_ProxyInterface_connect_finish(GProxy*, GAsyncResult*, GError**);
+// extern GIOStream* _gotk4_gio2_ProxyInterface_connect(GProxy*, GIOStream*, GProxyAddress*, GCancellable*, GError**);
+// extern GIOCondition _gotk4_gio2_DatagramBasedInterface_condition_check(GDatagramBased*, GIOCondition);
+// extern GFileOutputStream* _gotk4_gio2_FileIface_replace_finish(GFile*, GAsyncResult*, GError**);
+// extern GFileOutputStream* _gotk4_gio2_FileIface_replace(GFile*, char*, gboolean, GFileCreateFlags, GCancellable*, GError**);
+// extern GFileOutputStream* _gotk4_gio2_FileIface_create_finish(GFile*, GAsyncResult*, GError**);
+// extern GFileOutputStream* _gotk4_gio2_FileIface_create(GFile*, GFileCreateFlags, GCancellable*, GError**);
+// extern GFileOutputStream* _gotk4_gio2_FileIface_append_to_finish(GFile*, GAsyncResult*, GError**);
+// extern GFileOutputStream* _gotk4_gio2_FileIface_append_to(GFile*, GFileCreateFlags, GCancellable*, GError**);
+// extern GFileMonitor* _gotk4_gio2_FileIface_monitor_file(GFile*, GFileMonitorFlags, GCancellable*, GError**);
+// extern GFileInputStream* _gotk4_gio2_FileIface_read_finish(GFile*, GAsyncResult*, GError**);
 // extern GFileInfo* _gotk4_gio2_FileOutputStreamClass_query_info_finish(GFileOutputStream*, GAsyncResult*, GError**);
 // extern GFileInfo* _gotk4_gio2_FileOutputStreamClass_query_info(GFileOutputStream*, char*, GCancellable*, GError**);
 // extern GFileInfo* _gotk4_gio2_FileInputStreamClass_query_info_finish(GFileInputStream*, GAsyncResult*, GError**);
 // extern GFileInfo* _gotk4_gio2_FileInputStreamClass_query_info(GFileInputStream*, char*, GCancellable*, GError**);
+// extern GFileInfo* _gotk4_gio2_FileIface_query_info_finish(GFile*, GAsyncResult*, GError**);
+// extern GFileInfo* _gotk4_gio2_FileIface_query_info(GFile*, char*, GFileQueryInfoFlags, GCancellable*, GError**);
+// extern GFileInfo* _gotk4_gio2_FileIface_query_filesystem_info_finish(GFile*, GAsyncResult*, GError**);
+// extern GFileInfo* _gotk4_gio2_FileIface_query_filesystem_info(GFile*, char*, GCancellable*, GError**);
 // extern GFileInfo* _gotk4_gio2_FileIOStreamClass_query_info_finish(GFileIOStream*, GAsyncResult*, GError**);
 // extern GFileInfo* _gotk4_gio2_FileIOStreamClass_query_info(GFileIOStream*, char*, GCancellable*, GError**);
 // extern GFileInfo* _gotk4_gio2_FileEnumeratorClass_next_file(GFileEnumerator*, GCancellable*, GError**);
+// extern GFileIOStream* _gotk4_gio2_FileIface_replace_readwrite_finish(GFile*, GAsyncResult*, GError**);
+// extern GFileIOStream* _gotk4_gio2_FileIface_replace_readwrite(GFile*, char*, gboolean, GFileCreateFlags, GCancellable*, GError**);
+// extern GFileIOStream* _gotk4_gio2_FileIface_open_readwrite_finish(GFile*, GAsyncResult*, GError**);
+// extern GFileIOStream* _gotk4_gio2_FileIface_open_readwrite(GFile*, GCancellable*, GError**);
+// extern GFileIOStream* _gotk4_gio2_FileIface_create_readwrite_finish(GFile*, GAsyncResult*, GError**);
+// extern GFileIOStream* _gotk4_gio2_FileIface_create_readwrite(GFile*, GFileCreateFlags, GCancellable*, GError**);
+// extern GFileEnumerator* _gotk4_gio2_FileIface_enumerate_children_finish(GFile*, GAsyncResult*, GError**);
+// extern GFileEnumerator* _gotk4_gio2_FileIface_enumerate_children(GFile*, char*, GFileQueryInfoFlags, GCancellable*, GError**);
+// extern GFileAttributeInfoList* _gotk4_gio2_FileIface_query_writable_namespaces(GFile*, GCancellable*, GError**);
+// extern GFileAttributeInfoList* _gotk4_gio2_FileIface_query_settable_attributes(GFile*, GCancellable*, GError**);
+// extern GFile* _gotk4_gio2_VolumeIface_get_activation_root(GVolume*);
 // extern GFile* _gotk4_gio2_VfsClass_parse_name(GVfs*, char*);
 // extern GFile* _gotk4_gio2_VfsClass_get_file_for_uri(GVfs*, char*);
 // extern GFile* _gotk4_gio2_VfsClass_get_file_for_path(GVfs*, char*);
 // extern GFile* _gotk4_gio2_VFSFileLookupFunc(GVfs*, char*, gpointer);
+// extern GFile* _gotk4_gio2_MountIface_get_root(GMount*);
+// extern GFile* _gotk4_gio2_MountIface_get_default_location(GMount*);
+// extern GFile* _gotk4_gio2_FileIface_set_display_name_finish(GFile*, GAsyncResult*, GError**);
+// extern GFile* _gotk4_gio2_FileIface_set_display_name(GFile*, char*, GCancellable*, GError**);
+// extern GFile* _gotk4_gio2_FileIface_resolve_relative_path(GFile*, char*);
+// extern GFile* _gotk4_gio2_FileIface_mount_mountable_finish(GFile*, GAsyncResult*, GError**);
+// extern GFile* _gotk4_gio2_FileIface_get_parent(GFile*);
+// extern GFile* _gotk4_gio2_FileIface_get_child_for_display_name(GFile*, char*, GError**);
+// extern GFile* _gotk4_gio2_FileIface_dup(GFile*);
+// extern GDriveStartStopType _gotk4_gio2_DriveIface_get_start_stop_type(GDrive*);
+// extern GDrive* _gotk4_gio2_VolumeIface_get_drive(GVolume*);
+// extern GDrive* _gotk4_gio2_MountIface_get_drive(GMount*);
+// extern GDBusObject* _gotk4_gio2_DBusObjectManagerIface_get_object(GDBusObjectManager*, gchar*);
+// extern GDBusObject* _gotk4_gio2_DBusInterfaceIface_dup_object(GDBusInterface*);
 // extern GDBusMessage* _gotk4_gio2_DBusMessageFilterFunction(GDBusConnection*, GDBusMessage*, gboolean, gpointer);
 // extern GDBusInterfaceVTable* _gotk4_gio2_DBusInterfaceSkeletonClass_get_vtable(GDBusInterfaceSkeleton*);
 // extern GDBusInterfaceInfo* _gotk4_gio2_DBusInterfaceSkeletonClass_get_info(GDBusInterfaceSkeleton*);
+// extern GDBusInterfaceInfo* _gotk4_gio2_DBusInterfaceIface_get_info(GDBusInterface*);
+// extern GDBusInterface* _gotk4_gio2_DBusObjectManagerIface_get_interface(GDBusObjectManager*, gchar*, gchar*);
+// extern GDBusInterface* _gotk4_gio2_DBusObjectIface_get_interface(GDBusObject*, gchar*);
+// extern GConverterResult _gotk4_gio2_ConverterIface_convert(GConverter*, void*, gsize, void*, gsize, GConverterFlags, gsize*, gsize*, GError**);
+// extern GAppInfo* _gotk4_gio2_AppInfoIface_dup(GAppInfo*);
+// extern GAction* _gotk4_gio2_ActionMapInterface_lookup_action(GActionMap*, gchar*);
 // GAction* _gotk4_gio2_ActionMap_virtual_lookup_action(void* fnptr, GActionMap* arg0, gchar* arg1) {
 //   return ((GAction* (*)(GActionMap*, gchar*))(fnptr))(arg0, arg1);
 // };
@@ -10540,6 +10791,120 @@ func SimpleAsyncReportGErrorInIdle(object *coreglib.Object, callback AsyncReadyC
 	runtime.KeepAlive(err)
 }
 
+// ActionOverrides contains methods that a subclass can implement
+// for the Action interface. Methods left nil keep the interface's
+// default implementation.
+type ActionOverrides struct {
+	// Activate activates the action.
+	//
+	// parameter must be the correct type of parameter for the action (ie:
+	// the parameter type given at construction time). If the parameter type was
+	// NULL then parameter must also be NULL.
+	//
+	// If the parameter glib.Variant is floating, it is consumed.
+	//
+	// The function takes the following parameters:
+	//
+	//   - parameter (optional) to the activation.
+	Activate func(parameter *glib.Variant) // optional
+	// ChangeState: request for the state of action to be changed to value.
+	//
+	// The action must be stateful and value must be of the correct type.
+	// See gio.Action.GetStateType().
+	//
+	// This call merely requests a change. The action may refuse to change
+	// its state or may change its state to something other than value.
+	// See gio.Action.GetStateHint().
+	//
+	// If the value glib.Variant is floating, it is consumed.
+	//
+	// The function takes the following parameters:
+	//
+	//   - value: new state.
+	ChangeState func(value *glib.Variant) // optional
+	// Enabled checks if action is currently enabled.
+	//
+	// An action must be enabled in order to be activated or in order to have
+	// its state changed from outside callers.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: whether the action is enabled.
+	Enabled func() bool // optional
+	// Name queries the name of action.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8: name of the action.
+	Name func() string // optional
+	// ParameterType queries the type of the parameter that must be given when
+	// activating action.
+	//
+	// When activating the action using gio.Action.Activate(), the glib.Variant
+	// given to that function must be of the type returned by this function.
+	//
+	// In the case that this function returns NULL, you must not give any
+	// glib.Variant, but NULL instead.
+	//
+	// The function returns the following values:
+	//
+	//   - variantType (optional): parameter type.
+	ParameterType func() *glib.VariantType // optional
+	// State queries the current state of action.
+	//
+	// If the action is not stateful then NULL will be returned. If the action
+	// is stateful then the type of the return value is the type given by
+	// gio.Action.GetStateType().
+	//
+	// The return value (if non-NULL) should be freed with glib.Variant.Unref()
+	// when it is no longer required.
+	//
+	// The function returns the following values:
+	//
+	//   - variant (optional): current state of the action.
+	State func() *glib.Variant // optional
+	// StateHint requests a hint about the valid range of values for the state
+	// of action.
+	//
+	// If NULL is returned it either means that the action is not stateful or
+	// that there is no hint about the valid range of values for the state of
+	// the action.
+	//
+	// If a glib.Variant array is returned then each item in the array is a
+	// possible value for the state. If a glib.Variant pair (ie: two-tuple) is
+	// returned then the tuple specifies the inclusive lower and upper bound of
+	// valid values for the state.
+	//
+	// In any case, the information is merely a hint. It may be possible to have
+	// a state value outside of the hinted range and setting a value within the
+	// range may fail.
+	//
+	// The return value (if non-NULL) should be freed with glib.Variant.Unref()
+	// when it is no longer required.
+	//
+	// The function returns the following values:
+	//
+	//   - variant (optional): state range hint.
+	StateHint func() *glib.Variant // optional
+	// StateType queries the type of the state of action.
+	//
+	// If the action is stateful (e.g. created with
+	// gio.SimpleAction.NewStateful) then this function returns the
+	// glib.VariantType of the state. This is the type of the initial value
+	// given as the state. All calls to gio.Action.ChangeState() must give
+	// a glib.Variant of this type and gio.Action.GetState() will return a
+	// glib.Variant of the same type.
+	//
+	// If the action is not stateful (e.g. created with gio.SimpleAction.New)
+	// then this function will return NULL. In that case, gio.Action.GetState()
+	// will return NULL and you must not call gio.Action.ChangeState().
+	//
+	// The function returns the following values:
+	//
+	//   - variantType (optional): state type, if the action is stateful.
+	StateType func() *glib.VariantType // optional
+}
+
 // Action: GAction represents a single named action.
 //
 // The main interface to an action is that it can be activated with
@@ -10603,6 +10968,50 @@ type Actioner interface {
 }
 
 var _ Actioner = (*Action)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[ActionOverrides](
+		GTypeAction,
+		initActionInterface,
+	)
+}
+
+func initActionInterface(giface unsafe.Pointer, overrides ActionOverrides) {
+	iface := (*C.GActionInterface)(giface)
+
+	if overrides.Activate != nil {
+		iface.activate = (*[0]byte)(C._gotk4_gio2_ActionInterface_activate)
+	}
+
+	if overrides.ChangeState != nil {
+		iface.change_state = (*[0]byte)(C._gotk4_gio2_ActionInterface_change_state)
+	}
+
+	if overrides.Enabled != nil {
+		iface.get_enabled = (*[0]byte)(C._gotk4_gio2_ActionInterface_get_enabled)
+	}
+
+	if overrides.Name != nil {
+		iface.get_name = (*[0]byte)(C._gotk4_gio2_ActionInterface_get_name)
+	}
+
+	if overrides.ParameterType != nil {
+		iface.get_parameter_type = (*[0]byte)(C._gotk4_gio2_ActionInterface_get_parameter_type)
+	}
+
+	if overrides.State != nil {
+		iface.get_state = (*[0]byte)(C._gotk4_gio2_ActionInterface_get_state)
+	}
+
+	if overrides.StateHint != nil {
+		iface.get_state_hint = (*[0]byte)(C._gotk4_gio2_ActionInterface_get_state_hint)
+	}
+
+	if overrides.StateType != nil {
+		iface.get_state_type = (*[0]byte)(C._gotk4_gio2_ActionInterface_get_state_type)
+	}
+
+}
 
 func wrapAction(obj *coreglib.Object) *Action {
 	return &Action{
@@ -11273,6 +11682,269 @@ func ActionPrintDetailedName(actionName string, targetValue *glib.Variant) strin
 	return _utf8
 }
 
+// ActionGroupOverrides contains methods that a subclass can implement
+// for the ActionGroup interface. Methods left nil keep the interface's
+// default implementation.
+type ActionGroupOverrides struct {
+	// ActionAdded emits the gio.ActionGroup::action-added signal on
+	// action_group.
+	//
+	// This function should only be called by gio.ActionGroup implementations.
+	//
+	// The function takes the following parameters:
+	//
+	//   - actionName: name of an action in the group.
+	ActionAdded func(actionName string) // optional
+	// ActionEnabledChanged emits the gio.ActionGroup::action-enabled-changed
+	// signal on action_group.
+	//
+	// This function should only be called by gio.ActionGroup implementations.
+	//
+	// The function takes the following parameters:
+	//
+	//   - actionName: name of an action in the group.
+	//   - enabled: whether the action is now enabled.
+	ActionEnabledChanged func(actionName string, enabled bool) // optional
+	// ActionRemoved emits the gio.ActionGroup::action-removed signal on
+	// action_group.
+	//
+	// This function should only be called by gio.ActionGroup implementations.
+	//
+	// The function takes the following parameters:
+	//
+	//   - actionName: name of an action in the group.
+	ActionRemoved func(actionName string) // optional
+	// ActionStateChanged emits the gio.ActionGroup::action-state-changed signal
+	// on action_group.
+	//
+	// This function should only be called by gio.ActionGroup implementations.
+	//
+	// The function takes the following parameters:
+	//
+	//   - actionName: name of an action in the group.
+	//   - state: new state of the named action.
+	ActionStateChanged func(actionName string, state *glib.Variant) // optional
+	// ActivateAction: activate the named action within action_group.
+	//
+	// If the action is expecting a parameter, then the correct
+	// type of parameter must be given as parameter. If the action
+	// is expecting no parameters then parameter must be NULL. See
+	// gio.ActionGroup.GetActionParameterType().
+	//
+	// If the gio.ActionGroup implementation supports asynchronous remote
+	// activation over D-Bus, this call may return before the relevant D-Bus
+	// traffic has been sent, or any replies have been received. In order to
+	// block on such asynchronous activation calls, gio.DBusConnection.Flush()
+	// should be called prior to the code, which depends on the result of the
+	// action activation. Without flushing the D-Bus connection, there is no
+	// guarantee that the action would have been activated.
+	//
+	// The following code which runs in a remote app instance, shows an example
+	// of a ‘quit’ action being activated on the primary app instance over
+	// D-Bus. Here gio.DBusConnection.Flush() is called before exit(). Without
+	// g_dbus_connection_flush(), the ‘quit’ action may fail to be activated on
+	// the primary instance.
+	//
+	//	// call ‘quit’ action on primary instance
+	//	g_action_group_activate_action (G_ACTION_GROUP (app), "quit", NULL);
+	//
+	//	// make sure the action is activated now
+	//	g_dbus_connection_flush (…);
+	//
+	//	g_debug ("Application has been terminated. Exiting.");
+	//
+	//	exit (0);.
+	//
+	// The function takes the following parameters:
+	//
+	//   - actionName: name of the action to activate.
+	//   - parameter (optional) parameters to the activation.
+	ActivateAction func(actionName string, parameter *glib.Variant) // optional
+	// ChangeActionState: request for the state of the named action within
+	// action_group to be changed to value.
+	//
+	// The action must be stateful and value must be of the correct type.
+	// See gio.ActionGroup.GetActionStateType().
+	//
+	// This call merely requests a change. The action may refuse to change
+	// its state or may change its state to something other than value.
+	// See gio.ActionGroup.GetActionStateHint().
+	//
+	// If the value GVariant is floating, it is consumed.
+	//
+	// The function takes the following parameters:
+	//
+	//   - actionName: name of the action to request the change on.
+	//   - value: new state.
+	ChangeActionState func(actionName string, value *glib.Variant) // optional
+	// ActionEnabled checks if the named action within action_group is currently
+	// enabled.
+	//
+	// An action must be enabled in order to be activated or in order to have
+	// its state changed from outside callers.
+	//
+	// The function takes the following parameters:
+	//
+	//   - actionName: name of the action to query.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: whether the action is currently enabled.
+	ActionEnabled func(actionName string) bool // optional
+	// ActionParameterType queries the type of the parameter that must be given
+	// when activating the named action within action_group.
+	//
+	// When activating the action using gio.ActionGroup.ActivateAction(),
+	// the glib.Variant given to that function must be of the type returned by
+	// this function.
+	//
+	// In the case that this function returns NULL, you must not give any
+	// glib.Variant, but NULL instead.
+	//
+	// The parameter type of a particular action will never change but it is
+	// possible for an action to be removed and for a new action to be added
+	// with the same name but a different parameter type.
+	//
+	// The function takes the following parameters:
+	//
+	//   - actionName: name of the action to query.
+	//
+	// The function returns the following values:
+	//
+	//   - variantType (optional): parameter type.
+	ActionParameterType func(actionName string) *glib.VariantType // optional
+	// ActionState queries the current state of the named action within
+	// action_group.
+	//
+	// If the action is not stateful then NULL will be returned. If the action
+	// is stateful then the type of the return value is the type given by
+	// gio.ActionGroup.GetActionStateType().
+	//
+	// The return value (if non-NULL) should be freed with glib.Variant.Unref()
+	// when it is no longer required.
+	//
+	// The function takes the following parameters:
+	//
+	//   - actionName: name of the action to query.
+	//
+	// The function returns the following values:
+	//
+	//   - variant (optional): current state of the action.
+	ActionState func(actionName string) *glib.Variant // optional
+	// ActionStateHint requests a hint about the valid range of values for the
+	// state of the named action within action_group.
+	//
+	// If NULL is returned it either means that the action is not stateful or
+	// that there is no hint about the valid range of values for the state of
+	// the action.
+	//
+	// If a glib.Variant array is returned then each item in the array is a
+	// possible value for the state. If a glib.Variant pair (ie: two-tuple) is
+	// returned then the tuple specifies the inclusive lower and upper bound of
+	// valid values for the state.
+	//
+	// In any case, the information is merely a hint. It may be possible to have
+	// a state value outside of the hinted range and setting a value within the
+	// range may fail.
+	//
+	// The return value (if non-NULL) should be freed with glib.Variant.Unref()
+	// when it is no longer required.
+	//
+	// The function takes the following parameters:
+	//
+	//   - actionName: name of the action to query.
+	//
+	// The function returns the following values:
+	//
+	//   - variant (optional): state range hint.
+	ActionStateHint func(actionName string) *glib.Variant // optional
+	// ActionStateType queries the type of the state of the named action within
+	// action_group.
+	//
+	// If the action is stateful then this function returns the glib.VariantType
+	// of the state. All calls to gio.ActionGroup.ChangeActionState() must give
+	// a glib.Variant of this type and gio.ActionGroup.GetActionState() will
+	// return a glib.Variant of the same type.
+	//
+	// If the action is not stateful then this function will return NULL.
+	// In that case, gio.ActionGroup.GetActionState() will return NULL and you
+	// must not call gio.ActionGroup.ChangeActionState().
+	//
+	// The state type of a particular action will never change but it is
+	// possible for an action to be removed and for a new action to be added
+	// with the same name but a different state type.
+	//
+	// The function takes the following parameters:
+	//
+	//   - actionName: name of the action to query.
+	//
+	// The function returns the following values:
+	//
+	//   - variantType (optional): state type, if the action is stateful.
+	ActionStateType func(actionName string) *glib.VariantType // optional
+	// HasAction checks if the named action exists within action_group.
+	//
+	// The function takes the following parameters:
+	//
+	//   - actionName: name of the action to check for.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: whether the named action exists.
+	HasAction func(actionName string) bool // optional
+	// ListActions lists the actions contained within action_group.
+	//
+	// The caller is responsible for freeing the list with glib.Strfreev() when
+	// it is no longer required.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8s: NULL-terminated array of the names of the actions in the
+	//     group.
+	ListActions func() []string // optional
+	// QueryAction queries all aspects of the named action within an
+	// action_group.
+	//
+	// This function acquires the information available from
+	// gio.ActionGroup.HasAction(), gio.ActionGroup.GetActionEnabled(),
+	// gio.ActionGroup.GetActionParameterType(),
+	// gio.ActionGroup.GetActionStateType(),
+	// gio.ActionGroup.GetActionStateHint() and gio.ActionGroup.GetActionState()
+	// with a single function call.
+	//
+	// This provides two main benefits.
+	//
+	// The first is the improvement in efficiency that comes with not having to
+	// perform repeated lookups of the action in order to discover different
+	// things about it. The second is that implementing gio.ActionGroup can now
+	// be done by only overriding this one virtual function.
+	//
+	// The interface provides a default implementation of this function that
+	// calls the individual functions, as required, to fetch the information.
+	// The interface also provides default implementations of those functions
+	// that call this function. All implementations, therefore, must override
+	// either this function or all of the others.
+	//
+	// If the action exists, TRUE is returned and any of the requested fields
+	// (as indicated by having a non-NULL reference passed in) are filled.
+	// If the action doesn’t exist, FALSE is returned and the fields may or may
+	// not have been modified.
+	//
+	// The function takes the following parameters:
+	//
+	//   - actionName: name of an action in the group.
+	//
+	// The function returns the following values:
+	//
+	//   - enabled: if the action is presently enabled.
+	//   - parameterType (optional): parameter type, or NULL if none needed.
+	//   - stateType (optional): state type, or NULL if stateless.
+	//   - stateHint (optional): state hint, or NULL if none.
+	//   - state (optional): current state, or NULL if stateless.
+	//   - ok: TRUE if the action exists, else FALSE.
+	QueryAction func(actionName string) (enabled bool, parameterType, stateType *glib.VariantType, stateHint, state *glib.Variant, ok bool) // optional
+}
+
 // ActionGroup: GActionGroup represents a group of actions.
 //
 // Actions can be used to expose functionality in a structured way, either
@@ -11388,6 +12060,74 @@ type ActionGrouper interface {
 }
 
 var _ ActionGrouper = (*ActionGroup)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[ActionGroupOverrides](
+		GTypeActionGroup,
+		initActionGroupInterface,
+	)
+}
+
+func initActionGroupInterface(giface unsafe.Pointer, overrides ActionGroupOverrides) {
+	iface := (*C.GActionGroupInterface)(giface)
+
+	if overrides.ActionAdded != nil {
+		iface.action_added = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_action_added)
+	}
+
+	if overrides.ActionEnabledChanged != nil {
+		iface.action_enabled_changed = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_action_enabled_changed)
+	}
+
+	if overrides.ActionRemoved != nil {
+		iface.action_removed = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_action_removed)
+	}
+
+	if overrides.ActionStateChanged != nil {
+		iface.action_state_changed = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_action_state_changed)
+	}
+
+	if overrides.ActivateAction != nil {
+		iface.activate_action = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_activate_action)
+	}
+
+	if overrides.ChangeActionState != nil {
+		iface.change_action_state = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_change_action_state)
+	}
+
+	if overrides.ActionEnabled != nil {
+		iface.get_action_enabled = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_get_action_enabled)
+	}
+
+	if overrides.ActionParameterType != nil {
+		iface.get_action_parameter_type = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_get_action_parameter_type)
+	}
+
+	if overrides.ActionState != nil {
+		iface.get_action_state = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_get_action_state)
+	}
+
+	if overrides.ActionStateHint != nil {
+		iface.get_action_state_hint = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_get_action_state_hint)
+	}
+
+	if overrides.ActionStateType != nil {
+		iface.get_action_state_type = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_get_action_state_type)
+	}
+
+	if overrides.HasAction != nil {
+		iface.has_action = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_has_action)
+	}
+
+	if overrides.ListActions != nil {
+		iface.list_actions = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_list_actions)
+	}
+
+	if overrides.QueryAction != nil {
+		iface.query_action = (*[0]byte)(C._gotk4_gio2_ActionGroupInterface_query_action)
+	}
+
+}
 
 func wrapActionGroup(obj *coreglib.Object) *ActionGroup {
 	return &ActionGroup{
@@ -12597,6 +13337,43 @@ func (actionGroup *ActionGroup) queryAction(actionName string) (enabled bool, pa
 	return _enabled, _parameterType, _stateType, _stateHint, _state, _ok
 }
 
+// ActionMapOverrides contains methods that a subclass can implement
+// for the ActionMap interface. Methods left nil keep the interface's
+// default implementation.
+type ActionMapOverrides struct {
+	// AddAction adds an action to the action_map.
+	//
+	// If the action map already contains an action with the same name as action
+	// then the old action is dropped from the action map.
+	//
+	// The action map takes its own reference on action.
+	//
+	// The function takes the following parameters:
+	//
+	//   - action: gio.Action.
+	AddAction func(action Actioner) // optional
+	// LookupAction looks up the action with the name action_name in action_map.
+	//
+	// If no such action exists, returns NULL.
+	//
+	// The function takes the following parameters:
+	//
+	//   - actionName: name of an action.
+	//
+	// The function returns the following values:
+	//
+	//   - action (optional): gio.Action.
+	LookupAction func(actionName string) *Action // optional
+	// RemoveAction removes the named action from the action map.
+	//
+	// If no action of this name is in the map then nothing happens.
+	//
+	// The function takes the following parameters:
+	//
+	//   - actionName: name of the action.
+	RemoveAction func(actionName string) // optional
+}
+
 // ActionMap: GActionMap is an interface for action containers.
 //
 // The GActionMap interface is implemented by gio.ActionGroup implementations
@@ -12636,6 +13413,30 @@ type ActionMapper interface {
 }
 
 var _ ActionMapper = (*ActionMap)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[ActionMapOverrides](
+		GTypeActionMap,
+		initActionMapInterface,
+	)
+}
+
+func initActionMapInterface(giface unsafe.Pointer, overrides ActionMapOverrides) {
+	iface := (*C.GActionMapInterface)(giface)
+
+	if overrides.AddAction != nil {
+		iface.add_action = (*[0]byte)(C._gotk4_gio2_ActionMapInterface_add_action)
+	}
+
+	if overrides.LookupAction != nil {
+		iface.lookup_action = (*[0]byte)(C._gotk4_gio2_ActionMapInterface_lookup_action)
+	}
+
+	if overrides.RemoveAction != nil {
+		iface.remove_action = (*[0]byte)(C._gotk4_gio2_ActionMapInterface_remove_action)
+	}
+
+}
 
 func wrapActionMap(obj *coreglib.Object) *ActionMap {
 	return &ActionMap{
@@ -12916,6 +13717,234 @@ func (actionMap *ActionMap) removeAction(actionName string) {
 	runtime.KeepAlive(actionName)
 }
 
+// AppInfoOverrides contains methods that a subclass can implement
+// for the AppInfo interface. Methods left nil keep the interface's
+// default implementation.
+type AppInfoOverrides struct {
+	// AddSupportsType adds a content type to the application information to
+	// indicate the application is capable of opening files with the given
+	// content type.
+	//
+	// The function takes the following parameters:
+	//
+	//   - contentType: string.
+	AddSupportsType func(contentType string) error // optional
+	// CanDelete obtains the information whether the gio.AppInfo can be deleted.
+	// See gio.AppInfo.Delete().
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if appinfo can be deleted.
+	CanDelete func() bool // optional
+	// CanRemoveSupportsType checks if a supported content type can be removed
+	// from an application.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if it is possible to remove supported content types from a
+	//     given appinfo, FALSE if not.
+	CanRemoveSupportsType func() bool // optional
+	// Dup creates a duplicate of a gio.AppInfo.
+	//
+	// The function returns the following values:
+	//
+	//   - appInfo: duplicate of appinfo.
+	Dup func() *AppInfo // optional
+	// Equal checks if two gio.AppInfos are equal.
+	//
+	// Note that the check *may not* compare each individual field, and only
+	// does an identity check. In case detecting changes in the contents is
+	// needed, program code must additionally compare relevant fields.
+	//
+	// The function takes the following parameters:
+	//
+	//   - appinfo2: second gio.AppInfo.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if appinfo1 is equal to appinfo2. FALSE otherwise.
+	Equal func(appinfo2 AppInfor) bool // optional
+	// Commandline gets the commandline with which the application will be
+	// started.
+	//
+	// The function returns the following values:
+	//
+	//   - filename (optional): string containing the appinfo’s commandline,
+	//     or NULL if this information is not available.
+	Commandline func() string // optional
+	// Description gets a human-readable description of an installed
+	// application.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8 (optional): string containing a description of the application
+	//     appinfo, or NULL if none.
+	Description func() string // optional
+	// DisplayName gets the display name of the application. The display name is
+	// often more descriptive to the user than the name itself.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8: display name of the application for appinfo, or the name if no
+	//     display name is available.
+	DisplayName func() string // optional
+	// Executable gets the executable’s name for the installed application.
+	//
+	// This is intended to be used for debugging or labelling what program is
+	// going to be run. To launch the executable, use gio.AppInfo.Launch()
+	// and related functions, rather than spawning the return value from this
+	// function.
+	//
+	// The function returns the following values:
+	//
+	//   - filename: string containing the appinfo’s application binaries name.
+	Executable func() string // optional
+	// Icon gets the icon for the application.
+	//
+	// The function returns the following values:
+	//
+	//   - icon (optional): default gio.Icon for appinfo or NULL if there is no
+	//     default icon.
+	Icon func() *Icon // optional
+	// ID gets the ID of an application. An id is a string that identifies
+	// the application. The exact format of the id is platform dependent.
+	// For instance, on Unix this is the desktop file id from the xdg menu
+	// specification.
+	//
+	// Note that the returned ID may be NULL, depending on how the appinfo has
+	// been constructed.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8 (optional): string containing the application’s ID.
+	ID func() string // optional
+	// Name gets the installed name of the application.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8: name of the application for appinfo.
+	Name func() string // optional
+	// SupportedTypes retrieves the list of content types that app_info claims
+	// to support. If this information is not provided by the environment,
+	// this function will return NULL.
+	//
+	// This function does not take in consideration associations added with
+	// gio.AppInfo.AddSupportsType(), but only those exported directly by the
+	// application.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8s (optional): a list of content types.
+	SupportedTypes func() []string // optional
+	// Launch launches the application. Passes files to the launched application
+	// as arguments, using the optional context to get information about the
+	// details of the launcher (like what screen it is on). On error, error will
+	// be set accordingly.
+	//
+	// To launch the application without arguments pass a NULL files list.
+	//
+	// Note that even if the launch is successful the application launched can
+	// fail to start if it runs into problems during startup. There is no way to
+	// detect this.
+	//
+	// Some URIs can be changed when passed through a GFile (for instance
+	// unsupported URIs with strange formats like mailto:), so if you
+	// have a textual URI you want to pass in as argument, consider using
+	// gio.AppInfo.LaunchURIs() instead.
+	//
+	// The launched application inherits the environment of the launching
+	// process, but it can be modified with gio.AppLaunchContext.Setenv() and
+	// gio.AppLaunchContext.Unsetenv().
+	//
+	// On UNIX, this function sets the GIO_LAUNCHED_DESKTOP_FILE
+	// environment variable with the path of the launched desktop file and
+	// GIO_LAUNCHED_DESKTOP_FILE_PID to the process id of the launched process.
+	// This can be used to ignore GIO_LAUNCHED_DESKTOP_FILE, should it be
+	// inherited by further processes. The DISPLAY, XDG_ACTIVATION_TOKEN
+	// and DESKTOP_STARTUP_ID environment variables are also set, based on
+	// information provided in context.
+	//
+	// The function takes the following parameters:
+	//
+	//   - files (optional): list of gio.File objects.
+	//   - context (optional): launch context.
+	Launch func(files []Filer, context *AppLaunchContext) error // optional
+	// LaunchURIs launches the application. This passes the uris to the launched
+	// application as arguments, using the optional context to get information
+	// about the details of the launcher (like what screen it is on). On error,
+	// error will be set accordingly. If the application only supports one URI
+	// per invocation as part of their command-line, multiple instances of the
+	// application will be spawned.
+	//
+	// To launch the application without arguments pass a NULL uris list.
+	//
+	// Note that even if the launch is successful the application launched can
+	// fail to start if it runs into problems during startup. There is no way to
+	// detect this.
+	//
+	// The function takes the following parameters:
+	//
+	//   - uris (optional): list of URIs to launch.
+	//   - context (optional): launch context.
+	LaunchURIs func(uris []string, context *AppLaunchContext) error // optional
+	// LaunchURIsFinish finishes a gio.AppInfo.LaunchURIsAsync() operation.
+	//
+	// The function takes the following parameters:
+	//
+	//   - result: async result.
+	LaunchURIsFinish func(result AsyncResulter) error // optional
+	// RemoveSupportsType removes a supported type from an application,
+	// if possible.
+	//
+	// The function takes the following parameters:
+	//
+	//   - contentType: string.
+	RemoveSupportsType func(contentType string) error // optional
+	// SetAsDefaultForExtension sets the application as the default handler for
+	// the given file extension.
+	//
+	// The function takes the following parameters:
+	//
+	//   - extension: string containing the file extension (without the dot).
+	SetAsDefaultForExtension func(extension string) error // optional
+	// SetAsDefaultForType sets the application as the default handler for a
+	// given type.
+	//
+	// The function takes the following parameters:
+	//
+	//   - contentType: content type.
+	SetAsDefaultForType func(contentType string) error // optional
+	// SetAsLastUsedForType sets the application as the last used application
+	// for a given type. This will make the application appear as first in the
+	// list returned by gio.AppInfo().GetRecommendedForType, regardless of the
+	// default application for that content type.
+	//
+	// The function takes the following parameters:
+	//
+	//   - contentType: content type.
+	SetAsLastUsedForType func(contentType string) error // optional
+	// ShouldShow checks if the application info should be shown in menus that
+	// list available applications.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if the appinfo should be shown, FALSE otherwise.
+	ShouldShow func() bool // optional
+	// SupportsFiles checks if the application accepts files as arguments.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if the appinfo supports files.
+	SupportsFiles func() bool // optional
+	// SupportsURIs checks if the application supports reading files and
+	// directories from URIs.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if the appinfo supports URIs.
+	SupportsURIs func() bool // optional
+}
+
 // AppInfo: information about an installed application and methods to launch it
 // (with file arguments).
 //
@@ -13046,6 +14075,110 @@ type AppInfor interface {
 }
 
 var _ AppInfor = (*AppInfo)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[AppInfoOverrides](
+		GTypeAppInfo,
+		initAppInfoIface,
+	)
+}
+
+func initAppInfoIface(giface unsafe.Pointer, overrides AppInfoOverrides) {
+	iface := (*C.GAppInfoIface)(giface)
+
+	if overrides.AddSupportsType != nil {
+		iface.add_supports_type = (*[0]byte)(C._gotk4_gio2_AppInfoIface_add_supports_type)
+	}
+
+	if overrides.CanDelete != nil {
+		iface.can_delete = (*[0]byte)(C._gotk4_gio2_AppInfoIface_can_delete)
+	}
+
+	if overrides.CanRemoveSupportsType != nil {
+		iface.can_remove_supports_type = (*[0]byte)(C._gotk4_gio2_AppInfoIface_can_remove_supports_type)
+	}
+
+	if overrides.Dup != nil {
+		iface.dup = (*[0]byte)(C._gotk4_gio2_AppInfoIface_dup)
+	}
+
+	if overrides.Equal != nil {
+		iface.equal = (*[0]byte)(C._gotk4_gio2_AppInfoIface_equal)
+	}
+
+	if overrides.Commandline != nil {
+		iface.get_commandline = (*[0]byte)(C._gotk4_gio2_AppInfoIface_get_commandline)
+	}
+
+	if overrides.Description != nil {
+		iface.get_description = (*[0]byte)(C._gotk4_gio2_AppInfoIface_get_description)
+	}
+
+	if overrides.DisplayName != nil {
+		iface.get_display_name = (*[0]byte)(C._gotk4_gio2_AppInfoIface_get_display_name)
+	}
+
+	if overrides.Executable != nil {
+		iface.get_executable = (*[0]byte)(C._gotk4_gio2_AppInfoIface_get_executable)
+	}
+
+	if overrides.Icon != nil {
+		iface.get_icon = (*[0]byte)(C._gotk4_gio2_AppInfoIface_get_icon)
+	}
+
+	if overrides.ID != nil {
+		iface.get_id = (*[0]byte)(C._gotk4_gio2_AppInfoIface_get_id)
+	}
+
+	if overrides.Name != nil {
+		iface.get_name = (*[0]byte)(C._gotk4_gio2_AppInfoIface_get_name)
+	}
+
+	if overrides.SupportedTypes != nil {
+		iface.get_supported_types = (*[0]byte)(C._gotk4_gio2_AppInfoIface_get_supported_types)
+	}
+
+	if overrides.Launch != nil {
+		iface.launch = (*[0]byte)(C._gotk4_gio2_AppInfoIface_launch)
+	}
+
+	if overrides.LaunchURIs != nil {
+		iface.launch_uris = (*[0]byte)(C._gotk4_gio2_AppInfoIface_launch_uris)
+	}
+
+	if overrides.LaunchURIsFinish != nil {
+		iface.launch_uris_finish = (*[0]byte)(C._gotk4_gio2_AppInfoIface_launch_uris_finish)
+	}
+
+	if overrides.RemoveSupportsType != nil {
+		iface.remove_supports_type = (*[0]byte)(C._gotk4_gio2_AppInfoIface_remove_supports_type)
+	}
+
+	if overrides.SetAsDefaultForExtension != nil {
+		iface.set_as_default_for_extension = (*[0]byte)(C._gotk4_gio2_AppInfoIface_set_as_default_for_extension)
+	}
+
+	if overrides.SetAsDefaultForType != nil {
+		iface.set_as_default_for_type = (*[0]byte)(C._gotk4_gio2_AppInfoIface_set_as_default_for_type)
+	}
+
+	if overrides.SetAsLastUsedForType != nil {
+		iface.set_as_last_used_for_type = (*[0]byte)(C._gotk4_gio2_AppInfoIface_set_as_last_used_for_type)
+	}
+
+	if overrides.ShouldShow != nil {
+		iface.should_show = (*[0]byte)(C._gotk4_gio2_AppInfoIface_should_show)
+	}
+
+	if overrides.SupportsFiles != nil {
+		iface.supports_files = (*[0]byte)(C._gotk4_gio2_AppInfoIface_supports_files)
+	}
+
+	if overrides.SupportsURIs != nil {
+		iface.supports_uris = (*[0]byte)(C._gotk4_gio2_AppInfoIface_supports_uris)
+	}
+
+}
 
 func wrapAppInfo(obj *coreglib.Object) *AppInfo {
 	return &AppInfo{
@@ -15161,6 +16294,19 @@ func AppInfoResetTypeAssociations(contentType string) {
 	runtime.KeepAlive(contentType)
 }
 
+// AsyncInitableOverrides contains methods that a subclass can implement
+// for the AsyncInitable interface. Methods left nil keep the interface's
+// default implementation.
+type AsyncInitableOverrides struct {
+	// InitFinish finishes asynchronous initialization and returns the result.
+	// See g_async_initable_init_async().
+	//
+	// The function takes the following parameters:
+	//
+	//   - res: Result.
+	InitFinish func(res AsyncResulter) error // optional
+}
+
 // AsyncInitable: GAsyncInitable is an interface for asynchronously
 // initializable objects.
 //
@@ -15289,6 +16435,22 @@ type AsyncInitabler interface {
 }
 
 var _ AsyncInitabler = (*AsyncInitable)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[AsyncInitableOverrides](
+		GTypeAsyncInitable,
+		initAsyncInitableIface,
+	)
+}
+
+func initAsyncInitableIface(giface unsafe.Pointer, overrides AsyncInitableOverrides) {
+	iface := (*C.GAsyncInitableIface)(giface)
+
+	if overrides.InitFinish != nil {
+		iface.init_finish = (*[0]byte)(C._gotk4_gio2_AsyncInitableIface_init_finish)
+	}
+
+}
 
 func wrapAsyncInitable(obj *coreglib.Object) *AsyncInitable {
 	return &AsyncInitable{
@@ -15531,6 +16693,36 @@ func (initable *AsyncInitable) initFinish(res AsyncResulter) error {
 	return _goerr
 }
 
+// AsyncResultOverrides contains methods that a subclass can implement
+// for the AsyncResult interface. Methods left nil keep the interface's
+// default implementation.
+type AsyncResultOverrides struct {
+	// SourceObject gets the source object from a gio.AsyncResult.
+	//
+	// The function returns the following values:
+	//
+	//   - object (optional): new reference to the source object for the res,
+	//     or NULL if there is none.
+	SourceObject func() *coreglib.Object // optional
+	// UserData gets the user data from a gio.AsyncResult.
+	//
+	// The function returns the following values:
+	//
+	//   - gpointer (optional): user data for res.
+	UserData func() unsafe.Pointer // optional
+	// IsTagged checks if res has the given source_tag (generally a function
+	// pointer indicating the function res was created by).
+	//
+	// The function takes the following parameters:
+	//
+	//   - sourceTag (optional): application-defined tag.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if res has the indicated source_tag, FALSE if not.
+	IsTagged func(sourceTag unsafe.Pointer) bool // optional
+}
+
 // AsyncResult: GAsyncResult provides a base class for implementing asynchronous
 // function results.
 //
@@ -15640,6 +16832,30 @@ type AsyncResulter interface {
 }
 
 var _ AsyncResulter = (*AsyncResult)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[AsyncResultOverrides](
+		GTypeAsyncResult,
+		initAsyncResultIface,
+	)
+}
+
+func initAsyncResultIface(giface unsafe.Pointer, overrides AsyncResultOverrides) {
+	iface := (*C.GAsyncResultIface)(giface)
+
+	if overrides.SourceObject != nil {
+		iface.get_source_object = (*[0]byte)(C._gotk4_gio2_AsyncResultIface_get_source_object)
+	}
+
+	if overrides.UserData != nil {
+		iface.get_user_data = (*[0]byte)(C._gotk4_gio2_AsyncResultIface_get_user_data)
+	}
+
+	if overrides.IsTagged != nil {
+		iface.is_tagged = (*[0]byte)(C._gotk4_gio2_AsyncResultIface_is_tagged)
+	}
+
+}
 
 func wrapAsyncResult(obj *coreglib.Object) *AsyncResult {
 	return &AsyncResult{
@@ -15839,6 +17055,111 @@ func (res *AsyncResult) isTagged(sourceTag unsafe.Pointer) bool {
 	return _ok
 }
 
+// ConverterOverrides contains methods that a subclass can implement
+// for the Converter interface. Methods left nil keep the interface's
+// default implementation.
+type ConverterOverrides struct {
+	// Convert: this is the main operation used when converting data. It is to
+	// be called multiple times in a loop, and each time it will do some work,
+	// i.e. producing some output (in outbuf) or consuming some input (from
+	// inbuf) or both. If its not possible to do any work an error is returned.
+	//
+	// Note that a single call may not consume all input (or any input at all).
+	// Also a call may produce output even if given no input, due to state
+	// stored in the converter producing output.
+	//
+	// If any data was either produced or consumed, and then an error happens,
+	// then only the successful conversion is reported and the error is returned
+	// on the next call.
+	//
+	// A full conversion loop involves calling this method repeatedly, each
+	// time giving it new input and space output space. When there is no more
+	// input data after the data in inbuf, the flag G_CONVERTER_INPUT_AT_END
+	// must be set. The loop will be (unless some error happens) returning
+	// G_CONVERTER_CONVERTED each time until all data is consumed and all output
+	// is produced, then G_CONVERTER_FINISHED is returned instead. Note, that
+	// G_CONVERTER_FINISHED may be returned even if G_CONVERTER_INPUT_AT_END is
+	// not set, for instance in a decompression converter where the end of data
+	// is detectable from the data (and there might even be other data after the
+	// end of the compressed data).
+	//
+	// When some data has successfully been converted bytes_read and is set to
+	// the number of bytes read from inbuf, and bytes_written is set to indicate
+	// how many bytes was written to outbuf. If there are more data to output
+	// or consume (i.e. unless the G_CONVERTER_INPUT_AT_END is specified) then
+	// G_CONVERTER_CONVERTED is returned, and if no more data is to be output
+	// then G_CONVERTER_FINISHED is returned.
+	//
+	// On error G_CONVERTER_ERROR is returned and error is set accordingly.
+	// Some errors need special handling:
+	//
+	// G_IO_ERROR_NO_SPACE is returned if there is not enough space to write the
+	// resulting converted data, the application should call the function again
+	// with a larger outbuf to continue.
+	//
+	// G_IO_ERROR_PARTIAL_INPUT is returned if there is not enough input
+	// to fully determine what the conversion should produce, and the
+	// G_CONVERTER_INPUT_AT_END flag is not set. This happens for example with
+	// an incomplete multibyte sequence when converting text, or when a regexp
+	// matches up to the end of the input (and may match further input). It may
+	// also happen when inbuf_size is zero and there is no more data to produce.
+	//
+	// When this happens the application should read more input and then
+	// call the function again. If further input shows that there is no
+	// more data call the function again with the same data but with the
+	// G_CONVERTER_INPUT_AT_END flag set. This may cause the conversion
+	// to finish as e.g. in the regexp match case (or, to fail again with
+	// G_IO_ERROR_PARTIAL_INPUT in e.g. a charset conversion where the input is
+	// actually partial).
+	//
+	// After g_converter_convert() has returned G_CONVERTER_FINISHED the
+	// converter object is in an invalid state where its not allowed to call
+	// g_converter_convert() anymore. At this time you can only free the object
+	// or call g_converter_reset() to reset it to the initial state.
+	//
+	// If the flag G_CONVERTER_FLUSH is set then conversion is modified to
+	// try to write out all internal state to the output. The application
+	// has to call the function multiple times with the flag set, and when
+	// the available input has been consumed and all internal state has been
+	// produced then G_CONVERTER_FLUSHED (or G_CONVERTER_FINISHED if really at
+	// the end) is returned instead of G_CONVERTER_CONVERTED. This is somewhat
+	// similar to what happens at the end of the input stream, but done in the
+	// middle of the data.
+	//
+	// This has different meanings for different conversions. For instance in
+	// a compression converter it would mean that we flush all the compression
+	// state into output such that if you uncompress the compressed data you get
+	// back all the input data. Doing this may make the final file larger due to
+	// padding though. Another example is a regexp conversion, where if you at
+	// the end of the flushed data have a match, but there is also a potential
+	// longer match. In the non-flushed case we would ask for more input,
+	// but when flushing we treat this as the end of input and do the match.
+	//
+	// Flushing is not always possible (like if a charset converter flushes
+	// at a partial multibyte sequence). Converters are supposed to try to
+	// produce as much output as possible and then return an error (typically
+	// G_IO_ERROR_PARTIAL_INPUT).
+	//
+	// The function takes the following parameters:
+	//
+	//   - inbuf (optional): buffer containing the data to convert.
+	//   - outbuf: a buffer to write converted data in.
+	//   - flags controlling the conversion details.
+	//
+	// The function returns the following values:
+	//
+	//   - bytesRead will be set to the number of bytes read from inbuf on
+	//     success.
+	//   - bytesWritten will be set to the number of bytes written to outbuf on
+	//     success.
+	//   - converterResult G_CONVERTER_ERROR on error.
+	Convert func(inbuf, outbuf []byte, flags ConverterFlags) (bytesRead, bytesWritten uint, converterResult ConverterResult, goerr error) // optional
+	// Reset resets all internal state in the converter, making it behave as if
+	// it was just created. If the converter has any internal state that would
+	// produce output then that output is lost.
+	Reset func() // optional
+}
+
 // Converter: GConverter is an interface for streaming conversions.
 //
 // GConverter is implemented by objects that convert binary data in various
@@ -15872,6 +17193,26 @@ type Converterer interface {
 }
 
 var _ Converterer = (*Converter)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[ConverterOverrides](
+		GTypeConverter,
+		initConverterIface,
+	)
+}
+
+func initConverterIface(giface unsafe.Pointer, overrides ConverterOverrides) {
+	iface := (*C.GConverterIface)(giface)
+
+	if overrides.Convert != nil {
+		iface.convert = (*[0]byte)(C._gotk4_gio2_ConverterIface_convert)
+	}
+
+	if overrides.Reset != nil {
+		iface.reset = (*[0]byte)(C._gotk4_gio2_ConverterIface_reset)
+	}
+
+}
 
 func wrapConverter(obj *coreglib.Object) *Converter {
 	return &Converter{
@@ -16221,6 +17562,39 @@ func (converter *Converter) reset() {
 	runtime.KeepAlive(converter)
 }
 
+// DBusInterfaceOverrides contains methods that a subclass can implement
+// for the DBusInterface interface. Methods left nil keep the interface's
+// default implementation.
+type DBusInterfaceOverrides struct {
+	// DupObject gets the BusObject that interface_ belongs to, if any.
+	//
+	// The function returns the following values:
+	//
+	//   - dBusObject (optional) or NULL. The returned reference should be freed
+	//     with g_object_unref().
+	DupObject func() *DBusObject // optional
+	// Info gets D-Bus introspection information for the D-Bus interface
+	// implemented by interface_.
+	//
+	// This can return NULL if no BusInterfaceInfo was provided during
+	// construction of interface_ and is also not made available otherwise.
+	// For example, BusProxy implements BusInterface but allows for a NULL
+	// BusInterfaceInfo.
+	//
+	// The function returns the following values:
+	//
+	//   - dBusInterfaceInfo (optional) Do not free.
+	Info func() *DBusInterfaceInfo // optional
+	// SetObject sets the BusObject for interface_ to object.
+	//
+	// Note that interface_ will hold a weak reference to object.
+	//
+	// The function takes the following parameters:
+	//
+	//   - object (optional) or NULL.
+	SetObject func(object DBusObjector) // optional
+}
+
 // DBusInterface: base type for D-Bus interfaces.
 //
 // The GDBusInterface type is the base type for D-Bus interfaces both on
@@ -16252,6 +17626,30 @@ type DBusInterfacer interface {
 }
 
 var _ DBusInterfacer = (*DBusInterface)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[DBusInterfaceOverrides](
+		GTypeDBusInterface,
+		initDBusInterfaceIface,
+	)
+}
+
+func initDBusInterfaceIface(giface unsafe.Pointer, overrides DBusInterfaceOverrides) {
+	iface := (*C.GDBusInterfaceIface)(giface)
+
+	if overrides.DupObject != nil {
+		iface.dup_object = (*[0]byte)(C._gotk4_gio2_DBusInterfaceIface_dup_object)
+	}
+
+	if overrides.Info != nil {
+		iface.get_info = (*[0]byte)(C._gotk4_gio2_DBusInterfaceIface_get_info)
+	}
+
+	if overrides.SetObject != nil {
+		iface.set_object = (*[0]byte)(C._gotk4_gio2_DBusInterfaceIface_set_object)
+	}
+
+}
 
 func wrapDBusInterface(obj *coreglib.Object) *DBusInterface {
 	return &DBusInterface{
@@ -16432,6 +17830,43 @@ func (interface_ *DBusInterface) setObject(object DBusObjector) {
 	runtime.KeepAlive(object)
 }
 
+// DBusObjectOverrides contains methods that a subclass can implement
+// for the DBusObject interface. Methods left nil keep the interface's
+// default implementation.
+type DBusObjectOverrides struct {
+	// Interface gets the D-Bus interface with name interface_name associated
+	// with object, if any.
+	//
+	// The function takes the following parameters:
+	//
+	//   - interfaceName d-Bus interface name.
+	//
+	// The function returns the following values:
+	//
+	//   - dBusInterface (optional): NULL if not found, otherwise a BusInterface
+	//     that must be freed with g_object_unref().
+	Interface func(interfaceName string) *DBusInterface // optional
+	// Interfaces gets the D-Bus interfaces associated with object.
+	//
+	// The function returns the following values:
+	//
+	//   - list of BusInterface instances. The returned list must be
+	//     freed by g_list_free() after each element has been freed with
+	//     g_object_unref().
+	Interfaces func() []*DBusInterface // optional
+	// ObjectPath gets the object path for object.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8: string owned by object. Do not free.
+	ObjectPath func() string // optional
+	// InterfaceAdded: signal handler for the BusObject::interface-added signal.
+	InterfaceAdded func(interface_ DBusInterfacer) // optional
+	// InterfaceRemoved: signal handler for the BusObject::interface-removed
+	// signal.
+	InterfaceRemoved func(interface_ DBusInterfacer) // optional
+}
+
 // DBusObject: GDBusObject type is the base type for D-Bus objects on both
 // the service side (see gio.DBusObjectSkeleton) and the client side (see
 // gio.DBusObjectProxy). It is essentially just a container of interfaces.
@@ -16466,6 +17901,38 @@ type DBusObjector interface {
 }
 
 var _ DBusObjector = (*DBusObject)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[DBusObjectOverrides](
+		GTypeDBusObject,
+		initDBusObjectIface,
+	)
+}
+
+func initDBusObjectIface(giface unsafe.Pointer, overrides DBusObjectOverrides) {
+	iface := (*C.GDBusObjectIface)(giface)
+
+	if overrides.Interface != nil {
+		iface.get_interface = (*[0]byte)(C._gotk4_gio2_DBusObjectIface_get_interface)
+	}
+
+	if overrides.Interfaces != nil {
+		iface.get_interfaces = (*[0]byte)(C._gotk4_gio2_DBusObjectIface_get_interfaces)
+	}
+
+	if overrides.ObjectPath != nil {
+		iface.get_object_path = (*[0]byte)(C._gotk4_gio2_DBusObjectIface_get_object_path)
+	}
+
+	if overrides.InterfaceAdded != nil {
+		iface.interface_added = (*[0]byte)(C._gotk4_gio2_DBusObjectIface_interface_added)
+	}
+
+	if overrides.InterfaceRemoved != nil {
+		iface.interface_removed = (*[0]byte)(C._gotk4_gio2_DBusObjectIface_interface_removed)
+	}
+
+}
 
 func wrapDBusObject(obj *coreglib.Object) *DBusObject {
 	return &DBusObject{
@@ -16692,6 +18159,71 @@ func (object *DBusObject) interfaceRemoved(interface_ DBusInterfacer) {
 	runtime.KeepAlive(interface_)
 }
 
+// DBusObjectManagerOverrides contains methods that a subclass can implement
+// for the DBusObjectManager interface. Methods left nil keep the interface's
+// default implementation.
+type DBusObjectManagerOverrides struct {
+	// Interface gets the interface proxy for interface_name at object_path,
+	// if any.
+	//
+	// The function takes the following parameters:
+	//
+	//   - objectPath: object path to look up.
+	//   - interfaceName d-Bus interface name to look up.
+	//
+	// The function returns the following values:
+	//
+	//   - dBusInterface (optional) instance or NULL. Free with
+	//     g_object_unref().
+	Interface func(objectPath, interfaceName string) *DBusInterface // optional
+	// GetObject gets the BusObject at object_path, if any.
+	//
+	// The function takes the following parameters:
+	//
+	//   - objectPath: object path to look up.
+	//
+	// The function returns the following values:
+	//
+	//   - dBusObject (optional) or NULL. Free with g_object_unref().
+	GetObject func(objectPath string) *DBusObject // optional
+	// ObjectPath gets the object path that manager is for.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8: string owned by manager. Do not free.
+	ObjectPath func() string // optional
+	// Objects gets all BusObject objects known to manager.
+	//
+	// The function returns the following values:
+	//
+	//   - list of BusObject objects. The returned list should be freed
+	//     with g_list_free() after each element has been freed with
+	//     g_object_unref().
+	Objects func() []*DBusObject // optional
+	// InterfaceAdded: signal handler for the BusObjectManager::interface-added
+	// signal.
+	//
+	// The function takes the following parameters:
+	//
+	//   - object
+	//   - interface_
+	InterfaceAdded func(object DBusObjector, interface_ DBusInterfacer) // optional
+	// InterfaceRemoved: signal handler for the
+	// BusObjectManager::interface-removed signal.
+	//
+	// The function takes the following parameters:
+	//
+	//   - object
+	//   - interface_
+	InterfaceRemoved func(object DBusObjector, interface_ DBusInterfacer) // optional
+	// ObjectAdded: signal handler for the BusObjectManager::object-added
+	// signal.
+	ObjectAdded func(object DBusObjector) // optional
+	// ObjectRemoved: signal handler for the BusObjectManager::object-removed
+	// signal.
+	ObjectRemoved func(object DBusObjector) // optional
+}
+
 // DBusObjectManager: GDBusObjectManager type is the base
 // type for service- and client-side implementations of
 // the standardized org.freedesktop.DBus.ObjectManager
@@ -16737,6 +18269,50 @@ type DBusObjectManagerer interface {
 }
 
 var _ DBusObjectManagerer = (*DBusObjectManager)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[DBusObjectManagerOverrides](
+		GTypeDBusObjectManager,
+		initDBusObjectManagerIface,
+	)
+}
+
+func initDBusObjectManagerIface(giface unsafe.Pointer, overrides DBusObjectManagerOverrides) {
+	iface := (*C.GDBusObjectManagerIface)(giface)
+
+	if overrides.Interface != nil {
+		iface.get_interface = (*[0]byte)(C._gotk4_gio2_DBusObjectManagerIface_get_interface)
+	}
+
+	if overrides.GetObject != nil {
+		iface.get_object = (*[0]byte)(C._gotk4_gio2_DBusObjectManagerIface_get_object)
+	}
+
+	if overrides.ObjectPath != nil {
+		iface.get_object_path = (*[0]byte)(C._gotk4_gio2_DBusObjectManagerIface_get_object_path)
+	}
+
+	if overrides.Objects != nil {
+		iface.get_objects = (*[0]byte)(C._gotk4_gio2_DBusObjectManagerIface_get_objects)
+	}
+
+	if overrides.InterfaceAdded != nil {
+		iface.interface_added = (*[0]byte)(C._gotk4_gio2_DBusObjectManagerIface_interface_added)
+	}
+
+	if overrides.InterfaceRemoved != nil {
+		iface.interface_removed = (*[0]byte)(C._gotk4_gio2_DBusObjectManagerIface_interface_removed)
+	}
+
+	if overrides.ObjectAdded != nil {
+		iface.object_added = (*[0]byte)(C._gotk4_gio2_DBusObjectManagerIface_object_added)
+	}
+
+	if overrides.ObjectRemoved != nil {
+		iface.object_removed = (*[0]byte)(C._gotk4_gio2_DBusObjectManagerIface_object_removed)
+	}
+
+}
 
 func wrapDBusObjectManager(obj *coreglib.Object) *DBusObjectManager {
 	return &DBusObjectManager{
@@ -17102,6 +18678,222 @@ func (manager *DBusObjectManager) objectRemoved(object DBusObjector) {
 	runtime.KeepAlive(object)
 }
 
+// DatagramBasedOverrides contains methods that a subclass can implement
+// for the DatagramBased interface. Methods left nil keep the interface's
+// default implementation.
+type DatagramBasedOverrides struct {
+	// ConditionCheck checks on the readiness of datagram_based to perform
+	// operations. The operations specified in condition are checked for and
+	// masked against the currently-satisfied conditions on datagram_based.
+	// The result is returned.
+	//
+	// G_IO_IN will be set in the return value if data is available to read
+	// with g_datagram_based_receive_messages(), or if the connection is closed
+	// remotely (EOS); and if the datagram_based has not been closed locally
+	// using some implementation-specific method (such as g_socket_close() or
+	// g_socket_shutdown() with shutdown_read set, if it’s a #GSocket).
+	//
+	// If the connection is shut down or closed (by calling g_socket_close()
+	// or g_socket_shutdown() with shutdown_read set, if it’s a #GSocket,
+	// for example), all calls to this function will return G_IO_ERROR_CLOSED.
+	//
+	// G_IO_OUT will be set if it is expected that at least one byte can be sent
+	// using g_datagram_based_send_messages() without blocking. It will not be
+	// set if the datagram_based has been closed locally.
+	//
+	// G_IO_HUP will be set if the connection has been closed locally.
+	//
+	// G_IO_ERR will be set if there was an asynchronous error in transmitting
+	// data previously enqueued using g_datagram_based_send_messages().
+	//
+	// Note that on Windows, it is possible for an operation
+	// to return G_IO_ERROR_WOULD_BLOCK even immediately after
+	// g_datagram_based_condition_check() has claimed that the Based is ready
+	// for writing. Rather than calling g_datagram_based_condition_check()
+	// and then writing to the Based if it succeeds, it is generally better to
+	// simply try writing right away, and try again later if the initial attempt
+	// returns G_IO_ERROR_WOULD_BLOCK.
+	//
+	// It is meaningless to specify G_IO_ERR or G_IO_HUP in condition; these
+	// conditions will always be set in the output if they are true. Apart from
+	// these flags, the output is guaranteed to be masked by condition.
+	//
+	// This call never blocks.
+	//
+	// The function takes the following parameters:
+	//
+	//   - condition mask to check.
+	//
+	// The function returns the following values:
+	//
+	//   - ioCondition mask of the current state.
+	ConditionCheck func(condition glib.IOCondition) glib.IOCondition // optional
+	// ConditionWait waits for up to timeout microseconds for condition to
+	// become true on datagram_based. If the condition is met, TRUE is returned.
+	//
+	// If cancellable is cancelled before the condition is met, or if timeout is
+	// reached before the condition is met, then FALSE is returned and error is
+	// set appropriately (G_IO_ERROR_CANCELLED or G_IO_ERROR_TIMED_OUT).
+	//
+	// The function takes the following parameters:
+	//
+	//   - ctx (optional): #GCancellable.
+	//   - condition mask to wait for.
+	//   - timeout: maximum time (in microseconds) to wait, 0 to not block,
+	//     or -1 to block indefinitely.
+	ConditionWait func(ctx context.Context, condition glib.IOCondition, timeout int64) error // optional
+	// CreateSource creates a #GSource that can be attached to a Context to
+	// monitor for the availability of the specified condition on the Based.
+	// The #GSource keeps a reference to the datagram_based.
+	//
+	// The callback on the source is of the BasedSourceFunc type.
+	//
+	// It is meaningless to specify G_IO_ERR or G_IO_HUP in condition; these
+	// conditions will always be reported in the callback if they are true.
+	//
+	// If non-NULL, cancellable can be used to cancel the source, which
+	// will cause the source to trigger, reporting the current condition
+	// (which is likely 0 unless cancellation happened at the same time as
+	// a condition change). You can check for this in the callback using
+	// g_cancellable_is_cancelled().
+	//
+	// The function takes the following parameters:
+	//
+	//   - ctx (optional): #GCancellable.
+	//   - condition mask to monitor.
+	//
+	// The function returns the following values:
+	//
+	//   - source: newly allocated #GSource.
+	CreateSource func(ctx context.Context, condition glib.IOCondition) *glib.Source // optional
+	// ReceiveMessages: receive one or more data messages from datagram_based in
+	// one go.
+	//
+	// messages must point to an array of Message structs and num_messages must
+	// be the length of this array. Each Message contains a pointer to an array
+	// of Vector structs describing the buffers that the data received in each
+	// message will be written to.
+	//
+	// flags modify how all messages are received. The commonly available
+	// arguments for this are available in the MsgFlags enum, but the values
+	// there are the same as the system values, and the flags are passed in
+	// as-is, so you can pass in system-specific flags too. These flags affect
+	// the overall receive operation. Flags affecting individual messages are
+	// returned in Message.flags.
+	//
+	// The other members of Message are treated as described in its
+	// documentation.
+	//
+	// If timeout is negative the call will block until num_messages have
+	// been received, the connection is closed remotely (EOS), cancellable is
+	// cancelled, or an error occurs.
+	//
+	// If timeout is 0 the call will return up to num_messages without blocking,
+	// or G_IO_ERROR_WOULD_BLOCK if no messages are queued in the operating
+	// system to be received.
+	//
+	// If timeout is positive the call will block on the same conditions as if
+	// timeout were negative. If the timeout is reached before any messages are
+	// received, G_IO_ERROR_TIMED_OUT is returned, otherwise it will return the
+	// number of messages received before timing out. (Note: This is effectively
+	// the behaviour of MSG_WAITFORONE with recvmmsg().)
+	//
+	// To be notified when messages are available, wait for the G_IO_IN
+	// condition. Note though that you may still receive G_IO_ERROR_WOULD_BLOCK
+	// from g_datagram_based_receive_messages() even if you were previously
+	// notified of a G_IO_IN condition.
+	//
+	// If the remote peer closes the connection, any messages queued in the
+	// underlying receive buffer will be returned, and subsequent calls to
+	// g_datagram_based_receive_messages() will return 0 (with no error set).
+	//
+	// If the connection is shut down or closed (by calling g_socket_close()
+	// or g_socket_shutdown() with shutdown_read set, if it’s a #GSocket,
+	// for example), all calls to this function will return G_IO_ERROR_CLOSED.
+	//
+	// On error -1 is returned and error is set accordingly. An error will only
+	// be returned if zero messages could be received; otherwise the number
+	// of messages successfully received before the error will be returned.
+	// If cancellable is cancelled, G_IO_ERROR_CANCELLED is returned as with any
+	// other error.
+	//
+	// The function takes the following parameters:
+	//
+	//   - ctx (optional): GCancellable.
+	//   - messages: array of Message structs.
+	//   - flags: int containing MsgFlags flags for the overall operation.
+	//   - timeout: maximum time (in microseconds) to wait, 0 to not block,
+	//     or -1 to block indefinitely.
+	//
+	// The function returns the following values:
+	//
+	//   - gint: number of messages received, or -1 on error. Note that the
+	//     number of messages received may be smaller than num_messages if
+	//     timeout is zero or positive, if the peer closed the connection,
+	//     or if num_messages was larger than UIO_MAXIOV (1024), in which case
+	//     the caller may re-try to receive the remaining messages.
+	ReceiveMessages func(ctx context.Context, messages []InputMessage, flags int, timeout int64) (int, error) // optional
+	// SendMessages: send one or more data messages from datagram_based in one
+	// go.
+	//
+	// messages must point to an array of Message structs and num_messages must
+	// be the length of this array. Each Message contains an address to send
+	// the data to, and a pointer to an array of Vector structs to describe the
+	// buffers that the data to be sent for each message will be gathered from.
+	//
+	// flags modify how the message is sent. The commonly available arguments
+	// for this are available in the MsgFlags enum, but the values there are the
+	// same as the system values, and the flags are passed in as-is, so you can
+	// pass in system-specific flags too.
+	//
+	// The other members of Message are treated as described in its
+	// documentation.
+	//
+	// If timeout is negative the call will block until num_messages have been
+	// sent, cancellable is cancelled, or an error occurs.
+	//
+	// If timeout is 0 the call will send up to num_messages without blocking,
+	// or will return G_IO_ERROR_WOULD_BLOCK if there is no space to send
+	// messages.
+	//
+	// If timeout is positive the call will block on the same conditions as if
+	// timeout were negative. If the timeout is reached before any messages
+	// are sent, G_IO_ERROR_TIMED_OUT is returned, otherwise it will return the
+	// number of messages sent before timing out.
+	//
+	// To be notified when messages can be sent, wait for the G_IO_OUT
+	// condition. Note though that you may still receive G_IO_ERROR_WOULD_BLOCK
+	// from g_datagram_based_send_messages() even if you were previously
+	// notified of a G_IO_OUT condition. (On Windows in particular, this is very
+	// common due to the way the underlying APIs work.)
+	//
+	// If the connection is shut down or closed (by calling g_socket_close()
+	// or g_socket_shutdown() with shutdown_write set, if it’s a #GSocket,
+	// for example), all calls to this function will return G_IO_ERROR_CLOSED.
+	//
+	// On error -1 is returned and error is set accordingly. An error will
+	// only be returned if zero messages could be sent; otherwise the number
+	// of messages successfully sent before the error will be returned.
+	// If cancellable is cancelled, G_IO_ERROR_CANCELLED is returned as with any
+	// other error.
+	//
+	// The function takes the following parameters:
+	//
+	//   - ctx (optional): GCancellable.
+	//   - messages: array of Message structs.
+	//   - flags: int containing MsgFlags flags.
+	//   - timeout: maximum time (in microseconds) to wait, 0 to not block,
+	//     or -1 to block indefinitely.
+	//
+	// The function returns the following values:
+	//
+	//   - gint: number of messages sent, or -1 on error. Note that the number
+	//     of messages sent may be smaller than num_messages if timeout is zero
+	//     or positive, or if num_messages was larger than UIO_MAXIOV (1024),
+	//     in which case the caller may re-try to send the remaining messages.
+	SendMessages func(ctx context.Context, messages []OutputMessage, flags int, timeout int64) (int, error) // optional
+}
+
 // DatagramBased: interface for socket-like objects with datagram semantics.
 //
 // A GDatagramBased is a networking interface for representing datagram-based
@@ -17184,6 +18976,38 @@ type DatagramBasedder interface {
 }
 
 var _ DatagramBasedder = (*DatagramBased)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[DatagramBasedOverrides](
+		GTypeDatagramBased,
+		initDatagramBasedInterface,
+	)
+}
+
+func initDatagramBasedInterface(giface unsafe.Pointer, overrides DatagramBasedOverrides) {
+	iface := (*C.GDatagramBasedInterface)(giface)
+
+	if overrides.ConditionCheck != nil {
+		iface.condition_check = (*[0]byte)(C._gotk4_gio2_DatagramBasedInterface_condition_check)
+	}
+
+	if overrides.ConditionWait != nil {
+		iface.condition_wait = (*[0]byte)(C._gotk4_gio2_DatagramBasedInterface_condition_wait)
+	}
+
+	if overrides.CreateSource != nil {
+		iface.create_source = (*[0]byte)(C._gotk4_gio2_DatagramBasedInterface_create_source)
+	}
+
+	if overrides.ReceiveMessages != nil {
+		iface.receive_messages = (*[0]byte)(C._gotk4_gio2_DatagramBasedInterface_receive_messages)
+	}
+
+	if overrides.SendMessages != nil {
+		iface.send_messages = (*[0]byte)(C._gotk4_gio2_DatagramBasedInterface_send_messages)
+	}
+
+}
 
 func wrapDatagramBased(obj *coreglib.Object) *DatagramBased {
 	return &DatagramBased{
@@ -17952,8 +19776,10 @@ func (datagramBased *DatagramBased) sendMessages(ctx context.Context, messages [
 	return _gint, _goerr
 }
 
-// DebugControllerOverrider contains methods that are overridable.
-type DebugControllerOverrider interface {
+// DebugControllerOverrides contains methods that a subclass can implement
+// for the DebugController interface. Methods left nil keep the interface's
+// default implementation.
+type DebugControllerOverrides struct {
 }
 
 // DebugController: GDebugController is an interface to expose control of
@@ -17993,7 +19819,14 @@ type DebugControllerer interface {
 
 var _ DebugControllerer = (*DebugController)(nil)
 
-func ifaceInitDebugControllerer(gifacePtr, data C.gpointer) {
+func init() {
+	coreglib.RegisterInterfaceInfo[DebugControllerOverrides](
+		GTypeDebugController,
+		initDebugControllerInterface,
+	)
+}
+
+func initDebugControllerInterface(giface unsafe.Pointer, overrides DebugControllerOverrides) {
 }
 
 func wrapDebugController(obj *coreglib.Object) *DebugController {
@@ -18048,6 +19881,189 @@ func (self *DebugController) SetDebugEnabled(debugEnabled bool) {
 	C.g_debug_controller_set_debug_enabled(_arg0, _arg1)
 	runtime.KeepAlive(self)
 	runtime.KeepAlive(debugEnabled)
+}
+
+// DriveOverrides contains methods that a subclass can implement
+// for the Drive interface. Methods left nil keep the interface's
+// default implementation.
+type DriveOverrides struct {
+	// CanEject checks if a drive can be ejected.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if the drive can be ejected, FALSE otherwise.
+	CanEject func() bool // optional
+	// CanPollForMedia checks if a drive can be polled for media changes.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if the drive can be polled for media changes, FALSE
+	//     otherwise.
+	CanPollForMedia func() bool // optional
+	// CanStart checks if a drive can be started.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if the drive can be started, FALSE otherwise.
+	CanStart func() bool // optional
+	// CanStartDegraded checks if a drive can be started degraded.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if the drive can be started degraded, FALSE otherwise.
+	CanStartDegraded func() bool // optional
+	// CanStop checks if a drive can be stopped.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if the drive can be stopped, FALSE otherwise.
+	CanStop func() bool // optional
+	// Changed: signal emitted when the drive is changed.
+	Changed func() // optional
+	// Disconnected: removed signal that is emitted when the #GDrive have been
+	// disconnected. If the recipient is holding references to the object they
+	// should release them so the object can be finalized.
+	Disconnected func() // optional
+	// EjectButton: signal emitted when the physical eject button (if any) of a
+	// drive have been pressed.
+	EjectButton func() // optional
+	// EjectFinish finishes ejecting a drive.
+	//
+	// Deprecated: Use g_drive_eject_with_operation_finish() instead.
+	//
+	// The function takes the following parameters:
+	//
+	//   - result: Result.
+	EjectFinish func(result AsyncResulter) error // optional
+	// EjectWithOperationFinish finishes ejecting a drive. If any errors
+	// occurred during the operation, error will be set to contain the errors
+	// and FALSE will be returned.
+	//
+	// The function takes the following parameters:
+	//
+	//   - result: Result.
+	EjectWithOperationFinish func(result AsyncResulter) error // optional
+	// EnumerateIdentifiers gets the kinds of identifiers that drive has.
+	// Use g_drive_get_identifier() to obtain the identifiers themselves.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8s: NULL-terminated array of strings containing kinds of
+	//     identifiers. Use g_strfreev() to free.
+	EnumerateIdentifiers func() []string // optional
+	// Icon gets the icon for drive.
+	//
+	// The function returns the following values:
+	//
+	//   - icon for the drive. Free the returned object with g_object_unref().
+	Icon func() *Icon // optional
+	// Identifier gets the identifier of the given kind for drive. The only
+	// identifier currently available is G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE.
+	//
+	// The function takes the following parameters:
+	//
+	//   - kind of identifier to return.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8 (optional): newly allocated string containing the requested
+	//     identifier, or NULL if the #GDrive doesn't have this kind of
+	//     identifier.
+	Identifier func(kind string) string // optional
+	// Name gets the name of drive.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8: string containing drive's name. The returned string should be
+	//     freed when no longer needed.
+	Name func() string // optional
+	// SortKey gets the sort key for drive, if any.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8 (optional): sorting key for drive or NULL if no such key is
+	//     available.
+	SortKey func() string // optional
+	// StartStopType gets a hint about how a drive can be started/stopped.
+	//
+	// The function returns the following values:
+	//
+	//   - driveStartStopType: value from the StartStopType enumeration.
+	StartStopType func() DriveStartStopType // optional
+	// SymbolicIcon gets the icon for drive.
+	//
+	// The function returns the following values:
+	//
+	//   - icon: symbolic #GIcon for the drive. Free the returned object with
+	//     g_object_unref().
+	SymbolicIcon func() *Icon // optional
+	// Volumes: get a list of mountable volumes for drive.
+	//
+	// The returned list should be freed with g_list_free(), after its elements
+	// have been unreffed with g_object_unref().
+	//
+	// The function returns the following values:
+	//
+	//   - list containing any #GVolume objects on the given drive.
+	Volumes func() []*Volume // optional
+	// HasMedia checks if the drive has media. Note that the
+	// OS may not be polling the drive for media changes; see
+	// g_drive_is_media_check_automatic() for more details.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if drive has media, FALSE otherwise.
+	HasMedia func() bool // optional
+	// HasVolumes: check if drive has any mountable volumes.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if the drive contains volumes, FALSE otherwise.
+	HasVolumes func() bool // optional
+	// IsMediaCheckAutomatic checks if drive is capable of automatically
+	// detecting media changes.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if the drive is capable of automatically detecting media
+	//     changes, FALSE otherwise.
+	IsMediaCheckAutomatic func() bool // optional
+	// IsMediaRemovable checks if the drive supports removable media.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if drive supports removable media, FALSE otherwise.
+	IsMediaRemovable func() bool // optional
+	// IsRemovable checks if the #GDrive and/or its media is considered
+	// removable by the user. See g_drive_is_media_removable().
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if drive and/or its media is considered removable, FALSE
+	//     otherwise.
+	IsRemovable func() bool // optional
+	// PollForMediaFinish finishes an operation started with
+	// g_drive_poll_for_media() on a drive.
+	//
+	// The function takes the following parameters:
+	//
+	//   - result: Result.
+	PollForMediaFinish func(result AsyncResulter) error // optional
+	// StartFinish finishes starting a drive.
+	//
+	// The function takes the following parameters:
+	//
+	//   - result: Result.
+	StartFinish func(result AsyncResulter) error // optional
+	// StopButton: signal emitted when the physical stop button (if any) of a
+	// drive have been pressed. Since 2.22.
+	StopButton func() // optional
+	// StopFinish finishes stopping a drive.
+	//
+	// The function takes the following parameters:
+	//
+	//   - result: Result.
+	StopFinish func(result AsyncResulter) error // optional
 }
 
 // Drive: GDrive represents a piece of hardware connected to the machine.
@@ -18165,6 +20181,126 @@ type Driver interface {
 }
 
 var _ Driver = (*Drive)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[DriveOverrides](
+		GTypeDrive,
+		initDriveIface,
+	)
+}
+
+func initDriveIface(giface unsafe.Pointer, overrides DriveOverrides) {
+	iface := (*C.GDriveIface)(giface)
+
+	if overrides.CanEject != nil {
+		iface.can_eject = (*[0]byte)(C._gotk4_gio2_DriveIface_can_eject)
+	}
+
+	if overrides.CanPollForMedia != nil {
+		iface.can_poll_for_media = (*[0]byte)(C._gotk4_gio2_DriveIface_can_poll_for_media)
+	}
+
+	if overrides.CanStart != nil {
+		iface.can_start = (*[0]byte)(C._gotk4_gio2_DriveIface_can_start)
+	}
+
+	if overrides.CanStartDegraded != nil {
+		iface.can_start_degraded = (*[0]byte)(C._gotk4_gio2_DriveIface_can_start_degraded)
+	}
+
+	if overrides.CanStop != nil {
+		iface.can_stop = (*[0]byte)(C._gotk4_gio2_DriveIface_can_stop)
+	}
+
+	if overrides.Changed != nil {
+		iface.changed = (*[0]byte)(C._gotk4_gio2_DriveIface_changed)
+	}
+
+	if overrides.Disconnected != nil {
+		iface.disconnected = (*[0]byte)(C._gotk4_gio2_DriveIface_disconnected)
+	}
+
+	if overrides.EjectButton != nil {
+		iface.eject_button = (*[0]byte)(C._gotk4_gio2_DriveIface_eject_button)
+	}
+
+	if overrides.EjectFinish != nil {
+		iface.eject_finish = (*[0]byte)(C._gotk4_gio2_DriveIface_eject_finish)
+	}
+
+	if overrides.EjectWithOperationFinish != nil {
+		iface.eject_with_operation_finish = (*[0]byte)(C._gotk4_gio2_DriveIface_eject_with_operation_finish)
+	}
+
+	if overrides.EnumerateIdentifiers != nil {
+		iface.enumerate_identifiers = (*[0]byte)(C._gotk4_gio2_DriveIface_enumerate_identifiers)
+	}
+
+	if overrides.Icon != nil {
+		iface.get_icon = (*[0]byte)(C._gotk4_gio2_DriveIface_get_icon)
+	}
+
+	if overrides.Identifier != nil {
+		iface.get_identifier = (*[0]byte)(C._gotk4_gio2_DriveIface_get_identifier)
+	}
+
+	if overrides.Name != nil {
+		iface.get_name = (*[0]byte)(C._gotk4_gio2_DriveIface_get_name)
+	}
+
+	if overrides.SortKey != nil {
+		iface.get_sort_key = (*[0]byte)(C._gotk4_gio2_DriveIface_get_sort_key)
+	}
+
+	if overrides.StartStopType != nil {
+		iface.get_start_stop_type = (*[0]byte)(C._gotk4_gio2_DriveIface_get_start_stop_type)
+	}
+
+	if overrides.SymbolicIcon != nil {
+		iface.get_symbolic_icon = (*[0]byte)(C._gotk4_gio2_DriveIface_get_symbolic_icon)
+	}
+
+	if overrides.Volumes != nil {
+		iface.get_volumes = (*[0]byte)(C._gotk4_gio2_DriveIface_get_volumes)
+	}
+
+	if overrides.HasMedia != nil {
+		iface.has_media = (*[0]byte)(C._gotk4_gio2_DriveIface_has_media)
+	}
+
+	if overrides.HasVolumes != nil {
+		iface.has_volumes = (*[0]byte)(C._gotk4_gio2_DriveIface_has_volumes)
+	}
+
+	if overrides.IsMediaCheckAutomatic != nil {
+		iface.is_media_check_automatic = (*[0]byte)(C._gotk4_gio2_DriveIface_is_media_check_automatic)
+	}
+
+	if overrides.IsMediaRemovable != nil {
+		iface.is_media_removable = (*[0]byte)(C._gotk4_gio2_DriveIface_is_media_removable)
+	}
+
+	if overrides.IsRemovable != nil {
+		iface.is_removable = (*[0]byte)(C._gotk4_gio2_DriveIface_is_removable)
+	}
+
+	if overrides.PollForMediaFinish != nil {
+		iface.poll_for_media_finish = (*[0]byte)(C._gotk4_gio2_DriveIface_poll_for_media_finish)
+	}
+
+	if overrides.StartFinish != nil {
+		iface.start_finish = (*[0]byte)(C._gotk4_gio2_DriveIface_start_finish)
+	}
+
+	if overrides.StopButton != nil {
+		iface.stop_button = (*[0]byte)(C._gotk4_gio2_DriveIface_stop_button)
+	}
+
+	if overrides.StopFinish != nil {
+		iface.stop_finish = (*[0]byte)(C._gotk4_gio2_DriveIface_stop_finish)
+	}
+
+}
 
 func wrapDrive(obj *coreglib.Object) *Drive {
 	return &Drive{
@@ -19898,8 +22034,10 @@ func (drive *Drive) stopFinish(result AsyncResulter) error {
 	return _goerr
 }
 
-// DTLSClientConnectionOverrider contains methods that are overridable.
-type DTLSClientConnectionOverrider interface {
+// DTLSClientConnectionOverrides contains methods that a subclass can implement
+// for the DTLSClientConnection interface. Methods left nil keep the interface's
+// default implementation.
+type DTLSClientConnectionOverrides struct {
 }
 
 // DTLSClientConnection: GDtlsClientConnection is the client-side subclass of
@@ -19934,7 +22072,14 @@ type DTLSClientConnectioner interface {
 
 var _ DTLSClientConnectioner = (*DTLSClientConnection)(nil)
 
-func ifaceInitDTLSClientConnectioner(gifacePtr, data C.gpointer) {
+func init() {
+	coreglib.RegisterInterfaceInfo[DTLSClientConnectionOverrides](
+		GTypeDTLSClientConnection,
+		initDTLSClientConnectionInterface,
+	)
+}
+
+func initDTLSClientConnectionInterface(giface unsafe.Pointer, overrides DTLSClientConnectionOverrides) {
 }
 
 func wrapDTLSClientConnection(obj *coreglib.Object) *DTLSClientConnection {
@@ -20081,6 +22226,121 @@ func NewDTLSClientConnection(baseSocket DatagramBasedder, serverIdentity SocketC
 	return _dtlsClientConnection, _goerr
 }
 
+// DTLSConnectionOverrides contains methods that a subclass can implement
+// for the DTLSConnection interface. Methods left nil keep the interface's
+// default implementation.
+type DTLSConnectionOverrides struct {
+	// AcceptCertificate: check whether to accept a certificate.
+	//
+	// The function takes the following parameters:
+	//
+	//   - peerCert
+	//   - errors
+	AcceptCertificate func(peerCert TLSCertificater, errors TLSCertificateFlags) bool // optional
+	// BindingData: retrieve TLS channel binding data (Since: 2.66).
+	//
+	// The function takes the following parameters:
+	//
+	//   - typ
+	//   - data
+	BindingData func(typ TLSChannelBindingType, data []byte) error // optional
+	// NegotiatedProtocol gets the name of the application-layer protocol
+	// negotiated during the handshake.
+	//
+	// If the peer did not use the ALPN extension, or did not advertise
+	// a protocol that matched one of conn's protocols, or the TLS
+	// backend does not support ALPN, then this will be NULL. See
+	// g_dtls_connection_set_advertised_protocols().
+	//
+	// The function returns the following values:
+	//
+	//   - utf8 (optional): negotiated protocol, or NULL.
+	NegotiatedProtocol func() string // optional
+	// Handshake attempts a TLS handshake on conn.
+	//
+	// On the client side, it is never necessary to call this method; although
+	// the connection needs to perform a handshake after connecting, Connection
+	// will handle this for you automatically when you try to send or receive
+	// data on the connection. You can call g_dtls_connection_handshake()
+	// manually if you want to know whether the initial handshake succeeded
+	// or failed (as opposed to just immediately trying to use conn to read or
+	// write, in which case, if it fails, it may not be possible to tell if it
+	// failed before or after completing the handshake), but beware that servers
+	// may reject client authentication after the handshake has completed, so a
+	// successful handshake does not indicate the connection will be usable.
+	//
+	// Likewise, on the server side, although a handshake is necessary at the
+	// beginning of the communication, you do not need to call this function
+	// explicitly unless you want clearer error reporting.
+	//
+	// Previously, calling g_dtls_connection_handshake() after the initial
+	// handshake would trigger a rehandshake; however, this usage was deprecated
+	// in GLib 2.60 because rehandshaking was removed from the TLS protocol
+	// in TLS 1.3. Since GLib 2.64, calling this function after the initial
+	// handshake will no longer do anything.
+	//
+	// Connection::accept_certificate may be emitted during the handshake.
+	//
+	// The function takes the following parameters:
+	//
+	//   - ctx (optional) or NULL.
+	Handshake func(ctx context.Context) error // optional
+	// HandshakeFinish: finish an asynchronous TLS handshake operation.
+	// See g_dtls_connection_handshake() for more information.
+	//
+	// The function takes the following parameters:
+	//
+	//   - result: Result.
+	HandshakeFinish func(result AsyncResulter) error // optional
+	// SetAdvertisedProtocols sets the list of application-layer protocols
+	// to advertise that the caller is willing to speak on this connection.
+	// The Application-Layer Protocol Negotiation (ALPN) extension
+	// will be used to negotiate a compatible protocol with the peer;
+	// use g_dtls_connection_get_negotiated_protocol() to find the negotiated
+	// protocol after the handshake. Specifying NULL for the the value of
+	// protocols will disable ALPN negotiation.
+	//
+	// See IANA TLS ALPN Protocol IDs
+	// (https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids)
+	// for a list of registered protocol IDs.
+	//
+	// The function takes the following parameters:
+	//
+	//   - protocols (optional): NULL-terminated array of ALPN protocol names
+	//     (eg, "http/1.1", "h2"), or NULL.
+	SetAdvertisedProtocols func(protocols []string) // optional
+	// Shutdown: shut down part or all of a DTLS connection.
+	//
+	// If shutdown_read is TRUE then the receiving side of the connection
+	// is shut down, and further reading is disallowed. Subsequent calls to
+	// g_datagram_based_receive_messages() will return G_IO_ERROR_CLOSED.
+	//
+	// If shutdown_write is TRUE then the sending side of the connection
+	// is shut down, and further writing is disallowed. Subsequent calls to
+	// g_datagram_based_send_messages() will return G_IO_ERROR_CLOSED.
+	//
+	// It is allowed for both shutdown_read and shutdown_write to be TRUE — this
+	// is equivalent to calling g_dtls_connection_close().
+	//
+	// If cancellable is cancelled, the Connection may be left
+	// partially-closed and any pending untransmitted data may be lost. Call
+	// g_dtls_connection_shutdown() again to complete closing the Connection.
+	//
+	// The function takes the following parameters:
+	//
+	//   - ctx (optional) or NULL.
+	//   - shutdownRead: TRUE to stop reception of incoming datagrams.
+	//   - shutdownWrite: TRUE to stop sending outgoing datagrams.
+	Shutdown func(ctx context.Context, shutdownRead, shutdownWrite bool) error // optional
+	// ShutdownFinish: finish an asynchronous TLS shutdown operation. See
+	// g_dtls_connection_shutdown() for more information.
+	//
+	// The function takes the following parameters:
+	//
+	//   - result: Result.
+	ShutdownFinish func(result AsyncResulter) error // optional
+}
+
 // DTLSConnection: GDtlsConnection is the base DTLS connection class type,
 // which wraps a gio.DatagramBased and provides DTLS encryption on top of it.
 // Its subclasses, gio.DTLSClientConnection and gio.DTLSServerConnection,
@@ -20194,6 +22454,50 @@ type DTLSConnectioner interface {
 }
 
 var _ DTLSConnectioner = (*DTLSConnection)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[DTLSConnectionOverrides](
+		GTypeDTLSConnection,
+		initDTLSConnectionInterface,
+	)
+}
+
+func initDTLSConnectionInterface(giface unsafe.Pointer, overrides DTLSConnectionOverrides) {
+	iface := (*C.GDtlsConnectionInterface)(giface)
+
+	if overrides.AcceptCertificate != nil {
+		iface.accept_certificate = (*[0]byte)(C._gotk4_gio2_DtlsConnectionInterface_accept_certificate)
+	}
+
+	if overrides.BindingData != nil {
+		iface.get_binding_data = (*[0]byte)(C._gotk4_gio2_DtlsConnectionInterface_get_binding_data)
+	}
+
+	if overrides.NegotiatedProtocol != nil {
+		iface.get_negotiated_protocol = (*[0]byte)(C._gotk4_gio2_DtlsConnectionInterface_get_negotiated_protocol)
+	}
+
+	if overrides.Handshake != nil {
+		iface.handshake = (*[0]byte)(C._gotk4_gio2_DtlsConnectionInterface_handshake)
+	}
+
+	if overrides.HandshakeFinish != nil {
+		iface.handshake_finish = (*[0]byte)(C._gotk4_gio2_DtlsConnectionInterface_handshake_finish)
+	}
+
+	if overrides.SetAdvertisedProtocols != nil {
+		iface.set_advertised_protocols = (*[0]byte)(C._gotk4_gio2_DtlsConnectionInterface_set_advertised_protocols)
+	}
+
+	if overrides.Shutdown != nil {
+		iface.shutdown = (*[0]byte)(C._gotk4_gio2_DtlsConnectionInterface_shutdown)
+	}
+
+	if overrides.ShutdownFinish != nil {
+		iface.shutdown_finish = (*[0]byte)(C._gotk4_gio2_DtlsConnectionInterface_shutdown_finish)
+	}
+
+}
 
 func wrapDTLSConnection(obj *coreglib.Object) *DTLSConnection {
 	return &DTLSConnection{
@@ -21574,8 +23878,10 @@ func (conn *DTLSConnection) shutdownFinish(result AsyncResulter) error {
 	return _goerr
 }
 
-// DTLSServerConnectionOverrider contains methods that are overridable.
-type DTLSServerConnectionOverrider interface {
+// DTLSServerConnectionOverrides contains methods that a subclass can implement
+// for the DTLSServerConnection interface. Methods left nil keep the interface's
+// default implementation.
+type DTLSServerConnectionOverrides struct {
 }
 
 // DTLSServerConnection: GDtlsServerConnection is the server-side subclass of
@@ -21599,7 +23905,14 @@ type DTLSServerConnectioner interface {
 
 var _ DTLSServerConnectioner = (*DTLSServerConnection)(nil)
 
-func ifaceInitDTLSServerConnectioner(gifacePtr, data C.gpointer) {
+func init() {
+	coreglib.RegisterInterfaceInfo[DTLSServerConnectionOverrides](
+		GTypeDTLSServerConnection,
+		initDTLSServerConnectionInterface,
+	)
+}
+
+func initDTLSServerConnectionInterface(giface unsafe.Pointer, overrides DTLSServerConnectionOverrides) {
 }
 
 func wrapDTLSServerConnection(obj *coreglib.Object) *DTLSServerConnection {
@@ -21659,6 +23972,1066 @@ func NewDTLSServerConnection(baseSocket DatagramBasedder, certificate TLSCertifi
 	}
 
 	return _dtlsServerConnection, _goerr
+}
+
+// FileOverrides contains methods that a subclass can implement
+// for the File interface. Methods left nil keep the interface's
+// default implementation.
+type FileOverrides struct {
+	// AppendTo gets an output stream for appending data to the file. If the
+	// file doesn't already exist it is created.
+	//
+	// By default files created are generally readable by everyone, but if
+	// you pass G_FILE_CREATE_PRIVATE in flags the file will be made readable
+	// only to the current user, to the level that is supported on the target
+	// filesystem.
+	//
+	// If cancellable is not NULL, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// Some file systems don't allow all file names, and may return an
+	// G_IO_ERROR_INVALID_FILENAME error. If the file is a directory the
+	// G_IO_ERROR_IS_DIRECTORY error will be returned. Other errors are possible
+	// too, and depend on what kind of filesystem the file is on.
+	//
+	// The function takes the following parameters:
+	//
+	//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//   - flags: set of CreateFlags.
+	//
+	// The function returns the following values:
+	//
+	//   - fileOutputStream or NULL on error. Free the returned object with
+	//     g_object_unref().
+	AppendTo func(ctx context.Context, flags FileCreateFlags) (*FileOutputStream, error) // optional
+	// AppendToFinish finishes an asynchronous file append operation started
+	// with g_file_append_to_async().
+	//
+	// The function takes the following parameters:
+	//
+	//   - res: Result.
+	//
+	// The function returns the following values:
+	//
+	//   - fileOutputStream: valid OutputStream or NULL on error. Free the
+	//     returned object with g_object_unref().
+	AppendToFinish func(res AsyncResulter) (*FileOutputStream, error) // optional
+	// CopyFinish finishes copying the file started with g_file_copy_async().
+	//
+	// The function takes the following parameters:
+	//
+	//   - res: Result.
+	CopyFinish func(res AsyncResulter) error // optional
+	// Create creates a new file and returns an output stream for writing to it.
+	// The file must not already exist.
+	//
+	// By default files created are generally readable by everyone, but if
+	// you pass G_FILE_CREATE_PRIVATE in flags the file will be made readable
+	// only to the current user, to the level that is supported on the target
+	// filesystem.
+	//
+	// If cancellable is not NULL, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// If a file or directory with this name already exists the
+	// G_IO_ERROR_EXISTS error will be returned. Some file systems don't allow
+	// all file names, and may return an G_IO_ERROR_INVALID_FILENAME error,
+	// and if the name is to long G_IO_ERROR_FILENAME_TOO_LONG will be returned.
+	// Other errors are possible too, and depend on what kind of filesystem the
+	// file is on.
+	//
+	// The function takes the following parameters:
+	//
+	//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//   - flags: set of CreateFlags.
+	//
+	// The function returns the following values:
+	//
+	//   - fileOutputStream for the newly created file, or NULL on error.
+	//     Free the returned object with g_object_unref().
+	Create func(ctx context.Context, flags FileCreateFlags) (*FileOutputStream, error) // optional
+	// CreateFinish finishes an asynchronous file create operation started with
+	// g_file_create_async().
+	//
+	// The function takes the following parameters:
+	//
+	//   - res: Result.
+	//
+	// The function returns the following values:
+	//
+	//   - fileOutputStream or NULL on error. Free the returned object with
+	//     g_object_unref().
+	CreateFinish func(res AsyncResulter) (*FileOutputStream, error) // optional
+	// CreateReadwrite creates a new file and returns a stream for reading and
+	// writing to it. The file must not already exist.
+	//
+	// By default files created are generally readable by everyone, but if
+	// you pass G_FILE_CREATE_PRIVATE in flags the file will be made readable
+	// only to the current user, to the level that is supported on the target
+	// filesystem.
+	//
+	// If cancellable is not NULL, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// If a file or directory with this name already exists, the
+	// G_IO_ERROR_EXISTS error will be returned. Some file systems don't allow
+	// all file names, and may return an G_IO_ERROR_INVALID_FILENAME error, and
+	// if the name is too long, G_IO_ERROR_FILENAME_TOO_LONG will be returned.
+	// Other errors are possible too, and depend on what kind of filesystem the
+	// file is on.
+	//
+	// Note that in many non-local file cases read and write streams are not
+	// supported, so make sure you really need to do read and write streaming,
+	// rather than just opening for reading or writing.
+	//
+	// The function takes the following parameters:
+	//
+	//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//   - flags: set of CreateFlags.
+	//
+	// The function returns the following values:
+	//
+	//   - fileIOStream for the newly created file, or NULL on error. Free the
+	//     returned object with g_object_unref().
+	CreateReadwrite func(ctx context.Context, flags FileCreateFlags) (*FileIOStream, error) // optional
+	// CreateReadwriteFinish finishes an asynchronous file create operation
+	// started with g_file_create_readwrite_async().
+	//
+	// The function takes the following parameters:
+	//
+	//   - res: Result.
+	//
+	// The function returns the following values:
+	//
+	//   - fileIOStream or NULL on error. Free the returned object with
+	//     g_object_unref().
+	CreateReadwriteFinish func(res AsyncResulter) (*FileIOStream, error) // optional
+	// Dup duplicates a #GFile handle. This operation does not duplicate the
+	// actual file or directory represented by the #GFile; see g_file_copy() if
+	// attempting to copy a file.
+	//
+	// g_file_dup() is useful when a second handle is needed to the
+	// same underlying file, for use in a separate thread (#GFile is not
+	// thread-safe). For use within the same thread, use g_object_ref() to
+	// increment the existing object’s reference count.
+	//
+	// This call does no blocking I/O.
+	//
+	// The function returns the following values:
+	//
+	//   - ret: new #GFile that is a duplicate of the given #GFile.
+	Dup func() *File // optional
+	// EjectMountableFinish finishes an asynchronous eject operation started by
+	// g_file_eject_mountable().
+	//
+	// Deprecated: Use g_file_eject_mountable_with_operation_finish() instead.
+	//
+	// The function takes the following parameters:
+	//
+	//   - result: Result.
+	EjectMountableFinish func(result AsyncResulter) error // optional
+	// EjectMountableWithOperationFinish finishes an asynchronous eject
+	// operation started by g_file_eject_mountable_with_operation().
+	//
+	// The function takes the following parameters:
+	//
+	//   - result: Result.
+	EjectMountableWithOperationFinish func(result AsyncResulter) error // optional
+	// EnumerateChildren gets the requested information about the files in
+	// a directory. The result is a fileenumerator object that will give out
+	// fileinfo objects for all the files in the directory.
+	//
+	// The attributes value is a string that specifies the file attributes that
+	// should be gathered. It is not an error if it's not possible to read
+	// a particular requested attribute from a file - it just won't be set.
+	// attributes should be a comma-separated list of attributes or attribute
+	// wildcards. The wildcard * means all attributes, and a wildcard
+	// like "standard::*" means all attributes in the standard namespace.
+	// An example attribute query be "standard::*,owner::user". The standard
+	// attributes are available as defines, like file_attribute_standard_name.
+	// file_attribute_standard_name should always be specified if you plan to
+	// call fileenumerator.GetChild or fileenumerator.Iterate on the returned
+	// enumerator.
+	//
+	// If cancellable is not NULL, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error gio.IOErrorEnum.CANCELLED will be returned.
+	//
+	// If the file does not exist, the gio.IOErrorEnum.NOTFOUND
+	// error will be returned. If the file is not a directory, the
+	// gio.IOErrorEnum.NOTDIRECTORY error will be returned. Other errors are
+	// possible too.
+	//
+	// The function takes the following parameters:
+	//
+	//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//   - attributes: attribute query string.
+	//   - flags: set of QueryInfoFlags.
+	//
+	// The function returns the following values:
+	//
+	//   - fileEnumerator if successful, NULL on error. Free the returned object
+	//     with gobject.Object.Unref().
+	EnumerateChildren func(ctx context.Context, attributes string, flags FileQueryInfoFlags) (*FileEnumerator, error) // optional
+	// EnumerateChildrenFinish finishes an async enumerate children operation.
+	// See g_file_enumerate_children_async().
+	//
+	// The function takes the following parameters:
+	//
+	//   - res: Result.
+	//
+	// The function returns the following values:
+	//
+	//   - fileEnumerator or NULL if an error occurred. Free the returned object
+	//     with g_object_unref().
+	EnumerateChildrenFinish func(res AsyncResulter) (*FileEnumerator, error) // optional
+	// Equal checks if the two given #GFiles refer to the same file.
+	//
+	// This function can be used with gio.File.Hash() to insert gio.Files
+	// efficiently in a hash table.
+	//
+	// Note that two #GFiles that differ can still refer to the same file on the
+	// filesystem due to various forms of filename aliasing. For local files,
+	// this function essentially compares the file paths, so two gio.Files
+	// which point to different hard or soft links will not be considered equal,
+	// despite pointing to the same content.
+	//
+	// For determining whether two files are hardlinked, see
+	// gio.FILEATTRIBUTEIDFILE.
+	//
+	// This call does no blocking I/O.
+	//
+	// The function takes the following parameters:
+	//
+	//   - file2: second #GFile.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if file1 and file2 are equal.
+	Equal func(file2 Filer) bool // optional
+	// FindEnclosingMount gets a #GMount for the #GFile.
+	//
+	// #GMount is returned only for user interesting locations, see Monitor.
+	// If the Iface for file does not have a #mount, error will be set to
+	// G_IO_ERROR_NOT_FOUND and NULL #will be returned.
+	//
+	// If cancellable is not NULL, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// The function takes the following parameters:
+	//
+	//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//
+	// The function returns the following values:
+	//
+	//   - mount where the file is located or NULL on error. Free the returned
+	//     object with g_object_unref().
+	FindEnclosingMount func(ctx context.Context) (*Mount, error) // optional
+	// FindEnclosingMountFinish finishes an asynchronous find mount request.
+	// See g_file_find_enclosing_mount_async().
+	//
+	// The function takes the following parameters:
+	//
+	//   - res: Result.
+	//
+	// The function returns the following values:
+	//
+	//   - mount for given file or NULL on error. Free the returned object with
+	//     g_object_unref().
+	FindEnclosingMountFinish func(res AsyncResulter) (*Mount, error) // optional
+	// Basename gets the base name (the last component of the path) for a given
+	// #GFile.
+	//
+	// If called for the top level of a system (such as the filesystem root or
+	// a uri like sftp://host/) it will return a single directory separator (and
+	// on Windows, possibly a drive letter).
+	//
+	// The base name is a byte string (not UTF-8). It has no defined encoding
+	// or rules other than it may not contain zero bytes. If you want to use
+	// filenames in a user interface you should use the display name that
+	// you can get by requesting the G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME
+	// attribute with g_file_query_info().
+	//
+	// This call does no blocking I/O.
+	//
+	// The function returns the following values:
+	//
+	//   - filename (optional): string containing the #GFile's base name,
+	//     or NULL if given #GFile is invalid. The returned string should be
+	//     freed with g_free() when no longer needed.
+	Basename func() string // optional
+	// ChildForDisplayName gets the child of file for a given display_name (i.e.
+	// a UTF-8 version of the name). If this function fails, it returns NULL
+	// and error will be set. This is very useful when constructing a #GFile
+	// for a new file and the user entered the filename in the user interface,
+	// for instance when you select a directory and type a filename in the file
+	// selector.
+	//
+	// This call does no blocking I/O.
+	//
+	// The function takes the following parameters:
+	//
+	//   - displayName: string to a possible child.
+	//
+	// The function returns the following values:
+	//
+	//   - ret to the specified child, or NULL if the display name couldn't be
+	//     converted. Free the returned object with g_object_unref().
+	ChildForDisplayName func(displayName string) (*File, error) // optional
+	// Parent gets the parent directory for the file. If the file represents the
+	// root directory of the file system, then NULL will be returned.
+	//
+	// This call does no blocking I/O.
+	//
+	// The function returns the following values:
+	//
+	//   - ret (optional) structure to the parent of the given #GFile or NULL if
+	//     there is no parent. Free the returned object with g_object_unref().
+	Parent func() *File // optional
+	// ParseName gets the parse name of the file. A parse name is a UTF-8 string
+	// that describes the file such that one can get the #GFile back using
+	// g_file_parse_name().
+	//
+	// This is generally used to show the #GFile as a nice full-pathname kind of
+	// string in a user interface, like in a location entry.
+	//
+	// For local files with names that can safely be converted to UTF-8 the
+	// pathname is used, otherwise the IRI is used (a form of URI that allows
+	// UTF-8 characters unescaped).
+	//
+	// This call does no blocking I/O.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8: string containing the #GFile's parse name. The returned string
+	//     should be freed with g_free() when no longer needed.
+	ParseName func() string // optional
+	// Path gets the local pathname for #GFile, if one exists. If non-NULL,
+	// this is guaranteed to be an absolute, canonical path. It might contain
+	// symlinks.
+	//
+	// This call does no blocking I/O.
+	//
+	// The function returns the following values:
+	//
+	//   - filename (optional): string containing the #GFile's path, or NULL
+	//     if no such path exists. The returned string should be freed with
+	//     g_free() when no longer needed.
+	Path func() string // optional
+	// RelativePath gets the path for descendant relative to parent.
+	//
+	// This call does no blocking I/O.
+	//
+	// The function takes the following parameters:
+	//
+	//   - descendant: input #GFile.
+	//
+	// The function returns the following values:
+	//
+	//   - filename (optional): string with the relative path from descendant
+	//     to parent, or NULL if descendant doesn't have parent as prefix. The
+	//     returned string should be freed with g_free() when no longer needed.
+	RelativePath func(descendant Filer) string // optional
+	// URI gets the URI for the file.
+	//
+	// This call does no blocking I/O.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8: string containing the #GFile's URI. If the #GFile was
+	//     constructed with an invalid URI, an invalid URI is returned. The
+	//     returned string should be freed with g_free() when no longer needed.
+	URI func() string // optional
+	// URIScheme gets the URI scheme for a #GFile. RFC 3986 decodes the scheme
+	// as:
+	//
+	//	URI = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
+	//
+	// Common schemes include "file", "http", "ftp", etc.
+	//
+	// The scheme can be different from the one used to construct the #GFile,
+	// in that it might be replaced with one that is logically equivalent to the
+	// #GFile.
+	//
+	// This call does no blocking I/O.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8 (optional): string containing the URI scheme for the given
+	//     #GFile or NULL if the #GFile was constructed with an invalid URI. The
+	//     returned string should be freed with g_free() when no longer needed.
+	URIScheme func() string // optional
+	// HasURIScheme checks to see if a #GFile has a given URI scheme.
+	//
+	// This call does no blocking I/O.
+	//
+	// The function takes the following parameters:
+	//
+	//   - uriScheme: string containing a URI scheme.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if #GFile's backend supports the given URI scheme, FALSE if
+	//     URI scheme is NULL, not supported, or #GFile is invalid.
+	HasURIScheme func(uriScheme string) bool // optional
+	// Hash creates a hash value for a #GFile.
+	//
+	// This call does no blocking I/O.
+	//
+	// The function returns the following values:
+	//
+	//   - guint: 0 if file is not a valid #GFile, otherwise an integer that can
+	//     be used as hash value for the #GFile. This function is intended for
+	//     easily hashing a #GFile to add to a Table or similar data structure.
+	Hash func() uint // optional
+	// IsNative checks to see if a file is native to the platform.
+	//
+	// A native file is one expressed in the platform-native filename format,
+	// e.g. "C:\Windows" or "/usr/bin/". This does not mean the file is local,
+	// as it might be on a locally mounted remote filesystem.
+	//
+	// On some systems non-native files may be available using the native
+	// filesystem via a userspace filesystem (FUSE), in these cases this call
+	// will return FALSE, but g_file_get_path() will still return a native path.
+	//
+	// This call does no blocking I/O.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if file is native.
+	IsNative func() bool // optional
+	// MakeDirectory creates a directory.
+	//
+	// Note that this will only create a child directory of the immediate parent
+	// directory of the path or URI given by the #GFile. To recursively create
+	// directories, see g_file_make_directory_with_parents().
+	//
+	// This function will fail if the parent directory does not exist,
+	// setting error to G_IO_ERROR_NOT_FOUND. If the file system doesn't
+	// support creating directories, this function will fail, setting
+	// error to G_IO_ERROR_NOT_SUPPORTED. If the directory already exists,
+	// gio.IOErrorEnum.EXISTS will be returned.
+	//
+	// For a local #GFile the newly created directory will have the default
+	// (current) ownership and permissions of the current process.
+	//
+	// If cancellable is not NULL, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// The function takes the following parameters:
+	//
+	//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+	MakeDirectory func(ctx context.Context) error // optional
+	// MakeDirectoryFinish finishes an asynchronous directory creation, started
+	// with g_file_make_directory_async().
+	//
+	// The function takes the following parameters:
+	//
+	//   - result: Result.
+	MakeDirectoryFinish func(result AsyncResulter) error // optional
+	// MakeSymbolicLink creates a symbolic link named file which contains the
+	// string symlink_value.
+	//
+	// If cancellable is not NULL, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// The function takes the following parameters:
+	//
+	//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//   - symlinkValue: string with the path for the target of the new symlink.
+	MakeSymbolicLink func(ctx context.Context, symlinkValue string) error // optional
+	// MakeSymbolicLinkFinish finishes an asynchronous symbolic link creation,
+	// started with g_file_make_symbolic_link_async().
+	//
+	// The function takes the following parameters:
+	//
+	//   - result: Result.
+	MakeSymbolicLinkFinish func(result AsyncResulter) error // optional
+	// MeasureDiskUsageFinish collects the results from an earlier call to
+	// g_file_measure_disk_usage_async(). See g_file_measure_disk_usage() for
+	// more information.
+	//
+	// The function takes the following parameters:
+	//
+	//   - result passed to your ReadyCallback.
+	//
+	// The function returns the following values:
+	//
+	//   - diskUsage (optional): number of bytes of disk space used.
+	//   - numDirs (optional): number of directories encountered.
+	//   - numFiles (optional): number of non-directories encountered.
+	MeasureDiskUsageFinish func(result AsyncResulter) (diskUsage, numDirs, numFiles uint64, goerr error) // optional
+	// MonitorFile obtains a file monitor for the given file. If no file
+	// notification mechanism exists, then regular polling of the file is used.
+	//
+	// If cancellable is not NULL, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// If flags contains G_FILE_MONITOR_WATCH_HARD_LINKS then the monitor will
+	// also attempt to report changes made to the file via another filename (ie,
+	// a hard link). Without this flag, you can only rely on changes made
+	// through the filename contained in file to be reported. Using this flag
+	// may result in an increase in resource usage, and may not have any effect
+	// depending on the Monitor backend and/or filesystem type.
+	//
+	// The function takes the following parameters:
+	//
+	//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//   - flags: set of MonitorFlags.
+	//
+	// The function returns the following values:
+	//
+	//   - fileMonitor for the given file, or NULL on error. Free the returned
+	//     object with g_object_unref().
+	MonitorFile func(ctx context.Context, flags FileMonitorFlags) (FileMonitorrer, error) // optional
+	// MountEnclosingVolumeFinish finishes a mount operation started by
+	// g_file_mount_enclosing_volume().
+	//
+	// The function takes the following parameters:
+	//
+	//   - result: Result.
+	MountEnclosingVolumeFinish func(result AsyncResulter) error // optional
+	// MountMountableFinish finishes a mount operation. See
+	// g_file_mount_mountable() for details.
+	//
+	// Finish an asynchronous mount operation that was started with
+	// g_file_mount_mountable().
+	//
+	// The function takes the following parameters:
+	//
+	//   - result: Result.
+	//
+	// The function returns the following values:
+	//
+	//   - ret or NULL on error. Free the returned object with g_object_unref().
+	MountMountableFinish func(result AsyncResulter) (*File, error) // optional
+	// MoveFinish finishes an asynchronous file movement, started with
+	// g_file_move_async().
+	//
+	// The function takes the following parameters:
+	//
+	//   - result: Result.
+	MoveFinish func(result AsyncResulter) error // optional
+	// OpenReadwrite opens an existing file for reading and writing. The result
+	// is a IOStream that can be used to read and write the contents of the
+	// file.
+	//
+	// If cancellable is not NULL, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be
+	// returned. If the file is a directory, the G_IO_ERROR_IS_DIRECTORY error
+	// will be returned. Other errors are possible too, and depend on what kind
+	// of filesystem the file is on. Note that in many non-local file cases
+	// read and write streams are not supported, so make sure you really need
+	// to do read and write streaming, rather than just opening for reading or
+	// writing.
+	//
+	// The function takes the following parameters:
+	//
+	//   - ctx (optional): #GCancellable.
+	//
+	// The function returns the following values:
+	//
+	//   - fileIOStream or NULL on error. Free the returned object with
+	//     g_object_unref().
+	OpenReadwrite func(ctx context.Context) (*FileIOStream, error) // optional
+	// OpenReadwriteFinish finishes an asynchronous file read operation started
+	// with g_file_open_readwrite_async().
+	//
+	// The function takes the following parameters:
+	//
+	//   - res: Result.
+	//
+	// The function returns the following values:
+	//
+	//   - fileIOStream or NULL on error. Free the returned object with
+	//     g_object_unref().
+	OpenReadwriteFinish func(res AsyncResulter) (*FileIOStream, error) // optional
+	// PollMountableFinish finishes a poll operation. See
+	// g_file_poll_mountable() for details.
+	//
+	// Finish an asynchronous poll operation that was polled with
+	// g_file_poll_mountable().
+	//
+	// The function takes the following parameters:
+	//
+	//   - result: Result.
+	PollMountableFinish func(result AsyncResulter) error // optional
+	// QueryExists: utility function to check if a particular file exists.
+	//
+	// The fallback implementation of this API is using gio.File.QueryInfo() and
+	// therefore may do blocking I/O. To asynchronously query the existence of a
+	// file, use gio.File.QueryInfoAsync().
+	//
+	// Note that in many cases it is racy to first check for file existence
+	// (https://en.wikipedia.org/wiki/Time_of_check_to_time_of_use) and then
+	// execute something based on the outcome of that, because the file might
+	// have been created or removed in between the operations. The general
+	// approach to handling that is to not check, but just do the operation and
+	// handle the errors as they come.
+	//
+	// As an example of race-free checking, take the case of reading a file,
+	// and if it doesn't exist, creating it. There are two racy versions: read
+	// it, and on error create it; and: check if it exists, if not create it.
+	// These can both result in two processes creating the file (with perhaps a
+	// partially written file as the result). The correct approach is to always
+	// try to create the file with g_file_create() which will either atomically
+	// create the file or fail with a G_IO_ERROR_EXISTS error.
+	//
+	// However, in many cases an existence check is useful in a user interface,
+	// for instance to make a menu item sensitive/insensitive, so that you don't
+	// have to fool users that something is possible and then just show an error
+	// dialog. If you do this, you should make sure to also handle the errors
+	// that can happen due to races when you execute the operation.
+	//
+	// The function takes the following parameters:
+	//
+	//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if the file exists (and can be detected without error),
+	//     FALSE otherwise (or if cancelled).
+	QueryExists func(ctx context.Context) bool // optional
+	// QueryFilesystemInfo: similar to g_file_query_info(), but obtains
+	// information about the filesystem the file is on, rather than the file
+	// itself. For instance the amount of space available and the type of the
+	// filesystem.
+	//
+	// The attributes value is a string that specifies the attributes that
+	// should be gathered. It is not an error if it's not possible to read
+	// a particular requested attribute from a file - it just won't be set.
+	// attributes should be a comma-separated list of attributes or attribute
+	// wildcards. The wildcard "\*" means all attributes, and a wildcard like
+	// "filesystem::*" means all attributes in the filesystem namespace.
+	// The standard namespace for filesystem attributes is "filesystem".
+	// Common attributes of interest are G_FILE_ATTRIBUTE_FILESYSTEM_SIZE (the
+	// total size of the filesystem in bytes), G_FILE_ATTRIBUTE_FILESYSTEM_FREE
+	// (number of bytes available), and G_FILE_ATTRIBUTE_FILESYSTEM_TYPE (type
+	// of the filesystem).
+	//
+	// If cancellable is not NULL, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be
+	// returned. Other errors are possible too, and depend on what kind of
+	// filesystem the file is on.
+	//
+	// The function takes the following parameters:
+	//
+	//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//   - attributes: attribute query string.
+	//
+	// The function returns the following values:
+	//
+	//   - fileInfo or NULL if there was an error. Free the returned object with
+	//     g_object_unref().
+	QueryFilesystemInfo func(ctx context.Context, attributes string) (*FileInfo, error) // optional
+	// QueryFilesystemInfoFinish finishes an asynchronous filesystem info query.
+	// See g_file_query_filesystem_info_async().
+	//
+	// The function takes the following parameters:
+	//
+	//   - res: Result.
+	//
+	// The function returns the following values:
+	//
+	//   - fileInfo for given file or NULL on error. Free the returned object
+	//     with g_object_unref().
+	QueryFilesystemInfoFinish func(res AsyncResulter) (*FileInfo, error) // optional
+	// QueryInfo gets the requested information about specified file.
+	//
+	// The result is a gio.FileInfo object that contains key-value attributes
+	// (such as the type or size of the file).
+	//
+	// The attributes value is a string that specifies the file attributes that
+	// should be gathered. It is not an error if it’s not possible to read
+	// a particular requested attribute from a file — it just won't be set.
+	// In particular this means that if a file is inaccessible (due to being in
+	// a folder with restrictive permissions), for example, you can expect the
+	// returned gio.FileInfo to have very few attributes set. You should check
+	// whether an attribute is set using gio.FileInfo.HasAttribute() before
+	// trying to retrieve its value.
+	//
+	// It is guaranteed that if any of the following attributes are listed
+	// in attributes, they will always be set in the returned gio.FileInfo,
+	// even if the user doesn’t have permissions to access the file:
+	//
+	//   - gio.FILEATTRIBUTESTANDARDNAME
+	//   - gio.FILEATTRIBUTESTANDARDDISPLAYNAME
+	//
+	// attributes should be a comma-separated list of attributes or attribute
+	// wildcards. The wildcard "\*" means all attributes, and a wildcard
+	// like "standard::*" means all attributes in the standard namespace. An
+	// example attribute query might be "standard::*,owner::user". The standard
+	// attributes are available as defines, like gio.FILEATTRIBUTESTANDARDNAME.
+	//
+	// If cancellable is not NULL, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error gio.IOErrorEnum.CANCELLED will be returned.
+	//
+	// For symlinks, normally the information about the target of the symlink
+	// is returned, rather than information about the symlink itself. However if
+	// you pass gio.FileQueryInfoFlags.NOFOLLOWSYMLINKS in flags the information
+	// about the symlink itself will be returned. Also, for symlinks that point
+	// to non-existing files the information about the symlink itself will be
+	// returned.
+	//
+	// If the file does not exist, the gio.IOErrorEnum.NOTFOUND error will be
+	// returned. Other errors are possible too, and depend on what kind of file
+	// system the file is on.
+	//
+	// The function takes the following parameters:
+	//
+	//   - ctx (optional): optional cancellable object.
+	//   - attributes: attribute query string.
+	//   - flags to affect the query operation.
+	//
+	// The function returns the following values:
+	//
+	//   - fileInfo: gio.FileInfo for the given file.
+	QueryInfo func(ctx context.Context, attributes string, flags FileQueryInfoFlags) (*FileInfo, error) // optional
+	// QueryInfoFinish finishes an asynchronous file info query. See
+	// g_file_query_info_async().
+	//
+	// The function takes the following parameters:
+	//
+	//   - res: Result.
+	//
+	// The function returns the following values:
+	//
+	//   - fileInfo for given file or NULL on error. Free the returned object
+	//     with g_object_unref().
+	QueryInfoFinish func(res AsyncResulter) (*FileInfo, error) // optional
+	// QuerySettableAttributes: obtain the list of settable attributes for the
+	// file.
+	//
+	// Returns the type and full attribute name of all the attributes that can
+	// be set on this file. This doesn't mean setting it will always succeed
+	// though, you might get an access failure, or some specific file may not
+	// support a specific attribute.
+	//
+	// If cancellable is not NULL, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// The function takes the following parameters:
+	//
+	//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//
+	// The function returns the following values:
+	//
+	//   - fileAttributeInfoList describing the settable attributes. When you
+	//     are done with it, release it with g_file_attribute_info_list_unref().
+	QuerySettableAttributes func(ctx context.Context) (*FileAttributeInfoList, error) // optional
+	// QueryWritableNamespaces: obtain the list of attribute namespaces where
+	// new attributes can be created by a user. An example of this is extended
+	// attributes (in the "xattr" namespace).
+	//
+	// If cancellable is not NULL, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// The function takes the following parameters:
+	//
+	//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//
+	// The function returns the following values:
+	//
+	//   - fileAttributeInfoList describing the writable namespaces. When you
+	//     are done with it, release it with g_file_attribute_info_list_unref().
+	QueryWritableNamespaces func(ctx context.Context) (*FileAttributeInfoList, error) // optional
+	// ReadFinish finishes an asynchronous file read operation started with
+	// g_file_read_async().
+	//
+	// The function takes the following parameters:
+	//
+	//   - res: Result.
+	//
+	// The function returns the following values:
+	//
+	//   - fileInputStream or NULL on error. Free the returned object with
+	//     g_object_unref().
+	ReadFinish func(res AsyncResulter) (*FileInputStream, error) // optional
+	// Replace returns an output stream for overwriting the file, possibly
+	// creating a backup copy of the file first. If the file doesn't exist,
+	// it will be created.
+	//
+	// This will try to replace the file in the safest way possible so that any
+	// errors during the writing will not affect an already existing copy of the
+	// file. For instance, for local files it may write to a temporary file and
+	// then atomically rename over the destination when the stream is closed.
+	//
+	// By default files created are generally readable by everyone, but if
+	// you pass G_FILE_CREATE_PRIVATE in flags the file will be made readable
+	// only to the current user, to the level that is supported on the target
+	// filesystem.
+	//
+	// If cancellable is not NULL, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// If you pass in a non-NULL etag value and file already exists, then this
+	// value is compared to the current entity tag of the file, and if they
+	// differ an G_IO_ERROR_WRONG_ETAG error is returned. This generally means
+	// that the file has been changed since you last read it. You can get the
+	// new etag from g_file_output_stream_get_etag() after you've finished
+	// writing and closed the OutputStream. When you load a new file you can use
+	// g_file_input_stream_query_info() to get the etag of the file.
+	//
+	// If make_backup is TRUE, this function will attempt to make a
+	// backup of the current file before overwriting it. If this fails a
+	// G_IO_ERROR_CANT_CREATE_BACKUP error will be returned. If you want to
+	// replace anyway, try again with make_backup set to FALSE.
+	//
+	// If the file is a directory the G_IO_ERROR_IS_DIRECTORY error will be
+	// returned, and if the file is some other form of non-regular file then a
+	// G_IO_ERROR_NOT_REGULAR_FILE error will be returned. Some file systems
+	// don't allow all file names, and may return an G_IO_ERROR_INVALID_FILENAME
+	// error, and if the name is to long G_IO_ERROR_FILENAME_TOO_LONG will
+	// be returned. Other errors are possible too, and depend on what kind of
+	// filesystem the file is on.
+	//
+	// The function takes the following parameters:
+	//
+	//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//   - etag (optional): optional entity tag (#entity-tags) for the current
+	//     #GFile, or LL to ignore.
+	//   - makeBackup: TRUE if a backup should be created.
+	//   - flags: set of CreateFlags.
+	//
+	// The function returns the following values:
+	//
+	//   - fileOutputStream or NULL on error. Free the returned object with
+	//     g_object_unref().
+	Replace func(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags) (*FileOutputStream, error) // optional
+	// ReplaceFinish finishes an asynchronous file replace operation started
+	// with g_file_replace_async().
+	//
+	// The function takes the following parameters:
+	//
+	//   - res: Result.
+	//
+	// The function returns the following values:
+	//
+	//   - fileOutputStream or NULL on error. Free the returned object with
+	//     g_object_unref().
+	ReplaceFinish func(res AsyncResulter) (*FileOutputStream, error) // optional
+	// ReplaceReadwrite returns an output stream for overwriting the file in
+	// readwrite mode, possibly creating a backup copy of the file first.
+	// If the file doesn't exist, it will be created.
+	//
+	// For details about the behaviour, see g_file_replace() which does the same
+	// thing but returns an output stream only.
+	//
+	// Note that in many non-local file cases read and write streams are not
+	// supported, so make sure you really need to do read and write streaming,
+	// rather than just opening for reading or writing.
+	//
+	// The function takes the following parameters:
+	//
+	//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//   - etag (optional): optional entity tag (#entity-tags) for the current
+	//     #GFile, or LL to ignore.
+	//   - makeBackup: TRUE if a backup should be created.
+	//   - flags: set of CreateFlags.
+	//
+	// The function returns the following values:
+	//
+	//   - fileIOStream or NULL on error. Free the returned object with
+	//     g_object_unref().
+	ReplaceReadwrite func(ctx context.Context, etag string, makeBackup bool, flags FileCreateFlags) (*FileIOStream, error) // optional
+	// ReplaceReadwriteFinish finishes an asynchronous file replace operation
+	// started with g_file_replace_readwrite_async().
+	//
+	// The function takes the following parameters:
+	//
+	//   - res: Result.
+	//
+	// The function returns the following values:
+	//
+	//   - fileIOStream or NULL on error. Free the returned object with
+	//     g_object_unref().
+	ReplaceReadwriteFinish func(res AsyncResulter) (*FileIOStream, error) // optional
+	// ResolveRelativePath resolves a relative path for file to an absolute
+	// path.
+	//
+	// This call does no blocking I/O.
+	//
+	// If the relative_path is an absolute path name, the resolution is done
+	// absolutely (without taking file path as base).
+	//
+	// The function takes the following parameters:
+	//
+	//   - relativePath: given relative path string.
+	//
+	// The function returns the following values:
+	//
+	//   - ret for the resolved path.
+	ResolveRelativePath func(relativePath string) *File // optional
+	// SetAttribute sets an attribute in the file with attribute name attribute
+	// to value_p.
+	//
+	// Some attributes can be unset by setting type to
+	// G_FILE_ATTRIBUTE_TYPE_INVALID and value_p to NULL.
+	//
+	// If cancellable is not NULL, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// The function takes the following parameters:
+	//
+	//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//   - attribute: string containing the attribute's name.
+	//   - typ: type of the attribute.
+	//   - valueP (optional): pointer to the value (or the pointer itself if the
+	//     type is a pointer type).
+	//   - flags: set of QueryInfoFlags.
+	SetAttribute func(ctx context.Context, attribute string, typ FileAttributeType, valueP unsafe.Pointer, flags FileQueryInfoFlags) error // optional
+	// SetAttributesFinish finishes setting an attribute started in
+	// g_file_set_attributes_async().
+	//
+	// The function takes the following parameters:
+	//
+	//   - result: Result.
+	//
+	// The function returns the following values:
+	//
+	//   - info: Info.
+	SetAttributesFinish func(result AsyncResulter) (*FileInfo, error) // optional
+	// SetAttributesFromInfo tries to set all attributes in the Info on the
+	// target values, not stopping on the first error.
+	//
+	// If there is any error during this operation then error will
+	// be set to the first error. Error on particular fields are
+	// flagged by setting the "status" field in the attribute value to
+	// G_FILE_ATTRIBUTE_STATUS_ERROR_SETTING, which means you can also detect
+	// further errors.
+	//
+	// If cancellable is not NULL, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// The function takes the following parameters:
+	//
+	//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//   - info: Info.
+	//   - flags: QueryInfoFlags.
+	SetAttributesFromInfo func(ctx context.Context, info *FileInfo, flags FileQueryInfoFlags) error // optional
+	// SetDisplayName renames file to the specified display name.
+	//
+	// The display name is converted from UTF-8 to the correct encoding for the
+	// target filesystem if possible and the file is renamed to this.
+	//
+	// If you want to implement a rename operation in the user interface the
+	// edit name (G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME) should be used as the
+	// initial value in the rename widget, and then the result after editing
+	// should be passed to g_file_set_display_name().
+	//
+	// On success the resulting converted filename is returned.
+	//
+	// If cancellable is not NULL, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// The function takes the following parameters:
+	//
+	//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//   - displayName: string.
+	//
+	// The function returns the following values:
+	//
+	//   - ret specifying what file was renamed to, or NULL if there was an
+	//     error. Free the returned object with g_object_unref().
+	SetDisplayName func(ctx context.Context, displayName string) (*File, error) // optional
+	// SetDisplayNameFinish finishes setting a display name started with
+	// g_file_set_display_name_async().
+	//
+	// The function takes the following parameters:
+	//
+	//   - res: Result.
+	//
+	// The function returns the following values:
+	//
+	//   - ret or NULL on error. Free the returned object with g_object_unref().
+	SetDisplayNameFinish func(res AsyncResulter) (*File, error) // optional
+	// StartMountableFinish finishes a start operation. See
+	// g_file_start_mountable() for details.
+	//
+	// Finish an asynchronous start operation that was started with
+	// g_file_start_mountable().
+	//
+	// The function takes the following parameters:
+	//
+	//   - result: Result.
+	StartMountableFinish func(result AsyncResulter) error // optional
+	// StopMountableFinish finishes a stop operation, see
+	// g_file_stop_mountable() for details.
+	//
+	// Finish an asynchronous stop operation that was started with
+	// g_file_stop_mountable().
+	//
+	// The function takes the following parameters:
+	//
+	//   - result: Result.
+	StopMountableFinish func(result AsyncResulter) error // optional
+	// Trash sends file to the "Trashcan", if possible. This is similar
+	// to deleting it, but the user can recover it before emptying the
+	// trashcan. Trashing is disabled for system mounts by default (see
+	// g_unix_mount_entry_is_system_internal()), so this call can return the
+	// G_IO_ERROR_NOT_SUPPORTED error. Since GLib 2.66, the x-gvfs-notrash unix
+	// mount option can be used to disable g_file_trash() support for particular
+	// mounts, the G_IO_ERROR_NOT_SUPPORTED error will be returned in that case.
+	// Since 2.82, the x-gvfs-trash unix mount option can be used to enable
+	// g_file_trash() support for particular system mounts.
+	//
+	// If cancellable is not NULL, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// The function takes the following parameters:
+	//
+	//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+	Trash func(ctx context.Context) error // optional
+	// TrashFinish finishes an asynchronous file trashing operation, started
+	// with g_file_trash_async().
+	//
+	// The function takes the following parameters:
+	//
+	//   - result: Result.
+	TrashFinish func(result AsyncResulter) error // optional
+	// UnmountMountableFinish finishes an unmount operation, see
+	// g_file_unmount_mountable() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable().
+	//
+	// Deprecated: Use g_file_unmount_mountable_with_operation_finish() instead.
+	//
+	// The function takes the following parameters:
+	//
+	//   - result: Result.
+	UnmountMountableFinish func(result AsyncResulter) error // optional
+	// UnmountMountableWithOperationFinish finishes an unmount operation,
+	// see g_file_unmount_mountable_with_operation() for details.
+	//
+	// Finish an asynchronous unmount operation that was started with
+	// g_file_unmount_mountable_with_operation().
+	//
+	// The function takes the following parameters:
+	//
+	//   - result: Result.
+	UnmountMountableWithOperationFinish func(result AsyncResulter) error // optional
 }
 
 // File: GFile is a high level abstraction for manipulating files on a virtual
@@ -22089,6 +25462,266 @@ type Filer interface {
 }
 
 var _ Filer = (*File)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[FileOverrides](
+		GTypeFile,
+		initFileIface,
+	)
+}
+
+func initFileIface(giface unsafe.Pointer, overrides FileOverrides) {
+	iface := (*C.GFileIface)(giface)
+
+	if overrides.AppendTo != nil {
+		iface.append_to = (*[0]byte)(C._gotk4_gio2_FileIface_append_to)
+	}
+
+	if overrides.AppendToFinish != nil {
+		iface.append_to_finish = (*[0]byte)(C._gotk4_gio2_FileIface_append_to_finish)
+	}
+
+	if overrides.CopyFinish != nil {
+		iface.copy_finish = (*[0]byte)(C._gotk4_gio2_FileIface_copy_finish)
+	}
+
+	if overrides.Create != nil {
+		iface.create = (*[0]byte)(C._gotk4_gio2_FileIface_create)
+	}
+
+	if overrides.CreateFinish != nil {
+		iface.create_finish = (*[0]byte)(C._gotk4_gio2_FileIface_create_finish)
+	}
+
+	if overrides.CreateReadwrite != nil {
+		iface.create_readwrite = (*[0]byte)(C._gotk4_gio2_FileIface_create_readwrite)
+	}
+
+	if overrides.CreateReadwriteFinish != nil {
+		iface.create_readwrite_finish = (*[0]byte)(C._gotk4_gio2_FileIface_create_readwrite_finish)
+	}
+
+	if overrides.Dup != nil {
+		iface.dup = (*[0]byte)(C._gotk4_gio2_FileIface_dup)
+	}
+
+	if overrides.EjectMountableFinish != nil {
+		iface.eject_mountable_finish = (*[0]byte)(C._gotk4_gio2_FileIface_eject_mountable_finish)
+	}
+
+	if overrides.EjectMountableWithOperationFinish != nil {
+		iface.eject_mountable_with_operation_finish = (*[0]byte)(C._gotk4_gio2_FileIface_eject_mountable_with_operation_finish)
+	}
+
+	if overrides.EnumerateChildren != nil {
+		iface.enumerate_children = (*[0]byte)(C._gotk4_gio2_FileIface_enumerate_children)
+	}
+
+	if overrides.EnumerateChildrenFinish != nil {
+		iface.enumerate_children_finish = (*[0]byte)(C._gotk4_gio2_FileIface_enumerate_children_finish)
+	}
+
+	if overrides.Equal != nil {
+		iface.equal = (*[0]byte)(C._gotk4_gio2_FileIface_equal)
+	}
+
+	if overrides.FindEnclosingMount != nil {
+		iface.find_enclosing_mount = (*[0]byte)(C._gotk4_gio2_FileIface_find_enclosing_mount)
+	}
+
+	if overrides.FindEnclosingMountFinish != nil {
+		iface.find_enclosing_mount_finish = (*[0]byte)(C._gotk4_gio2_FileIface_find_enclosing_mount_finish)
+	}
+
+	if overrides.Basename != nil {
+		iface.get_basename = (*[0]byte)(C._gotk4_gio2_FileIface_get_basename)
+	}
+
+	if overrides.ChildForDisplayName != nil {
+		iface.get_child_for_display_name = (*[0]byte)(C._gotk4_gio2_FileIface_get_child_for_display_name)
+	}
+
+	if overrides.Parent != nil {
+		iface.get_parent = (*[0]byte)(C._gotk4_gio2_FileIface_get_parent)
+	}
+
+	if overrides.ParseName != nil {
+		iface.get_parse_name = (*[0]byte)(C._gotk4_gio2_FileIface_get_parse_name)
+	}
+
+	if overrides.Path != nil {
+		iface.get_path = (*[0]byte)(C._gotk4_gio2_FileIface_get_path)
+	}
+
+	if overrides.RelativePath != nil {
+		iface.get_relative_path = (*[0]byte)(C._gotk4_gio2_FileIface_get_relative_path)
+	}
+
+	if overrides.URI != nil {
+		iface.get_uri = (*[0]byte)(C._gotk4_gio2_FileIface_get_uri)
+	}
+
+	if overrides.URIScheme != nil {
+		iface.get_uri_scheme = (*[0]byte)(C._gotk4_gio2_FileIface_get_uri_scheme)
+	}
+
+	if overrides.HasURIScheme != nil {
+		iface.has_uri_scheme = (*[0]byte)(C._gotk4_gio2_FileIface_has_uri_scheme)
+	}
+
+	if overrides.Hash != nil {
+		iface.hash = (*[0]byte)(C._gotk4_gio2_FileIface_hash)
+	}
+
+	if overrides.IsNative != nil {
+		iface.is_native = (*[0]byte)(C._gotk4_gio2_FileIface_is_native)
+	}
+
+	if overrides.MakeDirectory != nil {
+		iface.make_directory = (*[0]byte)(C._gotk4_gio2_FileIface_make_directory)
+	}
+
+	if overrides.MakeDirectoryFinish != nil {
+		iface.make_directory_finish = (*[0]byte)(C._gotk4_gio2_FileIface_make_directory_finish)
+	}
+
+	if overrides.MakeSymbolicLink != nil {
+		iface.make_symbolic_link = (*[0]byte)(C._gotk4_gio2_FileIface_make_symbolic_link)
+	}
+
+	if overrides.MakeSymbolicLinkFinish != nil {
+		iface.make_symbolic_link_finish = (*[0]byte)(C._gotk4_gio2_FileIface_make_symbolic_link_finish)
+	}
+
+	if overrides.MeasureDiskUsageFinish != nil {
+		iface.measure_disk_usage_finish = (*[0]byte)(C._gotk4_gio2_FileIface_measure_disk_usage_finish)
+	}
+
+	if overrides.MonitorFile != nil {
+		iface.monitor_file = (*[0]byte)(C._gotk4_gio2_FileIface_monitor_file)
+	}
+
+	if overrides.MountEnclosingVolumeFinish != nil {
+		iface.mount_enclosing_volume_finish = (*[0]byte)(C._gotk4_gio2_FileIface_mount_enclosing_volume_finish)
+	}
+
+	if overrides.MountMountableFinish != nil {
+		iface.mount_mountable_finish = (*[0]byte)(C._gotk4_gio2_FileIface_mount_mountable_finish)
+	}
+
+	if overrides.MoveFinish != nil {
+		iface.move_finish = (*[0]byte)(C._gotk4_gio2_FileIface_move_finish)
+	}
+
+	if overrides.OpenReadwrite != nil {
+		iface.open_readwrite = (*[0]byte)(C._gotk4_gio2_FileIface_open_readwrite)
+	}
+
+	if overrides.OpenReadwriteFinish != nil {
+		iface.open_readwrite_finish = (*[0]byte)(C._gotk4_gio2_FileIface_open_readwrite_finish)
+	}
+
+	if overrides.PollMountableFinish != nil {
+		iface.poll_mountable_finish = (*[0]byte)(C._gotk4_gio2_FileIface_poll_mountable_finish)
+	}
+
+	if overrides.QueryExists != nil {
+		iface.query_exists = (*[0]byte)(C._gotk4_gio2_FileIface_query_exists)
+	}
+
+	if overrides.QueryFilesystemInfo != nil {
+		iface.query_filesystem_info = (*[0]byte)(C._gotk4_gio2_FileIface_query_filesystem_info)
+	}
+
+	if overrides.QueryFilesystemInfoFinish != nil {
+		iface.query_filesystem_info_finish = (*[0]byte)(C._gotk4_gio2_FileIface_query_filesystem_info_finish)
+	}
+
+	if overrides.QueryInfo != nil {
+		iface.query_info = (*[0]byte)(C._gotk4_gio2_FileIface_query_info)
+	}
+
+	if overrides.QueryInfoFinish != nil {
+		iface.query_info_finish = (*[0]byte)(C._gotk4_gio2_FileIface_query_info_finish)
+	}
+
+	if overrides.QuerySettableAttributes != nil {
+		iface.query_settable_attributes = (*[0]byte)(C._gotk4_gio2_FileIface_query_settable_attributes)
+	}
+
+	if overrides.QueryWritableNamespaces != nil {
+		iface.query_writable_namespaces = (*[0]byte)(C._gotk4_gio2_FileIface_query_writable_namespaces)
+	}
+
+	if overrides.ReadFinish != nil {
+		iface.read_finish = (*[0]byte)(C._gotk4_gio2_FileIface_read_finish)
+	}
+
+	if overrides.Replace != nil {
+		iface.replace = (*[0]byte)(C._gotk4_gio2_FileIface_replace)
+	}
+
+	if overrides.ReplaceFinish != nil {
+		iface.replace_finish = (*[0]byte)(C._gotk4_gio2_FileIface_replace_finish)
+	}
+
+	if overrides.ReplaceReadwrite != nil {
+		iface.replace_readwrite = (*[0]byte)(C._gotk4_gio2_FileIface_replace_readwrite)
+	}
+
+	if overrides.ReplaceReadwriteFinish != nil {
+		iface.replace_readwrite_finish = (*[0]byte)(C._gotk4_gio2_FileIface_replace_readwrite_finish)
+	}
+
+	if overrides.ResolveRelativePath != nil {
+		iface.resolve_relative_path = (*[0]byte)(C._gotk4_gio2_FileIface_resolve_relative_path)
+	}
+
+	if overrides.SetAttribute != nil {
+		iface.set_attribute = (*[0]byte)(C._gotk4_gio2_FileIface_set_attribute)
+	}
+
+	if overrides.SetAttributesFinish != nil {
+		iface.set_attributes_finish = (*[0]byte)(C._gotk4_gio2_FileIface_set_attributes_finish)
+	}
+
+	if overrides.SetAttributesFromInfo != nil {
+		iface.set_attributes_from_info = (*[0]byte)(C._gotk4_gio2_FileIface_set_attributes_from_info)
+	}
+
+	if overrides.SetDisplayName != nil {
+		iface.set_display_name = (*[0]byte)(C._gotk4_gio2_FileIface_set_display_name)
+	}
+
+	if overrides.SetDisplayNameFinish != nil {
+		iface.set_display_name_finish = (*[0]byte)(C._gotk4_gio2_FileIface_set_display_name_finish)
+	}
+
+	if overrides.StartMountableFinish != nil {
+		iface.start_mountable_finish = (*[0]byte)(C._gotk4_gio2_FileIface_start_mountable_finish)
+	}
+
+	if overrides.StopMountableFinish != nil {
+		iface.stop_mountable_finish = (*[0]byte)(C._gotk4_gio2_FileIface_stop_mountable_finish)
+	}
+
+	if overrides.Trash != nil {
+		iface.trash = (*[0]byte)(C._gotk4_gio2_FileIface_trash)
+	}
+
+	if overrides.TrashFinish != nil {
+		iface.trash_finish = (*[0]byte)(C._gotk4_gio2_FileIface_trash_finish)
+	}
+
+	if overrides.UnmountMountableFinish != nil {
+		iface.unmount_mountable_finish = (*[0]byte)(C._gotk4_gio2_FileIface_unmount_mountable_finish)
+	}
+
+	if overrides.UnmountMountableWithOperationFinish != nil {
+		iface.unmount_mountable_with_operation_finish = (*[0]byte)(C._gotk4_gio2_FileIface_unmount_mountable_with_operation_finish)
+	}
+
+}
 
 func wrapFile(obj *coreglib.Object) *File {
 	return &File{
@@ -32102,6 +35735,41 @@ func FileParseName(parseName string) *File {
 	return _file
 }
 
+// IconOverrides contains methods that a subclass can implement
+// for the Icon interface. Methods left nil keep the interface's
+// default implementation.
+type IconOverrides struct {
+	// Equal checks if two icons are equal.
+	//
+	// The function takes the following parameters:
+	//
+	//   - icon2 (optional): pointer to the second #GIcon.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if icon1 is equal to icon2. FALSE otherwise.
+	Equal func(icon2 Iconner) bool // optional
+	// Hash gets a hash for an icon.
+	//
+	// The function returns the following values:
+	//
+	//   - guint containing a hash for the icon, suitable for use in a Table or
+	//     similar data structure.
+	Hash func() uint // optional
+	// Serialize serializes a #GIcon into a #GVariant. An equivalent #GIcon
+	// can be retrieved back by calling g_icon_deserialize() on the returned
+	// value. As serialization will avoid using raw icon data when possible,
+	// it only makes sense to transfer the #GVariant between processes on the
+	// same machine, (as opposed to over the network), and within the same file
+	// system namespace.
+	//
+	// The function returns the following values:
+	//
+	//   - variant (optional) or NULL when serialization fails. The #GVariant
+	//     will not be floating.
+	Serialize func() *glib.Variant // optional
+}
+
 // Icon: GIcon is a very minimal interface for icons. It provides functions for
 // checking the equality of two icons, hashing of icons and serializing an icon
 // to and from strings.
@@ -32158,6 +35826,30 @@ type Iconner interface {
 }
 
 var _ Iconner = (*Icon)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[IconOverrides](
+		GTypeIcon,
+		initIconIface,
+	)
+}
+
+func initIconIface(giface unsafe.Pointer, overrides IconOverrides) {
+	iface := (*C.GIconIface)(giface)
+
+	if overrides.Equal != nil {
+		iface.equal = (*[0]byte)(C._gotk4_gio2_IconIface_equal)
+	}
+
+	if overrides.Hash != nil {
+		iface.hash = (*[0]byte)(C._gotk4_gio2_IconIface_hash)
+	}
+
+	if overrides.Serialize != nil {
+		iface.serialize = (*[0]byte)(C._gotk4_gio2_IconIface_serialize)
+	}
+
+}
 
 func wrapIcon(obj *coreglib.Object) *Icon {
 	return &Icon{
@@ -32461,6 +36153,56 @@ func NewIconForString(str string) (*Icon, error) {
 	return _icon, _goerr
 }
 
+// InitableOverrides contains methods that a subclass can implement
+// for the Initable interface. Methods left nil keep the interface's
+// default implementation.
+type InitableOverrides struct {
+	// Init initializes the object implementing the interface.
+	//
+	// This method is intended for language bindings. If writing in C,
+	// g_initable_new() should typically be used instead.
+	//
+	// The object must be initialized before any real use after initial
+	// construction, either with this function or g_async_initable_init_async().
+	//
+	// Implementations may also support cancellation. If cancellable is
+	// not NULL, then initialization can be cancelled by triggering the
+	// cancellable object from another thread. If the operation was cancelled,
+	// the error G_IO_ERROR_CANCELLED will be returned. If cancellable is not
+	// NULL and the object doesn't support cancellable initialization the error
+	// G_IO_ERROR_NOT_SUPPORTED will be returned.
+	//
+	// If the object is not initialized, or initialization returns with an
+	// error, then all operations on the object except g_object_ref() and
+	// g_object_unref() are considered to be invalid, and have undefined
+	// behaviour. See the [description]gio.Initable#description for more
+	// details.
+	//
+	// Callers should not assume that a class which implements #GInitable can
+	// be initialized multiple times, unless the class explicitly documents
+	// itself as supporting this. Generally, a class’ implementation of init()
+	// can assume (and assert) that it will only be called once. Previously,
+	// this documentation recommended all #GInitable implementations should be
+	// idempotent; that recommendation was relaxed in GLib 2.54.
+	//
+	// If a class explicitly supports being initialized multiple times, it is
+	// recommended that the method is idempotent: multiple calls with the same
+	// arguments should return the same results. Only the first call initializes
+	// the object; further calls return the result of the first call.
+	//
+	// One reason why a class might need to support idempotent initialization
+	// is if it is designed to be used via the singleton pattern, with a
+	// Class.constructor that sometimes returns an existing instance. In this
+	// pattern, a caller would expect to be able to call g_initable_init() on
+	// the result of g_object_new(), regardless of whether it is in fact a new
+	// instance.
+	//
+	// The function takes the following parameters:
+	//
+	//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+	Init func(ctx context.Context) error // optional
+}
+
 // Initable: GInitable is implemented by objects that can fail during
 // initialization. If an object implements this interface then it must
 // be initialized as the first thing after construction, either via
@@ -32504,6 +36246,22 @@ type Initabler interface {
 }
 
 var _ Initabler = (*Initable)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[InitableOverrides](
+		GTypeInitable,
+		initInitableIface,
+	)
+}
+
+func initInitableIface(giface unsafe.Pointer, overrides InitableOverrides) {
+	iface := (*C.GInitableIface)(giface)
+
+	if overrides.Init != nil {
+		iface.init = (*[0]byte)(C._gotk4_gio2_InitableIface_init)
+	}
+
+}
 
 func wrapInitable(obj *coreglib.Object) *Initable {
 	return &Initable{
@@ -32650,6 +36408,50 @@ func (initable *Initable) init(ctx context.Context) error {
 	return _goerr
 }
 
+// ListModelOverrides contains methods that a subclass can implement
+// for the ListModel interface. Methods left nil keep the interface's
+// default implementation.
+type ListModelOverrides struct {
+	// Item: get the item at position. If position is greater than the number of
+	// items in list, NULL is returned.
+	//
+	// NULL is never returned for an index that is smaller than the length of
+	// the list. See g_list_model_get_n_items().
+	//
+	// The same #GObject instance may not appear more than once in a Model.
+	//
+	// The function takes the following parameters:
+	//
+	//   - position of the item to fetch.
+	//
+	// The function returns the following values:
+	//
+	//   - object (optional) at position.
+	Item func(position uint) *coreglib.Object // optional
+	// ItemType gets the type of the items in list.
+	//
+	// All items returned from g_list_model_get_item() are of the type returned
+	// by this function, or a subtype, or if the type is an interface, they are
+	// an implementation of that interface.
+	//
+	// The item type of a Model can not change during the life of the model.
+	//
+	// The function returns the following values:
+	//
+	//   - gType of the items contained in list.
+	ItemType func() coreglib.Type // optional
+	// NItems gets the number of items in list.
+	//
+	// Depending on the model implementation, calling this function may be less
+	// efficient than iterating the list with increasing values for position
+	// until g_list_model_get_item() returns NULL.
+	//
+	// The function returns the following values:
+	//
+	//   - guint: number of items in list.
+	NItems func() uint // optional
+}
+
 // ListModel: GListModel is an interface that represents a mutable list of
 // gobject.Object. Its main intention is as a model for various widgets in user
 // interfaces, such as list views, but it can also be used as a convenient
@@ -32738,6 +36540,30 @@ type ListModeller interface {
 }
 
 var _ ListModeller = (*ListModel)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[ListModelOverrides](
+		GTypeListModel,
+		initListModelInterface,
+	)
+}
+
+func initListModelInterface(giface unsafe.Pointer, overrides ListModelOverrides) {
+	iface := (*C.GListModelInterface)(giface)
+
+	if overrides.Item != nil {
+		iface.get_item = (*[0]byte)(C._gotk4_gio2_ListModelInterface_get_item)
+	}
+
+	if overrides.ItemType != nil {
+		iface.get_item_type = (*[0]byte)(C._gotk4_gio2_ListModelInterface_get_item_type)
+	}
+
+	if overrides.NItems != nil {
+		iface.get_n_items = (*[0]byte)(C._gotk4_gio2_ListModelInterface_get_n_items)
+	}
+
+}
 
 func wrapListModel(obj *coreglib.Object) *ListModel {
 	return &ListModel{
@@ -32988,6 +36814,39 @@ func (list *ListModel) nItems() uint {
 	return _guint
 }
 
+// LoadableIconOverrides contains methods that a subclass can implement
+// for the LoadableIcon interface. Methods left nil keep the interface's
+// default implementation.
+type LoadableIconOverrides struct {
+	// Load loads a loadable icon. For the asynchronous version of this
+	// function, see g_loadable_icon_load_async().
+	//
+	// The function takes the following parameters:
+	//
+	//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//   - size: integer.
+	//
+	// The function returns the following values:
+	//
+	//   - typ (optional): location to store the type of the loaded icon,
+	//     NULL to ignore.
+	//   - inputStream to read the icon from.
+	Load func(ctx context.Context, size int) (string, InputStreamer, error) // optional
+	// LoadFinish finishes an asynchronous icon load started in
+	// g_loadable_icon_load_async().
+	//
+	// The function takes the following parameters:
+	//
+	//   - res: Result.
+	//
+	// The function returns the following values:
+	//
+	//   - typ (optional): location to store the type of the loaded icon,
+	//     NULL to ignore.
+	//   - inputStream to read the icon from.
+	LoadFinish func(res AsyncResulter) (string, InputStreamer, error) // optional
+}
+
 // LoadableIcon: GLoadableIcon extends the gio.Icon interface and adds the
 // ability to load icons from streams.
 //
@@ -33014,6 +36873,26 @@ type LoadableIconner interface {
 }
 
 var _ LoadableIconner = (*LoadableIcon)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[LoadableIconOverrides](
+		GTypeLoadableIcon,
+		initLoadableIconIface,
+	)
+}
+
+func initLoadableIconIface(giface unsafe.Pointer, overrides LoadableIconOverrides) {
+	iface := (*C.GLoadableIconIface)(giface)
+
+	if overrides.Load != nil {
+		iface.load = (*[0]byte)(C._gotk4_gio2_LoadableIconIface_load)
+	}
+
+	if overrides.LoadFinish != nil {
+		iface.load_finish = (*[0]byte)(C._gotk4_gio2_LoadableIconIface_load_finish)
+	}
+
+}
 
 func wrapLoadableIcon(obj *coreglib.Object) *LoadableIcon {
 	return &LoadableIcon{
@@ -33354,6 +37233,15 @@ func (icon *LoadableIcon) loadFinish(res AsyncResulter) (string, InputStreamer, 
 	return _typ, _inputStream, _goerr
 }
 
+// MemoryMonitorOverrides contains methods that a subclass can implement
+// for the MemoryMonitor interface. Methods left nil keep the interface's
+// default implementation.
+type MemoryMonitorOverrides struct {
+	// LowMemoryWarning: virtual function pointer for the
+	// Monitor::low-memory-warning signal.
+	LowMemoryWarning func(level MemoryMonitorWarningLevel) // optional
+}
+
 // MemoryMonitor: GMemoryMonitor will monitor system memory and suggest
 // to the application when to free memory so as to leave more room for
 // other applications. It is implemented on Linux using the Low Memory
@@ -33418,6 +37306,22 @@ type MemoryMonitorrer interface {
 }
 
 var _ MemoryMonitorrer = (*MemoryMonitor)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[MemoryMonitorOverrides](
+		GTypeMemoryMonitor,
+		initMemoryMonitorInterface,
+	)
+}
+
+func initMemoryMonitorInterface(giface unsafe.Pointer, overrides MemoryMonitorOverrides) {
+	iface := (*C.GMemoryMonitorInterface)(giface)
+
+	if overrides.LowMemoryWarning != nil {
+		iface.low_memory_warning = (*[0]byte)(C._gotk4_gio2_MemoryMonitorInterface_low_memory_warning)
+	}
+
+}
 
 func wrapMemoryMonitor(obj *coreglib.Object) *MemoryMonitor {
 	return &MemoryMonitor{
@@ -33485,6 +37389,186 @@ func MemoryMonitorDupDefault() *MemoryMonitor {
 	_memoryMonitor = wrapMemoryMonitor(coreglib.AssumeOwnership(unsafe.Pointer(_cret)))
 
 	return _memoryMonitor
+}
+
+// MountOverrides contains methods that a subclass can implement
+// for the Mount interface. Methods left nil keep the interface's
+// default implementation.
+type MountOverrides struct {
+	// CanEject checks if mount can be ejected.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if the mount can be ejected.
+	CanEject func() bool // optional
+	// CanUnmount checks if mount can be unmounted.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if the mount can be unmounted.
+	CanUnmount func() bool // optional
+	// Changed signal that is emitted when the mount's state has changed.
+	Changed func() // optional
+	// EjectFinish finishes ejecting a mount. If any errors occurred during
+	// the operation, error will be set to contain the errors and FALSE will be
+	// returned.
+	//
+	// Deprecated: Use g_mount_eject_with_operation_finish() instead.
+	//
+	// The function takes the following parameters:
+	//
+	//   - result: Result.
+	EjectFinish func(result AsyncResulter) error // optional
+	// EjectWithOperationFinish finishes ejecting a mount. If any errors
+	// occurred during the operation, error will be set to contain the errors
+	// and FALSE will be returned.
+	//
+	// The function takes the following parameters:
+	//
+	//   - result: Result.
+	EjectWithOperationFinish func(result AsyncResulter) error // optional
+	// DefaultLocation gets the default location of mount. The default location
+	// of the given mount is a path that reflects the main entry point for the
+	// user (e.g. the home directory, or the root of the volume).
+	//
+	// The function returns the following values:
+	//
+	//   - file: #GFile. The returned object should be unreffed with
+	//     g_object_unref() when no longer needed.
+	DefaultLocation func() *File // optional
+	// Drive gets the drive for the mount.
+	//
+	// This is a convenience method for getting the #GVolume and then using that
+	// object to get the #GDrive.
+	//
+	// The function returns the following values:
+	//
+	//   - drive (optional) or NULL if mount is not associated with a volume or
+	//     a drive. The returned object should be unreffed with g_object_unref()
+	//     when no longer needed.
+	Drive func() *Drive // optional
+	// Icon gets the icon for mount.
+	//
+	// The function returns the following values:
+	//
+	//   - icon: #GIcon. The returned object should be unreffed with
+	//     g_object_unref() when no longer needed.
+	Icon func() *Icon // optional
+	// Name gets the name of mount.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8: name for the given mount. The returned string should be freed
+	//     with g_free() when no longer needed.
+	Name func() string // optional
+	// Root gets the root directory on mount.
+	//
+	// The function returns the following values:
+	//
+	//   - file: #GFile. The returned object should be unreffed with
+	//     g_object_unref() when no longer needed.
+	Root func() *File // optional
+	// SortKey gets the sort key for mount, if any.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8 (optional): sorting key for mount or NULL if no such key is
+	//     available.
+	SortKey func() string // optional
+	// SymbolicIcon gets the symbolic icon for mount.
+	//
+	// The function returns the following values:
+	//
+	//   - icon: #GIcon. The returned object should be unreffed with
+	//     g_object_unref() when no longer needed.
+	SymbolicIcon func() *Icon // optional
+	// UUID gets the UUID for the mount. The reference is typically based on the
+	// file system UUID for the mount in question and should be considered an
+	// opaque string. Returns NULL if there is no UUID available.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8 (optional): UUID for mount or NULL if no UUID can be computed.
+	//     The returned string should be freed with g_free() when no longer
+	//     needed.
+	UUID func() string // optional
+	// Volume gets the volume for the mount.
+	//
+	// The function returns the following values:
+	//
+	//   - volume (optional) or NULL if mount is not associated with a volume.
+	//     The returned object should be unreffed with g_object_unref() when no
+	//     longer needed.
+	Volume func() *Volume // optional
+	// GuessContentTypeFinish finishes guessing content types of mount.
+	// If any errors occurred during the operation, error will be set to contain
+	// the errors and FALSE will be returned. In particular, you may get an
+	// G_IO_ERROR_NOT_SUPPORTED if the mount does not support content guessing.
+	//
+	// The function takes the following parameters:
+	//
+	//   - result: Result.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8s: NULL-terminated array of content types or NULL on error.
+	//     Caller should free this array with g_strfreev() when done with it.
+	GuessContentTypeFinish func(result AsyncResulter) ([]string, error) // optional
+	// GuessContentTypeSync tries to guess the type of content stored
+	// on mount. Returns one or more textual identifiers of well-known
+	// content types (typically prefixed with "x-content/"), e.g.
+	// x-content/image-dcf for camera memory cards. See the shared-mime-info
+	// (http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
+	// specification for more on x-content types.
+	//
+	// This is a synchronous operation and as such may block doing IO;
+	// see g_mount_guess_content_type() for the asynchronous version.
+	//
+	// The function takes the following parameters:
+	//
+	//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//   - forceRescan: whether to force a rescan of the content. Otherwise a
+	//     cached result will be used if available.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8s: NULL-terminated array of content types or NULL on error.
+	//     Caller should free this array with g_strfreev() when done with it.
+	GuessContentTypeSync func(ctx context.Context, forceRescan bool) ([]string, error) // optional
+	// PreUnmount: ::pre-unmount signal that is emitted when the #GMount will
+	// soon be emitted. If the recipient is somehow holding the mount open by
+	// keeping an open file on it it should close the file.
+	PreUnmount func() // optional
+	// RemountFinish finishes remounting a mount. If any errors occurred during
+	// the operation, error will be set to contain the errors and FALSE will be
+	// returned.
+	//
+	// The function takes the following parameters:
+	//
+	//   - result: Result.
+	RemountFinish func(result AsyncResulter) error // optional
+	// UnmountFinish finishes unmounting a mount. If any errors occurred during
+	// the operation, error will be set to contain the errors and FALSE will be
+	// returned.
+	//
+	// Deprecated: Use g_mount_unmount_with_operation_finish() instead.
+	//
+	// The function takes the following parameters:
+	//
+	//   - result: Result.
+	UnmountFinish func(result AsyncResulter) error // optional
+	// UnmountWithOperationFinish finishes unmounting a mount. If any errors
+	// occurred during the operation, error will be set to contain the errors
+	// and FALSE will be returned.
+	//
+	// The function takes the following parameters:
+	//
+	//   - result: Result.
+	UnmountWithOperationFinish func(result AsyncResulter) error // optional
+	// Unmounted: unmounted signal that is emitted when the #GMount have been
+	// unmounted. If the recipient is holding references to the object they
+	// should release them so the object can be finalized.
+	Unmounted func() // optional
 }
 
 // Mount: GMount interface represents a user-visible mount, such as a mounted
@@ -33592,6 +37676,102 @@ type Mounter interface {
 }
 
 var _ Mounter = (*Mount)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[MountOverrides](
+		GTypeMount,
+		initMountIface,
+	)
+}
+
+func initMountIface(giface unsafe.Pointer, overrides MountOverrides) {
+	iface := (*C.GMountIface)(giface)
+
+	if overrides.CanEject != nil {
+		iface.can_eject = (*[0]byte)(C._gotk4_gio2_MountIface_can_eject)
+	}
+
+	if overrides.CanUnmount != nil {
+		iface.can_unmount = (*[0]byte)(C._gotk4_gio2_MountIface_can_unmount)
+	}
+
+	if overrides.Changed != nil {
+		iface.changed = (*[0]byte)(C._gotk4_gio2_MountIface_changed)
+	}
+
+	if overrides.EjectFinish != nil {
+		iface.eject_finish = (*[0]byte)(C._gotk4_gio2_MountIface_eject_finish)
+	}
+
+	if overrides.EjectWithOperationFinish != nil {
+		iface.eject_with_operation_finish = (*[0]byte)(C._gotk4_gio2_MountIface_eject_with_operation_finish)
+	}
+
+	if overrides.DefaultLocation != nil {
+		iface.get_default_location = (*[0]byte)(C._gotk4_gio2_MountIface_get_default_location)
+	}
+
+	if overrides.Drive != nil {
+		iface.get_drive = (*[0]byte)(C._gotk4_gio2_MountIface_get_drive)
+	}
+
+	if overrides.Icon != nil {
+		iface.get_icon = (*[0]byte)(C._gotk4_gio2_MountIface_get_icon)
+	}
+
+	if overrides.Name != nil {
+		iface.get_name = (*[0]byte)(C._gotk4_gio2_MountIface_get_name)
+	}
+
+	if overrides.Root != nil {
+		iface.get_root = (*[0]byte)(C._gotk4_gio2_MountIface_get_root)
+	}
+
+	if overrides.SortKey != nil {
+		iface.get_sort_key = (*[0]byte)(C._gotk4_gio2_MountIface_get_sort_key)
+	}
+
+	if overrides.SymbolicIcon != nil {
+		iface.get_symbolic_icon = (*[0]byte)(C._gotk4_gio2_MountIface_get_symbolic_icon)
+	}
+
+	if overrides.UUID != nil {
+		iface.get_uuid = (*[0]byte)(C._gotk4_gio2_MountIface_get_uuid)
+	}
+
+	if overrides.Volume != nil {
+		iface.get_volume = (*[0]byte)(C._gotk4_gio2_MountIface_get_volume)
+	}
+
+	if overrides.GuessContentTypeFinish != nil {
+		iface.guess_content_type_finish = (*[0]byte)(C._gotk4_gio2_MountIface_guess_content_type_finish)
+	}
+
+	if overrides.GuessContentTypeSync != nil {
+		iface.guess_content_type_sync = (*[0]byte)(C._gotk4_gio2_MountIface_guess_content_type_sync)
+	}
+
+	if overrides.PreUnmount != nil {
+		iface.pre_unmount = (*[0]byte)(C._gotk4_gio2_MountIface_pre_unmount)
+	}
+
+	if overrides.RemountFinish != nil {
+		iface.remount_finish = (*[0]byte)(C._gotk4_gio2_MountIface_remount_finish)
+	}
+
+	if overrides.UnmountFinish != nil {
+		iface.unmount_finish = (*[0]byte)(C._gotk4_gio2_MountIface_unmount_finish)
+	}
+
+	if overrides.UnmountWithOperationFinish != nil {
+		iface.unmount_with_operation_finish = (*[0]byte)(C._gotk4_gio2_MountIface_unmount_with_operation_finish)
+	}
+
+	if overrides.Unmounted != nil {
+		iface.unmounted = (*[0]byte)(C._gotk4_gio2_MountIface_unmounted)
+	}
+
+}
 
 func wrapMount(obj *coreglib.Object) *Mount {
 	return &Mount{
@@ -35353,6 +39533,43 @@ func (mount *Mount) unmounted() {
 	runtime.KeepAlive(mount)
 }
 
+// NetworkMonitorOverrides contains methods that a subclass can implement
+// for the NetworkMonitor interface. Methods left nil keep the interface's
+// default implementation.
+type NetworkMonitorOverrides struct {
+	// CanReach attempts to determine whether or not the host pointed to by
+	// connectable can be reached, without actually trying to connect to it.
+	//
+	// This may return TRUE even when Monitor:network-available is FALSE, if,
+	// for example, monitor can determine that connectable refers to a host on a
+	// local network.
+	//
+	// If monitor believes that an attempt to connect to connectable will
+	// succeed, it will return TRUE. Otherwise, it will return FALSE and set
+	// error to an appropriate error (such as G_IO_ERROR_HOST_UNREACHABLE).
+	//
+	// Note that although this does not attempt to connect to connectable,
+	// it may still block for a brief period of time (eg, trying to do multicast
+	// DNS on the local network), so if you do not want to block, you should use
+	// g_network_monitor_can_reach_async().
+	//
+	// The function takes the following parameters:
+	//
+	//   - ctx (optional) or NULL.
+	//   - connectable: Connectable.
+	CanReach func(ctx context.Context, connectable SocketConnectabler) error // optional
+	// CanReachFinish finishes an async network connectivity test. See
+	// g_network_monitor_can_reach_async().
+	//
+	// The function takes the following parameters:
+	//
+	//   - result: Result.
+	CanReachFinish func(result AsyncResulter) error // optional
+	// NetworkChanged: virtual function pointer for the
+	// GNetworkMonitor::network-changed signal.
+	NetworkChanged func(networkAvailable bool) // optional
+}
+
 // NetworkMonitor: GNetworkMonitor provides an easy-to-use cross-platform API
 // for monitoring network connectivity. On Linux, the available implementations
 // are based on the kernel's netlink interface and on NetworkManager.
@@ -35394,6 +39611,30 @@ type NetworkMonitorrer interface {
 }
 
 var _ NetworkMonitorrer = (*NetworkMonitor)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[NetworkMonitorOverrides](
+		GTypeNetworkMonitor,
+		initNetworkMonitorInterface,
+	)
+}
+
+func initNetworkMonitorInterface(giface unsafe.Pointer, overrides NetworkMonitorOverrides) {
+	iface := (*C.GNetworkMonitorInterface)(giface)
+
+	if overrides.CanReach != nil {
+		iface.can_reach = (*[0]byte)(C._gotk4_gio2_NetworkMonitorInterface_can_reach)
+	}
+
+	if overrides.CanReachFinish != nil {
+		iface.can_reach_finish = (*[0]byte)(C._gotk4_gio2_NetworkMonitorInterface_can_reach_finish)
+	}
+
+	if overrides.NetworkChanged != nil {
+		iface.network_changed = (*[0]byte)(C._gotk4_gio2_NetworkMonitorInterface_network_changed)
+	}
+
+}
 
 func wrapNetworkMonitor(obj *coreglib.Object) *NetworkMonitor {
 	return &NetworkMonitor{
@@ -35777,6 +40018,62 @@ func NetworkMonitorGetDefault() *NetworkMonitor {
 	return _networkMonitor
 }
 
+// PollableInputStreamOverrides contains methods that a subclass can implement
+// for the PollableInputStream interface. Methods left nil keep the interface's
+// default implementation.
+type PollableInputStreamOverrides struct {
+	// CanPoll checks if stream is actually pollable. Some classes may implement
+	// InputStream but have only certain instances of that class be pollable.
+	// If this method returns FALSE, then the behavior of other InputStream
+	// methods is undefined.
+	//
+	// For any given stream, the value returned by this method is constant;
+	// a stream cannot switch from pollable to non-pollable or vice versa.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if stream is pollable, FALSE if not.
+	CanPoll func() bool // optional
+	// CreateSource creates a #GSource that triggers when stream can be read,
+	// or cancellable is triggered or an error occurs. The callback on the
+	// source is of the SourceFunc type.
+	//
+	// As with g_pollable_input_stream_is_readable(), it is possible that the
+	// stream may not actually be readable even after the source triggers,
+	// so you should use g_pollable_input_stream_read_nonblocking() rather than
+	// g_input_stream_read() from the callback.
+	//
+	// The behaviour of this method is undefined if
+	// g_pollable_input_stream_can_poll() returns FALSE for stream.
+	//
+	// The function takes the following parameters:
+	//
+	//   - ctx (optional) or NULL.
+	//
+	// The function returns the following values:
+	//
+	//   - source: new #GSource.
+	CreateSource func(ctx context.Context) *glib.Source // optional
+	// IsReadable checks if stream can be read.
+	//
+	// Note that some stream types may not be able to implement this 100%
+	// reliably, and it is possible that a call to g_input_stream_read() after
+	// this returns TRUE would still block. To guarantee non-blocking behavior,
+	// you should always use g_pollable_input_stream_read_nonblocking(),
+	// which will return a G_IO_ERROR_WOULD_BLOCK error rather than blocking.
+	//
+	// The behaviour of this method is undefined if
+	// g_pollable_input_stream_can_poll() returns FALSE for stream.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if stream is readable, FALSE if not.
+	//     If an error has occurred on stream, this will result in
+	//     g_pollable_input_stream_is_readable() returning TRUE, and the next
+	//     attempt to read will return the error.
+	IsReadable func() bool // optional
+}
+
 // PollableInputStream: GPollableInputStream is implemented by gio.InputStreams
 // that can be polled for readiness to read. This can be used when interfacing
 // with a non-GIO API that expects UNIX-file-descriptor-style asynchronous I/O
@@ -35815,6 +40112,30 @@ type PollableInputStreamer interface {
 }
 
 var _ PollableInputStreamer = (*PollableInputStream)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[PollableInputStreamOverrides](
+		GTypePollableInputStream,
+		initPollableInputStreamInterface,
+	)
+}
+
+func initPollableInputStreamInterface(giface unsafe.Pointer, overrides PollableInputStreamOverrides) {
+	iface := (*C.GPollableInputStreamInterface)(giface)
+
+	if overrides.CanPoll != nil {
+		iface.can_poll = (*[0]byte)(C._gotk4_gio2_PollableInputStreamInterface_can_poll)
+	}
+
+	if overrides.CreateSource != nil {
+		iface.create_source = (*[0]byte)(C._gotk4_gio2_PollableInputStreamInterface_create_source)
+	}
+
+	if overrides.IsReadable != nil {
+		iface.is_readable = (*[0]byte)(C._gotk4_gio2_PollableInputStreamInterface_is_readable)
+	}
+
+}
 
 func wrapPollableInputStream(obj *coreglib.Object) *PollableInputStream {
 	return &PollableInputStream{
@@ -36172,6 +40493,122 @@ func (stream *PollableInputStream) readNonblocking(buffer []byte) (int, error) {
 	return _gssize, _goerr
 }
 
+// PollableOutputStreamOverrides contains methods that a subclass can implement
+// for the PollableOutputStream interface. Methods left nil keep the interface's
+// default implementation.
+type PollableOutputStreamOverrides struct {
+	// CanPoll checks if stream is actually pollable. Some classes may implement
+	// OutputStream but have only certain instances of that class be pollable.
+	// If this method returns FALSE, then the behavior of other OutputStream
+	// methods is undefined.
+	//
+	// For any given stream, the value returned by this method is constant;
+	// a stream cannot switch from pollable to non-pollable or vice versa.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if stream is pollable, FALSE if not.
+	CanPoll func() bool // optional
+	// CreateSource creates a #GSource that triggers when stream can be written,
+	// or cancellable is triggered or an error occurs. The callback on the
+	// source is of the SourceFunc type.
+	//
+	// As with g_pollable_output_stream_is_writable(), it is possible that the
+	// stream may not actually be writable even after the source triggers,
+	// so you should use g_pollable_output_stream_write_nonblocking() rather
+	// than g_output_stream_write() from the callback.
+	//
+	// The behaviour of this method is undefined if
+	// g_pollable_output_stream_can_poll() returns FALSE for stream.
+	//
+	// The function takes the following parameters:
+	//
+	//   - ctx (optional) or NULL.
+	//
+	// The function returns the following values:
+	//
+	//   - source: new #GSource.
+	CreateSource func(ctx context.Context) *glib.Source // optional
+	// IsWritable checks if stream can be written.
+	//
+	// Note that some stream types may not be able to implement this 100%
+	// reliably, and it is possible that a call to g_output_stream_write() after
+	// this returns TRUE would still block. To guarantee non-blocking behavior,
+	// you should always use g_pollable_output_stream_write_nonblocking(),
+	// which will return a G_IO_ERROR_WOULD_BLOCK error rather than blocking.
+	//
+	// The behaviour of this method is undefined if
+	// g_pollable_output_stream_can_poll() returns FALSE for stream.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if stream is writable, FALSE if not.
+	//     If an error has occurred on stream, this will result in
+	//     g_pollable_output_stream_is_writable() returning TRUE, and the next
+	//     attempt to write will return the error.
+	IsWritable func() bool // optional
+	// WriteNonblocking attempts to write up to count bytes from buffer to
+	// stream, as with g_output_stream_write(). If stream is not currently
+	// writable, this will immediately return G_IO_ERROR_WOULD_BLOCK, and you
+	// can use g_pollable_output_stream_create_source() to create a #GSource
+	// that will be triggered when stream is writable.
+	//
+	// Note that since this method never blocks, you cannot actually use
+	// cancellable to cancel it. However, it will return an error if cancellable
+	// has already been cancelled when you call, which may happen if you call
+	// this method after a source triggers due to having been cancelled.
+	//
+	// Also note that if G_IO_ERROR_WOULD_BLOCK is returned some underlying
+	// transports like D/TLS require that you re-send the same buffer and count
+	// in the next write call.
+	//
+	// The behaviour of this method is undefined if
+	// g_pollable_output_stream_can_poll() returns FALSE for stream.
+	//
+	// The function takes the following parameters:
+	//
+	//   - buffer (optional) to write data from.
+	//
+	// The function returns the following values:
+	//
+	//   - gssize: number of bytes written, or -1 on error (including
+	//     G_IO_ERROR_WOULD_BLOCK).
+	WriteNonblocking func(buffer []byte) (int, error) // optional
+	// WritevNonblocking attempts to write the bytes contained in the
+	// n_vectors vectors to stream, as with g_output_stream_writev().
+	// If stream is not currently writable, this will immediately
+	// return G_POLLABLE_RETURN_WOULD_BLOCK, and you can use
+	// g_pollable_output_stream_create_source() to create a #GSource that will
+	// be triggered when stream is writable. error will *not* be set in that
+	// case.
+	//
+	// Note that since this method never blocks, you cannot actually use
+	// cancellable to cancel it. However, it will return an error if cancellable
+	// has already been cancelled when you call, which may happen if you call
+	// this method after a source triggers due to having been cancelled.
+	//
+	// Also note that if G_POLLABLE_RETURN_WOULD_BLOCK is returned some
+	// underlying transports like D/TLS require that you re-send the same
+	// vectors and n_vectors in the next write call.
+	//
+	// The behaviour of this method is undefined if
+	// g_pollable_output_stream_can_poll() returns FALSE for stream.
+	//
+	// The function takes the following parameters:
+	//
+	//   - vectors: buffer containing the Vectors to write.
+	//
+	// The function returns the following values:
+	//
+	//   - bytesWritten (optional): location to store the number of bytes that
+	//     were written to the stream.
+	//   - pollableReturn: G_POLLABLE_RETURN_OK on success,
+	//     G_POLLABLE_RETURN_WOULD_BLOCK if the stream is not currently writable
+	//     (and error is *not* set), or G_POLLABLE_RETURN_FAILED if there was an
+	//     error in which case error will be set.
+	WritevNonblocking func(vectors []OutputVector) (uint, PollableReturn, error) // optional
+}
+
 // PollableOutputStream: GPollableOutputStream is implemented by
 // gio.OutputStreams that can be polled for readiness to write. This can be used
 // when interfacing with a non-GIO API that expects UNIX-file-descriptor-style
@@ -36213,6 +40650,38 @@ type PollableOutputStreamer interface {
 }
 
 var _ PollableOutputStreamer = (*PollableOutputStream)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[PollableOutputStreamOverrides](
+		GTypePollableOutputStream,
+		initPollableOutputStreamInterface,
+	)
+}
+
+func initPollableOutputStreamInterface(giface unsafe.Pointer, overrides PollableOutputStreamOverrides) {
+	iface := (*C.GPollableOutputStreamInterface)(giface)
+
+	if overrides.CanPoll != nil {
+		iface.can_poll = (*[0]byte)(C._gotk4_gio2_PollableOutputStreamInterface_can_poll)
+	}
+
+	if overrides.CreateSource != nil {
+		iface.create_source = (*[0]byte)(C._gotk4_gio2_PollableOutputStreamInterface_create_source)
+	}
+
+	if overrides.IsWritable != nil {
+		iface.is_writable = (*[0]byte)(C._gotk4_gio2_PollableOutputStreamInterface_is_writable)
+	}
+
+	if overrides.WriteNonblocking != nil {
+		iface.write_nonblocking = (*[0]byte)(C._gotk4_gio2_PollableOutputStreamInterface_write_nonblocking)
+	}
+
+	if overrides.WritevNonblocking != nil {
+		iface.writev_nonblocking = (*[0]byte)(C._gotk4_gio2_PollableOutputStreamInterface_writev_nonblocking)
+	}
+
+}
 
 func wrapPollableOutputStream(obj *coreglib.Object) *PollableOutputStream {
 	return &PollableOutputStream{
@@ -36721,8 +41190,10 @@ func (stream *PollableOutputStream) writevNonblocking(vectors []OutputVector) (u
 	return _bytesWritten, _pollableReturn, _goerr
 }
 
-// PowerProfileMonitorOverrider contains methods that are overridable.
-type PowerProfileMonitorOverrider interface {
+// PowerProfileMonitorOverrides contains methods that a subclass can implement
+// for the PowerProfileMonitor interface. Methods left nil keep the interface's
+// default implementation.
+type PowerProfileMonitorOverrides struct {
 }
 
 // PowerProfileMonitor: GPowerProfileMonitor makes it possible for applications
@@ -36771,7 +41242,14 @@ type PowerProfileMonitorrer interface {
 
 var _ PowerProfileMonitorrer = (*PowerProfileMonitor)(nil)
 
-func ifaceInitPowerProfileMonitorrer(gifacePtr, data C.gpointer) {
+func init() {
+	coreglib.RegisterInterfaceInfo[PowerProfileMonitorOverrides](
+		GTypePowerProfileMonitor,
+		initPowerProfileMonitorInterface,
+	)
+}
+
+func initPowerProfileMonitorInterface(giface unsafe.Pointer, overrides PowerProfileMonitorOverrides) {
 }
 
 func wrapPowerProfileMonitor(obj *coreglib.Object) *PowerProfileMonitor {
@@ -36830,6 +41308,50 @@ func PowerProfileMonitorDupDefault() *PowerProfileMonitor {
 	return _powerProfileMonitor
 }
 
+// ProxyOverrides contains methods that a subclass can implement
+// for the Proxy interface. Methods left nil keep the interface's
+// default implementation.
+type ProxyOverrides struct {
+	// ConnectProxy: given connection to communicate with a proxy (eg,
+	// a Connection that is connected to the proxy server), this does the
+	// necessary handshake to connect to proxy_address, and if required,
+	// wraps the OStream to handle proxy payload.
+	//
+	// The function takes the following parameters:
+	//
+	//   - ctx (optional): #GCancellable.
+	//   - connection: OStream.
+	//   - proxyAddress: Address.
+	//
+	// The function returns the following values:
+	//
+	//   - ioStream that will replace connection. This might be the same as
+	//     connection, in which case a reference will be added.
+	ConnectProxy func(ctx context.Context, connection IOStreamer, proxyAddress *ProxyAddress) (IOStreamer, error) // optional
+	// ConnectFinish: see g_proxy_connect().
+	//
+	// The function takes the following parameters:
+	//
+	//   - result: Result.
+	//
+	// The function returns the following values:
+	//
+	//   - ioStream: OStream.
+	ConnectFinish func(result AsyncResulter) (IOStreamer, error) // optional
+	// SupportsHostname: some proxy protocols expect to be passed a hostname,
+	// which they will resolve to an IP address themselves. Others,
+	// like SOCKS4, do not allow this. This function will return FALSE
+	// if proxy is implementing such a protocol. When FALSE is returned,
+	// the caller should resolve the destination hostname first, and then pass
+	// a Address containing the stringified IP address to g_proxy_connect() or
+	// g_proxy_connect_async().
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if hostname resolution is supported.
+	SupportsHostname func() bool // optional
+}
+
 // Proxy: GProxy handles connecting to a remote host via a given type of proxy
 // server. It is implemented by the gio-proxy extension point. The extensions
 // are named after their proxy protocol name. As an example, a SOCKS5 proxy
@@ -36866,6 +41388,30 @@ type Proxier interface {
 }
 
 var _ Proxier = (*Proxy)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[ProxyOverrides](
+		GTypeProxy,
+		initProxyInterface,
+	)
+}
+
+func initProxyInterface(giface unsafe.Pointer, overrides ProxyOverrides) {
+	iface := (*C.GProxyInterface)(giface)
+
+	if overrides.ConnectProxy != nil {
+		iface.connect = (*[0]byte)(C._gotk4_gio2_ProxyInterface_connect)
+	}
+
+	if overrides.ConnectFinish != nil {
+		iface.connect_finish = (*[0]byte)(C._gotk4_gio2_ProxyInterface_connect_finish)
+	}
+
+	if overrides.SupportsHostname != nil {
+		iface.supports_hostname = (*[0]byte)(C._gotk4_gio2_ProxyInterface_supports_hostname)
+	}
+
+}
 
 func wrapProxy(obj *coreglib.Object) *Proxy {
 	return &Proxy{
@@ -37276,6 +41822,56 @@ func ProxyGetDefaultForProtocol(protocol string) *Proxy {
 	return _proxy
 }
 
+// ProxyResolverOverrides contains methods that a subclass can implement
+// for the ProxyResolver interface. Methods left nil keep the interface's
+// default implementation.
+type ProxyResolverOverrides struct {
+	// IsSupported checks if resolver can be used on this system. (This is
+	// used internally; g_proxy_resolver_get_default() will only return a proxy
+	// resolver that returns TRUE for this method.).
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if resolver is supported.
+	IsSupported func() bool // optional
+	// Lookup looks into the system proxy configuration to determine what proxy,
+	// if any, to use to connect to uri. The returned proxy URIs are of the form
+	// <protocol>://[user[:password]@]host[:port] or direct://, where <protocol>
+	// could be http, rtsp, socks or other proxying protocol.
+	//
+	// If you don't know what network protocol is being used on the socket,
+	// you should use none as the URI protocol. In this case, the resolver might
+	// still return a generic proxy type (such as SOCKS), but would not return
+	// protocol-specific proxy types (such as http).
+	//
+	// direct:// is used when no proxy is needed. Direct connection should not
+	// be attempted unless it is part of the returned array of proxies.
+	//
+	// The function takes the following parameters:
+	//
+	//   - ctx (optional) or NULL.
+	//   - uri: URI representing the destination to connect to.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8s: a NULL-terminated array of proxy URIs. Must be freed with
+	//     g_strfreev().
+	Lookup func(ctx context.Context, uri string) ([]string, error) // optional
+	// LookupFinish: call this function to obtain the array of proxy
+	// URIs when g_proxy_resolver_lookup_async() is complete. See
+	// g_proxy_resolver_lookup() for more details.
+	//
+	// The function takes the following parameters:
+	//
+	//   - result passed to your ReadyCallback.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8s: a NULL-terminated array of proxy URIs. Must be freed with
+	//     g_strfreev().
+	LookupFinish func(result AsyncResulter) ([]string, error) // optional
+}
+
 // ProxyResolver: GProxyResolver provides synchronous and asynchronous network
 // proxy resolution. GProxyResolver is used within gio.SocketClient through the
 // method gio.SocketConnectable.ProxyEnumerate().
@@ -37313,6 +41909,30 @@ type ProxyResolverer interface {
 }
 
 var _ ProxyResolverer = (*ProxyResolver)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[ProxyResolverOverrides](
+		GTypeProxyResolver,
+		initProxyResolverInterface,
+	)
+}
+
+func initProxyResolverInterface(giface unsafe.Pointer, overrides ProxyResolverOverrides) {
+	iface := (*C.GProxyResolverInterface)(giface)
+
+	if overrides.IsSupported != nil {
+		iface.is_supported = (*[0]byte)(C._gotk4_gio2_ProxyResolverInterface_is_supported)
+	}
+
+	if overrides.Lookup != nil {
+		iface.lookup = (*[0]byte)(C._gotk4_gio2_ProxyResolverInterface_lookup)
+	}
+
+	if overrides.LookupFinish != nil {
+		iface.lookup_finish = (*[0]byte)(C._gotk4_gio2_ProxyResolverInterface_lookup_finish)
+	}
+
+}
 
 func wrapProxyResolver(obj *coreglib.Object) *ProxyResolver {
 	return &ProxyResolver{
@@ -37710,6 +42330,44 @@ func ProxyResolverGetDefault() *ProxyResolver {
 	return _proxyResolver
 }
 
+// RemoteActionGroupOverrides contains methods that a subclass can implement
+// for the RemoteActionGroup interface. Methods left nil keep the interface's
+// default implementation.
+type RemoteActionGroupOverrides struct {
+	// ActivateActionFull activates the remote action.
+	//
+	// This is the same as g_action_group_activate_action() except that it
+	// allows for provision of "platform data" to be sent along with the
+	// activation request. This typically contains details such as the user
+	// interaction timestamp or startup notification information.
+	//
+	// platform_data must be non-NULL and must have the type
+	// G_VARIANT_TYPE_VARDICT. If it is floating, it will be consumed.
+	//
+	// The function takes the following parameters:
+	//
+	//   - actionName: name of the action to activate.
+	//   - parameter (optional): optional parameter to the activation.
+	//   - platformData: platform data to send.
+	ActivateActionFull func(actionName string, parameter, platformData *glib.Variant) // optional
+	// ChangeActionStateFull changes the state of a remote action.
+	//
+	// This is the same as g_action_group_change_action_state() except that
+	// it allows for provision of "platform data" to be sent along with the
+	// state change request. This typically contains details such as the user
+	// interaction timestamp or startup notification information.
+	//
+	// platform_data must be non-NULL and must have the type
+	// G_VARIANT_TYPE_VARDICT. If it is floating, it will be consumed.
+	//
+	// The function takes the following parameters:
+	//
+	//   - actionName: name of the action to change the state of.
+	//   - value: new requested value for the state.
+	//   - platformData: platform data to send.
+	ChangeActionStateFull func(actionName string, value, platformData *glib.Variant) // optional
+}
+
 // RemoteActionGroup: GRemoteActionGroup interface is implemented by
 // gio.ActionGroup instances that either transmit action invocations to other
 // processes or receive action invocations in the local process from other
@@ -37749,6 +42407,26 @@ type RemoteActionGrouper interface {
 }
 
 var _ RemoteActionGrouper = (*RemoteActionGroup)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[RemoteActionGroupOverrides](
+		GTypeRemoteActionGroup,
+		initRemoteActionGroupInterface,
+	)
+}
+
+func initRemoteActionGroupInterface(giface unsafe.Pointer, overrides RemoteActionGroupOverrides) {
+	iface := (*C.GRemoteActionGroupInterface)(giface)
+
+	if overrides.ActivateActionFull != nil {
+		iface.activate_action_full = (*[0]byte)(C._gotk4_gio2_RemoteActionGroupInterface_activate_action_full)
+	}
+
+	if overrides.ChangeActionStateFull != nil {
+		iface.change_action_state_full = (*[0]byte)(C._gotk4_gio2_RemoteActionGroupInterface_change_action_state_full)
+	}
+
+}
 
 func wrapRemoteActionGroup(obj *coreglib.Object) *RemoteActionGroup {
 	return &RemoteActionGroup{
@@ -37908,6 +42586,53 @@ func (remote *RemoteActionGroup) changeActionStateFull(actionName string, value,
 	runtime.KeepAlive(platformData)
 }
 
+// SeekableOverrides contains methods that a subclass can implement
+// for the Seekable interface. Methods left nil keep the interface's
+// default implementation.
+type SeekableOverrides struct {
+	// CanSeek tests if the stream supports the Iface.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if seekable can be seeked. FALSE otherwise.
+	CanSeek func() bool // optional
+	// CanTruncate tests if the length of the stream can be adjusted with
+	// g_seekable_truncate().
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if the stream can be truncated, FALSE otherwise.
+	CanTruncate func() bool // optional
+	// Seek seeks in the stream by the given offset, modified by type.
+	//
+	// Attempting to seek past the end of the stream will have different results
+	// depending on if the stream is fixed-sized or resizable. If the stream is
+	// resizable then seeking past the end and then writing will result in zeros
+	// filling the empty space. Seeking past the end of a resizable stream and
+	// reading will result in EOF. Seeking past the end of a fixed-sized stream
+	// will fail.
+	//
+	// Any operation that would result in a negative offset will fail.
+	//
+	// If cancellable is not NULL, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
+	//
+	// The function takes the following parameters:
+	//
+	//   - ctx (optional): optional #GCancellable object, NULL to ignore.
+	//   - offset: #goffset.
+	//   - typ: Type.
+	Seek func(ctx context.Context, offset int64, typ glib.SeekType) error // optional
+	// Tell tells the current position within the stream.
+	//
+	// The function returns the following values:
+	//
+	//   - gint64: (positive or zero) offset from the beginning of the buffer,
+	//     zero if the target is not seekable.
+	Tell func() int64 // optional
+}
+
 // Seekable: GSeekable is implemented by streams (implementations of
 // gio.InputStream or gio.OutputStream) that support seeking.
 //
@@ -37950,6 +42675,34 @@ type Seekabler interface {
 }
 
 var _ Seekabler = (*Seekable)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[SeekableOverrides](
+		GTypeSeekable,
+		initSeekableIface,
+	)
+}
+
+func initSeekableIface(giface unsafe.Pointer, overrides SeekableOverrides) {
+	iface := (*C.GSeekableIface)(giface)
+
+	if overrides.CanSeek != nil {
+		iface.can_seek = (*[0]byte)(C._gotk4_gio2_SeekableIface_can_seek)
+	}
+
+	if overrides.CanTruncate != nil {
+		iface.can_truncate = (*[0]byte)(C._gotk4_gio2_SeekableIface_can_truncate)
+	}
+
+	if overrides.Seek != nil {
+		iface.seek = (*[0]byte)(C._gotk4_gio2_SeekableIface_seek)
+	}
+
+	if overrides.Tell != nil {
+		iface.tell = (*[0]byte)(C._gotk4_gio2_SeekableIface_tell)
+	}
+
+}
 
 func wrapSeekable(obj *coreglib.Object) *Seekable {
 	return &Seekable{
@@ -38300,6 +43053,41 @@ func (seekable *Seekable) truncateFn(ctx context.Context, offset int64) error {
 	return _goerr
 }
 
+// SocketConnectableOverrides contains methods that a subclass can implement
+// for the SocketConnectable interface. Methods left nil keep the interface's
+// default implementation.
+type SocketConnectableOverrides struct {
+	// Enumerate creates a AddressEnumerator for connectable.
+	//
+	// The function returns the following values:
+	//
+	//   - socketAddressEnumerator: new AddressEnumerator.
+	Enumerate func() SocketAddressEnumeratorrer // optional
+	// ProxyEnumerate creates a AddressEnumerator for connectable that will
+	// return a Address for each of its addresses that you must connect to via a
+	// proxy.
+	//
+	// If connectable does not implement g_socket_connectable_proxy_enumerate(),
+	// this will fall back to calling g_socket_connectable_enumerate().
+	//
+	// The function returns the following values:
+	//
+	//   - socketAddressEnumerator: new AddressEnumerator.
+	ProxyEnumerate func() SocketAddressEnumeratorrer // optional
+	// String: format a Connectable as a string. This is a human-readable format
+	// for use in debugging output, and is not a stable serialization format.
+	// It is not suitable for use in user interfaces as it exposes too much
+	// information for a user.
+	//
+	// If the Connectable implementation does not support string formatting,
+	// the implementation’s type name will be returned as a fallback.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8: formatted string.
+	String func() string // optional
+}
+
 // SocketConnectable objects that describe one or more potential
 // socket endpoints implement GSocketConnectable. Callers can then use
 // gio.SocketConnectable.Enumerate() to get a gio.SocketAddressEnumerator to try
@@ -38382,6 +43170,30 @@ type SocketConnectabler interface {
 }
 
 var _ SocketConnectabler = (*SocketConnectable)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[SocketConnectableOverrides](
+		GTypeSocketConnectable,
+		initSocketConnectableIface,
+	)
+}
+
+func initSocketConnectableIface(giface unsafe.Pointer, overrides SocketConnectableOverrides) {
+	iface := (*C.GSocketConnectableIface)(giface)
+
+	if overrides.Enumerate != nil {
+		iface.enumerate = (*[0]byte)(C._gotk4_gio2_SocketConnectableIface_enumerate)
+	}
+
+	if overrides.ProxyEnumerate != nil {
+		iface.proxy_enumerate = (*[0]byte)(C._gotk4_gio2_SocketConnectableIface_proxy_enumerate)
+	}
+
+	if overrides.String != nil {
+		iface.to_string = (*[0]byte)(C._gotk4_gio2_SocketConnectableIface_to_string)
+	}
+
+}
 
 func wrapSocketConnectable(obj *coreglib.Object) *SocketConnectable {
 	return &SocketConnectable{
@@ -38614,6 +43426,32 @@ func (connectable *SocketConnectable) str() string {
 	return _utf8
 }
 
+// TLSBackendOverrides contains methods that a subclass can implement
+// for the TLSBackend interface. Methods left nil keep the interface's
+// default implementation.
+type TLSBackendOverrides struct {
+	// DefaultDatabase gets the default Database used to verify TLS connections.
+	//
+	// The function returns the following values:
+	//
+	//   - tlsDatabase: default database, which should be unreffed when done.
+	DefaultDatabase func() TLSDatabaser // optional
+	// SupportsDTLS checks if DTLS is supported. DTLS support may not be
+	// available even if TLS support is available, and vice-versa.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: whether DTLS is supported.
+	SupportsDTLS func() bool // optional
+	// SupportsTLS checks if TLS is supported; if this returns FALSE for the
+	// default Backend, it means no "real" TLS backend is available.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: whether or not TLS is supported.
+	SupportsTLS func() bool // optional
+}
+
 // TLSBackend: TLS (Transport Layer Security, aka SSL) and DTLS backend.
 // This is an internal type used to coordinate the different classes implemented
 // by a TLS backend.
@@ -38663,6 +43501,30 @@ type TLSBackender interface {
 }
 
 var _ TLSBackender = (*TLSBackend)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[TLSBackendOverrides](
+		GTypeTLSBackend,
+		initTLSBackendInterface,
+	)
+}
+
+func initTLSBackendInterface(giface unsafe.Pointer, overrides TLSBackendOverrides) {
+	iface := (*C.GTlsBackendInterface)(giface)
+
+	if overrides.DefaultDatabase != nil {
+		iface.get_default_database = (*[0]byte)(C._gotk4_gio2_TlsBackendInterface_get_default_database)
+	}
+
+	if overrides.SupportsDTLS != nil {
+		iface.supports_dtls = (*[0]byte)(C._gotk4_gio2_TlsBackendInterface_supports_dtls)
+	}
+
+	if overrides.SupportsTLS != nil {
+		iface.supports_tls = (*[0]byte)(C._gotk4_gio2_TlsBackendInterface_supports_tls)
+	}
+
+}
 
 func wrapTLSBackend(obj *coreglib.Object) *TLSBackend {
 	return &TLSBackend{
@@ -39028,6 +43890,44 @@ func TLSBackendGetDefault() *TLSBackend {
 	return _tlsBackend
 }
 
+// TLSClientConnectionOverrides contains methods that a subclass can implement
+// for the TLSClientConnection interface. Methods left nil keep the interface's
+// default implementation.
+type TLSClientConnectionOverrides struct {
+	// CopySessionState: possibly copies session state from one connection to
+	// another, for use in TLS session resumption. This is not normally needed,
+	// but may be used when the same session needs to be used between different
+	// endpoints, as is required by some protocols, such as FTP over TLS.
+	// source should have already completed a handshake and, since TLS 1.3,
+	// it should have been used to read data at least once. conn should not have
+	// completed a handshake.
+	//
+	// It is not possible to know whether a call to this function will actually
+	// do anything. Because session resumption is normally used only for
+	// performance benefit, the TLS backend might not implement this function.
+	// Even if implemented, it may not actually succeed in allowing conn to
+	// resume source's TLS session, because the server may not have sent a
+	// session resumption token to source, or it may refuse to accept the token
+	// from conn. There is no way to know whether a call to this function is
+	// actually successful.
+	//
+	// Using this function is not required to benefit from session resumption.
+	// If the TLS backend supports session resumption, the session will be
+	// resumed automatically if it is possible to do so without weakening
+	// the privacy guarantees normally provided by TLS, without need to call
+	// this function. For example, with TLS 1.3, a session ticket will be
+	// automatically copied from any ClientConnection that has previously
+	// received session tickets from the server, provided a ticket is available
+	// that has not previously been used for session resumption, since session
+	// ticket reuse would be a privacy weakness. Using this function causes the
+	// ticket to be copied without regard for privacy considerations.
+	//
+	// The function takes the following parameters:
+	//
+	//   - source: ClientConnection.
+	CopySessionState func(source TLSClientConnectioner) // optional
+}
+
 // TLSClientConnection: GTlsClientConnection is the client-side subclass of
 // gio.TLSConnection, representing a client-side TLS connection.
 //
@@ -39068,6 +43968,22 @@ type TLSClientConnectioner interface {
 }
 
 var _ TLSClientConnectioner = (*TLSClientConnection)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[TLSClientConnectionOverrides](
+		GTypeTLSClientConnection,
+		initTLSClientConnectionInterface,
+	)
+}
+
+func initTLSClientConnectionInterface(giface unsafe.Pointer, overrides TLSClientConnectionOverrides) {
+	iface := (*C.GTlsClientConnectionInterface)(giface)
+
+	if overrides.CopySessionState != nil {
+		iface.copy_session_state = (*[0]byte)(C._gotk4_gio2_TlsClientConnectionInterface_copy_session_state)
+	}
+
+}
 
 func wrapTLSClientConnection(obj *coreglib.Object) *TLSClientConnection {
 	return &TLSClientConnection{
@@ -39361,8 +44277,10 @@ func NewTLSClientConnection(baseIoStream IOStreamer, serverIdentity SocketConnec
 	return _tlsClientConnection, _goerr
 }
 
-// TLSFileDatabaseOverrider contains methods that are overridable.
-type TLSFileDatabaseOverrider interface {
+// TLSFileDatabaseOverrides contains methods that a subclass can implement
+// for the TLSFileDatabase interface. Methods left nil keep the interface's
+// default implementation.
+type TLSFileDatabaseOverrides struct {
 }
 
 // TLSFileDatabase: GTlsFileDatabase is implemented by gio.TLSDatabase objects
@@ -39389,7 +44307,14 @@ type TLSFileDatabaser interface {
 
 var _ TLSFileDatabaser = (*TLSFileDatabase)(nil)
 
-func ifaceInitTLSFileDatabaser(gifacePtr, data C.gpointer) {
+func init() {
+	coreglib.RegisterInterfaceInfo[TLSFileDatabaseOverrides](
+		GTypeTLSFileDatabase,
+		initTLSFileDatabaseInterface,
+	)
+}
+
+func initTLSFileDatabaseInterface(giface unsafe.Pointer, overrides TLSFileDatabaseOverrides) {
 }
 
 func wrapTLSFileDatabase(obj *coreglib.Object) *TLSFileDatabase {
@@ -39447,8 +44372,10 @@ func NewTLSFileDatabase(anchors string) (*TLSFileDatabase, error) {
 	return _tlsFileDatabase, _goerr
 }
 
-// TLSServerConnectionOverrider contains methods that are overridable.
-type TLSServerConnectionOverrider interface {
+// TLSServerConnectionOverrides contains methods that a subclass can implement
+// for the TLSServerConnection interface. Methods left nil keep the interface's
+// default implementation.
+type TLSServerConnectionOverrides struct {
 }
 
 // TLSServerConnection: GTlsServerConnection is the server-side subclass of
@@ -39474,7 +44401,14 @@ type TLSServerConnectioner interface {
 
 var _ TLSServerConnectioner = (*TLSServerConnection)(nil)
 
-func ifaceInitTLSServerConnectioner(gifacePtr, data C.gpointer) {
+func init() {
+	coreglib.RegisterInterfaceInfo[TLSServerConnectionOverrides](
+		GTypeTLSServerConnection,
+		initTLSServerConnectionInterface,
+	)
+}
+
+func initTLSServerConnectionInterface(giface unsafe.Pointer, overrides TLSServerConnectionOverrides) {
 }
 
 func wrapTLSServerConnection(obj *coreglib.Object) *TLSServerConnection {
@@ -39539,6 +44473,163 @@ func NewTLSServerConnection(baseIoStream IOStreamer, certificate TLSCertificater
 	}
 
 	return _tlsServerConnection, _goerr
+}
+
+// VolumeOverrides contains methods that a subclass can implement
+// for the Volume interface. Methods left nil keep the interface's
+// default implementation.
+type VolumeOverrides struct {
+	// CanEject checks if a volume can be ejected.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if the volume can be ejected. FALSE otherwise.
+	CanEject func() bool // optional
+	// CanMount checks if a volume can be mounted.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if the volume can be mounted. FALSE otherwise.
+	CanMount func() bool // optional
+	// Changed signal that is emitted when the volume's state has changed.
+	Changed func() // optional
+	// EjectFinish finishes ejecting a volume. If any errors occurred during
+	// the operation, error will be set to contain the errors and FALSE will be
+	// returned.
+	//
+	// Deprecated: Use g_volume_eject_with_operation_finish() instead.
+	//
+	// The function takes the following parameters:
+	//
+	//   - result: Result.
+	EjectFinish func(result AsyncResulter) error // optional
+	// EjectWithOperationFinish finishes ejecting a volume. If any errors
+	// occurred during the operation, error will be set to contain the errors
+	// and FALSE will be returned.
+	//
+	// The function takes the following parameters:
+	//
+	//   - result: Result.
+	EjectWithOperationFinish func(result AsyncResulter) error // optional
+	// EnumerateIdentifiers gets the kinds of identifiers (#volume-identifiers)
+	// that volume has. Use g_volume_get_identifier() to obtain the identifiers
+	// themselves.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8s: NULL-terminated array of strings containing kinds of
+	//     identifiers. Use g_strfreev() to free.
+	EnumerateIdentifiers func() []string // optional
+	// ActivationRoot gets the activation root for a #GVolume if it is known
+	// ahead of mount time. Returns NULL otherwise. If not NULL and if volume
+	// is mounted, then the result of g_mount_get_root() on the #GMount object
+	// obtained from g_volume_get_mount() will always either be equal or a
+	// prefix of what this function returns. In other words, in code
+	//
+	//	(g_file_has_prefix (volume_activation_root, mount_root) ||
+	//	 g_file_equal (volume_activation_root, mount_root))
+	//
+	// will always be TRUE.
+	//
+	// Activation roots are typically used in Monitor implementations to find
+	// the underlying mount to shadow, see g_mount_is_shadowed() for more
+	// details.
+	//
+	// The function returns the following values:
+	//
+	//   - file (optional): activation root of volume or NULL. Use
+	//     g_object_unref() to free.
+	ActivationRoot func() *File // optional
+	// Drive gets the drive for the volume.
+	//
+	// The function returns the following values:
+	//
+	//   - drive (optional) or NULL if volume is not associated with a drive.
+	//     The returned object should be unreffed with g_object_unref() when no
+	//     longer needed.
+	Drive func() *Drive // optional
+	// Icon gets the icon for volume.
+	//
+	// The function returns the following values:
+	//
+	//   - icon: #GIcon. The returned object should be unreffed with
+	//     g_object_unref() when no longer needed.
+	Icon func() *Icon // optional
+	// Identifier gets the identifier of the given kind for volume. See the
+	// introduction (#volume-identifiers) for more information about volume
+	// identifiers.
+	//
+	// The function takes the following parameters:
+	//
+	//   - kind of identifier to return.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8 (optional): newly allocated string containing the requested
+	//     identifier, or NULL if the #GVolume doesn't have this kind of
+	//     identifier.
+	Identifier func(kind string) string // optional
+	// Mount gets the mount for the volume.
+	//
+	// The function returns the following values:
+	//
+	//   - mount (optional) or NULL if volume isn't mounted. The returned object
+	//     should be unreffed with g_object_unref() when no longer needed.
+	Mount func() *Mount // optional
+	// Name gets the name of volume.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8: name for the given volume. The returned string should be freed
+	//     with g_free() when no longer needed.
+	Name func() string // optional
+	// SortKey gets the sort key for volume, if any.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8 (optional): sorting key for volume or NULL if no such key is
+	//     available.
+	SortKey func() string // optional
+	// SymbolicIcon gets the symbolic icon for volume.
+	//
+	// The function returns the following values:
+	//
+	//   - icon: #GIcon. The returned object should be unreffed with
+	//     g_object_unref() when no longer needed.
+	SymbolicIcon func() *Icon // optional
+	// UUID gets the UUID for the volume. The reference is typically based on
+	// the file system UUID for the volume in question and should be considered
+	// an opaque string. Returns NULL if there is no UUID available.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8 (optional): UUID for volume or NULL if no UUID can be computed.
+	//     The returned string should be freed with g_free() when no longer
+	//     needed.
+	UUID func() string // optional
+	// MountFinish finishes mounting a volume. If any errors occurred during
+	// the operation, error will be set to contain the errors and FALSE will be
+	// returned.
+	//
+	// If the mount operation succeeded, g_volume_get_mount() on volume is
+	// guaranteed to return the mount right after calling this function;
+	// there's no need to listen for the 'mount-added' signal on Monitor.
+	//
+	// The function takes the following parameters:
+	//
+	//   - result: Result.
+	MountFinish func(result AsyncResulter) error // optional
+	// Removed: removed signal that is emitted when the #GVolume have been
+	// removed. If the recipient is holding references to the object they should
+	// release them so the object can be finalized.
+	Removed func() // optional
+	// ShouldAutomount returns whether the volume should be automatically
+	// mounted.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if the volume should be automatically mounted.
+	ShouldAutomount func() bool // optional
 }
 
 // Volume: GVolume interface represents user-visible objects that can be
@@ -39650,6 +44741,90 @@ type Volumer interface {
 }
 
 var _ Volumer = (*Volume)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[VolumeOverrides](
+		GTypeVolume,
+		initVolumeIface,
+	)
+}
+
+func initVolumeIface(giface unsafe.Pointer, overrides VolumeOverrides) {
+	iface := (*C.GVolumeIface)(giface)
+
+	if overrides.CanEject != nil {
+		iface.can_eject = (*[0]byte)(C._gotk4_gio2_VolumeIface_can_eject)
+	}
+
+	if overrides.CanMount != nil {
+		iface.can_mount = (*[0]byte)(C._gotk4_gio2_VolumeIface_can_mount)
+	}
+
+	if overrides.Changed != nil {
+		iface.changed = (*[0]byte)(C._gotk4_gio2_VolumeIface_changed)
+	}
+
+	if overrides.EjectFinish != nil {
+		iface.eject_finish = (*[0]byte)(C._gotk4_gio2_VolumeIface_eject_finish)
+	}
+
+	if overrides.EjectWithOperationFinish != nil {
+		iface.eject_with_operation_finish = (*[0]byte)(C._gotk4_gio2_VolumeIface_eject_with_operation_finish)
+	}
+
+	if overrides.EnumerateIdentifiers != nil {
+		iface.enumerate_identifiers = (*[0]byte)(C._gotk4_gio2_VolumeIface_enumerate_identifiers)
+	}
+
+	if overrides.ActivationRoot != nil {
+		iface.get_activation_root = (*[0]byte)(C._gotk4_gio2_VolumeIface_get_activation_root)
+	}
+
+	if overrides.Drive != nil {
+		iface.get_drive = (*[0]byte)(C._gotk4_gio2_VolumeIface_get_drive)
+	}
+
+	if overrides.Icon != nil {
+		iface.get_icon = (*[0]byte)(C._gotk4_gio2_VolumeIface_get_icon)
+	}
+
+	if overrides.Identifier != nil {
+		iface.get_identifier = (*[0]byte)(C._gotk4_gio2_VolumeIface_get_identifier)
+	}
+
+	if overrides.Mount != nil {
+		iface.get_mount = (*[0]byte)(C._gotk4_gio2_VolumeIface_get_mount)
+	}
+
+	if overrides.Name != nil {
+		iface.get_name = (*[0]byte)(C._gotk4_gio2_VolumeIface_get_name)
+	}
+
+	if overrides.SortKey != nil {
+		iface.get_sort_key = (*[0]byte)(C._gotk4_gio2_VolumeIface_get_sort_key)
+	}
+
+	if overrides.SymbolicIcon != nil {
+		iface.get_symbolic_icon = (*[0]byte)(C._gotk4_gio2_VolumeIface_get_symbolic_icon)
+	}
+
+	if overrides.UUID != nil {
+		iface.get_uuid = (*[0]byte)(C._gotk4_gio2_VolumeIface_get_uuid)
+	}
+
+	if overrides.MountFinish != nil {
+		iface.mount_finish = (*[0]byte)(C._gotk4_gio2_VolumeIface_mount_finish)
+	}
+
+	if overrides.Removed != nil {
+		iface.removed = (*[0]byte)(C._gotk4_gio2_VolumeIface_removed)
+	}
+
+	if overrides.ShouldAutomount != nil {
+		iface.should_automount = (*[0]byte)(C._gotk4_gio2_VolumeIface_should_automount)
+	}
+
+}
 
 func wrapVolume(obj *coreglib.Object) *Volume {
 	return &Volume{

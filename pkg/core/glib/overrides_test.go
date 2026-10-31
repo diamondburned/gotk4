@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
@@ -133,4 +134,38 @@ func BenchmarkSubclassLifecycle(b *testing.B) {
 			glib.Destroy(obj)
 		}
 	})
+}
+
+type sizedPaintable struct {
+	glib.Object
+	width int
+}
+
+// TestSubclassInterface verifies that subclasses can implement interfaces, and
+// that unimplemented methods keep the interface's default implementation.
+func TestSubclassInterface(t *testing.T) {
+	subclass := glib.RegisterSubclass[*sizedPaintable](
+		glib.WithOverrides(func(p *sizedPaintable) gdk.PaintableOverrides {
+			return gdk.PaintableOverrides{
+				IntrinsicWidth: func() int { return p.width },
+			}
+		}),
+	)
+
+	if !subclass.Type().IsA(gdk.GTypePaintable) {
+		t.Fatal("subclass does not implement GdkPaintable")
+	}
+
+	obj := subclass.New()
+	obj.width = 42
+
+	paintable := &gdk.Paintable{Object: &obj.Object}
+	if w := paintable.IntrinsicWidth(); w != 42 {
+		t.Errorf("IntrinsicWidth = %d, want 42", w)
+	}
+	if h := paintable.IntrinsicHeight(); h != 0 {
+		t.Errorf("IntrinsicHeight = %d, want the default 0", h)
+	}
+
+	glib.Destroy(obj)
 }

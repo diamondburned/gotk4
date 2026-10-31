@@ -3,15 +3,18 @@
 package atk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
 	"github.com/diamondburned/gotk4/pkg/core/gextras"
 	coreglib "github.com/diamondburned/gotk4/pkg/core/glib"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #include <stdlib.h>
 // #include <atk/atk.h>
+// #include <glib-object.h>
 import "C"
 
 //export _gotk4_atk1_Function
@@ -60,6 +63,518 @@ func _gotk4_atk1_KeySnoopFunc(arg1 *C.AtkKeyEventStruct, arg2 C.gpointer) (cret 
 	return cret
 }
 
+//export _gotk4_atk1_ActionIface_do_action
+func _gotk4_atk1_ActionIface_do_action(arg0 *C.AtkAction, arg1 C.gint) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ActionOverrides](instance0)
+	if overrides.DoAction == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ActionOverrides.DoAction, got none")
+	}
+
+	var _i int // out
+
+	_i = int(arg1)
+
+	ok := overrides.DoAction(_i)
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_ActionIface_get_description
+func _gotk4_atk1_ActionIface_get_description(arg0 *C.AtkAction, arg1 C.gint) (cret *C.gchar) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ActionOverrides](instance0)
+	if overrides.Description == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ActionOverrides.Description, got none")
+	}
+
+	var _i int // out
+
+	_i = int(arg1)
+
+	utf8 := overrides.Description(_i)
+
+	var _ string
+
+	if utf8 != "" {
+		cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+		defer C.free(unsafe.Pointer(cret))
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_ActionIface_get_keybinding
+func _gotk4_atk1_ActionIface_get_keybinding(arg0 *C.AtkAction, arg1 C.gint) (cret *C.gchar) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ActionOverrides](instance0)
+	if overrides.Keybinding == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ActionOverrides.Keybinding, got none")
+	}
+
+	var _i int // out
+
+	_i = int(arg1)
+
+	utf8 := overrides.Keybinding(_i)
+
+	var _ string
+
+	if utf8 != "" {
+		cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+		defer C.free(unsafe.Pointer(cret))
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_ActionIface_get_localized_name
+func _gotk4_atk1_ActionIface_get_localized_name(arg0 *C.AtkAction, arg1 C.gint) (cret *C.gchar) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ActionOverrides](instance0)
+	if overrides.LocalizedName == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ActionOverrides.LocalizedName, got none")
+	}
+
+	var _i int // out
+
+	_i = int(arg1)
+
+	utf8 := overrides.LocalizedName(_i)
+
+	var _ string
+
+	if utf8 != "" {
+		cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+		defer C.free(unsafe.Pointer(cret))
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_ActionIface_get_n_actions
+func _gotk4_atk1_ActionIface_get_n_actions(arg0 *C.AtkAction) (cret C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ActionOverrides](instance0)
+	if overrides.NActions == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ActionOverrides.NActions, got none")
+	}
+
+	gint := overrides.NActions()
+
+	var _ int
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_ActionIface_get_name
+func _gotk4_atk1_ActionIface_get_name(arg0 *C.AtkAction, arg1 C.gint) (cret *C.gchar) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ActionOverrides](instance0)
+	if overrides.Name == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ActionOverrides.Name, got none")
+	}
+
+	var _i int // out
+
+	_i = int(arg1)
+
+	utf8 := overrides.Name(_i)
+
+	var _ string
+
+	if utf8 != "" {
+		cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+		defer C.free(unsafe.Pointer(cret))
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_ActionIface_set_description
+func _gotk4_atk1_ActionIface_set_description(arg0 *C.AtkAction, arg1 C.gint, arg2 *C.gchar) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ActionOverrides](instance0)
+	if overrides.SetDescription == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ActionOverrides.SetDescription, got none")
+	}
+
+	var _i int       // out
+	var _desc string // out
+
+	_i = int(arg1)
+	_desc = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+
+	ok := overrides.SetDescription(_i, _desc)
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_ComponentIface_bounds_changed
+func _gotk4_atk1_ComponentIface_bounds_changed(arg0 *C.AtkComponent, arg1 *C.AtkRectangle) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ComponentOverrides](instance0)
+	if overrides.BoundsChanged == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ComponentOverrides.BoundsChanged, got none")
+	}
+
+	var _bounds *Rectangle // out
+
+	_bounds = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+
+	overrides.BoundsChanged(_bounds)
+}
+
+//export _gotk4_atk1_ComponentIface_contains
+func _gotk4_atk1_ComponentIface_contains(arg0 *C.AtkComponent, arg1 C.gint, arg2 C.gint, arg3 C.AtkCoordType) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ComponentOverrides](instance0)
+	if overrides.Contains == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ComponentOverrides.Contains, got none")
+	}
+
+	var _x int               // out
+	var _y int               // out
+	var _coordType CoordType // out
+
+	_x = int(arg1)
+	_y = int(arg2)
+	_coordType = CoordType(arg3)
+
+	ok := overrides.Contains(_x, _y, _coordType)
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_ComponentIface_get_alpha
+func _gotk4_atk1_ComponentIface_get_alpha(arg0 *C.AtkComponent) (cret C.gdouble) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ComponentOverrides](instance0)
+	if overrides.Alpha == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ComponentOverrides.Alpha, got none")
+	}
+
+	gdouble := overrides.Alpha()
+
+	var _ float64
+
+	cret = C.gdouble(gdouble)
+
+	return cret
+}
+
+//export _gotk4_atk1_ComponentIface_get_extents
+func _gotk4_atk1_ComponentIface_get_extents(arg0 *C.AtkComponent, arg1 *C.gint, arg2 *C.gint, arg3 *C.gint, arg4 *C.gint, arg5 C.AtkCoordType) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ComponentOverrides](instance0)
+	if overrides.Extents == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ComponentOverrides.Extents, got none")
+	}
+
+	var _coordType CoordType // out
+
+	_coordType = CoordType(arg5)
+
+	x, y, width, height := overrides.Extents(_coordType)
+
+	var _ int
+	var _ int
+	var _ int
+	var _ int
+
+	*arg1 = C.gint(x)
+	*arg2 = C.gint(y)
+	*arg3 = C.gint(width)
+	*arg4 = C.gint(height)
+}
+
+//export _gotk4_atk1_ComponentIface_get_layer
+func _gotk4_atk1_ComponentIface_get_layer(arg0 *C.AtkComponent) (cret C.AtkLayer) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ComponentOverrides](instance0)
+	if overrides.Layer == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ComponentOverrides.Layer, got none")
+	}
+
+	layer := overrides.Layer()
+
+	var _ Layer
+
+	cret = C.AtkLayer(layer)
+
+	return cret
+}
+
+//export _gotk4_atk1_ComponentIface_get_mdi_zorder
+func _gotk4_atk1_ComponentIface_get_mdi_zorder(arg0 *C.AtkComponent) (cret C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ComponentOverrides](instance0)
+	if overrides.MDIZOrder == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ComponentOverrides.MDIZOrder, got none")
+	}
+
+	gint := overrides.MDIZOrder()
+
+	var _ int
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_ComponentIface_get_position
+func _gotk4_atk1_ComponentIface_get_position(arg0 *C.AtkComponent, arg1 *C.gint, arg2 *C.gint, arg3 C.AtkCoordType) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ComponentOverrides](instance0)
+	if overrides.Position == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ComponentOverrides.Position, got none")
+	}
+
+	var _coordType CoordType // out
+
+	_coordType = CoordType(arg3)
+
+	x, y := overrides.Position(_coordType)
+
+	var _ int
+	var _ int
+
+	*arg1 = C.gint(x)
+	*arg2 = C.gint(y)
+}
+
+//export _gotk4_atk1_ComponentIface_get_size
+func _gotk4_atk1_ComponentIface_get_size(arg0 *C.AtkComponent, arg1 *C.gint, arg2 *C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ComponentOverrides](instance0)
+	if overrides.Size == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ComponentOverrides.Size, got none")
+	}
+
+	width, height := overrides.Size()
+
+	var _ int
+	var _ int
+
+	*arg1 = C.gint(width)
+	*arg2 = C.gint(height)
+}
+
+//export _gotk4_atk1_ComponentIface_grab_focus
+func _gotk4_atk1_ComponentIface_grab_focus(arg0 *C.AtkComponent) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ComponentOverrides](instance0)
+	if overrides.GrabFocus == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ComponentOverrides.GrabFocus, got none")
+	}
+
+	ok := overrides.GrabFocus()
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_ComponentIface_ref_accessible_at_point
+func _gotk4_atk1_ComponentIface_ref_accessible_at_point(arg0 *C.AtkComponent, arg1 C.gint, arg2 C.gint, arg3 C.AtkCoordType) (cret *C.AtkObject) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ComponentOverrides](instance0)
+	if overrides.RefAccessibleAtPoint == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ComponentOverrides.RefAccessibleAtPoint, got none")
+	}
+
+	var _x int               // out
+	var _y int               // out
+	var _coordType CoordType // out
+
+	_x = int(arg1)
+	_y = int(arg2)
+	_coordType = CoordType(arg3)
+
+	object := overrides.RefAccessibleAtPoint(_x, _y, _coordType)
+
+	var _ *AtkObject
+
+	if object != nil {
+		cret = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+		C.g_object_ref(C.gpointer(coreglib.InternObject(object).Native()))
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_ComponentIface_remove_focus_handler
+func _gotk4_atk1_ComponentIface_remove_focus_handler(arg0 *C.AtkComponent, arg1 C.guint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ComponentOverrides](instance0)
+	if overrides.RemoveFocusHandler == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ComponentOverrides.RemoveFocusHandler, got none")
+	}
+
+	var _handlerId uint // out
+
+	_handlerId = uint(arg1)
+
+	overrides.RemoveFocusHandler(_handlerId)
+}
+
+//export _gotk4_atk1_ComponentIface_scroll_to
+func _gotk4_atk1_ComponentIface_scroll_to(arg0 *C.AtkComponent, arg1 C.AtkScrollType) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ComponentOverrides](instance0)
+	if overrides.ScrollTo == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ComponentOverrides.ScrollTo, got none")
+	}
+
+	var _typ ScrollType // out
+
+	_typ = ScrollType(arg1)
+
+	ok := overrides.ScrollTo(_typ)
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_ComponentIface_scroll_to_point
+func _gotk4_atk1_ComponentIface_scroll_to_point(arg0 *C.AtkComponent, arg1 C.AtkCoordType, arg2 C.gint, arg3 C.gint) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ComponentOverrides](instance0)
+	if overrides.ScrollToPoint == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ComponentOverrides.ScrollToPoint, got none")
+	}
+
+	var _coords CoordType // out
+	var _x int            // out
+	var _y int            // out
+
+	_coords = CoordType(arg1)
+	_x = int(arg2)
+	_y = int(arg3)
+
+	ok := overrides.ScrollToPoint(_coords, _x, _y)
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_ComponentIface_set_extents
+func _gotk4_atk1_ComponentIface_set_extents(arg0 *C.AtkComponent, arg1 C.gint, arg2 C.gint, arg3 C.gint, arg4 C.gint, arg5 C.AtkCoordType) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ComponentOverrides](instance0)
+	if overrides.SetExtents == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ComponentOverrides.SetExtents, got none")
+	}
+
+	var _x int               // out
+	var _y int               // out
+	var _width int           // out
+	var _height int          // out
+	var _coordType CoordType // out
+
+	_x = int(arg1)
+	_y = int(arg2)
+	_width = int(arg3)
+	_height = int(arg4)
+	_coordType = CoordType(arg5)
+
+	ok := overrides.SetExtents(_x, _y, _width, _height, _coordType)
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_ComponentIface_set_position
+func _gotk4_atk1_ComponentIface_set_position(arg0 *C.AtkComponent, arg1 C.gint, arg2 C.gint, arg3 C.AtkCoordType) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ComponentOverrides](instance0)
+	if overrides.SetPosition == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ComponentOverrides.SetPosition, got none")
+	}
+
+	var _x int               // out
+	var _y int               // out
+	var _coordType CoordType // out
+
+	_x = int(arg1)
+	_y = int(arg2)
+	_coordType = CoordType(arg3)
+
+	ok := overrides.SetPosition(_x, _y, _coordType)
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_ComponentIface_set_size
+func _gotk4_atk1_ComponentIface_set_size(arg0 *C.AtkComponent, arg1 C.gint, arg2 C.gint) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ComponentOverrides](instance0)
+	if overrides.SetSize == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ComponentOverrides.SetSize, got none")
+	}
+
+	var _width int  // out
+	var _height int // out
+
+	_width = int(arg1)
+	_height = int(arg2)
+
+	ok := overrides.SetSize(_width, _height)
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
 //export _gotk4_atk1_Component_ConnectBoundsChanged
 func _gotk4_atk1_Component_ConnectBoundsChanged(arg0 C.gpointer, arg1 *C.AtkRectangle, arg2 C.guintptr) {
 	var f func(arg1 *Rectangle)
@@ -78,6 +593,75 @@ func _gotk4_atk1_Component_ConnectBoundsChanged(arg0 C.gpointer, arg1 *C.AtkRect
 	_arg1 = (*Rectangle)(gextras.NewStructNative(unsafe.Pointer(arg1)))
 
 	f(_arg1)
+}
+
+//export _gotk4_atk1_DocumentIface_get_current_page_number
+func _gotk4_atk1_DocumentIface_get_current_page_number(arg0 *C.AtkDocument) (cret C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[DocumentOverrides](instance0)
+	if overrides.CurrentPageNumber == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected DocumentOverrides.CurrentPageNumber, got none")
+	}
+
+	gint := overrides.CurrentPageNumber()
+
+	var _ int
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_DocumentIface_get_document
+func _gotk4_atk1_DocumentIface_get_document(arg0 *C.AtkDocument) (cret C.gpointer) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[DocumentOverrides](instance0)
+	if overrides.Document == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected DocumentOverrides.Document, got none")
+	}
+
+	gpointer := overrides.Document()
+
+	var _ unsafe.Pointer
+
+	cret = (C.gpointer)(unsafe.Pointer(gpointer))
+
+	return cret
+}
+
+//export _gotk4_atk1_DocumentIface_get_document_type
+func _gotk4_atk1_DocumentIface_get_document_type(arg0 *C.AtkDocument) (cret *C.gchar) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[DocumentOverrides](instance0)
+	if overrides.DocumentType == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected DocumentOverrides.DocumentType, got none")
+	}
+
+	utf8 := overrides.DocumentType()
+
+	var _ string
+
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+	defer C.free(unsafe.Pointer(cret))
+
+	return cret
+}
+
+//export _gotk4_atk1_DocumentIface_get_page_count
+func _gotk4_atk1_DocumentIface_get_page_count(arg0 *C.AtkDocument) (cret C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[DocumentOverrides](instance0)
+	if overrides.PageCount == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected DocumentOverrides.PageCount, got none")
+	}
+
+	gint := overrides.PageCount()
+
+	var _ int
+
+	cret = C.gint(gint)
+
+	return cret
 }
 
 //export _gotk4_atk1_Document_ConnectDocumentAttributeChanged
@@ -170,6 +754,179 @@ func _gotk4_atk1_Document_ConnectReload(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
+//export _gotk4_atk1_EditableTextIface_copy_text
+func _gotk4_atk1_EditableTextIface_copy_text(arg0 *C.AtkEditableText, arg1 C.gint, arg2 C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[EditableTextOverrides](instance0)
+	if overrides.CopyText == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected EditableTextOverrides.CopyText, got none")
+	}
+
+	var _startPos int // out
+	var _endPos int   // out
+
+	_startPos = int(arg1)
+	_endPos = int(arg2)
+
+	overrides.CopyText(_startPos, _endPos)
+}
+
+//export _gotk4_atk1_EditableTextIface_cut_text
+func _gotk4_atk1_EditableTextIface_cut_text(arg0 *C.AtkEditableText, arg1 C.gint, arg2 C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[EditableTextOverrides](instance0)
+	if overrides.CutText == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected EditableTextOverrides.CutText, got none")
+	}
+
+	var _startPos int // out
+	var _endPos int   // out
+
+	_startPos = int(arg1)
+	_endPos = int(arg2)
+
+	overrides.CutText(_startPos, _endPos)
+}
+
+//export _gotk4_atk1_EditableTextIface_delete_text
+func _gotk4_atk1_EditableTextIface_delete_text(arg0 *C.AtkEditableText, arg1 C.gint, arg2 C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[EditableTextOverrides](instance0)
+	if overrides.DeleteText == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected EditableTextOverrides.DeleteText, got none")
+	}
+
+	var _startPos int // out
+	var _endPos int   // out
+
+	_startPos = int(arg1)
+	_endPos = int(arg2)
+
+	overrides.DeleteText(_startPos, _endPos)
+}
+
+//export _gotk4_atk1_EditableTextIface_paste_text
+func _gotk4_atk1_EditableTextIface_paste_text(arg0 *C.AtkEditableText, arg1 C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[EditableTextOverrides](instance0)
+	if overrides.PasteText == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected EditableTextOverrides.PasteText, got none")
+	}
+
+	var _position int // out
+
+	_position = int(arg1)
+
+	overrides.PasteText(_position)
+}
+
+//export _gotk4_atk1_EditableTextIface_set_text_contents
+func _gotk4_atk1_EditableTextIface_set_text_contents(arg0 *C.AtkEditableText, arg1 *C.gchar) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[EditableTextOverrides](instance0)
+	if overrides.SetTextContents == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected EditableTextOverrides.SetTextContents, got none")
+	}
+
+	var _str string // out
+
+	_str = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	overrides.SetTextContents(_str)
+}
+
+//export _gotk4_atk1_HyperlinkImplIface_get_hyperlink
+func _gotk4_atk1_HyperlinkImplIface_get_hyperlink(arg0 *C.AtkHyperlinkImpl) (cret *C.AtkHyperlink) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[HyperlinkImplOverrides](instance0)
+	if overrides.Hyperlink == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected HyperlinkImplOverrides.Hyperlink, got none")
+	}
+
+	hyperlink := overrides.Hyperlink()
+
+	var _ *Hyperlink
+
+	cret = (*C.AtkHyperlink)(unsafe.Pointer(coreglib.InternObject(hyperlink).Native()))
+	C.g_object_ref(C.gpointer(coreglib.InternObject(hyperlink).Native()))
+
+	return cret
+}
+
+//export _gotk4_atk1_HypertextIface_get_link
+func _gotk4_atk1_HypertextIface_get_link(arg0 *C.AtkHypertext, arg1 C.gint) (cret *C.AtkHyperlink) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[HypertextOverrides](instance0)
+	if overrides.Link == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected HypertextOverrides.Link, got none")
+	}
+
+	var _linkIndex int // out
+
+	_linkIndex = int(arg1)
+
+	hyperlink := overrides.Link(_linkIndex)
+
+	var _ *Hyperlink
+
+	cret = (*C.AtkHyperlink)(unsafe.Pointer(coreglib.InternObject(hyperlink).Native()))
+
+	return cret
+}
+
+//export _gotk4_atk1_HypertextIface_get_link_index
+func _gotk4_atk1_HypertextIface_get_link_index(arg0 *C.AtkHypertext, arg1 C.gint) (cret C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[HypertextOverrides](instance0)
+	if overrides.LinkIndex == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected HypertextOverrides.LinkIndex, got none")
+	}
+
+	var _charIndex int // out
+
+	_charIndex = int(arg1)
+
+	gint := overrides.LinkIndex(_charIndex)
+
+	var _ int
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_HypertextIface_get_n_links
+func _gotk4_atk1_HypertextIface_get_n_links(arg0 *C.AtkHypertext) (cret C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[HypertextOverrides](instance0)
+	if overrides.NLinks == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected HypertextOverrides.NLinks, got none")
+	}
+
+	gint := overrides.NLinks()
+
+	var _ int
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_HypertextIface_link_selected
+func _gotk4_atk1_HypertextIface_link_selected(arg0 *C.AtkHypertext, arg1 C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[HypertextOverrides](instance0)
+	if overrides.LinkSelected == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected HypertextOverrides.LinkSelected, got none")
+	}
+
+	var _linkIndex int // out
+
+	_linkIndex = int(arg1)
+
+	overrides.LinkSelected(_linkIndex)
+}
+
 //export _gotk4_atk1_Hypertext_ConnectLinkSelected
 func _gotk4_atk1_Hypertext_ConnectLinkSelected(arg0 C.gpointer, arg1 C.gint, arg2 C.guintptr) {
 	var f func(arg1 int)
@@ -190,6 +947,264 @@ func _gotk4_atk1_Hypertext_ConnectLinkSelected(arg0 C.gpointer, arg1 C.gint, arg
 	f(_arg1)
 }
 
+//export _gotk4_atk1_ImageIface_get_image_description
+func _gotk4_atk1_ImageIface_get_image_description(arg0 *C.AtkImage) (cret *C.gchar) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ImageOverrides](instance0)
+	if overrides.ImageDescription == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ImageOverrides.ImageDescription, got none")
+	}
+
+	utf8 := overrides.ImageDescription()
+
+	var _ string
+
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+	defer C.free(unsafe.Pointer(cret))
+
+	return cret
+}
+
+//export _gotk4_atk1_ImageIface_get_image_locale
+func _gotk4_atk1_ImageIface_get_image_locale(arg0 *C.AtkImage) (cret *C.gchar) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ImageOverrides](instance0)
+	if overrides.ImageLocale == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ImageOverrides.ImageLocale, got none")
+	}
+
+	utf8 := overrides.ImageLocale()
+
+	var _ string
+
+	if utf8 != "" {
+		cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+		defer C.free(unsafe.Pointer(cret))
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_ImageIface_get_image_position
+func _gotk4_atk1_ImageIface_get_image_position(arg0 *C.AtkImage, arg1 *C.gint, arg2 *C.gint, arg3 C.AtkCoordType) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ImageOverrides](instance0)
+	if overrides.ImagePosition == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ImageOverrides.ImagePosition, got none")
+	}
+
+	var _coordType CoordType // out
+
+	_coordType = CoordType(arg3)
+
+	x, y := overrides.ImagePosition(_coordType)
+
+	var _ int
+	var _ int
+
+	*arg1 = C.gint(x)
+	*arg2 = C.gint(y)
+}
+
+//export _gotk4_atk1_ImageIface_get_image_size
+func _gotk4_atk1_ImageIface_get_image_size(arg0 *C.AtkImage, arg1 *C.gint, arg2 *C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ImageOverrides](instance0)
+	if overrides.ImageSize == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ImageOverrides.ImageSize, got none")
+	}
+
+	width, height := overrides.ImageSize()
+
+	var _ int
+	var _ int
+
+	*arg1 = C.gint(width)
+	*arg2 = C.gint(height)
+}
+
+//export _gotk4_atk1_ImageIface_set_image_description
+func _gotk4_atk1_ImageIface_set_image_description(arg0 *C.AtkImage, arg1 *C.gchar) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ImageOverrides](instance0)
+	if overrides.SetImageDescription == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ImageOverrides.SetImageDescription, got none")
+	}
+
+	var _description string // out
+
+	_description = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	ok := overrides.SetImageDescription(_description)
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_SelectionIface_add_selection
+func _gotk4_atk1_SelectionIface_add_selection(arg0 *C.AtkSelection, arg1 C.gint) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[SelectionOverrides](instance0)
+	if overrides.AddSelection == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected SelectionOverrides.AddSelection, got none")
+	}
+
+	var _i int // out
+
+	_i = int(arg1)
+
+	ok := overrides.AddSelection(_i)
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_SelectionIface_clear_selection
+func _gotk4_atk1_SelectionIface_clear_selection(arg0 *C.AtkSelection) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[SelectionOverrides](instance0)
+	if overrides.ClearSelection == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected SelectionOverrides.ClearSelection, got none")
+	}
+
+	ok := overrides.ClearSelection()
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_SelectionIface_get_selection_count
+func _gotk4_atk1_SelectionIface_get_selection_count(arg0 *C.AtkSelection) (cret C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[SelectionOverrides](instance0)
+	if overrides.SelectionCount == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected SelectionOverrides.SelectionCount, got none")
+	}
+
+	gint := overrides.SelectionCount()
+
+	var _ int
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_SelectionIface_is_child_selected
+func _gotk4_atk1_SelectionIface_is_child_selected(arg0 *C.AtkSelection, arg1 C.gint) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[SelectionOverrides](instance0)
+	if overrides.IsChildSelected == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected SelectionOverrides.IsChildSelected, got none")
+	}
+
+	var _i int // out
+
+	_i = int(arg1)
+
+	ok := overrides.IsChildSelected(_i)
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_SelectionIface_ref_selection
+func _gotk4_atk1_SelectionIface_ref_selection(arg0 *C.AtkSelection, arg1 C.gint) (cret *C.AtkObject) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[SelectionOverrides](instance0)
+	if overrides.RefSelection == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected SelectionOverrides.RefSelection, got none")
+	}
+
+	var _i int // out
+
+	_i = int(arg1)
+
+	object := overrides.RefSelection(_i)
+
+	var _ *AtkObject
+
+	if object != nil {
+		cret = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+		C.g_object_ref(C.gpointer(coreglib.InternObject(object).Native()))
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_SelectionIface_remove_selection
+func _gotk4_atk1_SelectionIface_remove_selection(arg0 *C.AtkSelection, arg1 C.gint) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[SelectionOverrides](instance0)
+	if overrides.RemoveSelection == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected SelectionOverrides.RemoveSelection, got none")
+	}
+
+	var _i int // out
+
+	_i = int(arg1)
+
+	ok := overrides.RemoveSelection(_i)
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_SelectionIface_select_all_selection
+func _gotk4_atk1_SelectionIface_select_all_selection(arg0 *C.AtkSelection) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[SelectionOverrides](instance0)
+	if overrides.SelectAllSelection == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected SelectionOverrides.SelectAllSelection, got none")
+	}
+
+	ok := overrides.SelectAllSelection()
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_SelectionIface_selection_changed
+func _gotk4_atk1_SelectionIface_selection_changed(arg0 *C.AtkSelection) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[SelectionOverrides](instance0)
+	if overrides.SelectionChanged == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected SelectionOverrides.SelectionChanged, got none")
+	}
+
+	overrides.SelectionChanged()
+}
+
 //export _gotk4_atk1_Selection_ConnectSelectionChanged
 func _gotk4_atk1_Selection_ConnectSelectionChanged(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
@@ -204,6 +1219,791 @@ func _gotk4_atk1_Selection_ConnectSelectionChanged(arg0 C.gpointer, arg1 C.guint
 	}
 
 	f()
+}
+
+//export _gotk4_atk1_StreamableContentIface_get_mime_type
+func _gotk4_atk1_StreamableContentIface_get_mime_type(arg0 *C.AtkStreamableContent, arg1 C.gint) (cret *C.gchar) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[StreamableContentOverrides](instance0)
+	if overrides.MIMEType == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected StreamableContentOverrides.MIMEType, got none")
+	}
+
+	var _i int // out
+
+	_i = int(arg1)
+
+	utf8 := overrides.MIMEType(_i)
+
+	var _ string
+
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+	defer C.free(unsafe.Pointer(cret))
+
+	return cret
+}
+
+//export _gotk4_atk1_StreamableContentIface_get_n_mime_types
+func _gotk4_atk1_StreamableContentIface_get_n_mime_types(arg0 *C.AtkStreamableContent) (cret C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[StreamableContentOverrides](instance0)
+	if overrides.NMIMETypes == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected StreamableContentOverrides.NMIMETypes, got none")
+	}
+
+	gint := overrides.NMIMETypes()
+
+	var _ int
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_StreamableContentIface_get_stream
+func _gotk4_atk1_StreamableContentIface_get_stream(arg0 *C.AtkStreamableContent, arg1 *C.gchar) (cret *C.GIOChannel) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[StreamableContentOverrides](instance0)
+	if overrides.Stream == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected StreamableContentOverrides.Stream, got none")
+	}
+
+	var _mimeType string // out
+
+	_mimeType = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	ioChannel := overrides.Stream(_mimeType)
+
+	var _ *glib.IOChannel
+
+	cret = (*C.GIOChannel)(gextras.StructNative(unsafe.Pointer(ioChannel)))
+
+	return cret
+}
+
+//export _gotk4_atk1_StreamableContentIface_get_uri
+func _gotk4_atk1_StreamableContentIface_get_uri(arg0 *C.AtkStreamableContent, arg1 *C.gchar) (cret *C.gchar) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[StreamableContentOverrides](instance0)
+	if overrides.URI == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected StreamableContentOverrides.URI, got none")
+	}
+
+	var _mimeType string // out
+
+	_mimeType = C.GoString((*C.gchar)(unsafe.Pointer(arg1)))
+
+	utf8 := overrides.URI(_mimeType)
+
+	var _ string
+
+	if utf8 != "" {
+		cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+		defer C.free(unsafe.Pointer(cret))
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_add_column_selection
+func _gotk4_atk1_TableIface_add_column_selection(arg0 *C.AtkTable, arg1 C.gint) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableOverrides](instance0)
+	if overrides.AddColumnSelection == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableOverrides.AddColumnSelection, got none")
+	}
+
+	var _column int // out
+
+	_column = int(arg1)
+
+	ok := overrides.AddColumnSelection(_column)
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_add_row_selection
+func _gotk4_atk1_TableIface_add_row_selection(arg0 *C.AtkTable, arg1 C.gint) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableOverrides](instance0)
+	if overrides.AddRowSelection == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableOverrides.AddRowSelection, got none")
+	}
+
+	var _row int // out
+
+	_row = int(arg1)
+
+	ok := overrides.AddRowSelection(_row)
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_column_deleted
+func _gotk4_atk1_TableIface_column_deleted(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableOverrides](instance0)
+	if overrides.ColumnDeleted == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableOverrides.ColumnDeleted, got none")
+	}
+
+	var _column int     // out
+	var _numDeleted int // out
+
+	_column = int(arg1)
+	_numDeleted = int(arg2)
+
+	overrides.ColumnDeleted(_column, _numDeleted)
+}
+
+//export _gotk4_atk1_TableIface_column_inserted
+func _gotk4_atk1_TableIface_column_inserted(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableOverrides](instance0)
+	if overrides.ColumnInserted == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableOverrides.ColumnInserted, got none")
+	}
+
+	var _column int      // out
+	var _numInserted int // out
+
+	_column = int(arg1)
+	_numInserted = int(arg2)
+
+	overrides.ColumnInserted(_column, _numInserted)
+}
+
+//export _gotk4_atk1_TableIface_column_reordered
+func _gotk4_atk1_TableIface_column_reordered(arg0 *C.AtkTable) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableOverrides](instance0)
+	if overrides.ColumnReordered == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableOverrides.ColumnReordered, got none")
+	}
+
+	overrides.ColumnReordered()
+}
+
+//export _gotk4_atk1_TableIface_get_caption
+func _gotk4_atk1_TableIface_get_caption(arg0 *C.AtkTable) (cret *C.AtkObject) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableOverrides](instance0)
+	if overrides.Caption == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableOverrides.Caption, got none")
+	}
+
+	object := overrides.Caption()
+
+	var _ *AtkObject
+
+	if object != nil {
+		cret = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_get_column_at_index
+func _gotk4_atk1_TableIface_get_column_at_index(arg0 *C.AtkTable, arg1 C.gint) (cret C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableOverrides](instance0)
+	if overrides.ColumnAtIndex == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableOverrides.ColumnAtIndex, got none")
+	}
+
+	var _index_ int // out
+
+	_index_ = int(arg1)
+
+	gint := overrides.ColumnAtIndex(_index_)
+
+	var _ int
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_get_column_description
+func _gotk4_atk1_TableIface_get_column_description(arg0 *C.AtkTable, arg1 C.gint) (cret *C.gchar) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableOverrides](instance0)
+	if overrides.ColumnDescription == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableOverrides.ColumnDescription, got none")
+	}
+
+	var _column int // out
+
+	_column = int(arg1)
+
+	utf8 := overrides.ColumnDescription(_column)
+
+	var _ string
+
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+	defer C.free(unsafe.Pointer(cret))
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_get_column_extent_at
+func _gotk4_atk1_TableIface_get_column_extent_at(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) (cret C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableOverrides](instance0)
+	if overrides.ColumnExtentAt == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableOverrides.ColumnExtentAt, got none")
+	}
+
+	var _row int    // out
+	var _column int // out
+
+	_row = int(arg1)
+	_column = int(arg2)
+
+	gint := overrides.ColumnExtentAt(_row, _column)
+
+	var _ int
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_get_column_header
+func _gotk4_atk1_TableIface_get_column_header(arg0 *C.AtkTable, arg1 C.gint) (cret *C.AtkObject) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableOverrides](instance0)
+	if overrides.ColumnHeader == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableOverrides.ColumnHeader, got none")
+	}
+
+	var _column int // out
+
+	_column = int(arg1)
+
+	object := overrides.ColumnHeader(_column)
+
+	var _ *AtkObject
+
+	if object != nil {
+		cret = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_get_index_at
+func _gotk4_atk1_TableIface_get_index_at(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) (cret C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableOverrides](instance0)
+	if overrides.IndexAt == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableOverrides.IndexAt, got none")
+	}
+
+	var _row int    // out
+	var _column int // out
+
+	_row = int(arg1)
+	_column = int(arg2)
+
+	gint := overrides.IndexAt(_row, _column)
+
+	var _ int
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_get_n_columns
+func _gotk4_atk1_TableIface_get_n_columns(arg0 *C.AtkTable) (cret C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableOverrides](instance0)
+	if overrides.NColumns == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableOverrides.NColumns, got none")
+	}
+
+	gint := overrides.NColumns()
+
+	var _ int
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_get_n_rows
+func _gotk4_atk1_TableIface_get_n_rows(arg0 *C.AtkTable) (cret C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableOverrides](instance0)
+	if overrides.NRows == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableOverrides.NRows, got none")
+	}
+
+	gint := overrides.NRows()
+
+	var _ int
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_get_row_at_index
+func _gotk4_atk1_TableIface_get_row_at_index(arg0 *C.AtkTable, arg1 C.gint) (cret C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableOverrides](instance0)
+	if overrides.RowAtIndex == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableOverrides.RowAtIndex, got none")
+	}
+
+	var _index_ int // out
+
+	_index_ = int(arg1)
+
+	gint := overrides.RowAtIndex(_index_)
+
+	var _ int
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_get_row_description
+func _gotk4_atk1_TableIface_get_row_description(arg0 *C.AtkTable, arg1 C.gint) (cret *C.gchar) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableOverrides](instance0)
+	if overrides.RowDescription == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableOverrides.RowDescription, got none")
+	}
+
+	var _row int // out
+
+	_row = int(arg1)
+
+	utf8 := overrides.RowDescription(_row)
+
+	var _ string
+
+	if utf8 != "" {
+		cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+		defer C.free(unsafe.Pointer(cret))
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_get_row_extent_at
+func _gotk4_atk1_TableIface_get_row_extent_at(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) (cret C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableOverrides](instance0)
+	if overrides.RowExtentAt == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableOverrides.RowExtentAt, got none")
+	}
+
+	var _row int    // out
+	var _column int // out
+
+	_row = int(arg1)
+	_column = int(arg2)
+
+	gint := overrides.RowExtentAt(_row, _column)
+
+	var _ int
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_get_row_header
+func _gotk4_atk1_TableIface_get_row_header(arg0 *C.AtkTable, arg1 C.gint) (cret *C.AtkObject) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableOverrides](instance0)
+	if overrides.RowHeader == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableOverrides.RowHeader, got none")
+	}
+
+	var _row int // out
+
+	_row = int(arg1)
+
+	object := overrides.RowHeader(_row)
+
+	var _ *AtkObject
+
+	if object != nil {
+		cret = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_get_selected_columns
+func _gotk4_atk1_TableIface_get_selected_columns(arg0 *C.AtkTable, arg1 **C.gint) (cret C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableOverrides](instance0)
+	if overrides.SelectedColumns == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableOverrides.SelectedColumns, got none")
+	}
+
+	var _selected **int // out
+
+	_selected = (**int)(unsafe.Pointer(arg1))
+
+	gint := overrides.SelectedColumns(_selected)
+
+	var _ int
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_get_selected_rows
+func _gotk4_atk1_TableIface_get_selected_rows(arg0 *C.AtkTable, arg1 **C.gint) (cret C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableOverrides](instance0)
+	if overrides.SelectedRows == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableOverrides.SelectedRows, got none")
+	}
+
+	var _selected **int // out
+
+	_selected = (**int)(unsafe.Pointer(arg1))
+
+	gint := overrides.SelectedRows(_selected)
+
+	var _ int
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_get_summary
+func _gotk4_atk1_TableIface_get_summary(arg0 *C.AtkTable) (cret *C.AtkObject) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableOverrides](instance0)
+	if overrides.Summary == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableOverrides.Summary, got none")
+	}
+
+	object := overrides.Summary()
+
+	var _ *AtkObject
+
+	cret = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_is_column_selected
+func _gotk4_atk1_TableIface_is_column_selected(arg0 *C.AtkTable, arg1 C.gint) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableOverrides](instance0)
+	if overrides.IsColumnSelected == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableOverrides.IsColumnSelected, got none")
+	}
+
+	var _column int // out
+
+	_column = int(arg1)
+
+	ok := overrides.IsColumnSelected(_column)
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_is_row_selected
+func _gotk4_atk1_TableIface_is_row_selected(arg0 *C.AtkTable, arg1 C.gint) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableOverrides](instance0)
+	if overrides.IsRowSelected == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableOverrides.IsRowSelected, got none")
+	}
+
+	var _row int // out
+
+	_row = int(arg1)
+
+	ok := overrides.IsRowSelected(_row)
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_is_selected
+func _gotk4_atk1_TableIface_is_selected(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableOverrides](instance0)
+	if overrides.IsSelected == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableOverrides.IsSelected, got none")
+	}
+
+	var _row int    // out
+	var _column int // out
+
+	_row = int(arg1)
+	_column = int(arg2)
+
+	ok := overrides.IsSelected(_row, _column)
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_model_changed
+func _gotk4_atk1_TableIface_model_changed(arg0 *C.AtkTable) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableOverrides](instance0)
+	if overrides.ModelChanged == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableOverrides.ModelChanged, got none")
+	}
+
+	overrides.ModelChanged()
+}
+
+//export _gotk4_atk1_TableIface_ref_at
+func _gotk4_atk1_TableIface_ref_at(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) (cret *C.AtkObject) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableOverrides](instance0)
+	if overrides.RefAt == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableOverrides.RefAt, got none")
+	}
+
+	var _row int    // out
+	var _column int // out
+
+	_row = int(arg1)
+	_column = int(arg2)
+
+	object := overrides.RefAt(_row, _column)
+
+	var _ *AtkObject
+
+	cret = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+	C.g_object_ref(C.gpointer(coreglib.InternObject(object).Native()))
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_remove_column_selection
+func _gotk4_atk1_TableIface_remove_column_selection(arg0 *C.AtkTable, arg1 C.gint) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableOverrides](instance0)
+	if overrides.RemoveColumnSelection == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableOverrides.RemoveColumnSelection, got none")
+	}
+
+	var _column int // out
+
+	_column = int(arg1)
+
+	ok := overrides.RemoveColumnSelection(_column)
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_remove_row_selection
+func _gotk4_atk1_TableIface_remove_row_selection(arg0 *C.AtkTable, arg1 C.gint) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableOverrides](instance0)
+	if overrides.RemoveRowSelection == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableOverrides.RemoveRowSelection, got none")
+	}
+
+	var _row int // out
+
+	_row = int(arg1)
+
+	ok := overrides.RemoveRowSelection(_row)
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TableIface_row_deleted
+func _gotk4_atk1_TableIface_row_deleted(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableOverrides](instance0)
+	if overrides.RowDeleted == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableOverrides.RowDeleted, got none")
+	}
+
+	var _row int        // out
+	var _numDeleted int // out
+
+	_row = int(arg1)
+	_numDeleted = int(arg2)
+
+	overrides.RowDeleted(_row, _numDeleted)
+}
+
+//export _gotk4_atk1_TableIface_row_inserted
+func _gotk4_atk1_TableIface_row_inserted(arg0 *C.AtkTable, arg1 C.gint, arg2 C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableOverrides](instance0)
+	if overrides.RowInserted == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableOverrides.RowInserted, got none")
+	}
+
+	var _row int         // out
+	var _numInserted int // out
+
+	_row = int(arg1)
+	_numInserted = int(arg2)
+
+	overrides.RowInserted(_row, _numInserted)
+}
+
+//export _gotk4_atk1_TableIface_row_reordered
+func _gotk4_atk1_TableIface_row_reordered(arg0 *C.AtkTable) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableOverrides](instance0)
+	if overrides.RowReordered == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableOverrides.RowReordered, got none")
+	}
+
+	overrides.RowReordered()
+}
+
+//export _gotk4_atk1_TableIface_set_caption
+func _gotk4_atk1_TableIface_set_caption(arg0 *C.AtkTable, arg1 *C.AtkObject) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableOverrides](instance0)
+	if overrides.SetCaption == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableOverrides.SetCaption, got none")
+	}
+
+	var _caption *AtkObject // out
+
+	_caption = wrapObject(coreglib.Take(unsafe.Pointer(arg1)))
+
+	overrides.SetCaption(_caption)
+}
+
+//export _gotk4_atk1_TableIface_set_column_description
+func _gotk4_atk1_TableIface_set_column_description(arg0 *C.AtkTable, arg1 C.gint, arg2 *C.gchar) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableOverrides](instance0)
+	if overrides.SetColumnDescription == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableOverrides.SetColumnDescription, got none")
+	}
+
+	var _column int         // out
+	var _description string // out
+
+	_column = int(arg1)
+	_description = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+
+	overrides.SetColumnDescription(_column, _description)
+}
+
+//export _gotk4_atk1_TableIface_set_column_header
+func _gotk4_atk1_TableIface_set_column_header(arg0 *C.AtkTable, arg1 C.gint, arg2 *C.AtkObject) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableOverrides](instance0)
+	if overrides.SetColumnHeader == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableOverrides.SetColumnHeader, got none")
+	}
+
+	var _column int        // out
+	var _header *AtkObject // out
+
+	_column = int(arg1)
+	_header = wrapObject(coreglib.Take(unsafe.Pointer(arg2)))
+
+	overrides.SetColumnHeader(_column, _header)
+}
+
+//export _gotk4_atk1_TableIface_set_row_description
+func _gotk4_atk1_TableIface_set_row_description(arg0 *C.AtkTable, arg1 C.gint, arg2 *C.gchar) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableOverrides](instance0)
+	if overrides.SetRowDescription == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableOverrides.SetRowDescription, got none")
+	}
+
+	var _row int            // out
+	var _description string // out
+
+	_row = int(arg1)
+	_description = C.GoString((*C.gchar)(unsafe.Pointer(arg2)))
+
+	overrides.SetRowDescription(_row, _description)
+}
+
+//export _gotk4_atk1_TableIface_set_row_header
+func _gotk4_atk1_TableIface_set_row_header(arg0 *C.AtkTable, arg1 C.gint, arg2 *C.AtkObject) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableOverrides](instance0)
+	if overrides.SetRowHeader == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableOverrides.SetRowHeader, got none")
+	}
+
+	var _row int           // out
+	var _header *AtkObject // out
+
+	_row = int(arg1)
+	_header = wrapObject(coreglib.Take(unsafe.Pointer(arg2)))
+
+	overrides.SetRowHeader(_row, _header)
+}
+
+//export _gotk4_atk1_TableIface_set_summary
+func _gotk4_atk1_TableIface_set_summary(arg0 *C.AtkTable, arg1 *C.AtkObject) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableOverrides](instance0)
+	if overrides.SetSummary == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableOverrides.SetSummary, got none")
+	}
+
+	var _accessible *AtkObject // out
+
+	_accessible = wrapObject(coreglib.Take(unsafe.Pointer(arg1)))
+
+	overrides.SetSummary(_accessible)
 }
 
 //export _gotk4_atk1_Table_ConnectColumnDeleted
@@ -342,6 +2142,660 @@ func _gotk4_atk1_Table_ConnectRowReordered(arg0 C.gpointer, arg1 C.guintptr) {
 	f()
 }
 
+//export _gotk4_atk1_TableCellIface_get_column_span
+func _gotk4_atk1_TableCellIface_get_column_span(arg0 *C.AtkTableCell) (cret C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableCellOverrides](instance0)
+	if overrides.ColumnSpan == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableCellOverrides.ColumnSpan, got none")
+	}
+
+	gint := overrides.ColumnSpan()
+
+	var _ int
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_TableCellIface_get_position
+func _gotk4_atk1_TableCellIface_get_position(arg0 *C.AtkTableCell, arg1 *C.gint, arg2 *C.gint) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableCellOverrides](instance0)
+	if overrides.Position == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableCellOverrides.Position, got none")
+	}
+
+	row, column, ok := overrides.Position()
+
+	var _ int
+	var _ int
+	var _ bool
+
+	*arg1 = C.gint(row)
+	*arg2 = C.gint(column)
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TableCellIface_get_row_column_span
+func _gotk4_atk1_TableCellIface_get_row_column_span(arg0 *C.AtkTableCell, arg1 *C.gint, arg2 *C.gint, arg3 *C.gint, arg4 *C.gint) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableCellOverrides](instance0)
+	if overrides.RowColumnSpan == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableCellOverrides.RowColumnSpan, got none")
+	}
+
+	row, column, rowSpan, columnSpan, ok := overrides.RowColumnSpan()
+
+	var _ int
+	var _ int
+	var _ int
+	var _ int
+	var _ bool
+
+	*arg1 = C.gint(row)
+	*arg2 = C.gint(column)
+	*arg3 = C.gint(rowSpan)
+	*arg4 = C.gint(columnSpan)
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TableCellIface_get_row_span
+func _gotk4_atk1_TableCellIface_get_row_span(arg0 *C.AtkTableCell) (cret C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableCellOverrides](instance0)
+	if overrides.RowSpan == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableCellOverrides.RowSpan, got none")
+	}
+
+	gint := overrides.RowSpan()
+
+	var _ int
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_TableCellIface_get_table
+func _gotk4_atk1_TableCellIface_get_table(arg0 *C.AtkTableCell) (cret *C.AtkObject) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TableCellOverrides](instance0)
+	if overrides.Table == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TableCellOverrides.Table, got none")
+	}
+
+	object := overrides.Table()
+
+	var _ *AtkObject
+
+	cret = (*C.AtkObject)(unsafe.Pointer(coreglib.InternObject(object).Native()))
+
+	return cret
+}
+
+//export _gotk4_atk1_TextIface_add_selection
+func _gotk4_atk1_TextIface_add_selection(arg0 *C.AtkText, arg1 C.gint, arg2 C.gint) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TextOverrides](instance0)
+	if overrides.AddSelection == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TextOverrides.AddSelection, got none")
+	}
+
+	var _startOffset int // out
+	var _endOffset int   // out
+
+	_startOffset = int(arg1)
+	_endOffset = int(arg2)
+
+	ok := overrides.AddSelection(_startOffset, _endOffset)
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TextIface_get_bounded_ranges
+func _gotk4_atk1_TextIface_get_bounded_ranges(arg0 *C.AtkText, arg1 *C.AtkTextRectangle, arg2 C.AtkCoordType, arg3 C.AtkTextClipType, arg4 C.AtkTextClipType) (cret **C.AtkTextRange) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TextOverrides](instance0)
+	if overrides.BoundedRanges == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TextOverrides.BoundedRanges, got none")
+	}
+
+	var _rect *TextRectangle    // out
+	var _coordType CoordType    // out
+	var _xClipType TextClipType // out
+	var _yClipType TextClipType // out
+
+	_rect = (*TextRectangle)(gextras.NewStructNative(unsafe.Pointer(arg1)))
+	_coordType = CoordType(arg2)
+	_xClipType = TextClipType(arg3)
+	_yClipType = TextClipType(arg4)
+
+	textRanges := overrides.BoundedRanges(_rect, _coordType, _xClipType, _yClipType)
+
+	var _ []*TextRange
+
+	{
+		cret = (**C.AtkTextRange)(C.calloc(C.size_t((len(textRanges) + 1)), C.size_t(unsafe.Sizeof(uint(0)))))
+		{
+			out := unsafe.Slice(cret, len(textRanges)+1)
+			var zero *C.AtkTextRange
+			out[len(textRanges)] = zero
+			for i := range textRanges {
+				out[i] = (*C.AtkTextRange)(gextras.StructNative(unsafe.Pointer(textRanges[i])))
+				runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(textRanges[i])), nil)
+			}
+		}
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TextIface_get_caret_offset
+func _gotk4_atk1_TextIface_get_caret_offset(arg0 *C.AtkText) (cret C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TextOverrides](instance0)
+	if overrides.CaretOffset == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TextOverrides.CaretOffset, got none")
+	}
+
+	gint := overrides.CaretOffset()
+
+	var _ int
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_TextIface_get_character_at_offset
+func _gotk4_atk1_TextIface_get_character_at_offset(arg0 *C.AtkText, arg1 C.gint) (cret C.gunichar) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TextOverrides](instance0)
+	if overrides.CharacterAtOffset == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TextOverrides.CharacterAtOffset, got none")
+	}
+
+	var _offset int // out
+
+	_offset = int(arg1)
+
+	gunichar := overrides.CharacterAtOffset(_offset)
+
+	var _ uint32
+
+	cret = C.gunichar(gunichar)
+
+	return cret
+}
+
+//export _gotk4_atk1_TextIface_get_character_count
+func _gotk4_atk1_TextIface_get_character_count(arg0 *C.AtkText) (cret C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TextOverrides](instance0)
+	if overrides.CharacterCount == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TextOverrides.CharacterCount, got none")
+	}
+
+	gint := overrides.CharacterCount()
+
+	var _ int
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_TextIface_get_character_extents
+func _gotk4_atk1_TextIface_get_character_extents(arg0 *C.AtkText, arg1 C.gint, arg2 *C.gint, arg3 *C.gint, arg4 *C.gint, arg5 *C.gint, arg6 C.AtkCoordType) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TextOverrides](instance0)
+	if overrides.CharacterExtents == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TextOverrides.CharacterExtents, got none")
+	}
+
+	var _offset int       // out
+	var _coords CoordType // out
+
+	_offset = int(arg1)
+	_coords = CoordType(arg6)
+
+	x, y, width, height := overrides.CharacterExtents(_offset, _coords)
+
+	var _ int
+	var _ int
+	var _ int
+	var _ int
+
+	*arg2 = C.gint(x)
+	*arg3 = C.gint(y)
+	*arg4 = C.gint(width)
+	*arg5 = C.gint(height)
+}
+
+//export _gotk4_atk1_TextIface_get_n_selections
+func _gotk4_atk1_TextIface_get_n_selections(arg0 *C.AtkText) (cret C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TextOverrides](instance0)
+	if overrides.NSelections == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TextOverrides.NSelections, got none")
+	}
+
+	gint := overrides.NSelections()
+
+	var _ int
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_TextIface_get_offset_at_point
+func _gotk4_atk1_TextIface_get_offset_at_point(arg0 *C.AtkText, arg1 C.gint, arg2 C.gint, arg3 C.AtkCoordType) (cret C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TextOverrides](instance0)
+	if overrides.OffsetAtPoint == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TextOverrides.OffsetAtPoint, got none")
+	}
+
+	var _x int            // out
+	var _y int            // out
+	var _coords CoordType // out
+
+	_x = int(arg1)
+	_y = int(arg2)
+	_coords = CoordType(arg3)
+
+	gint := overrides.OffsetAtPoint(_x, _y, _coords)
+
+	var _ int
+
+	cret = C.gint(gint)
+
+	return cret
+}
+
+//export _gotk4_atk1_TextIface_get_range_extents
+func _gotk4_atk1_TextIface_get_range_extents(arg0 *C.AtkText, arg1 C.gint, arg2 C.gint, arg3 C.AtkCoordType, arg4 *C.AtkTextRectangle) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TextOverrides](instance0)
+	if overrides.RangeExtents == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TextOverrides.RangeExtents, got none")
+	}
+
+	var _startOffset int     // out
+	var _endOffset int       // out
+	var _coordType CoordType // out
+
+	_startOffset = int(arg1)
+	_endOffset = int(arg2)
+	_coordType = CoordType(arg3)
+
+	rect := overrides.RangeExtents(_startOffset, _endOffset, _coordType)
+
+	var _ *TextRectangle
+
+	*arg4 = *(*C.AtkTextRectangle)(gextras.StructNative(unsafe.Pointer(rect)))
+}
+
+//export _gotk4_atk1_TextIface_get_selection
+func _gotk4_atk1_TextIface_get_selection(arg0 *C.AtkText, arg1 C.gint, arg2 *C.gint, arg3 *C.gint) (cret *C.gchar) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TextOverrides](instance0)
+	if overrides.Selection == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TextOverrides.Selection, got none")
+	}
+
+	var _selectionNum int // out
+
+	_selectionNum = int(arg1)
+
+	startOffset, endOffset, utf8 := overrides.Selection(_selectionNum)
+
+	var _ int
+	var _ int
+	var _ string
+
+	*arg2 = C.gint(startOffset)
+	*arg3 = C.gint(endOffset)
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+
+	return cret
+}
+
+//export _gotk4_atk1_TextIface_get_string_at_offset
+func _gotk4_atk1_TextIface_get_string_at_offset(arg0 *C.AtkText, arg1 C.gint, arg2 C.AtkTextGranularity, arg3 *C.gint, arg4 *C.gint) (cret *C.gchar) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TextOverrides](instance0)
+	if overrides.StringAtOffset == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TextOverrides.StringAtOffset, got none")
+	}
+
+	var _offset int                  // out
+	var _granularity TextGranularity // out
+
+	_offset = int(arg1)
+	_granularity = TextGranularity(arg2)
+
+	startOffset, endOffset, utf8 := overrides.StringAtOffset(_offset, _granularity)
+
+	var _ int
+	var _ int
+	var _ string
+
+	*arg3 = C.gint(startOffset)
+	*arg4 = C.gint(endOffset)
+	if utf8 != "" {
+		cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TextIface_get_text
+func _gotk4_atk1_TextIface_get_text(arg0 *C.AtkText, arg1 C.gint, arg2 C.gint) (cret *C.gchar) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TextOverrides](instance0)
+	if overrides.Text == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TextOverrides.Text, got none")
+	}
+
+	var _startOffset int // out
+	var _endOffset int   // out
+
+	_startOffset = int(arg1)
+	_endOffset = int(arg2)
+
+	utf8 := overrides.Text(_startOffset, _endOffset)
+
+	var _ string
+
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+
+	return cret
+}
+
+//export _gotk4_atk1_TextIface_get_text_after_offset
+func _gotk4_atk1_TextIface_get_text_after_offset(arg0 *C.AtkText, arg1 C.gint, arg2 C.AtkTextBoundary, arg3 *C.gint, arg4 *C.gint) (cret *C.gchar) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TextOverrides](instance0)
+	if overrides.TextAfterOffset == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TextOverrides.TextAfterOffset, got none")
+	}
+
+	var _offset int                // out
+	var _boundaryType TextBoundary // out
+
+	_offset = int(arg1)
+	_boundaryType = TextBoundary(arg2)
+
+	startOffset, endOffset, utf8 := overrides.TextAfterOffset(_offset, _boundaryType)
+
+	var _ int
+	var _ int
+	var _ string
+
+	*arg3 = C.gint(startOffset)
+	*arg4 = C.gint(endOffset)
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+
+	return cret
+}
+
+//export _gotk4_atk1_TextIface_get_text_at_offset
+func _gotk4_atk1_TextIface_get_text_at_offset(arg0 *C.AtkText, arg1 C.gint, arg2 C.AtkTextBoundary, arg3 *C.gint, arg4 *C.gint) (cret *C.gchar) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TextOverrides](instance0)
+	if overrides.TextAtOffset == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TextOverrides.TextAtOffset, got none")
+	}
+
+	var _offset int                // out
+	var _boundaryType TextBoundary // out
+
+	_offset = int(arg1)
+	_boundaryType = TextBoundary(arg2)
+
+	startOffset, endOffset, utf8 := overrides.TextAtOffset(_offset, _boundaryType)
+
+	var _ int
+	var _ int
+	var _ string
+
+	*arg3 = C.gint(startOffset)
+	*arg4 = C.gint(endOffset)
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+
+	return cret
+}
+
+//export _gotk4_atk1_TextIface_get_text_before_offset
+func _gotk4_atk1_TextIface_get_text_before_offset(arg0 *C.AtkText, arg1 C.gint, arg2 C.AtkTextBoundary, arg3 *C.gint, arg4 *C.gint) (cret *C.gchar) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TextOverrides](instance0)
+	if overrides.TextBeforeOffset == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TextOverrides.TextBeforeOffset, got none")
+	}
+
+	var _offset int                // out
+	var _boundaryType TextBoundary // out
+
+	_offset = int(arg1)
+	_boundaryType = TextBoundary(arg2)
+
+	startOffset, endOffset, utf8 := overrides.TextBeforeOffset(_offset, _boundaryType)
+
+	var _ int
+	var _ int
+	var _ string
+
+	*arg3 = C.gint(startOffset)
+	*arg4 = C.gint(endOffset)
+	cret = (*C.gchar)(unsafe.Pointer(C.CString(utf8)))
+
+	return cret
+}
+
+//export _gotk4_atk1_TextIface_remove_selection
+func _gotk4_atk1_TextIface_remove_selection(arg0 *C.AtkText, arg1 C.gint) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TextOverrides](instance0)
+	if overrides.RemoveSelection == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TextOverrides.RemoveSelection, got none")
+	}
+
+	var _selectionNum int // out
+
+	_selectionNum = int(arg1)
+
+	ok := overrides.RemoveSelection(_selectionNum)
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TextIface_scroll_substring_to
+func _gotk4_atk1_TextIface_scroll_substring_to(arg0 *C.AtkText, arg1 C.gint, arg2 C.gint, arg3 C.AtkScrollType) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TextOverrides](instance0)
+	if overrides.ScrollSubstringTo == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TextOverrides.ScrollSubstringTo, got none")
+	}
+
+	var _startOffset int // out
+	var _endOffset int   // out
+	var _typ ScrollType  // out
+
+	_startOffset = int(arg1)
+	_endOffset = int(arg2)
+	_typ = ScrollType(arg3)
+
+	ok := overrides.ScrollSubstringTo(_startOffset, _endOffset, _typ)
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TextIface_scroll_substring_to_point
+func _gotk4_atk1_TextIface_scroll_substring_to_point(arg0 *C.AtkText, arg1 C.gint, arg2 C.gint, arg3 C.AtkCoordType, arg4 C.gint, arg5 C.gint) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TextOverrides](instance0)
+	if overrides.ScrollSubstringToPoint == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TextOverrides.ScrollSubstringToPoint, got none")
+	}
+
+	var _startOffset int  // out
+	var _endOffset int    // out
+	var _coords CoordType // out
+	var _x int            // out
+	var _y int            // out
+
+	_startOffset = int(arg1)
+	_endOffset = int(arg2)
+	_coords = CoordType(arg3)
+	_x = int(arg4)
+	_y = int(arg5)
+
+	ok := overrides.ScrollSubstringToPoint(_startOffset, _endOffset, _coords, _x, _y)
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TextIface_set_caret_offset
+func _gotk4_atk1_TextIface_set_caret_offset(arg0 *C.AtkText, arg1 C.gint) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TextOverrides](instance0)
+	if overrides.SetCaretOffset == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TextOverrides.SetCaretOffset, got none")
+	}
+
+	var _offset int // out
+
+	_offset = int(arg1)
+
+	ok := overrides.SetCaretOffset(_offset)
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TextIface_set_selection
+func _gotk4_atk1_TextIface_set_selection(arg0 *C.AtkText, arg1 C.gint, arg2 C.gint, arg3 C.gint) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TextOverrides](instance0)
+	if overrides.SetSelection == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TextOverrides.SetSelection, got none")
+	}
+
+	var _selectionNum int // out
+	var _startOffset int  // out
+	var _endOffset int    // out
+
+	_selectionNum = int(arg1)
+	_startOffset = int(arg2)
+	_endOffset = int(arg3)
+
+	ok := overrides.SetSelection(_selectionNum, _startOffset, _endOffset)
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_TextIface_text_attributes_changed
+func _gotk4_atk1_TextIface_text_attributes_changed(arg0 *C.AtkText) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TextOverrides](instance0)
+	if overrides.TextAttributesChanged == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TextOverrides.TextAttributesChanged, got none")
+	}
+
+	overrides.TextAttributesChanged()
+}
+
+//export _gotk4_atk1_TextIface_text_caret_moved
+func _gotk4_atk1_TextIface_text_caret_moved(arg0 *C.AtkText, arg1 C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TextOverrides](instance0)
+	if overrides.TextCaretMoved == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TextOverrides.TextCaretMoved, got none")
+	}
+
+	var _location int // out
+
+	_location = int(arg1)
+
+	overrides.TextCaretMoved(_location)
+}
+
+//export _gotk4_atk1_TextIface_text_changed
+func _gotk4_atk1_TextIface_text_changed(arg0 *C.AtkText, arg1 C.gint, arg2 C.gint) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TextOverrides](instance0)
+	if overrides.TextChanged == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TextOverrides.TextChanged, got none")
+	}
+
+	var _position int // out
+	var _length int   // out
+
+	_position = int(arg1)
+	_length = int(arg2)
+
+	overrides.TextChanged(_position, _length)
+}
+
+//export _gotk4_atk1_TextIface_text_selection_changed
+func _gotk4_atk1_TextIface_text_selection_changed(arg0 *C.AtkText) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[TextOverrides](instance0)
+	if overrides.TextSelectionChanged == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected TextOverrides.TextSelectionChanged, got none")
+	}
+
+	overrides.TextSelectionChanged()
+}
+
 //export _gotk4_atk1_Text_ConnectTextAttributesChanged
 func _gotk4_atk1_Text_ConnectTextAttributesChanged(arg0 C.gpointer, arg1 C.guintptr) {
 	var f func()
@@ -462,6 +2916,183 @@ func _gotk4_atk1_Text_ConnectTextSelectionChanged(arg0 C.gpointer, arg1 C.guintp
 	}
 
 	f()
+}
+
+//export _gotk4_atk1_ValueIface_get_current_value
+func _gotk4_atk1_ValueIface_get_current_value(arg0 *C.AtkValue, arg1 *C.GValue) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ValueOverrides](instance0)
+	if overrides.CurrentValue == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ValueOverrides.CurrentValue, got none")
+	}
+
+	value := overrides.CurrentValue()
+
+	var _ coreglib.Value
+
+	*arg1 = *(*C.GValue)(unsafe.Pointer((&value).Native()))
+}
+
+//export _gotk4_atk1_ValueIface_get_increment
+func _gotk4_atk1_ValueIface_get_increment(arg0 *C.AtkValue) (cret C.gdouble) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ValueOverrides](instance0)
+	if overrides.Increment == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ValueOverrides.Increment, got none")
+	}
+
+	gdouble := overrides.Increment()
+
+	var _ float64
+
+	cret = C.gdouble(gdouble)
+
+	return cret
+}
+
+//export _gotk4_atk1_ValueIface_get_maximum_value
+func _gotk4_atk1_ValueIface_get_maximum_value(arg0 *C.AtkValue, arg1 *C.GValue) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ValueOverrides](instance0)
+	if overrides.MaximumValue == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ValueOverrides.MaximumValue, got none")
+	}
+
+	value := overrides.MaximumValue()
+
+	var _ coreglib.Value
+
+	*arg1 = *(*C.GValue)(unsafe.Pointer((&value).Native()))
+}
+
+//export _gotk4_atk1_ValueIface_get_minimum_increment
+func _gotk4_atk1_ValueIface_get_minimum_increment(arg0 *C.AtkValue, arg1 *C.GValue) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ValueOverrides](instance0)
+	if overrides.MinimumIncrement == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ValueOverrides.MinimumIncrement, got none")
+	}
+
+	value := overrides.MinimumIncrement()
+
+	var _ coreglib.Value
+
+	*arg1 = *(*C.GValue)(unsafe.Pointer((&value).Native()))
+}
+
+//export _gotk4_atk1_ValueIface_get_minimum_value
+func _gotk4_atk1_ValueIface_get_minimum_value(arg0 *C.AtkValue, arg1 *C.GValue) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ValueOverrides](instance0)
+	if overrides.MinimumValue == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ValueOverrides.MinimumValue, got none")
+	}
+
+	value := overrides.MinimumValue()
+
+	var _ coreglib.Value
+
+	*arg1 = *(*C.GValue)(unsafe.Pointer((&value).Native()))
+}
+
+//export _gotk4_atk1_ValueIface_get_range
+func _gotk4_atk1_ValueIface_get_range(arg0 *C.AtkValue) (cret *C.AtkRange) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ValueOverrides](instance0)
+	if overrides.Range == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ValueOverrides.Range, got none")
+	}
+
+	_range := overrides.Range()
+
+	var _ *Range
+
+	if _range != nil {
+		cret = (*C.AtkRange)(gextras.StructNative(unsafe.Pointer(_range)))
+		runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(_range)), nil)
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_ValueIface_get_sub_ranges
+func _gotk4_atk1_ValueIface_get_sub_ranges(arg0 *C.AtkValue) (cret *C.GSList) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ValueOverrides](instance0)
+	if overrides.SubRanges == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ValueOverrides.SubRanges, got none")
+	}
+
+	sList := overrides.SubRanges()
+
+	var _ []*Range
+
+	for i := len(sList) - 1; i >= 0; i-- {
+		src := sList[i]
+		var dst *C.AtkRange // out
+		dst = (*C.AtkRange)(gextras.StructNative(unsafe.Pointer(src)))
+		runtime.SetFinalizer(gextras.StructIntern(unsafe.Pointer(src)), nil)
+		cret = C.g_slist_prepend(cret, C.gpointer(unsafe.Pointer(dst)))
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_ValueIface_get_value_and_text
+func _gotk4_atk1_ValueIface_get_value_and_text(arg0 *C.AtkValue, arg1 *C.gdouble, arg2 **C.gchar) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ValueOverrides](instance0)
+	if overrides.ValueAndText == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ValueOverrides.ValueAndText, got none")
+	}
+
+	value, text := overrides.ValueAndText()
+
+	var _ float64
+	var _ string
+
+	*arg1 = C.gdouble(value)
+	if text != "" {
+		*arg2 = (*C.gchar)(unsafe.Pointer(C.CString(text)))
+	}
+}
+
+//export _gotk4_atk1_ValueIface_set_current_value
+func _gotk4_atk1_ValueIface_set_current_value(arg0 *C.AtkValue, arg1 *C.GValue) (cret C.gboolean) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ValueOverrides](instance0)
+	if overrides.SetCurrentValue == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ValueOverrides.SetCurrentValue, got none")
+	}
+
+	var _value *coreglib.Value // out
+
+	_value = coreglib.ValueFromNative(unsafe.Pointer(arg1))
+
+	ok := overrides.SetCurrentValue(_value)
+
+	var _ bool
+
+	if ok {
+		cret = C.TRUE
+	}
+
+	return cret
+}
+
+//export _gotk4_atk1_ValueIface_set_value
+func _gotk4_atk1_ValueIface_set_value(arg0 *C.AtkValue, arg1 C.gdouble) {
+	instance0 := coreglib.Take(unsafe.Pointer(arg0))
+	overrides := coreglib.OverridesFromGType[ValueOverrides](instance0)
+	if overrides.SetValue == nil {
+		panic("gotk4: " + instance0.TypeFromInstance().String() + ": expected ValueOverrides.SetValue, got none")
+	}
+
+	var _newValue float64 // out
+
+	_newValue = float64(arg1)
+
+	overrides.SetValue(_newValue)
 }
 
 //export _gotk4_atk1_Value_ConnectValueChanged

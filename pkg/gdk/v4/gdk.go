@@ -38,6 +38,7 @@ import (
 // extern void _gotk4_gdk4_Seat_ConnectDeviceAdded(gpointer, GdkDevice*, guintptr);
 // extern void _gotk4_gdk4_Paintable_ConnectInvalidateSize(gpointer, guintptr);
 // extern void _gotk4_gdk4_Paintable_ConnectInvalidateContents(gpointer, guintptr);
+// extern void _gotk4_gdk4_PaintableInterface_snapshot(GdkPaintable*, GdkSnapshot*, double, double);
 // extern void _gotk4_gdk4_Monitor_ConnectInvalidate(gpointer, guintptr);
 // extern void _gotk4_gdk4_FrameClock_ConnectUpdate(gpointer, guintptr);
 // extern void _gotk4_gdk4_FrameClock_ConnectResumeEvents(gpointer, guintptr);
@@ -63,10 +64,15 @@ import (
 // extern void _gotk4_gdk4_ContentProviderClass_attach_clipboard(GdkContentProvider*, GdkClipboard*);
 // extern void _gotk4_gdk4_Clipboard_ConnectChanged(gpointer, guintptr);
 // extern void _gotk4_gdk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern int _gotk4_gdk4_PaintableInterface_get_intrinsic_width(GdkPaintable*);
+// extern int _gotk4_gdk4_PaintableInterface_get_intrinsic_height(GdkPaintable*);
 // extern gboolean _gotk4_gdk4_Surface_ConnectRender(gpointer, cairo_region_t*, guintptr);
 // extern gboolean _gotk4_gdk4_Surface_ConnectEvent(gpointer, gpointer*, guintptr);
 // extern gboolean _gotk4_gdk4_ContentProviderClass_write_mime_type_finish(GdkContentProvider*, GAsyncResult*, GError**);
 // extern gboolean _gotk4_gdk4_ContentProviderClass_get_value(GdkContentProvider*, GValue*, GError**);
+// extern double _gotk4_gdk4_PaintableInterface_get_intrinsic_aspect_ratio(GdkPaintable*);
+// extern GdkPaintableFlags _gotk4_gdk4_PaintableInterface_get_flags(GdkPaintable*);
+// extern GdkPaintable* _gotk4_gdk4_PaintableInterface_get_current_image(GdkPaintable*);
 // extern GdkContentFormats* _gotk4_gdk4_ContentProviderClass_ref_storable_formats(GdkContentProvider*);
 // extern GdkContentFormats* _gotk4_gdk4_ContentProviderClass_ref_formats(GdkContentProvider*);
 // GdkContentFormats* _gotk4_gdk4_ContentProvider_virtual_ref_formats(void* fnptr, GdkContentProvider* arg0) {
@@ -6576,6 +6582,100 @@ func (dragSurface *DragSurface) Present(width, height int) bool {
 	return _ok
 }
 
+// PaintableOverrides contains methods that a subclass can implement
+// for the Paintable interface. Methods left nil keep the interface's
+// default implementation.
+type PaintableOverrides struct {
+	// CurrentImage gets an immutable paintable for the current contents
+	// displayed by paintable.
+	//
+	// This is useful when you want to retain the current state of an animation,
+	// for example to take a screenshot of a running animation.
+	//
+	// If the paintable is already immutable, it will return itself.
+	//
+	// The function returns the following values:
+	//
+	//   - ret: immutable paintable for the current contents of paintable.
+	CurrentImage func() *Paintable // optional
+	// Flags: get flags for the paintable.
+	//
+	// This is oftentimes useful for optimizations.
+	//
+	// See gdk.PaintableFlags for the flags and what they mean.
+	//
+	// The function returns the following values:
+	//
+	//   - paintableFlags: GdkPaintableFlags for this paintable.
+	Flags func() PaintableFlags // optional
+	// IntrinsicAspectRatio gets the preferred aspect ratio the paintable would
+	// like to be displayed at.
+	//
+	// The aspect ratio is the width divided by the height, so a value of 0.5
+	// means that the paintable prefers to be displayed twice as high as it is
+	// wide. Consumers of this interface can use this to preserve aspect ratio
+	// when displaying the paintable.
+	//
+	// This is a purely informational value and does not in any way limit the
+	// values that may be passed to gdk.Paintable.Snapshot().
+	//
+	// Usually when a paintable returns nonzero values from
+	// gdk.Paintable.GetIntrinsicWidth() and gdk.Paintable.GetIntrinsicHeight()
+	// the aspect ratio should conform to those values, though that is not
+	// required.
+	//
+	// If the paintable does not have a preferred aspect ratio, it returns 0.
+	// Negative values are never returned.
+	//
+	// The function returns the following values:
+	//
+	//   - gdouble: intrinsic aspect ratio of paintable or 0 if none.
+	IntrinsicAspectRatio func() float64 // optional
+	// IntrinsicHeight gets the preferred height the paintable would like to be
+	// displayed at.
+	//
+	// Consumers of this interface can use this to reserve enough space to draw
+	// the paintable.
+	//
+	// This is a purely informational value and does not in any way limit the
+	// values that may be passed to gdk.Paintable.Snapshot().
+	//
+	// If the paintable does not have a preferred height, it returns 0. Negative
+	// values are never returned.
+	//
+	// The function returns the following values:
+	//
+	//   - gint: intrinsic height of paintable or 0 if none.
+	IntrinsicHeight func() int // optional
+	// IntrinsicWidth gets the preferred width the paintable would like to be
+	// displayed at.
+	//
+	// Consumers of this interface can use this to reserve enough space to draw
+	// the paintable.
+	//
+	// This is a purely informational value and does not in any way limit the
+	// values that may be passed to gdk.Paintable.Snapshot().
+	//
+	// If the paintable does not have a preferred width, it returns 0. Negative
+	// values are never returned.
+	//
+	// The function returns the following values:
+	//
+	//   - gint: intrinsic width of paintable or 0 if none.
+	IntrinsicWidth func() int // optional
+	// Snapshot snapshots the given paintable with the given width and height.
+	//
+	// The paintable is drawn at the current (0,0) offset of the snapshot. If
+	// width and height are not larger than zero, this function will do nothing.
+	//
+	// The function takes the following parameters:
+	//
+	//   - snapshot: GdkSnapshot to snapshot to.
+	//   - width to snapshot in.
+	//   - height to snapshot in.
+	Snapshot func(snapshot Snapshotter, width, height float64) // optional
+}
+
 // Paintable: interface for content that can be painted.
 //
 // The content of a GdkPaintable can be painted anywhere at any
@@ -6668,6 +6768,42 @@ type Paintabler interface {
 }
 
 var _ Paintabler = (*Paintable)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[PaintableOverrides](
+		GTypePaintable,
+		initPaintableInterface,
+	)
+}
+
+func initPaintableInterface(giface unsafe.Pointer, overrides PaintableOverrides) {
+	iface := (*C.GdkPaintableInterface)(giface)
+
+	if overrides.CurrentImage != nil {
+		iface.get_current_image = (*[0]byte)(C._gotk4_gdk4_PaintableInterface_get_current_image)
+	}
+
+	if overrides.Flags != nil {
+		iface.get_flags = (*[0]byte)(C._gotk4_gdk4_PaintableInterface_get_flags)
+	}
+
+	if overrides.IntrinsicAspectRatio != nil {
+		iface.get_intrinsic_aspect_ratio = (*[0]byte)(C._gotk4_gdk4_PaintableInterface_get_intrinsic_aspect_ratio)
+	}
+
+	if overrides.IntrinsicHeight != nil {
+		iface.get_intrinsic_height = (*[0]byte)(C._gotk4_gdk4_PaintableInterface_get_intrinsic_height)
+	}
+
+	if overrides.IntrinsicWidth != nil {
+		iface.get_intrinsic_width = (*[0]byte)(C._gotk4_gdk4_PaintableInterface_get_intrinsic_width)
+	}
+
+	if overrides.Snapshot != nil {
+		iface.snapshot = (*[0]byte)(C._gotk4_gdk4_PaintableInterface_snapshot)
+	}
+
+}
 
 func wrapPaintable(obj *coreglib.Object) *Paintable {
 	return &Paintable{

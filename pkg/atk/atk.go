@@ -29,12 +29,24 @@ import (
 // extern void _gotk4_atk1_Window_ConnectCreate(gpointer, guintptr);
 // extern void _gotk4_atk1_Window_ConnectActivate(gpointer, guintptr);
 // extern void _gotk4_atk1_Value_ConnectValueChanged(gpointer, gdouble, gchar*, guintptr);
+// extern void _gotk4_atk1_ValueIface_set_value(AtkValue*, gdouble);
+// extern void _gotk4_atk1_ValueIface_get_value_and_text(AtkValue*, gdouble*, gchar**);
+// extern void _gotk4_atk1_ValueIface_get_minimum_value(AtkValue*, GValue*);
+// extern void _gotk4_atk1_ValueIface_get_minimum_increment(AtkValue*, GValue*);
+// extern void _gotk4_atk1_ValueIface_get_maximum_value(AtkValue*, GValue*);
+// extern void _gotk4_atk1_ValueIface_get_current_value(AtkValue*, GValue*);
 // extern void _gotk4_atk1_Text_ConnectTextSelectionChanged(gpointer, guintptr);
 // extern void _gotk4_atk1_Text_ConnectTextRemove(gpointer, gint, gint, gchar*, guintptr);
 // extern void _gotk4_atk1_Text_ConnectTextInsert(gpointer, gint, gint, gchar*, guintptr);
 // extern void _gotk4_atk1_Text_ConnectTextChanged(gpointer, gint, gint, guintptr);
 // extern void _gotk4_atk1_Text_ConnectTextCaretMoved(gpointer, gint, guintptr);
 // extern void _gotk4_atk1_Text_ConnectTextAttributesChanged(gpointer, guintptr);
+// extern void _gotk4_atk1_TextIface_text_selection_changed(AtkText*);
+// extern void _gotk4_atk1_TextIface_text_changed(AtkText*, gint, gint);
+// extern void _gotk4_atk1_TextIface_text_caret_moved(AtkText*, gint);
+// extern void _gotk4_atk1_TextIface_text_attributes_changed(AtkText*);
+// extern void _gotk4_atk1_TextIface_get_range_extents(AtkText*, gint, gint, AtkCoordType, AtkTextRectangle*);
+// extern void _gotk4_atk1_TextIface_get_character_extents(AtkText*, gint, gint*, gint*, gint*, gint*, AtkCoordType);
 // extern void _gotk4_atk1_Table_ConnectRowReordered(gpointer, guintptr);
 // extern void _gotk4_atk1_Table_ConnectRowInserted(gpointer, gint, gint, guintptr);
 // extern void _gotk4_atk1_Table_ConnectRowDeleted(gpointer, gint, gint, guintptr);
@@ -42,8 +54,22 @@ import (
 // extern void _gotk4_atk1_Table_ConnectColumnReordered(gpointer, guintptr);
 // extern void _gotk4_atk1_Table_ConnectColumnInserted(gpointer, gint, gint, guintptr);
 // extern void _gotk4_atk1_Table_ConnectColumnDeleted(gpointer, gint, gint, guintptr);
+// extern void _gotk4_atk1_TableIface_set_summary(AtkTable*, AtkObject*);
+// extern void _gotk4_atk1_TableIface_set_row_header(AtkTable*, gint, AtkObject*);
+// extern void _gotk4_atk1_TableIface_set_row_description(AtkTable*, gint, gchar*);
+// extern void _gotk4_atk1_TableIface_set_column_header(AtkTable*, gint, AtkObject*);
+// extern void _gotk4_atk1_TableIface_set_column_description(AtkTable*, gint, gchar*);
+// extern void _gotk4_atk1_TableIface_set_caption(AtkTable*, AtkObject*);
+// extern void _gotk4_atk1_TableIface_row_reordered(AtkTable*);
+// extern void _gotk4_atk1_TableIface_row_inserted(AtkTable*, gint, gint);
+// extern void _gotk4_atk1_TableIface_row_deleted(AtkTable*, gint, gint);
+// extern void _gotk4_atk1_TableIface_model_changed(AtkTable*);
+// extern void _gotk4_atk1_TableIface_column_reordered(AtkTable*);
+// extern void _gotk4_atk1_TableIface_column_inserted(AtkTable*, gint, gint);
+// extern void _gotk4_atk1_TableIface_column_deleted(AtkTable*, gint, gint);
 // extern void _gotk4_atk1_SocketClass_embed(AtkSocket*, gchar*);
 // extern void _gotk4_atk1_Selection_ConnectSelectionChanged(gpointer, guintptr);
+// extern void _gotk4_atk1_SelectionIface_selection_changed(AtkSelection*);
 // extern void _gotk4_atk1_Object_ConnectVisibleDataChanged(gpointer, guintptr);
 // extern void _gotk4_atk1_Object_ConnectStateChange(gpointer, gchar*, gboolean, guintptr);
 // extern void _gotk4_atk1_Object_ConnectPropertyChange(gpointer, gpointer*, guintptr);
@@ -68,35 +94,138 @@ import (
 // extern void _gotk4_atk1_ObjectClass_active_descendant_changed(AtkObject*, gpointer*);
 // extern void _gotk4_atk1_MiscClass_threads_leave(AtkMisc*);
 // extern void _gotk4_atk1_MiscClass_threads_enter(AtkMisc*);
+// extern void _gotk4_atk1_ImageIface_get_image_size(AtkImage*, gint*, gint*);
+// extern void _gotk4_atk1_ImageIface_get_image_position(AtkImage*, gint*, gint*, AtkCoordType);
 // extern void _gotk4_atk1_Hypertext_ConnectLinkSelected(gpointer, gint, guintptr);
+// extern void _gotk4_atk1_HypertextIface_link_selected(AtkHypertext*, gint);
 // extern void _gotk4_atk1_Hyperlink_ConnectLinkActivated(gpointer, guintptr);
 // extern void _gotk4_atk1_HyperlinkClass_link_activated(AtkHyperlink*);
+// extern void _gotk4_atk1_EditableTextIface_set_text_contents(AtkEditableText*, gchar*);
+// extern void _gotk4_atk1_EditableTextIface_paste_text(AtkEditableText*, gint);
+// extern void _gotk4_atk1_EditableTextIface_delete_text(AtkEditableText*, gint, gint);
+// extern void _gotk4_atk1_EditableTextIface_cut_text(AtkEditableText*, gint, gint);
+// extern void _gotk4_atk1_EditableTextIface_copy_text(AtkEditableText*, gint, gint);
 // extern void _gotk4_atk1_Document_ConnectReload(gpointer, guintptr);
 // extern void _gotk4_atk1_Document_ConnectPageChanged(gpointer, gint, guintptr);
 // extern void _gotk4_atk1_Document_ConnectLoadStopped(gpointer, guintptr);
 // extern void _gotk4_atk1_Document_ConnectLoadComplete(gpointer, guintptr);
 // extern void _gotk4_atk1_Document_ConnectDocumentAttributeChanged(gpointer, gchar*, gchar*, guintptr);
 // extern void _gotk4_atk1_Component_ConnectBoundsChanged(gpointer, AtkRectangle*, guintptr);
+// extern void _gotk4_atk1_ComponentIface_remove_focus_handler(AtkComponent*, guint);
+// extern void _gotk4_atk1_ComponentIface_get_size(AtkComponent*, gint*, gint*);
+// extern void _gotk4_atk1_ComponentIface_get_position(AtkComponent*, gint*, gint*, AtkCoordType);
+// extern void _gotk4_atk1_ComponentIface_get_extents(AtkComponent*, gint*, gint*, gint*, gint*, AtkCoordType);
+// extern void _gotk4_atk1_ComponentIface_bounds_changed(AtkComponent*, AtkRectangle*);
+// extern gunichar _gotk4_atk1_TextIface_get_character_at_offset(AtkText*, gint);
 // extern guint _gotk4_atk1_HyperlinkClass_link_state(AtkHyperlink*);
+// extern gpointer _gotk4_atk1_DocumentIface_get_document(AtkDocument*);
+// extern gint _gotk4_atk1_TextIface_get_offset_at_point(AtkText*, gint, gint, AtkCoordType);
+// extern gint _gotk4_atk1_TextIface_get_n_selections(AtkText*);
+// extern gint _gotk4_atk1_TextIface_get_character_count(AtkText*);
+// extern gint _gotk4_atk1_TextIface_get_caret_offset(AtkText*);
+// extern gint _gotk4_atk1_TableIface_get_selected_rows(AtkTable*, gint**);
+// extern gint _gotk4_atk1_TableIface_get_selected_columns(AtkTable*, gint**);
+// extern gint _gotk4_atk1_TableIface_get_row_extent_at(AtkTable*, gint, gint);
+// extern gint _gotk4_atk1_TableIface_get_row_at_index(AtkTable*, gint);
+// extern gint _gotk4_atk1_TableIface_get_n_rows(AtkTable*);
+// extern gint _gotk4_atk1_TableIface_get_n_columns(AtkTable*);
+// extern gint _gotk4_atk1_TableIface_get_index_at(AtkTable*, gint, gint);
+// extern gint _gotk4_atk1_TableIface_get_column_extent_at(AtkTable*, gint, gint);
+// extern gint _gotk4_atk1_TableIface_get_column_at_index(AtkTable*, gint);
+// extern gint _gotk4_atk1_TableCellIface_get_row_span(AtkTableCell*);
+// extern gint _gotk4_atk1_TableCellIface_get_column_span(AtkTableCell*);
+// extern gint _gotk4_atk1_StreamableContentIface_get_n_mime_types(AtkStreamableContent*);
+// extern gint _gotk4_atk1_SelectionIface_get_selection_count(AtkSelection*);
 // extern gint _gotk4_atk1_ObjectClass_get_n_children(AtkObject*);
 // extern gint _gotk4_atk1_ObjectClass_get_mdi_zorder(AtkObject*);
 // extern gint _gotk4_atk1_ObjectClass_get_index_in_parent(AtkObject*);
+// extern gint _gotk4_atk1_HypertextIface_get_n_links(AtkHypertext*);
+// extern gint _gotk4_atk1_HypertextIface_get_link_index(AtkHypertext*, gint);
 // extern gint _gotk4_atk1_HyperlinkClass_get_start_index(AtkHyperlink*);
 // extern gint _gotk4_atk1_HyperlinkClass_get_n_anchors(AtkHyperlink*);
 // extern gint _gotk4_atk1_HyperlinkClass_get_end_index(AtkHyperlink*);
+// extern gint _gotk4_atk1_DocumentIface_get_page_count(AtkDocument*);
+// extern gint _gotk4_atk1_DocumentIface_get_current_page_number(AtkDocument*);
+// extern gint _gotk4_atk1_ComponentIface_get_mdi_zorder(AtkComponent*);
+// extern gint _gotk4_atk1_ActionIface_get_n_actions(AtkAction*);
+// extern gdouble _gotk4_atk1_ValueIface_get_increment(AtkValue*);
+// extern gdouble _gotk4_atk1_ComponentIface_get_alpha(AtkComponent*);
+// extern gchar* _gotk4_atk1_TextIface_get_text_before_offset(AtkText*, gint, AtkTextBoundary, gint*, gint*);
+// extern gchar* _gotk4_atk1_TextIface_get_text_at_offset(AtkText*, gint, AtkTextBoundary, gint*, gint*);
+// extern gchar* _gotk4_atk1_TextIface_get_text_after_offset(AtkText*, gint, AtkTextBoundary, gint*, gint*);
+// extern gchar* _gotk4_atk1_TextIface_get_text(AtkText*, gint, gint);
+// extern gchar* _gotk4_atk1_TextIface_get_string_at_offset(AtkText*, gint, AtkTextGranularity, gint*, gint*);
+// extern gchar* _gotk4_atk1_TextIface_get_selection(AtkText*, gint, gint*, gint*);
+// extern gchar* _gotk4_atk1_TableIface_get_row_description(AtkTable*, gint);
+// extern gchar* _gotk4_atk1_TableIface_get_column_description(AtkTable*, gint);
+// extern gchar* _gotk4_atk1_StreamableContentIface_get_uri(AtkStreamableContent*, gchar*);
+// extern gchar* _gotk4_atk1_StreamableContentIface_get_mime_type(AtkStreamableContent*, gint);
 // extern gchar* _gotk4_atk1_PlugClass_get_object_id(AtkPlug*);
 // extern gchar* _gotk4_atk1_ObjectClass_get_object_locale(AtkObject*);
 // extern gchar* _gotk4_atk1_ObjectClass_get_name(AtkObject*);
 // extern gchar* _gotk4_atk1_ObjectClass_get_description(AtkObject*);
+// extern gchar* _gotk4_atk1_ImageIface_get_image_locale(AtkImage*);
+// extern gchar* _gotk4_atk1_ImageIface_get_image_description(AtkImage*);
 // extern gchar* _gotk4_atk1_HyperlinkClass_get_uri(AtkHyperlink*, gint);
+// extern gchar* _gotk4_atk1_DocumentIface_get_document_type(AtkDocument*);
+// extern gchar* _gotk4_atk1_ActionIface_get_name(AtkAction*, gint);
+// extern gchar* _gotk4_atk1_ActionIface_get_localized_name(AtkAction*, gint);
+// extern gchar* _gotk4_atk1_ActionIface_get_keybinding(AtkAction*, gint);
+// extern gchar* _gotk4_atk1_ActionIface_get_description(AtkAction*, gint);
+// extern gboolean _gotk4_atk1_ValueIface_set_current_value(AtkValue*, GValue*);
+// extern gboolean _gotk4_atk1_TextIface_set_selection(AtkText*, gint, gint, gint);
+// extern gboolean _gotk4_atk1_TextIface_set_caret_offset(AtkText*, gint);
+// extern gboolean _gotk4_atk1_TextIface_scroll_substring_to_point(AtkText*, gint, gint, AtkCoordType, gint, gint);
+// extern gboolean _gotk4_atk1_TextIface_scroll_substring_to(AtkText*, gint, gint, AtkScrollType);
+// extern gboolean _gotk4_atk1_TextIface_remove_selection(AtkText*, gint);
+// extern gboolean _gotk4_atk1_TextIface_add_selection(AtkText*, gint, gint);
+// extern gboolean _gotk4_atk1_TableIface_remove_row_selection(AtkTable*, gint);
+// extern gboolean _gotk4_atk1_TableIface_remove_column_selection(AtkTable*, gint);
+// extern gboolean _gotk4_atk1_TableIface_is_selected(AtkTable*, gint, gint);
+// extern gboolean _gotk4_atk1_TableIface_is_row_selected(AtkTable*, gint);
+// extern gboolean _gotk4_atk1_TableIface_is_column_selected(AtkTable*, gint);
+// extern gboolean _gotk4_atk1_TableIface_add_row_selection(AtkTable*, gint);
+// extern gboolean _gotk4_atk1_TableIface_add_column_selection(AtkTable*, gint);
+// extern gboolean _gotk4_atk1_TableCellIface_get_row_column_span(AtkTableCell*, gint*, gint*, gint*, gint*);
+// extern gboolean _gotk4_atk1_TableCellIface_get_position(AtkTableCell*, gint*, gint*);
+// extern gboolean _gotk4_atk1_SelectionIface_select_all_selection(AtkSelection*);
+// extern gboolean _gotk4_atk1_SelectionIface_remove_selection(AtkSelection*, gint);
+// extern gboolean _gotk4_atk1_SelectionIface_is_child_selected(AtkSelection*, gint);
+// extern gboolean _gotk4_atk1_SelectionIface_clear_selection(AtkSelection*);
+// extern gboolean _gotk4_atk1_SelectionIface_add_selection(AtkSelection*, gint);
+// extern gboolean _gotk4_atk1_ImageIface_set_image_description(AtkImage*, gchar*);
 // extern gboolean _gotk4_atk1_HyperlinkClass_is_valid(AtkHyperlink*);
 // extern gboolean _gotk4_atk1_HyperlinkClass_is_selected_link(AtkHyperlink*);
+// extern gboolean _gotk4_atk1_ComponentIface_set_size(AtkComponent*, gint, gint);
+// extern gboolean _gotk4_atk1_ComponentIface_set_position(AtkComponent*, gint, gint, AtkCoordType);
+// extern gboolean _gotk4_atk1_ComponentIface_set_extents(AtkComponent*, gint, gint, gint, gint, AtkCoordType);
+// extern gboolean _gotk4_atk1_ComponentIface_scroll_to_point(AtkComponent*, AtkCoordType, gint, gint);
+// extern gboolean _gotk4_atk1_ComponentIface_scroll_to(AtkComponent*, AtkScrollType);
+// extern gboolean _gotk4_atk1_ComponentIface_grab_focus(AtkComponent*);
+// extern gboolean _gotk4_atk1_ComponentIface_contains(AtkComponent*, gint, gint, AtkCoordType);
+// extern gboolean _gotk4_atk1_ActionIface_set_description(AtkAction*, gint, gchar*);
+// extern gboolean _gotk4_atk1_ActionIface_do_action(AtkAction*, gint);
+// extern GSList* _gotk4_atk1_ValueIface_get_sub_ranges(AtkValue*);
+// extern GIOChannel* _gotk4_atk1_StreamableContentIface_get_stream(AtkStreamableContent*, gchar*);
+// extern AtkTextRange** _gotk4_atk1_TextIface_get_bounded_ranges(AtkText*, AtkTextRectangle*, AtkCoordType, AtkTextClipType, AtkTextClipType);
 // extern AtkStateSet* _gotk4_atk1_ObjectClass_ref_state_set(AtkObject*);
 // extern AtkRole _gotk4_atk1_ObjectClass_get_role(AtkObject*);
 // extern AtkRelationSet* _gotk4_atk1_ObjectClass_ref_relation_set(AtkObject*);
+// extern AtkRange* _gotk4_atk1_ValueIface_get_range(AtkValue*);
+// extern AtkObject* _gotk4_atk1_TableIface_ref_at(AtkTable*, gint, gint);
+// extern AtkObject* _gotk4_atk1_TableIface_get_summary(AtkTable*);
+// extern AtkObject* _gotk4_atk1_TableIface_get_row_header(AtkTable*, gint);
+// extern AtkObject* _gotk4_atk1_TableIface_get_column_header(AtkTable*, gint);
+// extern AtkObject* _gotk4_atk1_TableIface_get_caption(AtkTable*);
+// extern AtkObject* _gotk4_atk1_TableCellIface_get_table(AtkTableCell*);
+// extern AtkObject* _gotk4_atk1_SelectionIface_ref_selection(AtkSelection*, gint);
 // extern AtkObject* _gotk4_atk1_ObjectClass_get_parent(AtkObject*);
 // extern AtkObject* _gotk4_atk1_HyperlinkClass_get_object(AtkHyperlink*, gint);
+// extern AtkObject* _gotk4_atk1_ComponentIface_ref_accessible_at_point(AtkComponent*, gint, gint, AtkCoordType);
 // extern AtkLayer _gotk4_atk1_ObjectClass_get_layer(AtkObject*);
+// extern AtkLayer _gotk4_atk1_ComponentIface_get_layer(AtkComponent*);
+// extern AtkHyperlink* _gotk4_atk1_HypertextIface_get_link(AtkHypertext*, gint);
+// extern AtkHyperlink* _gotk4_atk1_HyperlinkImplIface_get_hyperlink(AtkHyperlinkImpl*);
 // AtkHyperlink* _gotk4_atk1_HyperlinkImpl_virtual_get_hyperlink(void* fnptr, AtkHyperlinkImpl* arg0) {
 //   return ((AtkHyperlink* (*)(AtkHyperlinkImpl*))(fnptr))(arg0);
 // };
@@ -3297,6 +3426,122 @@ func RemoveKeyEventListener(listenerId uint) {
 	runtime.KeepAlive(listenerId)
 }
 
+// ActionOverrides contains methods that a subclass can implement
+// for the Action interface. Methods left nil keep the interface's
+// default implementation.
+type ActionOverrides struct {
+	// DoAction: perform the specified action on the object.
+	//
+	// The function takes the following parameters:
+	//
+	//   - i: action index corresponding to the action to be performed.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if success, FALSE otherwise.
+	DoAction func(i int) bool // optional
+	// Description returns a description of the specified action of the object.
+	//
+	// The function takes the following parameters:
+	//
+	//   - i: action index corresponding to the action to be performed.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8 (optional): description string, or NULL if action does not
+	//     implement this interface.
+	Description func(i int) string // optional
+	// Keybinding gets the keybinding which can be used to activate this
+	// action, if one exists. The string returned should contain localized,
+	// human-readable, key sequences as they would appear when displayed on
+	// screen. It must be in the format "mnemonic;sequence;shortcut".
+	//
+	// - The mnemonic key activates the object if it is presently enabled
+	// onscreen. This typically corresponds to the underlined letter within the
+	// widget. Example: "n" in a traditional "New..." menu item or the "a" in
+	// "Apply" for a button.
+	//
+	// - The sequence is the full list of keys which invoke the action even if
+	// the relevant element is not currently shown on screen. For instance,
+	// for a menu item the sequence is the keybindings used to open the parent
+	// menus before invoking. The sequence string is colon-delimited. Example:
+	// "Alt+F:N" in a traditional "New..." menu item.
+	//
+	// - The shortcut, if it exists, will invoke the same action without showing
+	// the component or its enclosing menus or dialogs. Example: "Ctrl+N" in a
+	// traditional "New..." menu item.
+	//
+	// Example: For a traditional "New..." menu item, the expected return
+	// value would be: "N;Alt+F:N;Ctrl+N" for the English locale and
+	// "N;Alt+D:N;Strg+N" for the German locale. If, hypothetically, this
+	// menu item lacked a mnemonic, it would be represented by ";;Ctrl+N" and
+	// ";;Strg+N" respectively.
+	//
+	// The function takes the following parameters:
+	//
+	//   - i: action index corresponding to the action to be performed.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8 (optional): keybinding which can be used to activate this
+	//     action, or NULL if there is no keybinding for this action.
+	Keybinding func(i int) string // optional
+	// LocalizedName returns the localized name of the specified action of the
+	// object.
+	//
+	// The function takes the following parameters:
+	//
+	//   - i: action index corresponding to the action to be performed.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8 (optional): name string, or NULL if action does not implement
+	//     this interface.
+	LocalizedName func(i int) string // optional
+	// NActions gets the number of accessible actions available on the object.
+	// If there are more than one, the first one is considered the "default"
+	// action of the object.
+	//
+	// The function returns the following values:
+	//
+	//   - gint: the number of actions, or 0 if action does not implement this
+	//     interface.
+	NActions func() int // optional
+	// Name returns a non-localized string naming the specified action of the
+	// object. This name is generally not descriptive of the end result of
+	// the action, but instead names the 'interaction type' which the object
+	// supports. By convention, the above strings should be used to represent
+	// the actions which correspond to the common point-and-click interaction
+	// techniques of the same name: i.e. "click", "press", "release", "drag",
+	// "drop", "popup", etc. The "popup" action should be used to pop up a
+	// context menu for the object, if one exists.
+	//
+	// For technical reasons, some toolkits cannot guarantee that the reported
+	// action is actually 'bound' to a nontrivial user event; i.e. the result of
+	// some actions via atk_action_do_action() may be NIL.
+	//
+	// The function takes the following parameters:
+	//
+	//   - i: action index corresponding to the action to be performed.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8 (optional): name string, or NULL if action does not implement
+	//     this interface.
+	Name func(i int) string // optional
+	// SetDescription sets a description of the specified action of the object.
+	//
+	// The function takes the following parameters:
+	//
+	//   - i: action index corresponding to the action to be performed.
+	//   - desc: description to be assigned to this action.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: gboolean representing if the description was successfully set;.
+	SetDescription func(i int, desc string) bool // optional
+}
+
 // Action: ATK interface provided by UI components which the user can
 // activate/interact with.
 //
@@ -3350,6 +3595,46 @@ type Actioner interface {
 }
 
 var _ Actioner = (*Action)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[ActionOverrides](
+		GTypeAction,
+		initActionIface,
+	)
+}
+
+func initActionIface(giface unsafe.Pointer, overrides ActionOverrides) {
+	iface := (*C.AtkActionIface)(giface)
+
+	if overrides.DoAction != nil {
+		iface.do_action = (*[0]byte)(C._gotk4_atk1_ActionIface_do_action)
+	}
+
+	if overrides.Description != nil {
+		iface.get_description = (*[0]byte)(C._gotk4_atk1_ActionIface_get_description)
+	}
+
+	if overrides.Keybinding != nil {
+		iface.get_keybinding = (*[0]byte)(C._gotk4_atk1_ActionIface_get_keybinding)
+	}
+
+	if overrides.LocalizedName != nil {
+		iface.get_localized_name = (*[0]byte)(C._gotk4_atk1_ActionIface_get_localized_name)
+	}
+
+	if overrides.NActions != nil {
+		iface.get_n_actions = (*[0]byte)(C._gotk4_atk1_ActionIface_get_n_actions)
+	}
+
+	if overrides.Name != nil {
+		iface.get_name = (*[0]byte)(C._gotk4_atk1_ActionIface_get_name)
+	}
+
+	if overrides.SetDescription != nil {
+		iface.set_description = (*[0]byte)(C._gotk4_atk1_ActionIface_set_description)
+	}
+
+}
 
 func wrapAction(obj *coreglib.Object) *Action {
 	return &Action{
@@ -3878,6 +4163,205 @@ func (action *Action) setDescription(i int, desc string) bool {
 	return _ok
 }
 
+// ComponentOverrides contains methods that a subclass can implement
+// for the Component interface. Methods left nil keep the interface's
+// default implementation.
+type ComponentOverrides struct {
+	BoundsChanged func(bounds *Rectangle) // optional
+	// Contains checks whether the specified point is within the extent of the
+	// component.
+	//
+	// Toolkit implementor note: ATK provides a default implementation for this
+	// virtual method. In general there are little reason to re-implement it.
+	//
+	// The function takes the following parameters:
+	//
+	//   - x coordinate.
+	//   - y coordinate.
+	//   - coordType specifies whether the coordinates are relative to the
+	//     screen or to the components top level window.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE or FALSE indicating whether the specified point is within
+	//     the extent of the component or not.
+	Contains func(x, y int, coordType CoordType) bool // optional
+	// Alpha returns the alpha value (i.e. the opacity) for this component,
+	// on a scale from 0 (fully transparent) to 1.0 (fully opaque).
+	//
+	// The function returns the following values:
+	//
+	//   - gdouble: alpha value from 0 to 1.0, inclusive.
+	Alpha func() float64 // optional
+	// Extents gets the rectangle which gives the extent of the component.
+	//
+	// If the extent can not be obtained (e.g. a non-embedded plug or missing
+	// support), all of x, y, width, height are set to -1.
+	//
+	// The function takes the following parameters:
+	//
+	//   - coordType specifies whether the coordinates are relative to the
+	//     screen or to the components top level window.
+	//
+	// The function returns the following values:
+	//
+	//   - x (optional) address of #gint to put x coordinate.
+	//   - y (optional) address of #gint to put y coordinate.
+	//   - width (optional) address of #gint to put width.
+	//   - height (optional) address of #gint to put height.
+	Extents func(coordType CoordType) (x, y, width, height int) // optional
+	// Layer gets the layer of the component.
+	//
+	// The function returns the following values:
+	//
+	//   - layer which is the layer of the component.
+	Layer func() Layer // optional
+	// MDIZOrder gets the zorder of the component. The value G_MININT will
+	// be returned if the layer of the component is not ATK_LAYER_MDI or
+	// ATK_LAYER_WINDOW.
+	//
+	// The function returns the following values:
+	//
+	//   - gint which is the zorder of the component, i.e. the depth at which
+	//     the component is shown in relation to other components in the same
+	//     container.
+	MDIZOrder func() int // optional
+	// Position gets the position of component in the form of a point specifying
+	// component's top-left corner.
+	//
+	// If the position can not be obtained (e.g. a non-embedded plug or missing
+	// support), x and y are set to -1.
+	//
+	// Deprecated: Since 2.12. Use atk_component_get_extents() instead.
+	//
+	// The function takes the following parameters:
+	//
+	//   - coordType specifies whether the coordinates are relative to the
+	//     screen or to the components top level window.
+	//
+	// The function returns the following values:
+	//
+	//   - x (optional) address of #gint to put x coordinate position.
+	//   - y (optional) address of #gint to put y coordinate position.
+	Position func(coordType CoordType) (x, y int) // optional
+	// Size gets the size of the component in terms of width and height.
+	//
+	// If the size can not be obtained (e.g. a non-embedded plug or missing
+	// support), width and height are set to -1.
+	//
+	// Deprecated: Since 2.12. Use atk_component_get_extents() instead.
+	//
+	// The function returns the following values:
+	//
+	//   - width (optional) address of #gint to put width of component.
+	//   - height (optional) address of #gint to put height of component.
+	Size func() (width, height int) // optional
+	// GrabFocus grabs focus for this component.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if successful, FALSE otherwise.
+	GrabFocus func() bool // optional
+	// RefAccessibleAtPoint gets a reference to the accessible child, if one
+	// exists, at the coordinate point specified by x and y.
+	//
+	// The function takes the following parameters:
+	//
+	//   - x coordinate.
+	//   - y coordinate.
+	//   - coordType specifies whether the coordinates are relative to the
+	//     screen or to the components top level window.
+	//
+	// The function returns the following values:
+	//
+	//   - object (optional): reference to the accessible child, if one exists.
+	RefAccessibleAtPoint func(x, y int, coordType CoordType) *AtkObject // optional
+	// RemoveFocusHandler: remove the handler specified by handler_id from the
+	// list of functions to be executed when this object receives focus events
+	// (in or out).
+	//
+	// Deprecated: If you need to track when an object gains or lose the focus,
+	// use the Object::state-change "focused" notification instead.
+	//
+	// The function takes the following parameters:
+	//
+	//   - handlerId: handler id of the focus handler to be removed from
+	//     component.
+	RemoveFocusHandler func(handlerId uint) // optional
+	// ScrollTo makes component visible on the screen by scrolling all necessary
+	// parents.
+	//
+	// Contrary to atk_component_set_position, this does not actually move
+	// component in its parent, this only makes the parents scroll so that the
+	// object shows up on the screen, given its current position within the
+	// parents.
+	//
+	// The function takes the following parameters:
+	//
+	//   - typ: specify where the object should be made visible.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: whether scrolling was successful.
+	ScrollTo func(typ ScrollType) bool // optional
+	// ScrollToPoint: move the top-left of component to a given position of the
+	// screen by scrolling all necessary parents.
+	//
+	// The function takes the following parameters:
+	//
+	//   - coords: specify whether coordinates are relative to the screen or to
+	//     the parent object.
+	//   - x: x-position where to scroll to.
+	//   - y: y-position where to scroll to.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: whether scrolling was successful.
+	ScrollToPoint func(coords CoordType, x, y int) bool // optional
+	// SetExtents sets the extents of component.
+	//
+	// The function takes the following parameters:
+	//
+	//   - x coordinate.
+	//   - y coordinate.
+	//   - width to set for component.
+	//   - height to set for component.
+	//   - coordType specifies whether the coordinates are relative to the
+	//     screen or to the components top level window.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE or FALSE whether the extents were set or not.
+	SetExtents func(x, y, width, height int, coordType CoordType) bool // optional
+	// SetPosition sets the position of component.
+	//
+	// Contrary to atk_component_scroll_to, this does not trigger any scrolling,
+	// this just moves component in its parent.
+	//
+	// The function takes the following parameters:
+	//
+	//   - x coordinate.
+	//   - y coordinate.
+	//   - coordType specifies whether the coordinates are relative to the
+	//     screen or to the component's top level window.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE or FALSE whether or not the position was set or not.
+	SetPosition func(x, y int, coordType CoordType) bool // optional
+	// SetSize: set the size of the component in terms of width and height.
+	//
+	// The function takes the following parameters:
+	//
+	//   - width to set for component.
+	//   - height to set for component.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE or FALSE whether the size was set or not.
+	SetSize func(width, height int) bool // optional
+}
+
 // Component: ATK interface provided by UI components which occupy a physical
 // area on the screen. which the user can activate/interact with.
 //
@@ -3951,6 +4435,82 @@ type Componenter interface {
 }
 
 var _ Componenter = (*Component)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[ComponentOverrides](
+		GTypeComponent,
+		initComponentIface,
+	)
+}
+
+func initComponentIface(giface unsafe.Pointer, overrides ComponentOverrides) {
+	iface := (*C.AtkComponentIface)(giface)
+
+	if overrides.BoundsChanged != nil {
+		iface.bounds_changed = (*[0]byte)(C._gotk4_atk1_ComponentIface_bounds_changed)
+	}
+
+	if overrides.Contains != nil {
+		iface.contains = (*[0]byte)(C._gotk4_atk1_ComponentIface_contains)
+	}
+
+	if overrides.Alpha != nil {
+		iface.get_alpha = (*[0]byte)(C._gotk4_atk1_ComponentIface_get_alpha)
+	}
+
+	if overrides.Extents != nil {
+		iface.get_extents = (*[0]byte)(C._gotk4_atk1_ComponentIface_get_extents)
+	}
+
+	if overrides.Layer != nil {
+		iface.get_layer = (*[0]byte)(C._gotk4_atk1_ComponentIface_get_layer)
+	}
+
+	if overrides.MDIZOrder != nil {
+		iface.get_mdi_zorder = (*[0]byte)(C._gotk4_atk1_ComponentIface_get_mdi_zorder)
+	}
+
+	if overrides.Position != nil {
+		iface.get_position = (*[0]byte)(C._gotk4_atk1_ComponentIface_get_position)
+	}
+
+	if overrides.Size != nil {
+		iface.get_size = (*[0]byte)(C._gotk4_atk1_ComponentIface_get_size)
+	}
+
+	if overrides.GrabFocus != nil {
+		iface.grab_focus = (*[0]byte)(C._gotk4_atk1_ComponentIface_grab_focus)
+	}
+
+	if overrides.RefAccessibleAtPoint != nil {
+		iface.ref_accessible_at_point = (*[0]byte)(C._gotk4_atk1_ComponentIface_ref_accessible_at_point)
+	}
+
+	if overrides.RemoveFocusHandler != nil {
+		iface.remove_focus_handler = (*[0]byte)(C._gotk4_atk1_ComponentIface_remove_focus_handler)
+	}
+
+	if overrides.ScrollTo != nil {
+		iface.scroll_to = (*[0]byte)(C._gotk4_atk1_ComponentIface_scroll_to)
+	}
+
+	if overrides.ScrollToPoint != nil {
+		iface.scroll_to_point = (*[0]byte)(C._gotk4_atk1_ComponentIface_scroll_to_point)
+	}
+
+	if overrides.SetExtents != nil {
+		iface.set_extents = (*[0]byte)(C._gotk4_atk1_ComponentIface_set_extents)
+	}
+
+	if overrides.SetPosition != nil {
+		iface.set_position = (*[0]byte)(C._gotk4_atk1_ComponentIface_set_position)
+	}
+
+	if overrides.SetSize != nil {
+		iface.set_size = (*[0]byte)(C._gotk4_atk1_ComponentIface_set_size)
+	}
+
+}
 
 func wrapComponent(obj *coreglib.Object) *Component {
 	return &Component{
@@ -5042,6 +5602,47 @@ func (component *Component) setSize(width, height int) bool {
 	return _ok
 }
 
+// DocumentOverrides contains methods that a subclass can implement
+// for the Document interface. Methods left nil keep the interface's
+// default implementation.
+type DocumentOverrides struct {
+	// CurrentPageNumber retrieves the current page number inside document.
+	//
+	// The function returns the following values:
+	//
+	//   - gint: current page number inside document, or -1 if not implemented,
+	//     not know by the implementor, or irrelevant.
+	CurrentPageNumber func() int // optional
+	// Document gets a gpointer that points to an instance of the DOM. It is up
+	// to the caller to check atk_document_get_type to determine how to cast
+	// this pointer.
+	//
+	// Deprecated: Since 2.12. document is already a representation of the
+	// document. Use it directly, or one of its children, as an instance of the
+	// DOM.
+	//
+	// The function returns the following values:
+	//
+	//   - gpointer (optional) that points to an instance of the DOM.
+	Document func() unsafe.Pointer // optional
+	// DocumentType gets a string indicating the document type.
+	//
+	// Deprecated: Since 2.12. Please use atk_document_get_attributes() to ask
+	// for the document type if it applies.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8: string indicating the document type.
+	DocumentType func() string // optional
+	// PageCount retrieves the total number of pages inside document.
+	//
+	// The function returns the following values:
+	//
+	//   - gint: total page count of document, or -1 if not implemented,
+	//     not know by the implementor or irrelevant.
+	PageCount func() int // optional
+}
+
 // Document: ATK interface which represents the toplevel container for document
 // content.
 //
@@ -5105,6 +5706,34 @@ type Documenter interface {
 }
 
 var _ Documenter = (*Document)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[DocumentOverrides](
+		GTypeDocument,
+		initDocumentIface,
+	)
+}
+
+func initDocumentIface(giface unsafe.Pointer, overrides DocumentOverrides) {
+	iface := (*C.AtkDocumentIface)(giface)
+
+	if overrides.CurrentPageNumber != nil {
+		iface.get_current_page_number = (*[0]byte)(C._gotk4_atk1_DocumentIface_get_current_page_number)
+	}
+
+	if overrides.Document != nil {
+		iface.get_document = (*[0]byte)(C._gotk4_atk1_DocumentIface_get_document)
+	}
+
+	if overrides.DocumentType != nil {
+		iface.get_document_type = (*[0]byte)(C._gotk4_atk1_DocumentIface_get_document_type)
+	}
+
+	if overrides.PageCount != nil {
+		iface.get_page_count = (*[0]byte)(C._gotk4_atk1_DocumentIface_get_page_count)
+	}
+
+}
 
 func wrapDocument(obj *coreglib.Object) *Document {
 	return &Document{
@@ -5572,6 +6201,47 @@ func (document *Document) setDocumentAttribute(attributeName, attributeValue str
 	return _ok
 }
 
+// EditableTextOverrides contains methods that a subclass can implement
+// for the EditableText interface. Methods left nil keep the interface's
+// default implementation.
+type EditableTextOverrides struct {
+	// CopyText: copy text from start_pos up to, but not including end_pos to
+	// the clipboard.
+	//
+	// The function takes the following parameters:
+	//
+	//   - startPos: start position.
+	//   - endPos: end position.
+	CopyText func(startPos, endPos int) // optional
+	// CutText: copy text from start_pos up to, but not including end_pos to the
+	// clipboard and then delete from the widget.
+	//
+	// The function takes the following parameters:
+	//
+	//   - startPos: start position.
+	//   - endPos: end position.
+	CutText func(startPos, endPos int) // optional
+	// DeleteText: delete text start_pos up to, but not including end_pos.
+	//
+	// The function takes the following parameters:
+	//
+	//   - startPos: start position.
+	//   - endPos: end position.
+	DeleteText func(startPos, endPos int) // optional
+	// PasteText: paste text from clipboard to specified position.
+	//
+	// The function takes the following parameters:
+	//
+	//   - position to paste.
+	PasteText func(position int) // optional
+	// SetTextContents: set text contents of text.
+	//
+	// The function takes the following parameters:
+	//
+	//   - str: string to set for text contents of text.
+	SetTextContents func(str string) // optional
+}
+
 // EditableText: ATK interface implemented by components containing
 // user-editable text content.
 //
@@ -5616,6 +6286,38 @@ type EditableTexter interface {
 }
 
 var _ EditableTexter = (*EditableText)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[EditableTextOverrides](
+		GTypeEditableText,
+		initEditableTextIface,
+	)
+}
+
+func initEditableTextIface(giface unsafe.Pointer, overrides EditableTextOverrides) {
+	iface := (*C.AtkEditableTextIface)(giface)
+
+	if overrides.CopyText != nil {
+		iface.copy_text = (*[0]byte)(C._gotk4_atk1_EditableTextIface_copy_text)
+	}
+
+	if overrides.CutText != nil {
+		iface.cut_text = (*[0]byte)(C._gotk4_atk1_EditableTextIface_cut_text)
+	}
+
+	if overrides.DeleteText != nil {
+		iface.delete_text = (*[0]byte)(C._gotk4_atk1_EditableTextIface_delete_text)
+	}
+
+	if overrides.PasteText != nil {
+		iface.paste_text = (*[0]byte)(C._gotk4_atk1_EditableTextIface_paste_text)
+	}
+
+	if overrides.SetTextContents != nil {
+		iface.set_text_contents = (*[0]byte)(C._gotk4_atk1_EditableTextIface_set_text_contents)
+	}
+
+}
 
 func wrapEditableText(obj *coreglib.Object) *EditableText {
 	return &EditableText{
@@ -5899,6 +6601,19 @@ func (text *EditableText) setTextContents(str string) {
 	runtime.KeepAlive(str)
 }
 
+// HyperlinkImplOverrides contains methods that a subclass can implement
+// for the HyperlinkImpl interface. Methods left nil keep the interface's
+// default implementation.
+type HyperlinkImplOverrides struct {
+	// Hyperlink gets the hyperlink associated with this object.
+	//
+	// The function returns the following values:
+	//
+	//   - hyperlink: atkHyperlink object which points to this implementing
+	//     AtkObject.
+	Hyperlink func() *Hyperlink // optional
+}
+
 // HyperlinkImpl: queryable interface which allows AtkHyperlink instances
 // associated with an AtkObject to be obtained. AtkHyperlinkImpl corresponds
 // to AT-SPI's Hyperlink interface, and differs from AtkHyperlink in that
@@ -5925,6 +6640,22 @@ type HyperlinkImpler interface {
 }
 
 var _ HyperlinkImpler = (*HyperlinkImpl)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[HyperlinkImplOverrides](
+		GTypeHyperlinkImpl,
+		initHyperlinkImplIface,
+	)
+}
+
+func initHyperlinkImplIface(giface unsafe.Pointer, overrides HyperlinkImplOverrides) {
+	iface := (*C.AtkHyperlinkImplIface)(giface)
+
+	if overrides.Hyperlink != nil {
+		iface.get_hyperlink = (*[0]byte)(C._gotk4_atk1_HyperlinkImplIface_get_hyperlink)
+	}
+
+}
 
 func wrapHyperlinkImpl(obj *coreglib.Object) *HyperlinkImpl {
 	return &HyperlinkImpl{
@@ -5983,6 +6714,41 @@ func (impl *HyperlinkImpl) hyperlink() *Hyperlink {
 	return _hyperlink
 }
 
+// HypertextOverrides contains methods that a subclass can implement
+// for the Hypertext interface. Methods left nil keep the interface's
+// default implementation.
+type HypertextOverrides struct {
+	// Link gets the link in this hypertext document at index link_index.
+	//
+	// The function takes the following parameters:
+	//
+	//   - linkIndex: integer specifying the desired link.
+	//
+	// The function returns the following values:
+	//
+	//   - hyperlink: link in this hypertext document at index link_index.
+	Link func(linkIndex int) *Hyperlink // optional
+	// LinkIndex gets the index into the array of hyperlinks that is associated
+	// with the character specified by char_index.
+	//
+	// The function takes the following parameters:
+	//
+	//   - charIndex: character index.
+	//
+	// The function returns the following values:
+	//
+	//   - gint: index into the array of hyperlinks in hypertext, or -1 if there
+	//     is no hyperlink associated with this character.
+	LinkIndex func(charIndex int) int // optional
+	// NLinks gets the number of links within this hypertext document.
+	//
+	// The function returns the following values:
+	//
+	//   - gint: number of links within this hypertext document.
+	NLinks       func() int          // optional
+	LinkSelected func(linkIndex int) // optional
+}
+
 // Hypertext: ATK interface which provides standard mechanism for manipulating
 // hyperlinks.
 //
@@ -6023,6 +6789,34 @@ type Hypertexter interface {
 }
 
 var _ Hypertexter = (*Hypertext)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[HypertextOverrides](
+		GTypeHypertext,
+		initHypertextIface,
+	)
+}
+
+func initHypertextIface(giface unsafe.Pointer, overrides HypertextOverrides) {
+	iface := (*C.AtkHypertextIface)(giface)
+
+	if overrides.Link != nil {
+		iface.get_link = (*[0]byte)(C._gotk4_atk1_HypertextIface_get_link)
+	}
+
+	if overrides.LinkIndex != nil {
+		iface.get_link_index = (*[0]byte)(C._gotk4_atk1_HypertextIface_get_link_index)
+	}
+
+	if overrides.NLinks != nil {
+		iface.get_n_links = (*[0]byte)(C._gotk4_atk1_HypertextIface_get_n_links)
+	}
+
+	if overrides.LinkSelected != nil {
+		iface.link_selected = (*[0]byte)(C._gotk4_atk1_HypertextIface_link_selected)
+	}
+
+}
 
 func wrapHypertext(obj *coreglib.Object) *Hypertext {
 	return &Hypertext{
@@ -6222,6 +7016,68 @@ func (hypertext *Hypertext) linkSelected(linkIndex int) {
 	runtime.KeepAlive(linkIndex)
 }
 
+// ImageOverrides contains methods that a subclass can implement
+// for the Image interface. Methods left nil keep the interface's
+// default implementation.
+type ImageOverrides struct {
+	// ImageDescription: get a textual description of this image.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8: string representing the image description.
+	ImageDescription func() string // optional
+	// ImageLocale retrieves the locale identifier associated to the Image.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8 (optional): string corresponding to the POSIX LC_MESSAGES locale
+	//     used by the image description, or NULL if the image does not specify
+	//     a locale.
+	ImageLocale func() string // optional
+	// ImagePosition gets the position of the image in the form of a point
+	// specifying the images top-left corner.
+	//
+	// If the position can not be obtained (e.g. missing support), x and y are
+	// set to -1.
+	//
+	// The function takes the following parameters:
+	//
+	//   - coordType specifies whether the coordinates are relative to the
+	//     screen or to the components top level window.
+	//
+	// The function returns the following values:
+	//
+	//   - x (optional) address of #gint to put x coordinate position;
+	//     otherwise, -1 if value cannot be obtained.
+	//   - y (optional) address of #gint to put y coordinate position;
+	//     otherwise, -1 if value cannot be obtained.
+	ImagePosition func(coordType CoordType) (x, y int) // optional
+	// ImageSize: get the width and height in pixels for the specified image.
+	// The values of width and height are returned as -1 if the values cannot be
+	// obtained (for instance, if the object is not onscreen).
+	//
+	// If the size can not be obtained (e.g. missing support), x and y are set
+	// to -1.
+	//
+	// The function returns the following values:
+	//
+	//   - width (optional): filled with the image width, or -1 if the value
+	//     cannot be obtained.
+	//   - height (optional): filled with the image height, or -1 if the value
+	//     cannot be obtained.
+	ImageSize func() (width, height int) // optional
+	// SetImageDescription sets the textual description for this image.
+	//
+	// The function takes the following parameters:
+	//
+	//   - description: string description to set for image.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: boolean TRUE, or FALSE if operation could not be completed.
+	SetImageDescription func(description string) bool // optional
+}
+
 // Image: ATK Interface implemented by components which expose image or pixmap
 // content on-screen.
 //
@@ -6266,6 +7122,38 @@ type Imager interface {
 }
 
 var _ Imager = (*Image)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[ImageOverrides](
+		GTypeImage,
+		initImageIface,
+	)
+}
+
+func initImageIface(giface unsafe.Pointer, overrides ImageOverrides) {
+	iface := (*C.AtkImageIface)(giface)
+
+	if overrides.ImageDescription != nil {
+		iface.get_image_description = (*[0]byte)(C._gotk4_atk1_ImageIface_get_image_description)
+	}
+
+	if overrides.ImageLocale != nil {
+		iface.get_image_locale = (*[0]byte)(C._gotk4_atk1_ImageIface_get_image_locale)
+	}
+
+	if overrides.ImagePosition != nil {
+		iface.get_image_position = (*[0]byte)(C._gotk4_atk1_ImageIface_get_image_position)
+	}
+
+	if overrides.ImageSize != nil {
+		iface.get_image_size = (*[0]byte)(C._gotk4_atk1_ImageIface_get_image_size)
+	}
+
+	if overrides.SetImageDescription != nil {
+		iface.set_image_description = (*[0]byte)(C._gotk4_atk1_ImageIface_set_image_description)
+	}
+
+}
 
 func wrapImage(obj *coreglib.Object) *Image {
 	return &Image{
@@ -6631,6 +7519,92 @@ func BaseImplementorIface(obj ImplementorIfacer) *ImplementorIface {
 	return obj.baseImplementorIface()
 }
 
+// SelectionOverrides contains methods that a subclass can implement
+// for the Selection interface. Methods left nil keep the interface's
+// default implementation.
+type SelectionOverrides struct {
+	// AddSelection adds the specified accessible child of the object to the
+	// object's selection.
+	//
+	// The function takes the following parameters:
+	//
+	//   - i specifying the child index.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if success, FALSE otherwise.
+	AddSelection func(i int) bool // optional
+	// ClearSelection clears the selection in the object so that no children in
+	// the object are selected.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if success, FALSE otherwise.
+	ClearSelection func() bool // optional
+	// SelectionCount gets the number of accessible children currently selected.
+	// Note: callers should not rely on NULL or on a zero value for indication
+	// of whether AtkSelectionIface is implemented, they should use type
+	// checking/interface checking macros or the atk_get_accessible_value()
+	// convenience method.
+	//
+	// The function returns the following values:
+	//
+	//   - gint representing the number of items selected, or 0 if selection
+	//     does not implement this interface.
+	SelectionCount func() int // optional
+	// IsChildSelected determines if the current child of this object is
+	// selected Note: callers should not rely on NULL or on a zero value for
+	// indication of whether AtkSelectionIface is implemented, they should use
+	// type checking/interface checking macros or the atk_get_accessible_value()
+	// convenience method.
+	//
+	// The function takes the following parameters:
+	//
+	//   - i specifying the child index.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: gboolean representing the specified child is selected, or 0 if
+	//     selection does not implement this interface.
+	IsChildSelected func(i int) bool // optional
+	// RefSelection gets a reference to the accessible object representing the
+	// specified selected child of the object. Note: callers should not rely on
+	// NULL or on a zero value for indication of whether AtkSelectionIface is
+	// implemented, they should use type checking/interface checking macros or
+	// the atk_get_accessible_value() convenience method.
+	//
+	// The function takes the following parameters:
+	//
+	//   - i specifying the index in the selection set. (e.g. the ith selection
+	//     as opposed to the ith child).
+	//
+	// The function returns the following values:
+	//
+	//   - object (optional) representing the selected accessible, or NULL if
+	//     selection does not implement this interface.
+	RefSelection func(i int) *AtkObject // optional
+	// RemoveSelection removes the specified child of the object from the
+	// object's selection.
+	//
+	// The function takes the following parameters:
+	//
+	//   - i specifying the index in the selection set. (e.g. the ith selection
+	//     as opposed to the ith child).
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if success, FALSE otherwise.
+	RemoveSelection func(i int) bool // optional
+	// SelectAllSelection causes every child of the object to be selected if the
+	// object supports multiple selections.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if success, FALSE otherwise.
+	SelectAllSelection func() bool // optional
+	SelectionChanged   func()      // optional
+}
+
 // Selection: ATK interface implemented by container objects whose Object
 // children can be selected.
 //
@@ -6689,6 +7663,50 @@ type Selectioner interface {
 }
 
 var _ Selectioner = (*Selection)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[SelectionOverrides](
+		GTypeSelection,
+		initSelectionIface,
+	)
+}
+
+func initSelectionIface(giface unsafe.Pointer, overrides SelectionOverrides) {
+	iface := (*C.AtkSelectionIface)(giface)
+
+	if overrides.AddSelection != nil {
+		iface.add_selection = (*[0]byte)(C._gotk4_atk1_SelectionIface_add_selection)
+	}
+
+	if overrides.ClearSelection != nil {
+		iface.clear_selection = (*[0]byte)(C._gotk4_atk1_SelectionIface_clear_selection)
+	}
+
+	if overrides.SelectionCount != nil {
+		iface.get_selection_count = (*[0]byte)(C._gotk4_atk1_SelectionIface_get_selection_count)
+	}
+
+	if overrides.IsChildSelected != nil {
+		iface.is_child_selected = (*[0]byte)(C._gotk4_atk1_SelectionIface_is_child_selected)
+	}
+
+	if overrides.RefSelection != nil {
+		iface.ref_selection = (*[0]byte)(C._gotk4_atk1_SelectionIface_ref_selection)
+	}
+
+	if overrides.RemoveSelection != nil {
+		iface.remove_selection = (*[0]byte)(C._gotk4_atk1_SelectionIface_remove_selection)
+	}
+
+	if overrides.SelectAllSelection != nil {
+		iface.select_all_selection = (*[0]byte)(C._gotk4_atk1_SelectionIface_select_all_selection)
+	}
+
+	if overrides.SelectionChanged != nil {
+		iface.selection_changed = (*[0]byte)(C._gotk4_atk1_SelectionIface_selection_changed)
+	}
+
+}
 
 func wrapSelection(obj *coreglib.Object) *Selection {
 	return &Selection{
@@ -7155,6 +8173,59 @@ func (selection *Selection) selectionChanged() {
 	runtime.KeepAlive(selection)
 }
 
+// StreamableContentOverrides contains methods that a subclass can implement
+// for the StreamableContent interface. Methods left nil keep the interface's
+// default implementation.
+type StreamableContentOverrides struct {
+	// MIMEType gets the character string of the specified mime type. The first
+	// mime type is at position 0, the second at position 1, and so on.
+	//
+	// The function takes the following parameters:
+	//
+	//   - i: gint representing the position of the mime type starting from 0.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8: gchar* representing the specified mime type; the caller should
+	//     not free the character string.
+	MIMEType func(i int) string // optional
+	// NMIMETypes gets the number of mime types supported by this object.
+	//
+	// The function returns the following values:
+	//
+	//   - gint which is the number of mime types supported by the object.
+	NMIMETypes func() int // optional
+	// Stream gets the content in the specified mime type.
+	//
+	// The function takes the following parameters:
+	//
+	//   - mimeType: gchar* representing the mime type.
+	//
+	// The function returns the following values:
+	//
+	//   - ioChannel which contains the content in the specified mime type.
+	Stream func(mimeType string) *glib.IOChannel // optional
+	// URI: get a string representing a URI in IETF standard format (see
+	// http://www.ietf.org/rfc/rfc2396.txt) from which the object's content
+	// may be streamed in the specified mime-type, if one is available. If
+	// mime_type is NULL, the URI for the default (and possibly only) mime-type
+	// is returned.
+	//
+	// Note that it is possible for get_uri to return NULL but for get_stream to
+	// work nonetheless, since not all GIOChannels connect to URIs.
+	//
+	// The function takes the following parameters:
+	//
+	//   - mimeType: gchar* representing the mime type, or NULL to request a URI
+	//     for the default mime type.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8 (optional) returns a string representing a URI, or NULL if no
+	//     corresponding URI can be constructed.
+	URI func(mimeType string) string // optional
+}
+
 // StreamableContent: ATK interface which provides access to streamable content.
 //
 // An interface whereby an object allows its backing content to be streamed
@@ -7201,6 +8272,34 @@ type StreamableContenter interface {
 }
 
 var _ StreamableContenter = (*StreamableContent)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[StreamableContentOverrides](
+		GTypeStreamableContent,
+		initStreamableContentIface,
+	)
+}
+
+func initStreamableContentIface(giface unsafe.Pointer, overrides StreamableContentOverrides) {
+	iface := (*C.AtkStreamableContentIface)(giface)
+
+	if overrides.MIMEType != nil {
+		iface.get_mime_type = (*[0]byte)(C._gotk4_atk1_StreamableContentIface_get_mime_type)
+	}
+
+	if overrides.NMIMETypes != nil {
+		iface.get_n_mime_types = (*[0]byte)(C._gotk4_atk1_StreamableContentIface_get_n_mime_types)
+	}
+
+	if overrides.Stream != nil {
+		iface.get_stream = (*[0]byte)(C._gotk4_atk1_StreamableContentIface_get_stream)
+	}
+
+	if overrides.URI != nil {
+		iface.get_uri = (*[0]byte)(C._gotk4_atk1_StreamableContentIface_get_uri)
+	}
+
+}
 
 func wrapStreamableContent(obj *coreglib.Object) *StreamableContent {
 	return &StreamableContent{
@@ -7474,6 +8573,343 @@ func (streamable *StreamableContent) urI(mimeType string) string {
 	return _utf8
 }
 
+// TableOverrides contains methods that a subclass can implement
+// for the Table interface. Methods left nil keep the interface's
+// default implementation.
+type TableOverrides struct {
+	// AddColumnSelection adds the specified column to the selection.
+	//
+	// The function takes the following parameters:
+	//
+	//   - column representing a column in table.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: gboolean representing if the column was successfully added to the
+	//     selection, or 0 if value does not implement this interface.
+	AddColumnSelection func(column int) bool // optional
+	// AddRowSelection adds the specified row to the selection.
+	//
+	// The function takes the following parameters:
+	//
+	//   - row representing a row in table.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: gboolean representing if row was successfully added to selection,
+	//     or 0 if value does not implement this interface.
+	AddRowSelection func(row int) bool // optional
+	// The function takes the following parameters:
+	//
+	//   - column
+	//   - numDeleted
+	ColumnDeleted func(column, numDeleted int) // optional
+	// The function takes the following parameters:
+	//
+	//   - column
+	//   - numInserted
+	ColumnInserted  func(column, numInserted int) // optional
+	ColumnReordered func()                        // optional
+	// Caption gets the caption for the table.
+	//
+	// The function returns the following values:
+	//
+	//   - object (optional): atkObject* representing the table caption, or NULL
+	//     if value does not implement this interface.
+	Caption func() *AtkObject // optional
+	// ColumnAtIndex gets a #gint representing the column at the specified
+	// index_.
+	//
+	// Deprecated: Since 2.12.
+	//
+	// The function takes the following parameters:
+	//
+	//   - index_ representing an index in table.
+	//
+	// The function returns the following values:
+	//
+	//   - gint representing the column at the specified index, or -1 if the
+	//     table does not implement this method.
+	ColumnAtIndex func(index_ int) int // optional
+	// ColumnDescription gets the description text of the specified column in
+	// the table.
+	//
+	// The function takes the following parameters:
+	//
+	//   - column representing a column in table.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8: gchar* representing the column description, or NULL if value
+	//     does not implement this interface.
+	ColumnDescription func(column int) string // optional
+	// ColumnExtentAt gets the number of columns occupied by the accessible
+	// object at the specified row and column in the table.
+	//
+	// The function takes the following parameters:
+	//
+	//   - row representing a row in table.
+	//   - column representing a column in table.
+	//
+	// The function returns the following values:
+	//
+	//   - gint representing the column extent at specified position, or 0 if
+	//     value does not implement this interface.
+	ColumnExtentAt func(row, column int) int // optional
+	// ColumnHeader gets the column header of a specified column in an
+	// accessible table.
+	//
+	// The function takes the following parameters:
+	//
+	//   - column representing a column in the table.
+	//
+	// The function returns the following values:
+	//
+	//   - object (optional): atkObject* representing the specified column
+	//     header, or NULL if value does not implement this interface.
+	ColumnHeader func(column int) *AtkObject // optional
+	// IndexAt gets a #gint representing the index at the specified row and
+	// column.
+	//
+	// Deprecated: Since 2.12. Use atk_table_ref_at() in order to get the
+	// accessible that represents the cell at (row, column).
+	//
+	// The function takes the following parameters:
+	//
+	//   - row representing a row in table.
+	//   - column representing a column in table.
+	//
+	// The function returns the following values:
+	//
+	//   - gint representing the index at specified position. The value -1 is
+	//     returned if the object at row,column is not a child of table or table
+	//     does not implement this interface.
+	IndexAt func(row, column int) int // optional
+	// NColumns gets the number of columns in the table.
+	//
+	// The function returns the following values:
+	//
+	//   - gint representing the number of columns, or 0 if value does not
+	//     implement this interface.
+	NColumns func() int // optional
+	// NRows gets the number of rows in the table.
+	//
+	// The function returns the following values:
+	//
+	//   - gint representing the number of rows, or 0 if value does not
+	//     implement this interface.
+	NRows func() int // optional
+	// RowAtIndex gets a #gint representing the row at the specified index_.
+	//
+	// Deprecated: since 2.12.
+	//
+	// The function takes the following parameters:
+	//
+	//   - index_ representing an index in table.
+	//
+	// The function returns the following values:
+	//
+	//   - gint representing the row at the specified index, or -1 if the table
+	//     does not implement this method.
+	RowAtIndex func(index_ int) int // optional
+	// RowDescription gets the description text of the specified row in the
+	// table.
+	//
+	// The function takes the following parameters:
+	//
+	//   - row representing a row in table.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8 (optional): gchar* representing the row description, or NULL if
+	//     value does not implement this interface.
+	RowDescription func(row int) string // optional
+	// RowExtentAt gets the number of rows occupied by the accessible object at
+	// a specified row and column in the table.
+	//
+	// The function takes the following parameters:
+	//
+	//   - row representing a row in table.
+	//   - column representing a column in table.
+	//
+	// The function returns the following values:
+	//
+	//   - gint representing the row extent at specified position, or 0 if value
+	//     does not implement this interface.
+	RowExtentAt func(row, column int) int // optional
+	// RowHeader gets the row header of a specified row in an accessible table.
+	//
+	// The function takes the following parameters:
+	//
+	//   - row representing a row in the table.
+	//
+	// The function returns the following values:
+	//
+	//   - object (optional): atkObject* representing the specified row header,
+	//     or NULL if value does not implement this interface.
+	RowHeader func(row int) *AtkObject // optional
+	// SelectedColumns gets the selected columns of the table by initializing
+	// **selected with the selected column numbers. This array should be freed
+	// by the caller.
+	//
+	// The function takes the following parameters:
+	//
+	//   - selected that is to contain the selected columns numbers.
+	//
+	// The function returns the following values:
+	//
+	//   - gint representing the number of selected columns, or 0 if value does
+	//     not implement this interface.
+	SelectedColumns func(selected **int) int // optional
+	// SelectedRows gets the selected rows of the table by initializing
+	// **selected with the selected row numbers. This array should be freed by
+	// the caller.
+	//
+	// The function takes the following parameters:
+	//
+	//   - selected that is to contain the selected row numbers.
+	//
+	// The function returns the following values:
+	//
+	//   - gint representing the number of selected rows, or zero if value does
+	//     not implement this interface.
+	SelectedRows func(selected **int) int // optional
+	// Summary gets the summary description of the table.
+	//
+	// The function returns the following values:
+	//
+	//   - object: atkObject* representing a summary description of the table,
+	//     or zero if value does not implement this interface.
+	Summary func() *AtkObject // optional
+	// IsColumnSelected gets a boolean value indicating whether the specified
+	// column is selected.
+	//
+	// The function takes the following parameters:
+	//
+	//   - column representing a column in table.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: gboolean representing if the column is selected, or 0 if value
+	//     does not implement this interface.
+	IsColumnSelected func(column int) bool // optional
+	// IsRowSelected gets a boolean value indicating whether the specified row
+	// is selected.
+	//
+	// The function takes the following parameters:
+	//
+	//   - row representing a row in table.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: gboolean representing if the row is selected, or 0 if value does
+	//     not implement this interface.
+	IsRowSelected func(row int) bool // optional
+	// IsSelected gets a boolean value indicating whether the accessible object
+	// at the specified row and column is selected.
+	//
+	// The function takes the following parameters:
+	//
+	//   - row representing a row in table.
+	//   - column representing a column in table.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: gboolean representing if the cell is selected, or 0 if value does
+	//     not implement this interface.
+	IsSelected   func(row, column int) bool // optional
+	ModelChanged func()                     // optional
+	// RefAt: get a reference to the table cell at row, column. This cell should
+	// implement the interface TableCell.
+	//
+	// The function takes the following parameters:
+	//
+	//   - row representing a row in table.
+	//   - column representing a column in table.
+	//
+	// The function returns the following values:
+	//
+	//   - object representing the referred to accessible.
+	RefAt func(row, column int) *AtkObject // optional
+	// RemoveColumnSelection adds the specified column to the selection.
+	//
+	// The function takes the following parameters:
+	//
+	//   - column representing a column in table.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: gboolean representing if the column was successfully removed from
+	//     the selection, or 0 if value does not implement this interface.
+	RemoveColumnSelection func(column int) bool // optional
+	// RemoveRowSelection removes the specified row from the selection.
+	//
+	// The function takes the following parameters:
+	//
+	//   - row representing a row in table.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: gboolean representing if the row was successfully removed from
+	//     the selection, or 0 if value does not implement this interface.
+	RemoveRowSelection func(row int) bool // optional
+	// The function takes the following parameters:
+	//
+	//   - row
+	//   - numDeleted
+	RowDeleted func(row, numDeleted int) // optional
+	// The function takes the following parameters:
+	//
+	//   - row
+	//   - numInserted
+	RowInserted  func(row, numInserted int) // optional
+	RowReordered func()                     // optional
+	// SetCaption sets the caption for the table.
+	//
+	// The function takes the following parameters:
+	//
+	//   - caption representing the caption to set for table.
+	SetCaption func(caption *AtkObject) // optional
+	// SetColumnDescription sets the description text for the specified column
+	// of the table.
+	//
+	// The function takes the following parameters:
+	//
+	//   - column representing a column in table.
+	//   - description representing the description text to set for the
+	//     specified column of the table.
+	SetColumnDescription func(column int, description string) // optional
+	// SetColumnHeader sets the specified column header to header.
+	//
+	// The function takes the following parameters:
+	//
+	//   - column representing a column in table.
+	//   - header: Table.
+	SetColumnHeader func(column int, header *AtkObject) // optional
+	// SetRowDescription sets the description text for the specified row of
+	// table.
+	//
+	// The function takes the following parameters:
+	//
+	//   - row representing a row in table.
+	//   - description representing the description text to set for the
+	//     specified row of table.
+	SetRowDescription func(row int, description string) // optional
+	// SetRowHeader sets the specified row header to header.
+	//
+	// The function takes the following parameters:
+	//
+	//   - row representing a row in table.
+	//   - header: Table.
+	SetRowHeader func(row int, header *AtkObject) // optional
+	// SetSummary sets the summary description of the table.
+	//
+	// The function takes the following parameters:
+	//
+	//   - accessible representing the summary description to set for table.
+	SetSummary func(accessible *AtkObject) // optional
+}
+
 // Table: ATK interface implemented for UI components which contain tabular or
 // row/column information.
 //
@@ -7615,6 +9051,162 @@ type Tabler interface {
 }
 
 var _ Tabler = (*Table)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[TableOverrides](
+		GTypeTable,
+		initTableIface,
+	)
+}
+
+func initTableIface(giface unsafe.Pointer, overrides TableOverrides) {
+	iface := (*C.AtkTableIface)(giface)
+
+	if overrides.AddColumnSelection != nil {
+		iface.add_column_selection = (*[0]byte)(C._gotk4_atk1_TableIface_add_column_selection)
+	}
+
+	if overrides.AddRowSelection != nil {
+		iface.add_row_selection = (*[0]byte)(C._gotk4_atk1_TableIface_add_row_selection)
+	}
+
+	if overrides.ColumnDeleted != nil {
+		iface.column_deleted = (*[0]byte)(C._gotk4_atk1_TableIface_column_deleted)
+	}
+
+	if overrides.ColumnInserted != nil {
+		iface.column_inserted = (*[0]byte)(C._gotk4_atk1_TableIface_column_inserted)
+	}
+
+	if overrides.ColumnReordered != nil {
+		iface.column_reordered = (*[0]byte)(C._gotk4_atk1_TableIface_column_reordered)
+	}
+
+	if overrides.Caption != nil {
+		iface.get_caption = (*[0]byte)(C._gotk4_atk1_TableIface_get_caption)
+	}
+
+	if overrides.ColumnAtIndex != nil {
+		iface.get_column_at_index = (*[0]byte)(C._gotk4_atk1_TableIface_get_column_at_index)
+	}
+
+	if overrides.ColumnDescription != nil {
+		iface.get_column_description = (*[0]byte)(C._gotk4_atk1_TableIface_get_column_description)
+	}
+
+	if overrides.ColumnExtentAt != nil {
+		iface.get_column_extent_at = (*[0]byte)(C._gotk4_atk1_TableIface_get_column_extent_at)
+	}
+
+	if overrides.ColumnHeader != nil {
+		iface.get_column_header = (*[0]byte)(C._gotk4_atk1_TableIface_get_column_header)
+	}
+
+	if overrides.IndexAt != nil {
+		iface.get_index_at = (*[0]byte)(C._gotk4_atk1_TableIface_get_index_at)
+	}
+
+	if overrides.NColumns != nil {
+		iface.get_n_columns = (*[0]byte)(C._gotk4_atk1_TableIface_get_n_columns)
+	}
+
+	if overrides.NRows != nil {
+		iface.get_n_rows = (*[0]byte)(C._gotk4_atk1_TableIface_get_n_rows)
+	}
+
+	if overrides.RowAtIndex != nil {
+		iface.get_row_at_index = (*[0]byte)(C._gotk4_atk1_TableIface_get_row_at_index)
+	}
+
+	if overrides.RowDescription != nil {
+		iface.get_row_description = (*[0]byte)(C._gotk4_atk1_TableIface_get_row_description)
+	}
+
+	if overrides.RowExtentAt != nil {
+		iface.get_row_extent_at = (*[0]byte)(C._gotk4_atk1_TableIface_get_row_extent_at)
+	}
+
+	if overrides.RowHeader != nil {
+		iface.get_row_header = (*[0]byte)(C._gotk4_atk1_TableIface_get_row_header)
+	}
+
+	if overrides.SelectedColumns != nil {
+		iface.get_selected_columns = (*[0]byte)(C._gotk4_atk1_TableIface_get_selected_columns)
+	}
+
+	if overrides.SelectedRows != nil {
+		iface.get_selected_rows = (*[0]byte)(C._gotk4_atk1_TableIface_get_selected_rows)
+	}
+
+	if overrides.Summary != nil {
+		iface.get_summary = (*[0]byte)(C._gotk4_atk1_TableIface_get_summary)
+	}
+
+	if overrides.IsColumnSelected != nil {
+		iface.is_column_selected = (*[0]byte)(C._gotk4_atk1_TableIface_is_column_selected)
+	}
+
+	if overrides.IsRowSelected != nil {
+		iface.is_row_selected = (*[0]byte)(C._gotk4_atk1_TableIface_is_row_selected)
+	}
+
+	if overrides.IsSelected != nil {
+		iface.is_selected = (*[0]byte)(C._gotk4_atk1_TableIface_is_selected)
+	}
+
+	if overrides.ModelChanged != nil {
+		iface.model_changed = (*[0]byte)(C._gotk4_atk1_TableIface_model_changed)
+	}
+
+	if overrides.RefAt != nil {
+		iface.ref_at = (*[0]byte)(C._gotk4_atk1_TableIface_ref_at)
+	}
+
+	if overrides.RemoveColumnSelection != nil {
+		iface.remove_column_selection = (*[0]byte)(C._gotk4_atk1_TableIface_remove_column_selection)
+	}
+
+	if overrides.RemoveRowSelection != nil {
+		iface.remove_row_selection = (*[0]byte)(C._gotk4_atk1_TableIface_remove_row_selection)
+	}
+
+	if overrides.RowDeleted != nil {
+		iface.row_deleted = (*[0]byte)(C._gotk4_atk1_TableIface_row_deleted)
+	}
+
+	if overrides.RowInserted != nil {
+		iface.row_inserted = (*[0]byte)(C._gotk4_atk1_TableIface_row_inserted)
+	}
+
+	if overrides.RowReordered != nil {
+		iface.row_reordered = (*[0]byte)(C._gotk4_atk1_TableIface_row_reordered)
+	}
+
+	if overrides.SetCaption != nil {
+		iface.set_caption = (*[0]byte)(C._gotk4_atk1_TableIface_set_caption)
+	}
+
+	if overrides.SetColumnDescription != nil {
+		iface.set_column_description = (*[0]byte)(C._gotk4_atk1_TableIface_set_column_description)
+	}
+
+	if overrides.SetColumnHeader != nil {
+		iface.set_column_header = (*[0]byte)(C._gotk4_atk1_TableIface_set_column_header)
+	}
+
+	if overrides.SetRowDescription != nil {
+		iface.set_row_description = (*[0]byte)(C._gotk4_atk1_TableIface_set_row_description)
+	}
+
+	if overrides.SetRowHeader != nil {
+		iface.set_row_header = (*[0]byte)(C._gotk4_atk1_TableIface_set_row_header)
+	}
+
+	if overrides.SetSummary != nil {
+		iface.set_summary = (*[0]byte)(C._gotk4_atk1_TableIface_set_summary)
+	}
+
+}
 
 func wrapTable(obj *coreglib.Object) *Table {
 	return &Table{
@@ -9524,6 +11116,56 @@ func (table *Table) setSummary(accessible *AtkObject) {
 	runtime.KeepAlive(accessible)
 }
 
+// TableCellOverrides contains methods that a subclass can implement
+// for the TableCell interface. Methods left nil keep the interface's
+// default implementation.
+type TableCellOverrides struct {
+	// ColumnSpan returns the number of columns occupied by this cell
+	// accessible.
+	//
+	// The function returns the following values:
+	//
+	//   - gint representing the number of columns occupied by this cell,
+	//     or 0 if the cell does not implement this method.
+	ColumnSpan func() int // optional
+	// Position retrieves the tabular position of this cell.
+	//
+	// The function returns the following values:
+	//
+	//   - row of the given cell.
+	//   - column of the given cell.
+	//   - ok: TRUE if successful; FALSE otherwise.
+	Position func() (row, column int, ok bool) // optional
+	// RowColumnSpan gets the row and column indexes and span of this cell
+	// accessible.
+	//
+	// Note: If the object does not implement this function, then, by default,
+	// atk will implement this function by calling get_row_span and
+	// get_column_span on the object.
+	//
+	// The function returns the following values:
+	//
+	//   - row index of the given cell.
+	//   - column index of the given cell.
+	//   - rowSpan: number of rows occupied by this cell.
+	//   - columnSpan: number of columns occupied by this cell.
+	//   - ok: TRUE if successful; FALSE otherwise.
+	RowColumnSpan func() (row, column, rowSpan, columnSpan int, ok bool) // optional
+	// RowSpan returns the number of rows occupied by this cell accessible.
+	//
+	// The function returns the following values:
+	//
+	//   - gint representing the number of rows occupied by this cell, or 0 if
+	//     the cell does not implement this method.
+	RowSpan func() int // optional
+	// Table returns a reference to the accessible of the containing table.
+	//
+	// The function returns the following values:
+	//
+	//   - object: atk object for the containing table.
+	Table func() *AtkObject // optional
+}
+
 // TableCell: ATK interface implemented for a cell inside a two-dimentional
 // Table
 //
@@ -9563,6 +11205,38 @@ type TableCeller interface {
 }
 
 var _ TableCeller = (*TableCell)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[TableCellOverrides](
+		GTypeTableCell,
+		initTableCellIface,
+	)
+}
+
+func initTableCellIface(giface unsafe.Pointer, overrides TableCellOverrides) {
+	iface := (*C.AtkTableCellIface)(giface)
+
+	if overrides.ColumnSpan != nil {
+		iface.get_column_span = (*[0]byte)(C._gotk4_atk1_TableCellIface_get_column_span)
+	}
+
+	if overrides.Position != nil {
+		iface.get_position = (*[0]byte)(C._gotk4_atk1_TableCellIface_get_position)
+	}
+
+	if overrides.RowColumnSpan != nil {
+		iface.get_row_column_span = (*[0]byte)(C._gotk4_atk1_TableCellIface_get_row_column_span)
+	}
+
+	if overrides.RowSpan != nil {
+		iface.get_row_span = (*[0]byte)(C._gotk4_atk1_TableCellIface_get_row_span)
+	}
+
+	if overrides.Table != nil {
+		iface.get_table = (*[0]byte)(C._gotk4_atk1_TableCellIface_get_table)
+	}
+
+}
 
 func wrapTableCell(obj *coreglib.Object) *TableCell {
 	return &TableCell{
@@ -9871,6 +11545,380 @@ func (cell *TableCell) table() *AtkObject {
 	return _object
 }
 
+// TextOverrides contains methods that a subclass can implement
+// for the Text interface. Methods left nil keep the interface's
+// default implementation.
+type TextOverrides struct {
+	// AddSelection adds a selection bounded by the specified offsets.
+	//
+	// The function takes the following parameters:
+	//
+	//   - startOffset: starting character offset of the selected region.
+	//   - endOffset: offset of the first character after the selected region.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if successful, FALSE otherwise.
+	AddSelection func(startOffset, endOffset int) bool // optional
+	// BoundedRanges: get the ranges of text in the specified bounding box.
+	//
+	// The function takes the following parameters:
+	//
+	//   - rect: atkTextRectangle giving the dimensions of the bounding box.
+	//   - coordType: specify whether coordinates are relative to the screen or
+	//     widget window.
+	//   - xClipType: specify the horizontal clip type.
+	//   - yClipType: specify the vertical clip type.
+	//
+	// The function returns the following values:
+	//
+	//   - textRanges: array of AtkTextRange. The last element of the array
+	//     returned by this function will be NULL.
+	BoundedRanges func(rect *TextRectangle, coordType CoordType, xClipType, yClipType TextClipType) []*TextRange // optional
+	// CaretOffset gets the offset of the position of the caret (cursor).
+	//
+	// The function returns the following values:
+	//
+	//   - gint: character offset of the position of the caret or -1 if the
+	//     caret is not located inside the element or in the case of any other
+	//     failure.
+	CaretOffset func() int // optional
+	// CharacterAtOffset gets the specified text.
+	//
+	// The function takes the following parameters:
+	//
+	//   - offset: character offset within text.
+	//
+	// The function returns the following values:
+	//
+	//   - gunichar: character at offset or 0 in the case of failure.
+	CharacterAtOffset func(offset int) uint32 // optional
+	// CharacterCount gets the character count.
+	//
+	// The function returns the following values:
+	//
+	//   - gint: number of characters or -1 in case of failure.
+	CharacterCount func() int // optional
+	// CharacterExtents: if the extent can not be obtained (e.g. missing
+	// support), all of x, y, width, height are set to -1.
+	//
+	// Get the bounding box containing the glyph representing the character at a
+	// particular text offset.
+	//
+	// The function takes the following parameters:
+	//
+	//   - offset of the text character for which bounding information is
+	//     required.
+	//   - coords: specify whether coordinates are relative to the screen or
+	//     widget window.
+	//
+	// The function returns the following values:
+	//
+	//   - x (optional): pointer for the x coordinate of the bounding box.
+	//   - y (optional): pointer for the y coordinate of the bounding box.
+	//   - width (optional): pointer for the width of the bounding box.
+	//   - height (optional): pointer for the height of the bounding box.
+	CharacterExtents func(offset int, coords CoordType) (x, y, width, height int) // optional
+	// NSelections gets the number of selected regions.
+	//
+	// The function returns the following values:
+	//
+	//   - gint: number of selected regions, or -1 in the case of failure.
+	NSelections func() int // optional
+	// OffsetAtPoint gets the offset of the character located at coordinates x
+	// and y. x and y are interpreted as being relative to the screen or this
+	// widget's window depending on coords.
+	//
+	// The function takes the following parameters:
+	//
+	//   - x: screen x-position of character.
+	//   - y: screen y-position of character.
+	//   - coords: specify whether coordinates are relative to the screen or
+	//     widget window.
+	//
+	// The function returns the following values:
+	//
+	//   - gint: offset to the character which is located at the specified x and
+	//     y coordinates of -1 in case of failure.
+	OffsetAtPoint func(x, y int, coords CoordType) int // optional
+	// RangeExtents: get the bounding box for text within the specified range.
+	//
+	// If the extents can not be obtained (e.g. or missing support), the
+	// rectangle fields are set to -1.
+	//
+	// The function takes the following parameters:
+	//
+	//   - startOffset: offset of the first text character for which boundary
+	//     information is required.
+	//   - endOffset: offset of the text character after the last character for
+	//     which boundary information is required.
+	//   - coordType: specify whether coordinates are relative to the screen or
+	//     widget window.
+	//
+	// The function returns the following values:
+	//
+	//   - rect: pointer to a AtkTextRectangle which is filled in by this
+	//     function.
+	RangeExtents func(startOffset, endOffset int, coordType CoordType) *TextRectangle // optional
+	// Selection gets the text from the specified selection.
+	//
+	// The function takes the following parameters:
+	//
+	//   - selectionNum: selection number. The selected regions are assigned
+	//     numbers that correspond to how far the region is from the start of
+	//     the text. The selected region closest to the beginning of the text
+	//     region is assigned the number 0, etc. Note that adding, moving or
+	//     deleting a selected region can change the numbering.
+	//
+	// The function returns the following values:
+	//
+	//   - startOffset passes back the starting character offset of the selected
+	//     region.
+	//   - endOffset passes back the ending character offset (offset immediately
+	//     past) of the selected region.
+	//   - utf8: newly allocated string containing the selected text. Use
+	//     g_free() to free the returned string.
+	Selection func(selectionNum int) (startOffset, endOffset int, utf8 string) // optional
+	// StringAtOffset gets a portion of the text exposed through an Text
+	// according to a given offset and a specific granularity, along with the
+	// start and end offsets defining the boundaries of such a portion of text.
+	//
+	// If granularity is ATK_TEXT_GRANULARITY_CHAR the character at the offset
+	// is returned.
+	//
+	// If granularity is ATK_TEXT_GRANULARITY_WORD the returned string is
+	// from the word start at or before the offset to the word start after the
+	// offset.
+	//
+	// The returned string will contain the word at the offset if the offset is
+	// inside a word and will contain the word before the offset if the offset
+	// is not inside a word.
+	//
+	// If granularity is ATK_TEXT_GRANULARITY_SENTENCE the returned string is
+	// from the sentence start at or before the offset to the sentence start
+	// after the offset.
+	//
+	// The returned string will contain the sentence at the offset if the offset
+	// is inside a sentence and will contain the sentence before the offset if
+	// the offset is not inside a sentence.
+	//
+	// If granularity is ATK_TEXT_GRANULARITY_LINE the returned string is
+	// from the line start at or before the offset to the line start after the
+	// offset.
+	//
+	// If granularity is ATK_TEXT_GRANULARITY_PARAGRAPH the returned string is
+	// from the start of the paragraph at or before the offset to the start of
+	// the following paragraph after the offset.
+	//
+	// The function takes the following parameters:
+	//
+	//   - offset: position.
+	//   - granularity: TextGranularity.
+	//
+	// The function returns the following values:
+	//
+	//   - startOffset: starting character offset of the returned string,
+	//     or -1 in the case of error (e.g. invalid offset, not implemented).
+	//   - endOffset: offset of the first character after the returned string,
+	//     or -1 in the case of error (e.g. invalid offset, not implemented).
+	//   - utf8 (optional): newly allocated string containing the text at the
+	//     offset bounded by the specified granularity. Use g_free() to free
+	//     the returned string. Returns NULL if the offset is invalid or no
+	//     implementation is available.
+	StringAtOffset func(offset int, granularity TextGranularity) (startOffset, endOffset int, utf8 string) // optional
+	// Text gets the specified text.
+	//
+	// The function takes the following parameters:
+	//
+	//   - startOffset: starting character offset within text.
+	//   - endOffset: ending character offset within text, or -1 for the end of
+	//     the string.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8: newly allocated string containing the text from start_offset up
+	//     to, but not including end_offset. Use g_free() to free the returned
+	//     string.
+	Text func(startOffset, endOffset int) string // optional
+	// TextAfterOffset gets the specified text.
+	//
+	// Deprecated: Please use atk_text_get_string_at_offset() instead.
+	//
+	// The function takes the following parameters:
+	//
+	//   - offset: position.
+	//   - boundaryType: TextBoundary.
+	//
+	// The function returns the following values:
+	//
+	//   - startOffset: starting character offset of the returned string.
+	//   - endOffset: offset of the first character after the returned
+	//     substring.
+	//   - utf8: newly allocated string containing the text after offset bounded
+	//     by the specified boundary_type. Use g_free() to free the returned
+	//     string.
+	TextAfterOffset func(offset int, boundaryType TextBoundary) (startOffset, endOffset int, utf8 string) // optional
+	// TextAtOffset gets the specified text.
+	//
+	// If the boundary_type if ATK_TEXT_BOUNDARY_CHAR the character at the
+	// offset is returned.
+	//
+	// If the boundary_type is ATK_TEXT_BOUNDARY_WORD_START the returned string
+	// is from the word start at or before the offset to the word start after
+	// the offset.
+	//
+	// The returned string will contain the word at the offset if the offset is
+	// inside a word and will contain the word before the offset if the offset
+	// is not inside a word.
+	//
+	// If the boundary type is ATK_TEXT_BOUNDARY_SENTENCE_START the returned
+	// string is from the sentence start at or before the offset to the sentence
+	// start after the offset.
+	//
+	// The returned string will contain the sentence at the offset if the offset
+	// is inside a sentence and will contain the sentence before the offset if
+	// the offset is not inside a sentence.
+	//
+	// If the boundary type is ATK_TEXT_BOUNDARY_LINE_START the returned string
+	// is from the line start at or before the offset to the line start after
+	// the offset.
+	//
+	// Deprecated: This method is deprecated since ATK version 2.9.4. Please use
+	// atk_text_get_string_at_offset() instead.
+	//
+	// The function takes the following parameters:
+	//
+	//   - offset: position.
+	//   - boundaryType: TextBoundary.
+	//
+	// The function returns the following values:
+	//
+	//   - startOffset: starting character offset of the returned string.
+	//   - endOffset: offset of the first character after the returned
+	//     substring.
+	//   - utf8: newly allocated string containing the text at offset bounded
+	//     by the specified boundary_type. Use g_free() to free the returned
+	//     string.
+	TextAtOffset func(offset int, boundaryType TextBoundary) (startOffset, endOffset int, utf8 string) // optional
+	// TextBeforeOffset gets the specified text.
+	//
+	// Deprecated: Please use atk_text_get_string_at_offset() instead.
+	//
+	// The function takes the following parameters:
+	//
+	//   - offset: position.
+	//   - boundaryType: TextBoundary.
+	//
+	// The function returns the following values:
+	//
+	//   - startOffset: starting character offset of the returned string.
+	//   - endOffset: offset of the first character after the returned
+	//     substring.
+	//   - utf8: newly allocated string containing the text before offset
+	//     bounded by the specified boundary_type. Use g_free() to free the
+	//     returned string.
+	TextBeforeOffset func(offset int, boundaryType TextBoundary) (startOffset, endOffset int, utf8 string) // optional
+	// RemoveSelection removes the specified selection.
+	//
+	// The function takes the following parameters:
+	//
+	//   - selectionNum: selection number. The selected regions are assigned
+	//     numbers that correspond to how far the region is from the start of
+	//     the text. The selected region closest to the beginning of the text
+	//     region is assigned the number 0, etc. Note that adding, moving or
+	//     deleting a selected region can change the numbering.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if successful, FALSE otherwise.
+	RemoveSelection func(selectionNum int) bool // optional
+	// ScrollSubstringTo makes a substring of text visible on the screen by
+	// scrolling all necessary parents.
+	//
+	// The function takes the following parameters:
+	//
+	//   - startOffset: start offset in the text.
+	//   - endOffset: end offset in the text, or -1 for the end of the text.
+	//   - typ: specify where the object should be made visible.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: whether scrolling was successful.
+	ScrollSubstringTo func(startOffset, endOffset int, typ ScrollType) bool // optional
+	// ScrollSubstringToPoint: move the top-left of a substring of text to a
+	// given position of the screen by scrolling all necessary parents.
+	//
+	// The function takes the following parameters:
+	//
+	//   - startOffset: start offset in the text.
+	//   - endOffset: end offset in the text, or -1 for the end of the text.
+	//   - coords: specify whether coordinates are relative to the screen or to
+	//     the parent object.
+	//   - x: x-position where to scroll to.
+	//   - y: y-position where to scroll to.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: whether scrolling was successful.
+	ScrollSubstringToPoint func(startOffset, endOffset int, coords CoordType, x, y int) bool // optional
+	// SetCaretOffset sets the caret (cursor) position to the specified offset.
+	//
+	// In the case of rich-text content, this method should either grab focus or
+	// move the sequential focus navigation starting point (if the application
+	// supports this concept) as if the user had clicked on the new caret
+	// position. Typically, this means that the target of this operation is the
+	// node containing the new caret position or one of its ancestors. In other
+	// words, after this method is called, if the user advances focus, it should
+	// move to the first focusable node following the new caret position.
+	//
+	// Calling this method should also scroll the application viewport in a
+	// way that matches the behavior of the application's typical caret motion
+	// or tab navigation as closely as possible. This also means that if the
+	// application's caret motion or focus navigation does not trigger a scroll
+	// operation, this method should not trigger one either. If the application
+	// does not have a caret motion or focus navigation operation, this method
+	// should try to scroll the new caret position into view while minimizing
+	// unnecessary scroll motion.
+	//
+	// The function takes the following parameters:
+	//
+	//   - offset: character offset of the new caret position.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if successful, FALSE otherwise.
+	SetCaretOffset func(offset int) bool // optional
+	// SetSelection changes the start and end offset of the specified selection.
+	//
+	// The function takes the following parameters:
+	//
+	//   - selectionNum: selection number. The selected regions are assigned
+	//     numbers that correspond to how far the region is from the start of
+	//     the text. The selected region closest to the beginning of the text
+	//     region is assigned the number 0, etc. Note that adding, moving or
+	//     deleting a selected region can change the numbering.
+	//   - startOffset: new starting character offset of the selection.
+	//   - endOffset: new end position of (e.g. offset immediately past) the
+	//     selection.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if successful, FALSE otherwise.
+	SetSelection          func(selectionNum, startOffset, endOffset int) bool // optional
+	TextAttributesChanged func()                                              // optional
+	TextCaretMoved        func(location int)                                  // optional
+	// TextChanged: signal handler which is executed when there is a text
+	// change. This virtual function is deprecated sice 2.9.4 and it should not
+	// be overriden.
+	//
+	// The function takes the following parameters:
+	//
+	//   - position
+	//   - length
+	TextChanged          func(position, length int) // optional
+	TextSelectionChanged func()                     // optional
+}
+
 // Text: ATK interface implemented by components with text content.
 //
 // Text should be implemented by Objects on behalf of widgets that have text
@@ -9974,6 +12022,114 @@ type Texter interface {
 }
 
 var _ Texter = (*Text)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[TextOverrides](
+		GTypeText,
+		initTextIface,
+	)
+}
+
+func initTextIface(giface unsafe.Pointer, overrides TextOverrides) {
+	iface := (*C.AtkTextIface)(giface)
+
+	if overrides.AddSelection != nil {
+		iface.add_selection = (*[0]byte)(C._gotk4_atk1_TextIface_add_selection)
+	}
+
+	if overrides.BoundedRanges != nil {
+		iface.get_bounded_ranges = (*[0]byte)(C._gotk4_atk1_TextIface_get_bounded_ranges)
+	}
+
+	if overrides.CaretOffset != nil {
+		iface.get_caret_offset = (*[0]byte)(C._gotk4_atk1_TextIface_get_caret_offset)
+	}
+
+	if overrides.CharacterAtOffset != nil {
+		iface.get_character_at_offset = (*[0]byte)(C._gotk4_atk1_TextIface_get_character_at_offset)
+	}
+
+	if overrides.CharacterCount != nil {
+		iface.get_character_count = (*[0]byte)(C._gotk4_atk1_TextIface_get_character_count)
+	}
+
+	if overrides.CharacterExtents != nil {
+		iface.get_character_extents = (*[0]byte)(C._gotk4_atk1_TextIface_get_character_extents)
+	}
+
+	if overrides.NSelections != nil {
+		iface.get_n_selections = (*[0]byte)(C._gotk4_atk1_TextIface_get_n_selections)
+	}
+
+	if overrides.OffsetAtPoint != nil {
+		iface.get_offset_at_point = (*[0]byte)(C._gotk4_atk1_TextIface_get_offset_at_point)
+	}
+
+	if overrides.RangeExtents != nil {
+		iface.get_range_extents = (*[0]byte)(C._gotk4_atk1_TextIface_get_range_extents)
+	}
+
+	if overrides.Selection != nil {
+		iface.get_selection = (*[0]byte)(C._gotk4_atk1_TextIface_get_selection)
+	}
+
+	if overrides.StringAtOffset != nil {
+		iface.get_string_at_offset = (*[0]byte)(C._gotk4_atk1_TextIface_get_string_at_offset)
+	}
+
+	if overrides.Text != nil {
+		iface.get_text = (*[0]byte)(C._gotk4_atk1_TextIface_get_text)
+	}
+
+	if overrides.TextAfterOffset != nil {
+		iface.get_text_after_offset = (*[0]byte)(C._gotk4_atk1_TextIface_get_text_after_offset)
+	}
+
+	if overrides.TextAtOffset != nil {
+		iface.get_text_at_offset = (*[0]byte)(C._gotk4_atk1_TextIface_get_text_at_offset)
+	}
+
+	if overrides.TextBeforeOffset != nil {
+		iface.get_text_before_offset = (*[0]byte)(C._gotk4_atk1_TextIface_get_text_before_offset)
+	}
+
+	if overrides.RemoveSelection != nil {
+		iface.remove_selection = (*[0]byte)(C._gotk4_atk1_TextIface_remove_selection)
+	}
+
+	if overrides.ScrollSubstringTo != nil {
+		iface.scroll_substring_to = (*[0]byte)(C._gotk4_atk1_TextIface_scroll_substring_to)
+	}
+
+	if overrides.ScrollSubstringToPoint != nil {
+		iface.scroll_substring_to_point = (*[0]byte)(C._gotk4_atk1_TextIface_scroll_substring_to_point)
+	}
+
+	if overrides.SetCaretOffset != nil {
+		iface.set_caret_offset = (*[0]byte)(C._gotk4_atk1_TextIface_set_caret_offset)
+	}
+
+	if overrides.SetSelection != nil {
+		iface.set_selection = (*[0]byte)(C._gotk4_atk1_TextIface_set_selection)
+	}
+
+	if overrides.TextAttributesChanged != nil {
+		iface.text_attributes_changed = (*[0]byte)(C._gotk4_atk1_TextIface_text_attributes_changed)
+	}
+
+	if overrides.TextCaretMoved != nil {
+		iface.text_caret_moved = (*[0]byte)(C._gotk4_atk1_TextIface_text_caret_moved)
+	}
+
+	if overrides.TextChanged != nil {
+		iface.text_changed = (*[0]byte)(C._gotk4_atk1_TextIface_text_changed)
+	}
+
+	if overrides.TextSelectionChanged != nil {
+		iface.text_selection_changed = (*[0]byte)(C._gotk4_atk1_TextIface_text_selection_changed)
+	}
+
+}
 
 func wrapText(obj *coreglib.Object) *Text {
 	return &Text{
@@ -11827,6 +13983,114 @@ func (text *Text) textSelectionChanged() {
 	runtime.KeepAlive(text)
 }
 
+// ValueOverrides contains methods that a subclass can implement
+// for the Value interface. Methods left nil keep the interface's
+// default implementation.
+type ValueOverrides struct {
+	// CurrentValue gets the value of this object.
+	//
+	// Deprecated: Since 2.12. Use atk_value_get_value_and_text() instead.
+	//
+	// The function returns the following values:
+	//
+	//   - value representing the current accessible value.
+	CurrentValue func() coreglib.Value // optional
+	// Increment gets the minimum increment by which the value of this object
+	// may be changed. If zero, the minimum increment is undefined, which may
+	// mean that it is limited only by the floating point precision of the
+	// platform.
+	//
+	// The function returns the following values:
+	//
+	//   - gdouble: minimum increment by which the value of this object may be
+	//     changed. zero if undefined.
+	Increment func() float64 // optional
+	// MaximumValue gets the maximum value of this object.
+	//
+	// Deprecated: Since 2.12. Use atk_value_get_range() instead.
+	//
+	// The function returns the following values:
+	//
+	//   - value representing the maximum accessible value.
+	MaximumValue func() coreglib.Value // optional
+	// MinimumIncrement gets the minimum increment by which the value of this
+	// object may be changed. If zero, the minimum increment is undefined,
+	// which may mean that it is limited only by the floating point precision of
+	// the platform.
+	//
+	// Deprecated: Since 2.12. Use atk_value_get_increment() instead.
+	//
+	// The function returns the following values:
+	//
+	//   - value representing the minimum increment by which the accessible
+	//     value may be changed.
+	MinimumIncrement func() coreglib.Value // optional
+	// MinimumValue gets the minimum value of this object.
+	//
+	// Deprecated: Since 2.12. Use atk_value_get_range() instead.
+	//
+	// The function returns the following values:
+	//
+	//   - value representing the minimum accessible value.
+	MinimumValue func() coreglib.Value // optional
+	// Range gets the range of this object.
+	//
+	// The function returns the following values:
+	//
+	//   - _range (optional): newly allocated Range that represents the minimum,
+	//     maximum and descriptor (if available) of obj. NULL if that range is
+	//     not defined.
+	Range func() *Range // optional
+	// SubRanges gets the list of subranges defined for this object. See Value
+	// introduction for examples of subranges and when to expose them.
+	//
+	// The function returns the following values:
+	//
+	//   - sList of Range which each of the subranges defined for this object.
+	//     Free the returns list with g_slist_free().
+	SubRanges func() []*Range // optional
+	// ValueAndText gets the current value and the human readable text
+	// alternative of obj. text is a newly created string, that must be freed by
+	// the caller. Can be NULL if no descriptor is available.
+	//
+	// The function returns the following values:
+	//
+	//   - value address of #gdouble to put the current value of obj.
+	//   - text (optional) address of #gchar to put the human readable text
+	//     alternative for value.
+	ValueAndText func() (float64, string) // optional
+	// SetCurrentValue sets the value of this object.
+	//
+	// Deprecated: Since 2.12. Use atk_value_set_value() instead.
+	//
+	// The function takes the following parameters:
+	//
+	//   - value which is the desired new accessible value.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if new value is successfully set, FALSE otherwise.
+	SetCurrentValue func(value *coreglib.Value) bool // optional
+	// SetValue sets the value of this object.
+	//
+	// This method is intended to provide a way to change the value of the
+	// object. In any case, it is possible that the value can't be modified
+	// (ie: a read-only component). If the value changes due this call,
+	// it is possible that the text could change, and will trigger an
+	// Value::value-changed signal emission.
+	//
+	// Note for implementors: the deprecated atk_value_set_current_value()
+	// method returned TRUE or FALSE depending if the value was assigned or not.
+	// In the practice several implementors were not able to decide it,
+	// and returned TRUE in any case. For that reason it is not required anymore
+	// to return if the value was properly assigned or not.
+	//
+	// The function takes the following parameters:
+	//
+	//   - newValue: double which is the desired new accessible value.
+	SetValue func(newValue float64) // optional
+}
+
 // Value: ATK interface implemented by valuators and components which display or
 // select a value from a bounded range of values.
 //
@@ -11967,6 +14231,58 @@ type Valueer interface {
 }
 
 var _ Valueer = (*Value)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[ValueOverrides](
+		GTypeValue,
+		initValueIface,
+	)
+}
+
+func initValueIface(giface unsafe.Pointer, overrides ValueOverrides) {
+	iface := (*C.AtkValueIface)(giface)
+
+	if overrides.CurrentValue != nil {
+		iface.get_current_value = (*[0]byte)(C._gotk4_atk1_ValueIface_get_current_value)
+	}
+
+	if overrides.Increment != nil {
+		iface.get_increment = (*[0]byte)(C._gotk4_atk1_ValueIface_get_increment)
+	}
+
+	if overrides.MaximumValue != nil {
+		iface.get_maximum_value = (*[0]byte)(C._gotk4_atk1_ValueIface_get_maximum_value)
+	}
+
+	if overrides.MinimumIncrement != nil {
+		iface.get_minimum_increment = (*[0]byte)(C._gotk4_atk1_ValueIface_get_minimum_increment)
+	}
+
+	if overrides.MinimumValue != nil {
+		iface.get_minimum_value = (*[0]byte)(C._gotk4_atk1_ValueIface_get_minimum_value)
+	}
+
+	if overrides.Range != nil {
+		iface.get_range = (*[0]byte)(C._gotk4_atk1_ValueIface_get_range)
+	}
+
+	if overrides.SubRanges != nil {
+		iface.get_sub_ranges = (*[0]byte)(C._gotk4_atk1_ValueIface_get_sub_ranges)
+	}
+
+	if overrides.ValueAndText != nil {
+		iface.get_value_and_text = (*[0]byte)(C._gotk4_atk1_ValueIface_get_value_and_text)
+	}
+
+	if overrides.SetCurrentValue != nil {
+		iface.set_current_value = (*[0]byte)(C._gotk4_atk1_ValueIface_set_current_value)
+	}
+
+	if overrides.SetValue != nil {
+		iface.set_value = (*[0]byte)(C._gotk4_atk1_ValueIface_set_value)
+	}
+
+}
 
 func wrapValue(obj *coreglib.Object) *Value {
 	return &Value{
@@ -12573,8 +14889,10 @@ func (obj *Value) setValue(newValue float64) {
 	runtime.KeepAlive(newValue)
 }
 
-// WindowOverrider contains methods that are overridable.
-type WindowOverrider interface {
+// WindowOverrides contains methods that a subclass can implement
+// for the Window interface. Methods left nil keep the interface's
+// default implementation.
+type WindowOverrides struct {
 }
 
 // Window: ATK Interface provided by UI components that represent a top-level
@@ -12605,7 +14923,14 @@ type Windower interface {
 
 var _ Windower = (*Window)(nil)
 
-func ifaceInitWindower(gifacePtr, data C.gpointer) {
+func init() {
+	coreglib.RegisterInterfaceInfo[WindowOverrides](
+		GTypeWindow,
+		initWindowIface,
+	)
+}
+
+func initWindowIface(giface unsafe.Pointer, overrides WindowOverrides) {
 }
 
 func wrapWindow(obj *coreglib.Object) *Window {

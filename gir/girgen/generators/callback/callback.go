@@ -264,6 +264,12 @@ func (g *Generator) renderBlock() bool {
 				out = "_" + strcases.SnakeToGo(false, param.Name)
 				dir = typeconv.ConvertCToGo
 			case "out":
+				// Caller-allocated arrays are buffers that the Go callback
+				// cannot fill in, and zero-terminated output arrays are not
+				// converted from Go to C properly.
+				if param.Array != nil && (param.CallerAllocates || param.Array.IsZeroTerminated()) {
+					return false
+				}
 				in = strcases.SnakeToGo(false, param.Name)
 				out = CallbackArg(i)
 				dir = typeconv.ConvertGoToC

@@ -144,12 +144,9 @@ func (g *Generator) IsClass() bool {
 // IsInterface returns true if the generator is generating an interface.
 func (g *Generator) IsInterface() bool { return !g.IsClass() }
 
-// OverriderName returns the name of the overrider interface.
+// OverriderName returns the name of the overrides struct.
 func (g *Generator) OverriderName() string {
-	if g.IsClass() {
-		return g.StructName + "Overrides"
-	}
-	return g.StructName + "Overrider"
+	return g.StructName + "Overrides"
 }
 
 // Header returns the callback generator's current header.

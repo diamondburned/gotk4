@@ -77,6 +77,8 @@ import (
 // extern void _gotk4_gtk4_TreeViewClass_cursor_changed(GtkTreeView*);
 // extern void _gotk4_gtk4_TreeViewClass_columns_changed(GtkTreeView*);
 // extern void _gotk4_gtk4_TreeSortable_ConnectSortColumnChanged(gpointer, guintptr);
+// extern void _gotk4_gtk4_TreeSortableIface_sort_column_changed(GtkTreeSortable*);
+// extern void _gotk4_gtk4_TreeSortableIface_set_sort_column_id(GtkTreeSortable*, int, GtkSortType);
 // extern void _gotk4_gtk4_TreeSelection_ConnectChanged(gpointer, guintptr);
 // extern void _gotk4_gtk4_TreeSelectionForEachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
 // extern void _gotk4_gtk4_TreeModel_ConnectRowsReordered(gpointer, GtkTreePath*, GtkTreeIter*, gpointer, guintptr);
@@ -84,6 +86,13 @@ import (
 // extern void _gotk4_gtk4_TreeModel_ConnectRowHasChildToggled(gpointer, GtkTreePath*, GtkTreeIter*, guintptr);
 // extern void _gotk4_gtk4_TreeModel_ConnectRowDeleted(gpointer, GtkTreePath*, guintptr);
 // extern void _gotk4_gtk4_TreeModel_ConnectRowChanged(gpointer, GtkTreePath*, GtkTreeIter*, guintptr);
+// extern void _gotk4_gtk4_TreeModelIface_unref_node(GtkTreeModel*, GtkTreeIter*);
+// extern void _gotk4_gtk4_TreeModelIface_row_inserted(GtkTreeModel*, GtkTreePath*, GtkTreeIter*);
+// extern void _gotk4_gtk4_TreeModelIface_row_has_child_toggled(GtkTreeModel*, GtkTreePath*, GtkTreeIter*);
+// extern void _gotk4_gtk4_TreeModelIface_row_deleted(GtkTreeModel*, GtkTreePath*);
+// extern void _gotk4_gtk4_TreeModelIface_row_changed(GtkTreeModel*, GtkTreePath*, GtkTreeIter*);
+// extern void _gotk4_gtk4_TreeModelIface_ref_node(GtkTreeModel*, GtkTreeIter*);
+// extern void _gotk4_gtk4_TreeModelIface_get_value(GtkTreeModel*, GtkTreeIter*, int, GValue*);
 // extern void _gotk4_gtk4_TreeModelFilterModifyFunc(GtkTreeModel*, GtkTreeIter*, GValue*, int, gpointer);
 // extern void _gotk4_gtk4_TreeModelFilterClass_modify(GtkTreeModelFilter*, GtkTreeModel*, GtkTreeIter*, GValue*, int);
 // extern void _gotk4_gtk4_TreeCellDataFunc(GtkTreeViewColumn*, GtkCellRenderer*, GtkTreeModel*, GtkTreeIter*, gpointer);
@@ -160,6 +169,8 @@ import (
 // extern void _gotk4_gtk4_TextBufferClass_changed(GtkTextBuffer*);
 // extern void _gotk4_gtk4_TextBufferClass_begin_user_action(GtkTextBuffer*);
 // extern void _gotk4_gtk4_TextBufferClass_apply_tag(GtkTextBuffer*, GtkTextTag*, GtkTextIter*, GtkTextIter*);
+// extern void _gotk4_gtk4_SymbolicPaintableInterface_snapshot_with_weight(GtkSymbolicPaintable*, GdkSnapshot*, double, double, GdkRGBA*, gsize, double);
+// extern void _gotk4_gtk4_SymbolicPaintableInterface_snapshot_symbolic(GtkSymbolicPaintable*, GdkSnapshot*, double, double, GdkRGBA*, gsize);
 // extern void _gotk4_gtk4_Switch_ConnectActivate(gpointer, guintptr);
 // extern void _gotk4_gtk4_Svg_ConnectError(gpointer, GError*, guintptr);
 // extern void _gotk4_gtk4_StyleProvider_ConnectGTKPrivateChanged(gpointer, guintptr);
@@ -177,8 +188,11 @@ import (
 // extern void _gotk4_gtk4_SignalListItemFactory_ConnectBind(gpointer, GObject*, guintptr);
 // extern void _gotk4_gtk4_ShortcutsWindow_ConnectSearch(gpointer, guintptr);
 // extern void _gotk4_gtk4_ShortcutsWindow_ConnectClose(gpointer, guintptr);
+// extern void _gotk4_gtk4_ShortcutManagerInterface_remove_controller(GtkShortcutManager*, GtkShortcutController*);
+// extern void _gotk4_gtk4_ShortcutManagerInterface_add_controller(GtkShortcutManager*, GtkShortcutController*);
 // extern void _gotk4_gtk4_SelectionModel_ConnectSelectionChanged(gpointer, guint, guint, guintptr);
 // extern void _gotk4_gtk4_SectionModel_ConnectSectionsChanged(gpointer, guint, guint, guintptr);
+// extern void _gotk4_gtk4_SectionModelInterface_get_section(GtkSectionModel*, guint, guint*, guint*);
 // extern void _gotk4_gtk4_SearchEntry_ConnectStopSearch(gpointer, guintptr);
 // extern void _gotk4_gtk4_SearchEntry_ConnectSearchStarted(gpointer, guintptr);
 // extern void _gotk4_gtk4_SearchEntry_ConnectSearchChanged(gpointer, guintptr);
@@ -213,6 +227,10 @@ import (
 // extern void _gotk4_gtk4_PrintOperation_ConnectBeginPrint(gpointer, GtkPrintContext*, guintptr);
 // extern void _gotk4_gtk4_PrintOperationPreview_ConnectReady(gpointer, GtkPrintContext*, guintptr);
 // extern void _gotk4_gtk4_PrintOperationPreview_ConnectGotPageSize(gpointer, GtkPrintContext*, GtkPageSetup*, guintptr);
+// extern void _gotk4_gtk4_PrintOperationPreviewIface_render_page(GtkPrintOperationPreview*, int);
+// extern void _gotk4_gtk4_PrintOperationPreviewIface_ready(GtkPrintOperationPreview*, GtkPrintContext*);
+// extern void _gotk4_gtk4_PrintOperationPreviewIface_got_page_size(GtkPrintOperationPreview*, GtkPrintContext*, GtkPageSetup*);
+// extern void _gotk4_gtk4_PrintOperationPreviewIface_end_preview(GtkPrintOperationPreview*);
 // extern void _gotk4_gtk4_PrintOperationClass_update_custom_widget(GtkPrintOperation*, GtkWidget*, GtkPageSetup*, GtkPrintSettings*);
 // extern void _gotk4_gtk4_PrintOperationClass_status_changed(GtkPrintOperation*);
 // extern void _gotk4_gtk4_PrintOperationClass_request_page_setup(GtkPrintOperation*, GtkPrintContext*, int, GtkPageSetup*);
@@ -322,6 +340,8 @@ import (
 // extern void _gotk4_gtk4_FrameClass_compute_child_allocation(GtkFrame*, GtkAllocation*);
 // extern void _gotk4_gtk4_FontDialogButton_ConnectActivate(gpointer, guintptr);
 // extern void _gotk4_gtk4_FontChooser_ConnectFontActivated(gpointer, gchar*, guintptr);
+// extern void _gotk4_gtk4_FontChooserIface_set_font_map(GtkFontChooser*, PangoFontMap*);
+// extern void _gotk4_gtk4_FontChooserIface_font_activated(GtkFontChooser*, char*);
 // extern void _gotk4_gtk4_FontButton_ConnectFontSet(gpointer, guintptr);
 // extern void _gotk4_gtk4_FontButton_ConnectActivate(gpointer, guintptr);
 // extern void _gotk4_gtk4_FlowBox_ConnectUnselectAll(gpointer, guintptr);
@@ -370,6 +390,8 @@ import (
 // extern void _gotk4_gtk4_EmojiChooser_ConnectEmojiPicked(gpointer, gchar*, guintptr);
 // extern void _gotk4_gtk4_EditableTextWidget_ConnectDeleteText(gpointer, gint, gint, guintptr);
 // extern void _gotk4_gtk4_EditableTextWidget_ConnectChanged(gpointer, guintptr);
+// extern void _gotk4_gtk4_EditableInterface_delete_text(GtkEditable*, int, int);
+// extern void _gotk4_gtk4_EditableInterface_changed(GtkEditable*);
 // extern void _gotk4_gtk4_DropTarget_ConnectLeave(gpointer, guintptr);
 // extern void _gotk4_gtk4_DropTargetAsync_ConnectDragLeave(gpointer, GdkDrop*, guintptr);
 // extern void _gotk4_gtk4_DropDown_ConnectActivate(gpointer, guintptr);
@@ -395,6 +417,10 @@ import (
 // extern void _gotk4_gtk4_ColumnView_ConnectActivate(gpointer, guint, guintptr);
 // extern void _gotk4_gtk4_ColorDialogButton_ConnectActivate(gpointer, guintptr);
 // extern void _gotk4_gtk4_ColorChooser_ConnectColorActivated(gpointer, GdkRGBA*, guintptr);
+// extern void _gotk4_gtk4_ColorChooserInterface_set_rgba(GtkColorChooser*, GdkRGBA*);
+// extern void _gotk4_gtk4_ColorChooserInterface_get_rgba(GtkColorChooser*, GdkRGBA*);
+// extern void _gotk4_gtk4_ColorChooserInterface_color_activated(GtkColorChooser*, GdkRGBA*);
+// extern void _gotk4_gtk4_ColorChooserInterface_add_palette(GtkColorChooser*, GtkOrientation, int, int, GdkRGBA*);
 // extern void _gotk4_gtk4_ColorButton_ConnectColorSet(gpointer, guintptr);
 // extern void _gotk4_gtk4_ColorButton_ConnectActivate(gpointer, guintptr);
 // extern void _gotk4_gtk4_CheckButton_ConnectToggled(gpointer, guintptr);
@@ -417,9 +443,18 @@ import (
 // extern void _gotk4_gtk4_CellRendererClass_editing_canceled(GtkCellRenderer*);
 // extern void _gotk4_gtk4_CellRendererAccel_ConnectAccelEdited(gpointer, gchar*, guint, GdkModifierType, guint, guintptr);
 // extern void _gotk4_gtk4_CellRendererAccel_ConnectAccelCleared(gpointer, gchar*, guintptr);
+// extern void _gotk4_gtk4_CellLayoutIface_reorder(GtkCellLayout*, GtkCellRenderer*, int);
+// extern void _gotk4_gtk4_CellLayoutIface_pack_start(GtkCellLayout*, GtkCellRenderer*, gboolean);
+// extern void _gotk4_gtk4_CellLayoutIface_pack_end(GtkCellLayout*, GtkCellRenderer*, gboolean);
+// extern void _gotk4_gtk4_CellLayoutIface_clear_attributes(GtkCellLayout*, GtkCellRenderer*);
+// extern void _gotk4_gtk4_CellLayoutIface_clear(GtkCellLayout*);
+// extern void _gotk4_gtk4_CellLayoutIface_add_attribute(GtkCellLayout*, GtkCellRenderer*, char*, int);
 // extern void _gotk4_gtk4_CellLayoutDataFunc(GtkCellLayout*, GtkCellRenderer*, GtkTreeModel*, GtkTreeIter*, gpointer);
 // extern void _gotk4_gtk4_CellEditable_ConnectRemoveWidget(gpointer, guintptr);
 // extern void _gotk4_gtk4_CellEditable_ConnectEditingDone(gpointer, guintptr);
+// extern void _gotk4_gtk4_CellEditableIface_start_editing(GtkCellEditable*, GdkEvent*);
+// extern void _gotk4_gtk4_CellEditableIface_remove_widget(GtkCellEditable*);
+// extern void _gotk4_gtk4_CellEditableIface_editing_done(GtkCellEditable*);
 // extern void _gotk4_gtk4_CellArea_ConnectRemoveEditable(gpointer, GtkCellRenderer*, GtkCellEditable*, guintptr);
 // extern void _gotk4_gtk4_CellArea_ConnectFocusChanged(gpointer, GtkCellRenderer*, gchar*, guintptr);
 // extern void _gotk4_gtk4_CellArea_ConnectApplyAttributes(gpointer, GtkTreeModel*, GtkTreeIter*, gboolean, gboolean, guintptr);
@@ -445,6 +480,12 @@ import (
 // extern void _gotk4_gtk4_Button_ConnectActivate(gpointer, guintptr);
 // extern void _gotk4_gtk4_ButtonClass_clicked(GtkButton*);
 // extern void _gotk4_gtk4_ButtonClass_activate(GtkButton*);
+// extern void _gotk4_gtk4_BuildableIface_set_id(GtkBuildable*, char*);
+// extern void _gotk4_gtk4_BuildableIface_set_buildable_property(GtkBuildable*, GtkBuilder*, char*, GValue*);
+// extern void _gotk4_gtk4_BuildableIface_parser_finished(GtkBuildable*, GtkBuilder*);
+// extern void _gotk4_gtk4_BuildableIface_custom_tag_end(GtkBuildable*, GtkBuilder*, GObject*, char*, gpointer);
+// extern void _gotk4_gtk4_BuildableIface_custom_finished(GtkBuildable*, GtkBuilder*, GObject*, char*, gpointer);
+// extern void _gotk4_gtk4_BuildableIface_add_child(GtkBuildable*, GtkBuilder*, GObject*, char*);
 // extern void _gotk4_gtk4_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
 // extern void _gotk4_gtk4_Assistant_ConnectPrepare(gpointer, GtkWidget*, guintptr);
 // extern void _gotk4_gtk4_Assistant_ConnectEscape(gpointer, guintptr);
@@ -465,10 +506,18 @@ import (
 // extern void _gotk4_gtk4_Adjustment_ConnectChanged(gpointer, guintptr);
 // extern void _gotk4_gtk4_AdjustmentClass_value_changed(GtkAdjustment*);
 // extern void _gotk4_gtk4_AdjustmentClass_changed(GtkAdjustment*);
+// extern void _gotk4_gtk4_ActionableInterface_set_action_target_value(GtkActionable*, GVariant*);
+// extern void _gotk4_gtk4_ActionableInterface_set_action_name(GtkActionable*, char*);
 // extern void _gotk4_gtk4_ATContext_ConnectStateChange(gpointer, guintptr);
 // extern void _gotk4_gio2_AsyncReadyCallback(GObject*, GAsyncResult*, gpointer);
+// extern unsigned int _gotk4_gtk4_AccessibleTextInterface_get_caret_position(GtkAccessibleText*);
+// extern unsigned int _gotk4_gtk4_AccessibleHypertextInterface_get_n_links(GtkAccessibleHypertext*);
+// extern unsigned int _gotk4_gtk4_AccessibleHypertextInterface_get_link_at(GtkAccessibleHypertext*, unsigned int);
+// extern int _gotk4_gtk4_TreeModelIface_iter_n_children(GtkTreeModel*, GtkTreeIter*);
+// extern int _gotk4_gtk4_TreeModelIface_get_n_columns(GtkTreeModel*);
 // extern int _gotk4_gtk4_TreeIterCompareFunc(GtkTreeModel*, GtkTreeIter*, GtkTreeIter*, gpointer);
 // extern int _gotk4_gtk4_ListBoxSortFunc(GtkListBoxRow*, GtkListBoxRow*, gpointer);
+// extern int _gotk4_gtk4_FontChooserIface_get_font_size(GtkFontChooser*);
 // extern int _gotk4_gtk4_FlowBoxSortFunc(GtkFlowBoxChild*, GtkFlowBoxChild*, gpointer);
 // extern int _gotk4_gtk4_CellAreaClass_event(GtkCellArea*, GtkCellAreaContext*, GtkWidget*, GdkEvent*, GdkRectangle*, GtkCellRendererState);
 // extern int _gotk4_gtk4_AssistantPageFunc(int, gpointer);
@@ -515,10 +564,23 @@ import (
 // extern gboolean _gotk4_gtk4_TreeViewClass_select_all(GtkTreeView*);
 // extern gboolean _gotk4_gtk4_TreeViewClass_move_cursor(GtkTreeView*, GtkMovementStep, int, gboolean, gboolean);
 // extern gboolean _gotk4_gtk4_TreeViewClass_expand_collapse_cursor_row(GtkTreeView*, gboolean, gboolean, gboolean);
+// extern gboolean _gotk4_gtk4_TreeSortableIface_has_default_sort_func(GtkTreeSortable*);
+// extern gboolean _gotk4_gtk4_TreeSortableIface_get_sort_column_id(GtkTreeSortable*, int*, GtkSortType*);
 // extern gboolean _gotk4_gtk4_TreeSelectionFunc(GtkTreeSelection*, GtkTreeModel*, GtkTreePath*, gboolean, gpointer);
+// extern gboolean _gotk4_gtk4_TreeModelIface_iter_previous(GtkTreeModel*, GtkTreeIter*);
+// extern gboolean _gotk4_gtk4_TreeModelIface_iter_parent(GtkTreeModel*, GtkTreeIter*, GtkTreeIter*);
+// extern gboolean _gotk4_gtk4_TreeModelIface_iter_nth_child(GtkTreeModel*, GtkTreeIter*, GtkTreeIter*, int);
+// extern gboolean _gotk4_gtk4_TreeModelIface_iter_next(GtkTreeModel*, GtkTreeIter*);
+// extern gboolean _gotk4_gtk4_TreeModelIface_iter_has_child(GtkTreeModel*, GtkTreeIter*);
+// extern gboolean _gotk4_gtk4_TreeModelIface_iter_children(GtkTreeModel*, GtkTreeIter*, GtkTreeIter*);
+// extern gboolean _gotk4_gtk4_TreeModelIface_get_iter(GtkTreeModel*, GtkTreeIter*, GtkTreePath*);
 // extern gboolean _gotk4_gtk4_TreeModelForEachFunc(GtkTreeModel*, GtkTreePath*, GtkTreeIter*, gpointer);
 // extern gboolean _gotk4_gtk4_TreeModelFilterVisibleFunc(GtkTreeModel*, GtkTreeIter*, gpointer);
 // extern gboolean _gotk4_gtk4_TreeModelFilterClass_visible(GtkTreeModelFilter*, GtkTreeModel*, GtkTreeIter*);
+// extern gboolean _gotk4_gtk4_TreeDragSourceIface_row_draggable(GtkTreeDragSource*, GtkTreePath*);
+// extern gboolean _gotk4_gtk4_TreeDragSourceIface_drag_data_delete(GtkTreeDragSource*, GtkTreePath*);
+// extern gboolean _gotk4_gtk4_TreeDragDestIface_row_drop_possible(GtkTreeDragDest*, GtkTreePath*, GValue*);
+// extern gboolean _gotk4_gtk4_TreeDragDestIface_drag_data_received(GtkTreeDragDest*, GtkTreePath*, GValue*);
 // extern gboolean _gotk4_gtk4_TickCallback(GtkWidget*, GdkFrameClock*, gpointer);
 // extern gboolean _gotk4_gtk4_TextView_ConnectExtendSelection(gpointer, GtkTextExtendSelection, GtkTextIter*, GtkTextIter*, GtkTextIter*, guintptr);
 // extern gboolean _gotk4_gtk4_TextViewClass_extend_selection(GtkTextView*, GtkTextExtendSelection, GtkTextIter*, GtkTextIter*, GtkTextIter*);
@@ -527,11 +589,21 @@ import (
 // extern gboolean _gotk4_gtk4_SpinButton_ConnectOutput(gpointer, guintptr);
 // extern gboolean _gotk4_gtk4_ShortcutsSection_ConnectChangeCurrentPage(gpointer, gint, guintptr);
 // extern gboolean _gotk4_gtk4_ShortcutFunc(GtkWidget*, GVariant*, gpointer);
+// extern gboolean _gotk4_gtk4_SelectionModelInterface_unselect_range(GtkSelectionModel*, guint, guint);
+// extern gboolean _gotk4_gtk4_SelectionModelInterface_unselect_item(GtkSelectionModel*, guint);
+// extern gboolean _gotk4_gtk4_SelectionModelInterface_unselect_all(GtkSelectionModel*);
+// extern gboolean _gotk4_gtk4_SelectionModelInterface_set_selection(GtkSelectionModel*, GtkBitset*, GtkBitset*);
+// extern gboolean _gotk4_gtk4_SelectionModelInterface_select_range(GtkSelectionModel*, guint, guint, gboolean);
+// extern gboolean _gotk4_gtk4_SelectionModelInterface_select_item(GtkSelectionModel*, guint, gboolean);
+// extern gboolean _gotk4_gtk4_SelectionModelInterface_select_all(GtkSelectionModel*);
+// extern gboolean _gotk4_gtk4_SelectionModelInterface_is_selected(GtkSelectionModel*, guint);
 // extern gboolean _gotk4_gtk4_ScrolledWindow_ConnectScrollChild(gpointer, GtkScrollType, gboolean, guintptr);
+// extern gboolean _gotk4_gtk4_ScrollableInterface_get_border(GtkScrollable*, GtkBorder*);
 // extern gboolean _gotk4_gtk4_Range_ConnectChangeValue(gpointer, GtkScrollType, gdouble, guintptr);
 // extern gboolean _gotk4_gtk4_RangeClass_change_value(GtkRange*, GtkScrollType, double);
 // extern gboolean _gotk4_gtk4_PrintOperation_ConnectPreview(gpointer, GtkPrintOperationPreview*, GtkPrintContext*, GtkWindow*, guintptr);
 // extern gboolean _gotk4_gtk4_PrintOperation_ConnectPaginate(gpointer, GtkPrintContext*, guintptr);
+// extern gboolean _gotk4_gtk4_PrintOperationPreviewIface_is_selected(GtkPrintOperationPreview*, int);
 // extern gboolean _gotk4_gtk4_PrintOperationClass_preview(GtkPrintOperation*, GtkPrintOperationPreview*, GtkPrintContext*, GtkWindow*);
 // extern gboolean _gotk4_gtk4_PrintOperationClass_paginate(GtkPrintOperation*, GtkPrintContext*);
 // extern gboolean _gotk4_gtk4_Paned_ConnectToggleHandleFocus(gpointer, guintptr);
@@ -575,6 +647,7 @@ import (
 // extern gboolean _gotk4_gtk4_EntryCompletion_ConnectInsertPrefix(gpointer, gchar*, guintptr);
 // extern gboolean _gotk4_gtk4_EntryCompletion_ConnectCursorOnMatch(gpointer, GtkTreeModel*, GtkTreeIter*, guintptr);
 // extern gboolean _gotk4_gtk4_EntryCompletionMatchFunc(GtkEntryCompletion*, char*, GtkTreeIter*, gpointer);
+// extern gboolean _gotk4_gtk4_EditableInterface_get_selection_bounds(GtkEditable*, int*, int*);
 // extern gboolean _gotk4_gtk4_DropTarget_ConnectDrop(gpointer, GValue*, gdouble, gdouble, guintptr);
 // extern gboolean _gotk4_gtk4_DropTarget_ConnectAccept(gpointer, GdkDrop*, guintptr);
 // extern gboolean _gotk4_gtk4_DropTargetAsync_ConnectDrop(gpointer, GdkDrop*, gdouble, gdouble, guintptr);
@@ -588,12 +661,30 @@ import (
 // extern gboolean _gotk4_gtk4_CellAreaClass_focus(GtkCellArea*, GtkDirectionType);
 // extern gboolean _gotk4_gtk4_CellAreaClass_activate(GtkCellArea*, GtkCellAreaContext*, GtkWidget*, GdkRectangle*, GtkCellRendererState, gboolean);
 // extern gboolean _gotk4_gtk4_CellAllocCallback(GtkCellRenderer*, GdkRectangle*, GdkRectangle*, gpointer);
+// extern gboolean _gotk4_gtk4_BuildableIface_custom_tag_start(GtkBuildable*, GtkBuilder*, GObject*, char*, GtkBuildableParser*, gpointer*);
+// extern gboolean _gotk4_gtk4_AccessibleTextInterface_set_selection(GtkAccessibleText*, gsize, GtkAccessibleTextRange*);
+// extern gboolean _gotk4_gtk4_AccessibleTextInterface_set_caret_position(GtkAccessibleText*, unsigned int);
+// extern gboolean _gotk4_gtk4_AccessibleTextInterface_get_selection(GtkAccessibleText*, gsize*, GtkAccessibleTextRange**);
+// extern gboolean _gotk4_gtk4_AccessibleTextInterface_get_offset(GtkAccessibleText*, graphene_point_t*, unsigned int*);
+// extern gboolean _gotk4_gtk4_AccessibleTextInterface_get_extents(GtkAccessibleText*, unsigned int, unsigned int, graphene_rect_t*);
+// extern gboolean _gotk4_gtk4_AccessibleRangeInterface_set_current_value(GtkAccessibleRange*, double);
+// extern gboolean _gotk4_gtk4_AccessibleInterface_get_platform_state(GtkAccessible*, GtkAccessiblePlatformState);
+// extern gboolean _gotk4_gtk4_AccessibleInterface_get_bounds(GtkAccessible*, int*, int*, int*, int*);
 // extern gboolean _gotk4_gtk4_AboutDialog_ConnectActivateLink(gpointer, gchar*, guintptr);
 // extern char* _gotk4_gtk4_ScaleFormatValueFunc(GtkScale*, double, gpointer);
 // extern char* _gotk4_gtk4_EntryBufferClass_get_text(GtkEntryBuffer*, gsize*);
+// extern char* _gotk4_gtk4_EditableInterface_get_text(GtkEditable*);
 // extern char* _gotk4_gtk4_ComboBoxClass_format_entry_text(GtkComboBox*, char*);
+// extern char* _gotk4_gtk4_BuildableIface_get_id(GtkBuildable*);
+// extern char* _gotk4_gtk4_ActionableInterface_get_action_name(GtkActionable*);
+// extern char* _gotk4_gtk4_AccessibleInterface_get_accessible_id(GtkAccessible*);
+// extern PangoFontMap* _gotk4_gtk4_FontChooserIface_get_font_map(GtkFontChooser*);
+// extern PangoFontFamily* _gotk4_gtk4_FontChooserIface_get_font_family(GtkFontChooser*);
+// extern PangoFontFace* _gotk4_gtk4_FontChooserIface_get_font_face(GtkFontChooser*);
 // extern GtkWidget* _gotk4_gtk4_ListBoxCreateWidgetFunc(gpointer, gpointer);
 // extern GtkWidget* _gotk4_gtk4_FlowBoxCreateWidgetFunc(gpointer, gpointer);
+// extern GtkTreePath* _gotk4_gtk4_TreeModelIface_get_path(GtkTreeModel*, GtkTreeIter*);
+// extern GtkTreeModelFlags _gotk4_gtk4_TreeModelIface_get_flags(GtkTreeModel*);
 // extern GtkSorterOrder _gotk4_gtk4_SorterClass_get_order(GtkSorter*);
 // extern GtkSizeRequestMode _gotk4_gtk4_WidgetClass_get_request_mode(GtkWidget*);
 // extern GtkSizeRequestMode _gotk4_gtk4_LayoutManagerClass_get_request_mode(GtkLayoutManager*, GtkWidget*);
@@ -603,17 +694,34 @@ import (
 // extern GtkNotebook* _gotk4_gtk4_Notebook_ConnectCreateWindow(gpointer, GtkWidget*, guintptr);
 // extern GtkLayoutChild* _gotk4_gtk4_LayoutManagerClass_create_layout_child(GtkLayoutManager*, GtkWidget*, GtkWidget*);
 // extern GtkFilterMatch _gotk4_gtk4_FilterClass_get_strictness(GtkFilter*);
+// extern GtkEditable* _gotk4_gtk4_EditableInterface_get_delegate(GtkEditable*);
 // extern GtkCellEditable* _gotk4_gtk4_CellRendererClass_start_editing(GtkCellRenderer*, GdkEvent*, GtkWidget*, char*, GdkRectangle*, GdkRectangle*, GtkCellRendererState);
 // extern GtkCellAreaContext* _gotk4_gtk4_CellAreaClass_create_context(GtkCellArea*);
 // extern GtkCellAreaContext* _gotk4_gtk4_CellAreaClass_copy_context(GtkCellArea*, GtkCellAreaContext*);
+// extern GtkCellArea* _gotk4_gtk4_CellLayoutIface_get_area(GtkCellLayout*);
+// extern GtkBitset* _gotk4_gtk4_SelectionModelInterface_get_selection_in_range(GtkSelectionModel*, guint, guint);
+// extern GtkAccessibleHyperlink* _gotk4_gtk4_AccessibleHypertextInterface_get_link(GtkAccessibleHypertext*, unsigned int);
+// extern GtkAccessible* _gotk4_gtk4_AccessibleInterface_get_next_accessible_sibling(GtkAccessible*);
+// extern GtkAccessible* _gotk4_gtk4_AccessibleInterface_get_first_accessible_child(GtkAccessible*);
+// extern GtkAccessible* _gotk4_gtk4_AccessibleInterface_get_accessible_parent(GtkAccessible*);
+// extern GtkATContext* _gotk4_gtk4_AccessibleInterface_get_at_context(GtkAccessible*);
 // extern GdkGLContext* _gotk4_gtk4_GLArea_ConnectCreateContext(gpointer, guintptr);
 // extern GdkDragAction _gotk4_gtk4_DropTarget_ConnectMotion(gpointer, gdouble, gdouble, guintptr);
 // extern GdkDragAction _gotk4_gtk4_DropTarget_ConnectEnter(gpointer, gdouble, gdouble, guintptr);
 // extern GdkDragAction _gotk4_gtk4_DropTargetAsync_ConnectDragMotion(gpointer, GdkDrop*, gdouble, gdouble, guintptr);
 // extern GdkDragAction _gotk4_gtk4_DropTargetAsync_ConnectDragEnter(gpointer, GdkDrop*, gdouble, gdouble, guintptr);
+// extern GdkContentProvider* _gotk4_gtk4_TreeDragSourceIface_drag_data_get(GtkTreeDragSource*, GtkTreePath*);
 // extern GdkContentProvider* _gotk4_gtk4_DragSource_ConnectPrepare(gpointer, gdouble, gdouble, guintptr);
+// extern GVariant* _gotk4_gtk4_ActionableInterface_get_action_target_value(GtkActionable*);
+// extern GType _gotk4_gtk4_TreeModelIface_get_column_type(GtkTreeModel*, int);
+// extern GType _gotk4_gtk4_BuilderScopeInterface_get_type_from_name(GtkBuilderScope*, GtkBuilder*, char*);
+// extern GType _gotk4_gtk4_BuilderScopeInterface_get_type_from_function(GtkBuilderScope*, GtkBuilder*, char*);
 // extern GObject* _gotk4_gtk4_PrintOperation_ConnectCreateCustomWidget(gpointer, guintptr);
+// extern GObject* _gotk4_gtk4_BuildableIface_get_internal_child(GtkBuildable*, GtkBuilder*, char*);
 // extern GListModel* _gotk4_gtk4_TreeListModelCreateModelFunc(gpointer, gpointer);
+// extern GList* _gotk4_gtk4_CellLayoutIface_get_cells(GtkCellLayout*);
+// extern GBytes* _gotk4_gtk4_AccessibleTextInterface_get_contents_at(GtkAccessibleText*, unsigned int, GtkAccessibleTextGranularity, unsigned int*, unsigned int*);
+// extern GBytes* _gotk4_gtk4_AccessibleTextInterface_get_contents(GtkAccessibleText*, unsigned int, unsigned int);
 // GBytes* _gotk4_gtk4_AccessibleText_virtual_get_contents(void* fnptr, GtkAccessibleText* arg0, unsigned int arg1, unsigned int arg2) {
 //   return ((GBytes* (*)(GtkAccessibleText*, unsigned int, unsigned int))(fnptr))(arg0, arg1, arg2);
 // };
@@ -12213,6 +12321,80 @@ func ValueTakeExpression(value *coreglib.Value, expression Expressioner) {
 	runtime.KeepAlive(expression)
 }
 
+// AccessibleOverrides contains methods that a subclass can implement
+// for the Accessible interface. Methods left nil keep the interface's
+// default implementation.
+type AccessibleOverrides struct {
+	// AccessibleID retrieves the accessible identifier for the accessible
+	// object.
+	//
+	// This functionality can be overridden by GtkAccessible implementations.
+	//
+	// It is left to the accessible implementation to define the scope and
+	// uniqueness of the identifier.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8 (optional): accessible identifier.
+	AccessibleID func() string // optional
+	// AccessibleParent retrieves the accessible parent for an accessible
+	// object.
+	//
+	// This function returns NULL for top level widgets.
+	//
+	// The function returns the following values:
+	//
+	//   - accessible (optional) parent.
+	AccessibleParent func() *Accessible // optional
+	// AtContext retrieves the implementation for the given accessible object.
+	//
+	// The function returns the following values:
+	//
+	//   - atContext (optional): accessible implementation object.
+	AtContext func() ATContexter // optional
+	// Bounds queries the coordinates and dimensions of this accessible
+	//
+	// This functionality can be overridden by GtkAccessible implementations,
+	// e.g. to get the bounds from an ignored child widget.
+	//
+	// The function returns the following values:
+	//
+	//   - x coordinate of the top left corner of the accessible.
+	//   - y coordinate of the top left corner of the widget.
+	//   - width of the accessible object.
+	//   - height of the accessible object.
+	//   - ok: true if the bounds are valid, and false otherwise.
+	Bounds func() (x, y, width, height int, ok bool) // optional
+	// FirstAccessibleChild retrieves the first accessible child of an
+	// accessible object.
+	//
+	// The function returns the following values:
+	//
+	//   - accessible (optional): first accessible child.
+	FirstAccessibleChild func() *Accessible // optional
+	// NextAccessibleSibling retrieves the next accessible sibling of an
+	// accessible object.
+	//
+	// The function returns the following values:
+	//
+	//   - accessible (optional): next accessible sibling.
+	NextAccessibleSibling func() *Accessible // optional
+	// PlatformState queries a platform state, such as focus.
+	//
+	// This functionality can be overridden by GtkAccessible implementations,
+	// e.g. to get platform state from an ignored child widget, as is the case
+	// for GtkText wrappers.
+	//
+	// The function takes the following parameters:
+	//
+	//   - state: platform state to query.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: value of state for the accessible.
+	PlatformState func(state AccessiblePlatformState) bool // optional
+}
+
 // Accessible: interface for describing UI elements for Assistive Technologies.
 //
 // Every accessible implementation has:
@@ -12302,6 +12484,46 @@ type Accessibler interface {
 }
 
 var _ Accessibler = (*Accessible)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[AccessibleOverrides](
+		GTypeAccessible,
+		initAccessibleInterface,
+	)
+}
+
+func initAccessibleInterface(giface unsafe.Pointer, overrides AccessibleOverrides) {
+	iface := (*C.GtkAccessibleInterface)(giface)
+
+	if overrides.AccessibleID != nil {
+		iface.get_accessible_id = (*[0]byte)(C._gotk4_gtk4_AccessibleInterface_get_accessible_id)
+	}
+
+	if overrides.AccessibleParent != nil {
+		iface.get_accessible_parent = (*[0]byte)(C._gotk4_gtk4_AccessibleInterface_get_accessible_parent)
+	}
+
+	if overrides.AtContext != nil {
+		iface.get_at_context = (*[0]byte)(C._gotk4_gtk4_AccessibleInterface_get_at_context)
+	}
+
+	if overrides.Bounds != nil {
+		iface.get_bounds = (*[0]byte)(C._gotk4_gtk4_AccessibleInterface_get_bounds)
+	}
+
+	if overrides.FirstAccessibleChild != nil {
+		iface.get_first_accessible_child = (*[0]byte)(C._gotk4_gtk4_AccessibleInterface_get_first_accessible_child)
+	}
+
+	if overrides.NextAccessibleSibling != nil {
+		iface.get_next_accessible_sibling = (*[0]byte)(C._gotk4_gtk4_AccessibleInterface_get_next_accessible_sibling)
+	}
+
+	if overrides.PlatformState != nil {
+		iface.get_platform_state = (*[0]byte)(C._gotk4_gtk4_AccessibleInterface_get_platform_state)
+	}
+
+}
 
 func wrapAccessible(obj *coreglib.Object) *Accessible {
 	return &Accessible{
@@ -13054,6 +13276,31 @@ func (self *Accessible) platformState(state AccessiblePlatformState) bool {
 	return _ok
 }
 
+// AccessibleHypertextOverrides contains methods that a subclass can implement
+// for the AccessibleHypertext interface. Methods left nil keep the interface's
+// default implementation.
+type AccessibleHypertextOverrides struct {
+	// Link: retrieve the n-th link in the accessible object.
+	//
+	// index must be smaller than the number of links.
+	//
+	// The function takes the following parameters:
+	//
+	//   - index of the link.
+	//
+	// The function returns the following values:
+	//
+	//   - accessibleHyperlink: link.
+	Link   func(index uint) *AccessibleHyperlink // optional
+	LinkAt func(offset uint) uint                // optional
+	// NLinks: retrieve the number of links in the accessible object.
+	//
+	// The function returns the following values:
+	//
+	//   - guint: number of links.
+	NLinks func() uint // optional
+}
+
 // AccessibleHypertext: interface for accessible objects containing links.
 //
 // The GtkAccessibleHypertext interfaces is meant to be implemented by
@@ -13077,6 +13324,30 @@ type AccessibleHypertexter interface {
 }
 
 var _ AccessibleHypertexter = (*AccessibleHypertext)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[AccessibleHypertextOverrides](
+		GTypeAccessibleHypertext,
+		initAccessibleHypertextInterface,
+	)
+}
+
+func initAccessibleHypertextInterface(giface unsafe.Pointer, overrides AccessibleHypertextOverrides) {
+	iface := (*C.GtkAccessibleHypertextInterface)(giface)
+
+	if overrides.Link != nil {
+		iface.get_link = (*[0]byte)(C._gotk4_gtk4_AccessibleHypertextInterface_get_link)
+	}
+
+	if overrides.LinkAt != nil {
+		iface.get_link_at = (*[0]byte)(C._gotk4_gtk4_AccessibleHypertextInterface_get_link_at)
+	}
+
+	if overrides.NLinks != nil {
+		iface.get_n_links = (*[0]byte)(C._gotk4_gtk4_AccessibleHypertextInterface_get_n_links)
+	}
+
+}
 
 func wrapAccessibleHypertext(obj *coreglib.Object) *AccessibleHypertext {
 	return &AccessibleHypertext{
@@ -13178,6 +13449,25 @@ func (self *AccessibleHypertext) nLinks() uint {
 	return _guint
 }
 
+// AccessibleRangeOverrides contains methods that a subclass can implement
+// for the AccessibleRange interface. Methods left nil keep the interface's
+// default implementation.
+type AccessibleRangeOverrides struct {
+	// SetCurrentValue sets the current value of the accessible range.
+	//
+	// This operation should behave similarly as if the user performed the
+	// action.
+	//
+	// The function takes the following parameters:
+	//
+	//   - value to set.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: true if the operation was performed, false otherwise.
+	SetCurrentValue func(value float64) bool // optional
+}
+
 // AccessibleRange: interface for accessible objects containing a numeric value.
 //
 // GtkAccessibleRange describes ranged controls for Assistive Technologies.
@@ -13228,6 +13518,22 @@ type AccessibleRanger interface {
 }
 
 var _ AccessibleRanger = (*AccessibleRange)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[AccessibleRangeOverrides](
+		GTypeAccessibleRange,
+		initAccessibleRangeInterface,
+	)
+}
+
+func initAccessibleRangeInterface(giface unsafe.Pointer, overrides AccessibleRangeOverrides) {
+	iface := (*C.GtkAccessibleRangeInterface)(giface)
+
+	if overrides.SetCurrentValue != nil {
+		iface.set_current_value = (*[0]byte)(C._gotk4_gtk4_AccessibleRangeInterface_set_current_value)
+	}
+
+}
 
 func wrapAccessibleRange(obj *coreglib.Object) *AccessibleRange {
 	return &AccessibleRange{
@@ -13285,6 +13591,109 @@ func (self *AccessibleRange) setCurrentValue(value float64) bool {
 	return _ok
 }
 
+// AccessibleTextOverrides contains methods that a subclass can implement
+// for the AccessibleText interface. Methods left nil keep the interface's
+// default implementation.
+type AccessibleTextOverrides struct {
+	// CaretPosition retrieves the position of the caret inside the accessible
+	// object.
+	//
+	// The function returns the following values:
+	//
+	//   - guint: position of the caret, in characters.
+	CaretPosition func() uint // optional
+	// Contents: retrieve the current contents of the accessible object within
+	// the given range.
+	//
+	// If end is G_MAXUINT, the end of the range is the full content of the
+	// accessible object.
+	//
+	// The function takes the following parameters:
+	//
+	//   - start: beginning of the range, in characters.
+	//   - end of the range, in characters.
+	//
+	// The function returns the following values:
+	//
+	//   - bytes: requested slice of the contents of the accessible object,
+	//     as UTF-8. Note that the slice does not have to be NUL-terminated.
+	Contents func(start, end uint) *glib.Bytes // optional
+	// ContentsAt: retrieve the current contents of the accessible object
+	// starting from the given offset, and using the given granularity.
+	//
+	// The start and end values contain the boundaries of the text.
+	//
+	// The function takes the following parameters:
+	//
+	//   - offset: offset, in characters.
+	//   - granularity of the query.
+	//
+	// The function returns the following values:
+	//
+	//   - start of the range, in characters.
+	//   - end of the range, in characters.
+	//   - bytes: requested slice of the contents of the accessible object,
+	//     as UTF-8. Note that the slice does not have to be NUL-terminated.
+	ContentsAt func(offset uint, granularity AccessibleTextGranularity) (start, end uint, bytes *glib.Bytes) // optional
+	// Extents obtains the extents of a range of text, in widget coordinates.
+	//
+	// The function takes the following parameters:
+	//
+	//   - start offset, in characters.
+	//   - end offset, in characters, extents (out caller-allocates): return
+	//     location for the extents.
+	//   - extents
+	//
+	// The function returns the following values:
+	//
+	//   - ok: true if the extents were filled in, false otherwise.
+	Extents func(start, end uint, extents *graphene.Rect) bool // optional
+	// Offset gets the text offset at a given point.
+	//
+	// The function takes the following parameters:
+	//
+	//   - point in widget coordinates of self.
+	//
+	// The function returns the following values:
+	//
+	//   - offset: return location for the text offset at point.
+	//   - ok: true if the offset was set, false otherwise.
+	Offset func(point *graphene.Point) (uint, bool) // optional
+	// Selection retrieves the selection ranges in the accessible object.
+	//
+	// If this function returns true, n_ranges will be set to a value greater
+	// than or equal to one, and ranges will be set to a newly allocated array
+	// of [struct#Gtk.AccessibleTextRange].
+	//
+	// The function returns the following values:
+	//
+	//   - ranges (optional): selection ranges.
+	//   - ok: true if there is at least a selection inside the accessible
+	//     object, and false otherwise.
+	Selection func() ([]AccessibleTextRange, bool) // optional
+	// SetCaretPosition sets the caret position.
+	//
+	// The function takes the following parameters:
+	//
+	//   - offset: text offset in characters.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: true if the caret position was updated.
+	SetCaretPosition func(offset uint) bool // optional
+	// SetSelection sets the caret position.
+	//
+	// The function takes the following parameters:
+	//
+	//   - i: selection to set.
+	//   - range to set the selection to.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: true if the selection was updated.
+	SetSelection func(i uint, _range *AccessibleTextRange) bool // optional
+}
+
 // AccessibleText: interface for accessible objects containing formatted text.
 //
 // The GtkAccessibleText interfaces is meant to be implemented by accessible
@@ -13317,6 +13726,50 @@ type AccessibleTexter interface {
 }
 
 var _ AccessibleTexter = (*AccessibleText)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[AccessibleTextOverrides](
+		GTypeAccessibleText,
+		initAccessibleTextInterface,
+	)
+}
+
+func initAccessibleTextInterface(giface unsafe.Pointer, overrides AccessibleTextOverrides) {
+	iface := (*C.GtkAccessibleTextInterface)(giface)
+
+	if overrides.CaretPosition != nil {
+		iface.get_caret_position = (*[0]byte)(C._gotk4_gtk4_AccessibleTextInterface_get_caret_position)
+	}
+
+	if overrides.Contents != nil {
+		iface.get_contents = (*[0]byte)(C._gotk4_gtk4_AccessibleTextInterface_get_contents)
+	}
+
+	if overrides.ContentsAt != nil {
+		iface.get_contents_at = (*[0]byte)(C._gotk4_gtk4_AccessibleTextInterface_get_contents_at)
+	}
+
+	if overrides.Extents != nil {
+		iface.get_extents = (*[0]byte)(C._gotk4_gtk4_AccessibleTextInterface_get_extents)
+	}
+
+	if overrides.Offset != nil {
+		iface.get_offset = (*[0]byte)(C._gotk4_gtk4_AccessibleTextInterface_get_offset)
+	}
+
+	if overrides.Selection != nil {
+		iface.get_selection = (*[0]byte)(C._gotk4_gtk4_AccessibleTextInterface_get_selection)
+	}
+
+	if overrides.SetCaretPosition != nil {
+		iface.set_caret_position = (*[0]byte)(C._gotk4_gtk4_AccessibleTextInterface_set_caret_position)
+	}
+
+	if overrides.SetSelection != nil {
+		iface.set_selection = (*[0]byte)(C._gotk4_gtk4_AccessibleTextInterface_set_selection)
+	}
+
+}
 
 func wrapAccessibleText(obj *coreglib.Object) *AccessibleText {
 	return &AccessibleText{
@@ -13891,6 +14344,65 @@ func (self *AccessibleText) setSelection(i uint, _range *AccessibleTextRange) bo
 	return _ok
 }
 
+// ActionableOverrides contains methods that a subclass can implement
+// for the Actionable interface. Methods left nil keep the interface's
+// default implementation.
+type ActionableOverrides struct {
+	// ActionName gets the action name for actionable.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8 (optional): action name.
+	ActionName func() string // optional
+	// ActionTargetValue gets the current target value of actionable.
+	//
+	// The function returns the following values:
+	//
+	//   - variant (optional): current target value.
+	ActionTargetValue func() *glib.Variant // optional
+	// SetActionName specifies the name of the action with which this widget
+	// should be associated.
+	//
+	// If action_name is NULL then the widget will be unassociated from any
+	// previous action.
+	//
+	// Usually this function is used when the widget is located (or will be
+	// located) within the hierarchy of a GtkApplicationWindow.
+	//
+	// Names are of the form “win.save” or “app.quit” for actions on the
+	// containing applicationwindow or its associated application, respectively.
+	// This is the same form used for actions in the gio.Menu associated with
+	// the window.
+	//
+	// The function takes the following parameters:
+	//
+	//   - actionName (optional): action name.
+	SetActionName func(actionName string) // optional
+	// SetActionTargetValue sets the target value of an actionable widget.
+	//
+	// If target_value is NULL then the target value is unset.
+	//
+	// The target value has two purposes. First, it is used as the parameter
+	// to activation of the action associated with the GtkActionable widget.
+	// Second, it is used to determine if the widget should be rendered as
+	// “active” — the widget is active if the state is equal to the given
+	// target.
+	//
+	// Consider the example of associating a set of buttons with a gio.Action
+	// with string state in a typical “radio button” situation. Each button will
+	// be associated with the same action, but with a different target value for
+	// that action. Clicking on a particular button will activate the action
+	// with the target of that button, which will typically cause the action’s
+	// state to change to that value. Since the action’s state is now equal to
+	// the target value of the button, the button will now be rendered as active
+	// (and the other buttons, with different targets, rendered inactive).
+	//
+	// The function takes the following parameters:
+	//
+	//   - targetValue (optional): glib.Variant to set as the target value.
+	SetActionTargetValue func(targetValue *glib.Variant) // optional
+}
+
 // Actionable provides a way to associate widgets with actions.
 //
 // It primarily consists of two properties: gtk.Actionable:action-name and
@@ -13933,6 +14445,34 @@ type Actionabler interface {
 }
 
 var _ Actionabler = (*Actionable)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[ActionableOverrides](
+		GTypeActionable,
+		initActionableInterface,
+	)
+}
+
+func initActionableInterface(giface unsafe.Pointer, overrides ActionableOverrides) {
+	iface := (*C.GtkActionableInterface)(giface)
+
+	if overrides.ActionName != nil {
+		iface.get_action_name = (*[0]byte)(C._gotk4_gtk4_ActionableInterface_get_action_name)
+	}
+
+	if overrides.ActionTargetValue != nil {
+		iface.get_action_target_value = (*[0]byte)(C._gotk4_gtk4_ActionableInterface_get_action_target_value)
+	}
+
+	if overrides.SetActionName != nil {
+		iface.set_action_name = (*[0]byte)(C._gotk4_gtk4_ActionableInterface_set_action_name)
+	}
+
+	if overrides.SetActionTargetValue != nil {
+		iface.set_action_target_value = (*[0]byte)(C._gotk4_gtk4_ActionableInterface_set_action_target_value)
+	}
+
+}
 
 func wrapActionable(obj *coreglib.Object) *Actionable {
 	return &Actionable{
@@ -14368,6 +14908,95 @@ func (self *AppChooser) Refresh() {
 	runtime.KeepAlive(self)
 }
 
+// BuildableOverrides contains methods that a subclass can implement
+// for the Buildable interface. Methods left nil keep the interface's
+// default implementation.
+type BuildableOverrides struct {
+	// AddChild adds a child to buildable. type is an optional string describing
+	// how the child should be added.
+	//
+	// The function takes the following parameters:
+	//
+	//   - builder: GtkBuilder.
+	//   - child to add.
+	//   - typ (optional): kind of child or NULL.
+	AddChild func(builder *Builder, child *coreglib.Object, typ string) // optional
+	// CustomFinished: similar to gtk_buildable_parser_finished() but is called
+	// once for each custom tag handled by the buildable.
+	//
+	// The function takes the following parameters:
+	//
+	//   - builder: GtkBuilder.
+	//   - child (optional) object or NULL for non-child tags.
+	//   - tagname: name of the tag.
+	//   - data (optional): user data created in custom_tag_start.
+	CustomFinished func(builder *Builder, child *coreglib.Object, tagname string, data unsafe.Pointer) // optional
+	// CustomTagEnd: called at the end of each custom element handled by the
+	// buildable.
+	//
+	// The function takes the following parameters:
+	//
+	//   - builder: GtkBuilder used to construct this object.
+	//   - child (optional) object or NULL for non-child tags.
+	//   - tagname: name of tag.
+	//   - data (optional): user data that will be passed in to parser
+	//     functions.
+	CustomTagEnd func(builder *Builder, child *coreglib.Object, tagname string, data unsafe.Pointer) // optional
+	// CustomTagStart: called for each unknown element under <child>.
+	//
+	// The function takes the following parameters:
+	//
+	//   - builder: GtkBuilder used to construct this object.
+	//   - child (optional) object or NULL for non-child tags.
+	//   - tagname: name of tag.
+	//
+	// The function returns the following values:
+	//
+	//   - parser: GtkBuildableParser to fill in.
+	//   - data (optional): return location for user data that will be passed in
+	//     to parser functions.
+	//   - ok: TRUE if an object has a custom implementation, FALSE if it
+	//     doesn't.
+	CustomTagStart func(builder *Builder, child *coreglib.Object, tagname string) (*BuildableParser, unsafe.Pointer, bool) // optional
+	// ID: getter corresponding to set_id. Implement this if you implement
+	// set_id.
+	ID func() string // optional
+	// InternalChild retrieves the internal child called childname of the
+	// buildable object.
+	//
+	// The function takes the following parameters:
+	//
+	//   - builder: GtkBuilder.
+	//   - childname: name of child.
+	//
+	// The function returns the following values:
+	//
+	//   - object: internal child of the buildable object.
+	InternalChild func(builder *Builder, childname string) *coreglib.Object // optional
+	// ParserFinished: called when a builder finishes the parsing of a
+	// UI definition. It is normally not necessary to implement this,
+	// unless you need to perform special cleanup actions. GtkWindow sets the
+	// GtkWidget:visible property here.
+	ParserFinished func(builder *Builder) // optional
+	// SetBuildableProperty sets a property of a buildable object. It is
+	// normally not necessary to implement this, g_object_set_property() is
+	// used by default. GtkWindow implements this to delay showing itself (i.e.
+	// setting the gtk.Widget:visible property) until the whole interface is
+	// created.
+	//
+	// The function takes the following parameters:
+	//
+	//   - builder
+	//   - name
+	//   - value
+	SetBuildableProperty func(builder *Builder, name string, value *coreglib.Value) // optional
+	// SetID stores the id attribute given in the GtkBuilder UI definition.
+	// GtkWidget stores the name as object data. Implement this method if your
+	// object has some notion of “ID” and it makes sense to map the XML id
+	// attribute to it.
+	SetID func(id string) // optional
+}
+
 // Buildable allows objects to extend and customize deserialization from ui
 // files.
 //
@@ -14401,6 +15030,54 @@ type Buildabler interface {
 }
 
 var _ Buildabler = (*Buildable)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[BuildableOverrides](
+		GTypeBuildable,
+		initBuildableIface,
+	)
+}
+
+func initBuildableIface(giface unsafe.Pointer, overrides BuildableOverrides) {
+	iface := (*C.GtkBuildableIface)(giface)
+
+	if overrides.AddChild != nil {
+		iface.add_child = (*[0]byte)(C._gotk4_gtk4_BuildableIface_add_child)
+	}
+
+	if overrides.CustomFinished != nil {
+		iface.custom_finished = (*[0]byte)(C._gotk4_gtk4_BuildableIface_custom_finished)
+	}
+
+	if overrides.CustomTagEnd != nil {
+		iface.custom_tag_end = (*[0]byte)(C._gotk4_gtk4_BuildableIface_custom_tag_end)
+	}
+
+	if overrides.CustomTagStart != nil {
+		iface.custom_tag_start = (*[0]byte)(C._gotk4_gtk4_BuildableIface_custom_tag_start)
+	}
+
+	if overrides.ID != nil {
+		iface.get_id = (*[0]byte)(C._gotk4_gtk4_BuildableIface_get_id)
+	}
+
+	if overrides.InternalChild != nil {
+		iface.get_internal_child = (*[0]byte)(C._gotk4_gtk4_BuildableIface_get_internal_child)
+	}
+
+	if overrides.ParserFinished != nil {
+		iface.parser_finished = (*[0]byte)(C._gotk4_gtk4_BuildableIface_parser_finished)
+	}
+
+	if overrides.SetBuildableProperty != nil {
+		iface.set_buildable_property = (*[0]byte)(C._gotk4_gtk4_BuildableIface_set_buildable_property)
+	}
+
+	if overrides.SetID != nil {
+		iface.set_id = (*[0]byte)(C._gotk4_gtk4_BuildableIface_set_id)
+	}
+
+}
 
 func wrapBuildable(obj *coreglib.Object) *Buildable {
 	return &Buildable{
@@ -14723,6 +15400,36 @@ func (buildable *Buildable) setID(id string) {
 	runtime.KeepAlive(id)
 }
 
+// BuilderScopeOverrides contains methods that a subclass can implement
+// for the BuilderScope interface. Methods left nil keep the interface's
+// default implementation.
+type BuilderScopeOverrides struct {
+	// TypeFromFunction: try to lookup a GType via the given function name,
+	// specified explicitly in a GtkBuilder file, like via the "type-func"
+	// attribute in the <object> tag. This function is very rarely used.
+	// The C implementation will use dlsym() and call the resulting function
+	// as a GTypeFunc. The default implementation will fail and just return
+	// G_TYPE_INVALID.
+	//
+	// The function takes the following parameters:
+	//
+	//   - builder
+	//   - functionName
+	TypeFromFunction func(builder *Builder, functionName string) coreglib.Type // optional
+	// TypeFromName: try to lookup a GType via the its name. See
+	// gtk_builder_get_type_from_name() for more details. The C implementation
+	// will use g_type_from_name() and if that fails try to guess the correct
+	// function name for registering the type and then use dlsym() to load it.
+	// The default implementation just tries g_type_from_name() and otherwise
+	// fails.
+	//
+	// The function takes the following parameters:
+	//
+	//   - builder
+	//   - typeName
+	TypeFromName func(builder *Builder, typeName string) coreglib.Type // optional
+}
+
 // BuilderScope provides language binding support to GtkBuilder.
 //
 // The goal of GtkBuilderScope is to look up programming-language-specific
@@ -14760,6 +15467,26 @@ type BuilderScoper interface {
 }
 
 var _ BuilderScoper = (*BuilderScope)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[BuilderScopeOverrides](
+		GTypeBuilderScope,
+		initBuilderScopeInterface,
+	)
+}
+
+func initBuilderScopeInterface(giface unsafe.Pointer, overrides BuilderScopeOverrides) {
+	iface := (*C.GtkBuilderScopeInterface)(giface)
+
+	if overrides.TypeFromFunction != nil {
+		iface.get_type_from_function = (*[0]byte)(C._gotk4_gtk4_BuilderScopeInterface_get_type_from_function)
+	}
+
+	if overrides.TypeFromName != nil {
+		iface.get_type_from_name = (*[0]byte)(C._gotk4_gtk4_BuilderScopeInterface_get_type_from_name)
+	}
+
+}
 
 func wrapBuilderScope(obj *coreglib.Object) *BuilderScope {
 	return &BuilderScope{
@@ -14852,6 +15579,39 @@ func (self *BuilderScope) typeFromName(builder *Builder, typeName string) coregl
 	return _gType
 }
 
+// CellEditableOverrides contains methods that a subclass can implement
+// for the CellEditable interface. Methods left nil keep the interface's
+// default implementation.
+type CellEditableOverrides struct {
+	// EditingDone emits the GtkCellEditable::editing-done signal.
+	//
+	// Deprecated: since version 4.10.
+	EditingDone func() // optional
+	// RemoveWidget emits the GtkCellEditable::remove-widget signal.
+	//
+	// Deprecated: since version 4.10.
+	RemoveWidget func() // optional
+	// StartEditing begins editing on a cell_editable.
+	//
+	// The GtkCellRenderer for the cell creates and returns a GtkCellEditable
+	// from gtk_cell_renderer_start_editing(), configured for the
+	// GtkCellRenderer type.
+	//
+	// gtk_cell_editable_start_editing() can then set up cell_editable
+	// suitably for editing a cell, e.g. making the Esc key emit
+	// GtkCellEditable::editing-done.
+	//
+	// Note that the cell_editable is created on-demand for the current edit;
+	// its lifetime is temporary and does not persist across other edits and/or
+	// cells.
+	//
+	// The function takes the following parameters:
+	//
+	//   - event (optional): GdkEvent that began the editing process, or NULL if
+	//     editing was initiated programmatically.
+	StartEditing func(event gdk.Eventer) // optional
+}
+
 // CellEditable: interface for widgets that can be used for editing cells
 //
 // The GtkCellEditable interface must be implemented for widgets to be usable
@@ -14893,6 +15653,30 @@ type CellEditabler interface {
 }
 
 var _ CellEditabler = (*CellEditable)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[CellEditableOverrides](
+		GTypeCellEditable,
+		initCellEditableIface,
+	)
+}
+
+func initCellEditableIface(giface unsafe.Pointer, overrides CellEditableOverrides) {
+	iface := (*C.GtkCellEditableIface)(giface)
+
+	if overrides.EditingDone != nil {
+		iface.editing_done = (*[0]byte)(C._gotk4_gtk4_CellEditableIface_editing_done)
+	}
+
+	if overrides.RemoveWidget != nil {
+		iface.remove_widget = (*[0]byte)(C._gotk4_gtk4_CellEditableIface_remove_widget)
+	}
+
+	if overrides.StartEditing != nil {
+		iface.start_editing = (*[0]byte)(C._gotk4_gtk4_CellEditableIface_start_editing)
+	}
+
+}
 
 func wrapCellEditable(obj *coreglib.Object) *CellEditable {
 	return &CellEditable{
@@ -15063,6 +15847,102 @@ func (cellEditable *CellEditable) startEditing(event gdk.Eventer) {
 	runtime.KeepAlive(event)
 }
 
+// CellLayoutOverrides contains methods that a subclass can implement
+// for the CellLayout interface. Methods left nil keep the interface's
+// default implementation.
+type CellLayoutOverrides struct {
+	// AddAttribute adds an attribute mapping to the list in cell_layout.
+	//
+	// The column is the column of the model to get a value from, and the
+	// attribute is the property on cell to be set from that value. So for
+	// example if column 2 of the model contains strings, you could have the
+	// “text” attribute of a GtkCellRendererText get its values from column 2.
+	// In this context "attribute" and "property" are used interchangeably.
+	//
+	// Deprecated: since version 4.10.
+	//
+	// The function takes the following parameters:
+	//
+	//   - cell: GtkCellRenderer.
+	//   - attribute: property on the renderer.
+	//   - column position on the model to get the attribute from.
+	AddAttribute func(cell CellRendererer, attribute string, column int) // optional
+	// Clear unsets all the mappings on all renderers on cell_layout and removes
+	// all renderers from cell_layout.
+	//
+	// Deprecated: since version 4.10.
+	Clear func() // optional
+	// ClearAttributes clears all existing attributes previously set with
+	// gtk_cell_layout_set_attributes().
+	//
+	// Deprecated: since version 4.10.
+	//
+	// The function takes the following parameters:
+	//
+	//   - cell: GtkCellRenderer to clear the attribute mapping on.
+	ClearAttributes func(cell CellRendererer) // optional
+	// Area returns the underlying GtkCellArea which might be cell_layout if
+	// called on a GtkCellArea or might be NULL if no GtkCellArea is used by
+	// cell_layout.
+	//
+	// Deprecated: since version 4.10.
+	//
+	// The function returns the following values:
+	//
+	//   - cellArea (optional): cell area used by cell_layout.
+	Area func() CellAreaer // optional
+	// Cells returns the cell renderers which have been added to cell_layout.
+	//
+	// Deprecated: since version 4.10.
+	//
+	// The function returns the following values:
+	//
+	//   - list: a list of cell renderers. The list, but not the renderers has
+	//     been newly allocated and should be freed with g_list_free() when no
+	//     longer needed.
+	Cells func() []CellRendererer // optional
+	// PackEnd adds the cell to the end of cell_layout. If expand is FALSE,
+	// then the cell is allocated no more space than it needs. Any unused space
+	// is divided evenly between cells for which expand is TRUE.
+	//
+	// Note that reusing the same cell renderer is not supported.
+	//
+	// Deprecated: since version 4.10.
+	//
+	// The function takes the following parameters:
+	//
+	//   - cell: GtkCellRenderer.
+	//   - expand: TRUE if cell is to be given extra space allocated to
+	//     cell_layout.
+	PackEnd func(cell CellRendererer, expand bool) // optional
+	// PackStart packs the cell into the beginning of cell_layout. If expand is
+	// FALSE, then the cell is allocated no more space than it needs. Any unused
+	// space is divided evenly between cells for which expand is TRUE.
+	//
+	// Note that reusing the same cell renderer is not supported.
+	//
+	// Deprecated: since version 4.10.
+	//
+	// The function takes the following parameters:
+	//
+	//   - cell: GtkCellRenderer.
+	//   - expand: TRUE if cell is to be given extra space allocated to
+	//     cell_layout.
+	PackStart func(cell CellRendererer, expand bool) // optional
+	// Reorder re-inserts cell at position.
+	//
+	// Note that cell has already to be packed into cell_layout for this to
+	// function properly.
+	//
+	// Deprecated: since version 4.10.
+	//
+	// The function takes the following parameters:
+	//
+	//   - cell: GtkCellRenderer to reorder.
+	//   - position: new position to insert cell at.
+	Reorder func(cell CellRendererer, position int) // optional
+}
+
 // CellLayout: interface for packing cells
 //
 // GtkCellLayout is an interface to be implemented by all objects which want to
@@ -15204,6 +16084,50 @@ type CellLayouter interface {
 }
 
 var _ CellLayouter = (*CellLayout)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[CellLayoutOverrides](
+		GTypeCellLayout,
+		initCellLayoutIface,
+	)
+}
+
+func initCellLayoutIface(giface unsafe.Pointer, overrides CellLayoutOverrides) {
+	iface := (*C.GtkCellLayoutIface)(giface)
+
+	if overrides.AddAttribute != nil {
+		iface.add_attribute = (*[0]byte)(C._gotk4_gtk4_CellLayoutIface_add_attribute)
+	}
+
+	if overrides.Clear != nil {
+		iface.clear = (*[0]byte)(C._gotk4_gtk4_CellLayoutIface_clear)
+	}
+
+	if overrides.ClearAttributes != nil {
+		iface.clear_attributes = (*[0]byte)(C._gotk4_gtk4_CellLayoutIface_clear_attributes)
+	}
+
+	if overrides.Area != nil {
+		iface.get_area = (*[0]byte)(C._gotk4_gtk4_CellLayoutIface_get_area)
+	}
+
+	if overrides.Cells != nil {
+		iface.get_cells = (*[0]byte)(C._gotk4_gtk4_CellLayoutIface_get_cells)
+	}
+
+	if overrides.PackEnd != nil {
+		iface.pack_end = (*[0]byte)(C._gotk4_gtk4_CellLayoutIface_pack_end)
+	}
+
+	if overrides.PackStart != nil {
+		iface.pack_start = (*[0]byte)(C._gotk4_gtk4_CellLayoutIface_pack_start)
+	}
+
+	if overrides.Reorder != nil {
+		iface.reorder = (*[0]byte)(C._gotk4_gtk4_CellLayoutIface_reorder)
+	}
+
+}
 
 func wrapCellLayout(obj *coreglib.Object) *CellLayout {
 	return &CellLayout{
@@ -15786,6 +16710,55 @@ func (cellLayout *CellLayout) setCellDataFunc(cell CellRendererer, fn CellLayout
 	runtime.KeepAlive(fn)
 }
 
+// ColorChooserOverrides contains methods that a subclass can implement
+// for the ColorChooser interface. Methods left nil keep the interface's
+// default implementation.
+type ColorChooserOverrides struct {
+	// AddPalette adds a palette to the color chooser.
+	//
+	// If orientation is horizontal, the colors are grouped in rows, with
+	// colors_per_line colors in each row. If horizontal is FALSE, the colors
+	// are grouped in columns instead.
+	//
+	// The default color palette of gtk.ColorChooserWidget has 45 colors,
+	// organized in columns of 5 colors (this includes some grays).
+	//
+	// The layout of the color chooser widget works best when the palettes have
+	// 9-10 columns.
+	//
+	// Calling this function for the first time has the side effect of removing
+	// the default color palette from the color chooser.
+	//
+	// If colors is NULL, removes all previously added palettes.
+	//
+	// Deprecated: Use gtk.ColorDialog instead.
+	//
+	// The function takes the following parameters:
+	//
+	//   - orientation: GTK_ORIENTATION_HORIZONTAL if the palette should be
+	//     displayed in rows, GTK_ORIENTATION_VERTICAL for columns.
+	//   - colorsPerLine: number of colors to show in each row/column.
+	//   - colors (optional) of the palette.
+	AddPalette     func(orientation Orientation, colorsPerLine int, colors []gdk.RGBA) // optional
+	ColorActivated func(color *gdk.RGBA)                                               // optional
+	// RGBA gets the currently-selected color.
+	//
+	// Deprecated: Use gtk.ColorDialog instead.
+	//
+	// The function returns the following values:
+	//
+	//   - color: GdkRGBA to fill in with the current color.
+	RGBA func() *gdk.RGBA // optional
+	// SetRGBA sets the color.
+	//
+	// Deprecated: Use gtk.ColorDialog instead.
+	//
+	// The function takes the following parameters:
+	//
+	//   - color: new color.
+	SetRGBA func(color *gdk.RGBA) // optional
+}
+
 // ColorChooser: GtkColorChooser is an interface that is implemented by widgets
 // for choosing colors.
 //
@@ -15831,6 +16804,34 @@ type ColorChooserer interface {
 }
 
 var _ ColorChooserer = (*ColorChooser)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[ColorChooserOverrides](
+		GTypeColorChooser,
+		initColorChooserInterface,
+	)
+}
+
+func initColorChooserInterface(giface unsafe.Pointer, overrides ColorChooserOverrides) {
+	iface := (*C.GtkColorChooserInterface)(giface)
+
+	if overrides.AddPalette != nil {
+		iface.add_palette = (*[0]byte)(C._gotk4_gtk4_ColorChooserInterface_add_palette)
+	}
+
+	if overrides.ColorActivated != nil {
+		iface.color_activated = (*[0]byte)(C._gotk4_gtk4_ColorChooserInterface_color_activated)
+	}
+
+	if overrides.RGBA != nil {
+		iface.get_rgba = (*[0]byte)(C._gotk4_gtk4_ColorChooserInterface_get_rgba)
+	}
+
+	if overrides.SetRGBA != nil {
+		iface.set_rgba = (*[0]byte)(C._gotk4_gtk4_ColorChooserInterface_set_rgba)
+	}
+
+}
 
 func wrapColorChooser(obj *coreglib.Object) *ColorChooser {
 	return &ColorChooser{
@@ -16155,6 +17156,57 @@ func BaseConstraintTarget(obj ConstraintTargetter) *ConstraintTarget {
 	return obj.baseConstraintTarget()
 }
 
+// EditableTextWidgetOverrides contains methods that a subclass can implement
+// for the EditableTextWidget interface. Methods left nil keep the interface's
+// default implementation.
+type EditableTextWidgetOverrides struct {
+	Changed func() // optional
+	// DeleteText deletes a sequence of characters.
+	//
+	// The characters that are deleted are those characters at positions from
+	// start_pos up to, but not including end_pos. If end_pos is negative, then
+	// the characters deleted are those from start_pos to the end of the text.
+	//
+	// Note that the positions are specified in characters, not bytes.
+	//
+	// The function takes the following parameters:
+	//
+	//   - startPos: start position.
+	//   - endPos: end position.
+	DeleteText func(startPos, endPos int) // optional
+	// Delegate gets the GtkEditable that editable is delegating its
+	// implementation to.
+	//
+	// Typically, the delegate is a gtk.Text widget.
+	//
+	// The function returns the following values:
+	//
+	//   - ret (optional): delegate GtkEditable.
+	Delegate func() *EditableTextWidget // optional
+	// SelectionBounds retrieves the selection bound of the editable.
+	//
+	// start_pos will be filled with the start of the selection and end_pos with
+	// end. If no text was selected both will be identical and FALSE will be
+	// returned.
+	//
+	// Note that positions are specified in characters, not bytes.
+	//
+	// The function returns the following values:
+	//
+	//   - startPos (optional): location to store the starting position.
+	//   - endPos (optional): location to store the end position.
+	//   - ok: TRUE if there is a non-empty selection, FALSE otherwise.
+	SelectionBounds func() (startPos, endPos int, ok bool) // optional
+	// Text retrieves the contents of editable.
+	//
+	// The returned string is owned by GTK and must not be modified or freed.
+	//
+	// The function returns the following values:
+	//
+	//   - utf8: pointer to the contents of the editable.
+	Text func() string // optional
+}
+
 // EditableTextWidget: interface for single-line text editing widgets.
 //
 // Typical examples of editable widgets are gtk.Entry and gtk.SpinButton.
@@ -16352,6 +17404,38 @@ type EditableTextWidgetter interface {
 }
 
 var _ EditableTextWidgetter = (*EditableTextWidget)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[EditableTextWidgetOverrides](
+		GTypeEditableTextWidget,
+		initEditableInterface,
+	)
+}
+
+func initEditableInterface(giface unsafe.Pointer, overrides EditableTextWidgetOverrides) {
+	iface := (*C.GtkEditableInterface)(giface)
+
+	if overrides.Changed != nil {
+		iface.changed = (*[0]byte)(C._gotk4_gtk4_EditableInterface_changed)
+	}
+
+	if overrides.DeleteText != nil {
+		iface.delete_text = (*[0]byte)(C._gotk4_gtk4_EditableInterface_delete_text)
+	}
+
+	if overrides.Delegate != nil {
+		iface.get_delegate = (*[0]byte)(C._gotk4_gtk4_EditableInterface_get_delegate)
+	}
+
+	if overrides.SelectionBounds != nil {
+		iface.get_selection_bounds = (*[0]byte)(C._gotk4_gtk4_EditableInterface_get_selection_bounds)
+	}
+
+	if overrides.Text != nil {
+		iface.get_text = (*[0]byte)(C._gotk4_gtk4_EditableInterface_get_text)
+	}
+
+}
 
 func wrapEditableTextWidget(obj *coreglib.Object) *EditableTextWidget {
 	return &EditableTextWidget{
@@ -18073,6 +19157,85 @@ func (chooser *FileChooser) SetSelectMultiple(selectMultiple bool) {
 	runtime.KeepAlive(selectMultiple)
 }
 
+// FontChooserOverrides contains methods that a subclass can implement
+// for the FontChooser interface. Methods left nil keep the interface's
+// default implementation.
+type FontChooserOverrides struct {
+	FontActivated func(fontname string) // optional
+	// FontFace gets the PangoFontFace representing the selected font group
+	// details (i.e. family, slant, weight, width, etc).
+	//
+	// If the selected font is not installed, returns NULL.
+	//
+	// Deprecated: Use gtk.FontDialog and gtk.FontDialogButton instead.
+	//
+	// The function returns the following values:
+	//
+	//   - fontFace (optional): PangoFontFace representing the selected font
+	//     group details.
+	FontFace func() pango.FontFacer // optional
+	// FontFamily gets the PangoFontFamily representing the selected font
+	// family.
+	//
+	// Font families are a collection of font faces.
+	//
+	// If the selected font is not installed, returns NULL.
+	//
+	// Deprecated: Use gtk.FontDialog and gtk.FontDialogButton instead.
+	//
+	// The function returns the following values:
+	//
+	//   - fontFamily (optional): PangoFontFamily representing the selected font
+	//     family.
+	FontFamily func() pango.FontFamilier // optional
+	// FontMap gets the custom font map of this font chooser widget, or NULL if
+	// it does not have one.
+	//
+	// Deprecated: Use gtk.FontDialog and gtk.FontDialogButton instead.
+	//
+	// The function returns the following values:
+	//
+	//   - fontMap (optional): PangoFontMap.
+	FontMap func() pango.FontMapper // optional
+	// FontSize: selected font size.
+	//
+	// Deprecated: Use gtk.FontDialog and gtk.FontDialogButton instead.
+	//
+	// The function returns the following values:
+	//
+	//   - gint: n integer representing the selected font size, or -1 if no font
+	//     size is selected.
+	FontSize func() int // optional
+	// SetFontMap sets a custom font map to use for this font chooser widget.
+	//
+	// A custom font map can be used to present application-specific fonts
+	// instead of or in addition to the normal system fonts.
+	//
+	//	FcConfig *config;
+	//	PangoFontMap *fontmap;
+	//
+	//	config = FcInitLoadConfigAndFonts ();
+	//	FcConfigAppFontAddFile (config, my_app_font_file);
+	//
+	//	fontmap = pango_cairo_font_map_new_for_font_type (CAIRO_FONT_TYPE_FT);
+	//	pango_fc_font_map_set_config (PANGO_FC_FONT_MAP (fontmap), config);
+	//
+	//	gtk_font_chooser_set_font_map (font_chooser, fontmap);
+	//
+	// Note that other GTK widgets will only be able to use the
+	// application-specific font if it is present in the font map they use:
+	//
+	//	context = gtk_widget_get_pango_context (label);
+	//	pango_context_set_font_map (context, fontmap);
+	//
+	// Deprecated: Use gtk.FontDialog and gtk.FontDialogButton instead.
+	//
+	// The function takes the following parameters:
+	//
+	//   - fontmap (optional): PangoFontMap.
+	SetFontMap func(fontmap pango.FontMapper) // optional
+}
+
 // FontChooser: GtkFontChooser is an interface that can be implemented by
 // widgets for choosing fonts.
 //
@@ -18144,6 +19307,42 @@ type FontChooserer interface {
 }
 
 var _ FontChooserer = (*FontChooser)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[FontChooserOverrides](
+		GTypeFontChooser,
+		initFontChooserIface,
+	)
+}
+
+func initFontChooserIface(giface unsafe.Pointer, overrides FontChooserOverrides) {
+	iface := (*C.GtkFontChooserIface)(giface)
+
+	if overrides.FontActivated != nil {
+		iface.font_activated = (*[0]byte)(C._gotk4_gtk4_FontChooserIface_font_activated)
+	}
+
+	if overrides.FontFace != nil {
+		iface.get_font_face = (*[0]byte)(C._gotk4_gtk4_FontChooserIface_get_font_face)
+	}
+
+	if overrides.FontFamily != nil {
+		iface.get_font_family = (*[0]byte)(C._gotk4_gtk4_FontChooserIface_get_font_family)
+	}
+
+	if overrides.FontMap != nil {
+		iface.get_font_map = (*[0]byte)(C._gotk4_gtk4_FontChooserIface_get_font_map)
+	}
+
+	if overrides.FontSize != nil {
+		iface.get_font_size = (*[0]byte)(C._gotk4_gtk4_FontChooserIface_get_font_size)
+	}
+
+	if overrides.SetFontMap != nil {
+		iface.set_font_map = (*[0]byte)(C._gotk4_gtk4_FontChooserIface_set_font_map)
+	}
+
+}
 
 func wrapFontChooser(obj *coreglib.Object) *FontChooser {
 	return &FontChooser{
@@ -19167,8 +20366,10 @@ func NativeSurfaceGetForSurface(surface gdk.Surfacer) *NativeSurface {
 	return _native
 }
 
-// OrientableOverrider contains methods that are overridable.
-type OrientableOverrider interface {
+// OrientableOverrides contains methods that a subclass can implement
+// for the Orientable interface. Methods left nil keep the interface's
+// default implementation.
+type OrientableOverrides struct {
 }
 
 // Orientable: interface for widgets that can be oriented horizontally or
@@ -19206,7 +20407,14 @@ type Orientabler interface {
 
 var _ Orientabler = (*Orientable)(nil)
 
-func ifaceInitOrientabler(gifacePtr, data C.gpointer) {
+func init() {
+	coreglib.RegisterInterfaceInfo[OrientableOverrides](
+		GTypeOrientable,
+		initOrientableIface,
+	)
+}
+
+func initOrientableIface(giface unsafe.Pointer, overrides OrientableOverrides) {
 }
 
 func wrapOrientable(obj *coreglib.Object) *Orientable {
@@ -19257,6 +20465,48 @@ func (orientable *Orientable) SetOrientation(orientation Orientation) {
 	runtime.KeepAlive(orientation)
 }
 
+// PrintOperationPreviewOverrides contains methods that a subclass can implement
+// for the PrintOperationPreview interface. Methods left nil keep the interface's
+// default implementation.
+type PrintOperationPreviewOverrides struct {
+	// EndPreview ends a preview.
+	//
+	// This function must be called to finish a custom print preview.
+	EndPreview func() // optional
+	// The function takes the following parameters:
+	//
+	//   - context
+	//   - pageSetup
+	GotPageSize func(context *PrintContext, pageSetup *PageSetup) // optional
+	// IsSelected returns whether the given page is included in the set of pages
+	// that have been selected for printing.
+	//
+	// The function takes the following parameters:
+	//
+	//   - pageNr: page number.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if the page has been selected for printing.
+	IsSelected func(pageNr int) bool       // optional
+	Ready      func(context *PrintContext) // optional
+	// RenderPage renders a page to the preview.
+	//
+	// This is using the print context that was passed to the
+	// gtk.PrintOperation::preview handler together with preview.
+	//
+	// A custom print preview should use this function to render the currently
+	// selected page.
+	//
+	// Note that this function requires a suitable cairo context to be
+	// associated with the print context.
+	//
+	// The function takes the following parameters:
+	//
+	//   - pageNr: page to render.
+	RenderPage func(pageNr int) // optional
+}
+
 // PrintOperationPreview: interface that is used to implement print preview.
 //
 // A GtkPrintOperationPreview object is passed to the
@@ -19294,6 +20544,38 @@ type PrintOperationPreviewer interface {
 }
 
 var _ PrintOperationPreviewer = (*PrintOperationPreview)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[PrintOperationPreviewOverrides](
+		GTypePrintOperationPreview,
+		initPrintOperationPreviewIface,
+	)
+}
+
+func initPrintOperationPreviewIface(giface unsafe.Pointer, overrides PrintOperationPreviewOverrides) {
+	iface := (*C.GtkPrintOperationPreviewIface)(giface)
+
+	if overrides.EndPreview != nil {
+		iface.end_preview = (*[0]byte)(C._gotk4_gtk4_PrintOperationPreviewIface_end_preview)
+	}
+
+	if overrides.GotPageSize != nil {
+		iface.got_page_size = (*[0]byte)(C._gotk4_gtk4_PrintOperationPreviewIface_got_page_size)
+	}
+
+	if overrides.IsSelected != nil {
+		iface.is_selected = (*[0]byte)(C._gotk4_gtk4_PrintOperationPreviewIface_is_selected)
+	}
+
+	if overrides.Ready != nil {
+		iface.ready = (*[0]byte)(C._gotk4_gtk4_PrintOperationPreviewIface_ready)
+	}
+
+	if overrides.RenderPage != nil {
+		iface.render_page = (*[0]byte)(C._gotk4_gtk4_PrintOperationPreviewIface_render_page)
+	}
+
+}
 
 func wrapPrintOperationPreview(obj *coreglib.Object) *PrintOperationPreview {
 	return &PrintOperationPreview{
@@ -19662,6 +20944,24 @@ func (self *Root) SetFocus(focus Widgetter) {
 	runtime.KeepAlive(focus)
 }
 
+// ScrollableOverrides contains methods that a subclass can implement
+// for the Scrollable interface. Methods left nil keep the interface's
+// default implementation.
+type ScrollableOverrides struct {
+	// Border returns the size of a non-scrolling border around the outside of
+	// the scrollable.
+	//
+	// An example for this would be treeview headers. GTK can use this
+	// information to display overlaid graphics, like the overshoot indication,
+	// at the right position.
+	//
+	// The function returns the following values:
+	//
+	//   - border: return location for the results.
+	//   - ok: TRUE if border has been set.
+	Border func() (*Border, bool) // optional
+}
+
 // Scrollable: interface for widgets with native scrolling ability.
 //
 // To implement this interface you should override the
@@ -19726,6 +21026,22 @@ type Scrollabler interface {
 }
 
 var _ Scrollabler = (*Scrollable)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[ScrollableOverrides](
+		GTypeScrollable,
+		initScrollableInterface,
+	)
+}
+
+func initScrollableInterface(giface unsafe.Pointer, overrides ScrollableOverrides) {
+	iface := (*C.GtkScrollableInterface)(giface)
+
+	if overrides.Border != nil {
+		iface.get_border = (*[0]byte)(C._gotk4_gtk4_ScrollableInterface_get_border)
+	}
+
+}
 
 func wrapScrollable(obj *coreglib.Object) *Scrollable {
 	return &Scrollable{
@@ -19970,6 +21286,27 @@ func (scrollable *Scrollable) border() (*Border, bool) {
 	return _border, _ok
 }
 
+// SectionModelOverrides contains methods that a subclass can implement
+// for the SectionModel interface. Methods left nil keep the interface's
+// default implementation.
+type SectionModelOverrides struct {
+	// Section: query the section that covers the given position. The number of
+	// items in the section can be computed by out_end - out_start.
+	//
+	// If the position is larger than the number of items, a single range from
+	// n_items to G_MAXUINT will be returned.
+	//
+	// The function takes the following parameters:
+	//
+	//   - position of the item to query.
+	//
+	// The function returns the following values:
+	//
+	//   - outStart: position of the first item in the section.
+	//   - outEnd: position of the first item not part of the section anymore.
+	Section func(position uint) (outStart, outEnd uint) // optional
+}
+
 // SectionModel: interface that adds support for sections to list models.
 //
 // A GtkSectionModel groups successive items into so-called sections.
@@ -20011,6 +21348,22 @@ type SectionModeller interface {
 }
 
 var _ SectionModeller = (*SectionModel)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[SectionModelOverrides](
+		GTypeSectionModel,
+		initSectionModelInterface,
+	)
+}
+
+func initSectionModelInterface(giface unsafe.Pointer, overrides SectionModelOverrides) {
+	iface := (*C.GtkSectionModelInterface)(giface)
+
+	if overrides.Section != nil {
+		iface.get_section = (*[0]byte)(C._gotk4_gtk4_SectionModelInterface_get_section)
+	}
+
+}
 
 func wrapSectionModel(obj *coreglib.Object) *SectionModel {
 	return &SectionModel{
@@ -20146,6 +21499,145 @@ func (self *SectionModel) section(position uint) (outStart, outEnd uint) {
 	return _outStart, _outEnd
 }
 
+// SelectionModelOverrides contains methods that a subclass can implement
+// for the SelectionModel interface. Methods left nil keep the interface's
+// default implementation.
+type SelectionModelOverrides struct {
+	// SelectionInRange gets the set of selected items in a range.
+	//
+	// This function is an optimization for gtk.SelectionModel.GetSelection()
+	// when you are only interested in part of the model's
+	// selected state. A common use case is in response to the
+	// gtk.SelectionModel::selection-changed signal.
+	//
+	// The function takes the following parameters:
+	//
+	//   - position: start of the queried range.
+	//   - nItems: number of items in the queried range.
+	//
+	// The function returns the following values:
+	//
+	//   - bitset: GtkBitset that matches the selection state for the given
+	//     range with all other values being undefined. The bitset must not be
+	//     modified.
+	SelectionInRange func(position, nItems uint) *Bitset // optional
+	// IsSelected checks if the given item is selected.
+	//
+	// The function takes the following parameters:
+	//
+	//   - position of the item to query.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if the item is selected.
+	IsSelected func(position uint) bool // optional
+	// SelectAll requests to select all items in the model.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if this action was supported and no fallback should be
+	//     tried. This does not mean that all items are now selected.
+	SelectAll func() bool // optional
+	// SelectItem requests to select an item in the model.
+	//
+	// The function takes the following parameters:
+	//
+	//   - position of the item to select.
+	//   - unselectRest: whether previously selected items should be unselected.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if this action was supported and no fallback should be
+	//     tried. This does not mean the item was selected.
+	SelectItem func(position uint, unselectRest bool) bool // optional
+	// SelectRange requests to select a range of items in the model.
+	//
+	// The function takes the following parameters:
+	//
+	//   - position: first item to select.
+	//   - nItems: number of items to select.
+	//   - unselectRest: whether previously selected items should be unselected.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if this action was supported and no fallback should be
+	//     tried. This does not mean the range was selected.
+	SelectRange func(position, nItems uint, unselectRest bool) bool // optional
+	// SetSelection: make selection changes.
+	//
+	// This is the most advanced selection updating method that allows the most
+	// fine-grained control over selection changes. If you can, you should try
+	// the simpler versions, as implementations are more likely to implement
+	// support for those.
+	//
+	// Requests that the selection state of all positions set in mask be updated
+	// to the respective value in the selected bitmask.
+	//
+	// In pseudocode, it would look something like this:
+	//
+	//	for (i = 0; i < n_items; i++)
+	//	  {
+	//	    // don't change values not in the mask
+	//	    if (!gtk_bitset_contains (mask, i))
+	//	      continue;
+	//
+	//	    if (gtk_bitset_contains (selected, i))
+	//	      select_item (i);
+	//	    else
+	//	      unselect_item (i);
+	//	  }
+	//
+	//	gtk_selection_model_selection_changed (model,
+	//	                                       first_changed_item,
+	//	                                       n_changed_items);
+	//
+	// mask and selected must not be modified. They may refer to the same
+	// bitset, which would mean that every item in the set should be selected.
+	//
+	// The function takes the following parameters:
+	//
+	//   - selected: bitmask specifying if items should be selected or
+	//     unselected.
+	//   - mask specifying which items should be updated.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if this action was supported and no fallback should be
+	//     tried. This does not mean that all items were updated according to
+	//     the inputs.
+	SetSelection func(selected, mask *Bitset) bool // optional
+	// UnselectAll requests to unselect all items in the model.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if this action was supported and no fallback should be
+	//     tried. This does not mean that all items are now unselected.
+	UnselectAll func() bool // optional
+	// UnselectItem requests to unselect an item in the model.
+	//
+	// The function takes the following parameters:
+	//
+	//   - position of the item to unselect.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if this action was supported and no fallback should be
+	//     tried. This does not mean the item was unselected.
+	UnselectItem func(position uint) bool // optional
+	// UnselectRange requests to unselect a range of items in the model.
+	//
+	// The function takes the following parameters:
+	//
+	//   - position: first item to unselect.
+	//   - nItems: number of items to unselect.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if this action was supported and no fallback should be
+	//     tried. This does not mean the range was unselected.
+	UnselectRange func(position, nItems uint) bool // optional
+}
+
 // SelectionModel: interface that adds support for selection to list models.
 //
 // This support is then used by widgets using list models to add the ability to
@@ -20229,6 +21721,54 @@ type SelectionModeller interface {
 }
 
 var _ SelectionModeller = (*SelectionModel)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[SelectionModelOverrides](
+		GTypeSelectionModel,
+		initSelectionModelInterface,
+	)
+}
+
+func initSelectionModelInterface(giface unsafe.Pointer, overrides SelectionModelOverrides) {
+	iface := (*C.GtkSelectionModelInterface)(giface)
+
+	if overrides.SelectionInRange != nil {
+		iface.get_selection_in_range = (*[0]byte)(C._gotk4_gtk4_SelectionModelInterface_get_selection_in_range)
+	}
+
+	if overrides.IsSelected != nil {
+		iface.is_selected = (*[0]byte)(C._gotk4_gtk4_SelectionModelInterface_is_selected)
+	}
+
+	if overrides.SelectAll != nil {
+		iface.select_all = (*[0]byte)(C._gotk4_gtk4_SelectionModelInterface_select_all)
+	}
+
+	if overrides.SelectItem != nil {
+		iface.select_item = (*[0]byte)(C._gotk4_gtk4_SelectionModelInterface_select_item)
+	}
+
+	if overrides.SelectRange != nil {
+		iface.select_range = (*[0]byte)(C._gotk4_gtk4_SelectionModelInterface_select_range)
+	}
+
+	if overrides.SetSelection != nil {
+		iface.set_selection = (*[0]byte)(C._gotk4_gtk4_SelectionModelInterface_set_selection)
+	}
+
+	if overrides.UnselectAll != nil {
+		iface.unselect_all = (*[0]byte)(C._gotk4_gtk4_SelectionModelInterface_unselect_all)
+	}
+
+	if overrides.UnselectItem != nil {
+		iface.unselect_item = (*[0]byte)(C._gotk4_gtk4_SelectionModelInterface_unselect_item)
+	}
+
+	if overrides.UnselectRange != nil {
+		iface.unselect_range = (*[0]byte)(C._gotk4_gtk4_SelectionModelInterface_unselect_range)
+	}
+
+}
 
 func wrapSelectionModel(obj *coreglib.Object) *SelectionModel {
 	return &SelectionModel{
@@ -20995,6 +22535,17 @@ func (model *SelectionModel) unselectRange(position, nItems uint) bool {
 	return _ok
 }
 
+// ShortcutManagerOverrides contains methods that a subclass can implement
+// for the ShortcutManager interface. Methods left nil keep the interface's
+// default implementation.
+type ShortcutManagerOverrides struct {
+	// AddController: add a GtkShortcutController to be managed.
+	AddController func(controller *ShortcutController) // optional
+	// RemoveController: remove a GtkShortcutController that had previously been
+	// added.
+	RemoveController func(controller *ShortcutController) // optional
+}
+
 // ShortcutManager: interface that is used to implement shortcut scopes.
 //
 // This is important for gtk.Native widgets that have their own surface, since
@@ -21026,6 +22577,26 @@ type ShortcutManagerer interface {
 }
 
 var _ ShortcutManagerer = (*ShortcutManager)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[ShortcutManagerOverrides](
+		GTypeShortcutManager,
+		initShortcutManagerInterface,
+	)
+}
+
+func initShortcutManagerInterface(giface unsafe.Pointer, overrides ShortcutManagerOverrides) {
+	iface := (*C.GtkShortcutManagerInterface)(giface)
+
+	if overrides.AddController != nil {
+		iface.add_controller = (*[0]byte)(C._gotk4_gtk4_ShortcutManagerInterface_add_controller)
+	}
+
+	if overrides.RemoveController != nil {
+		iface.remove_controller = (*[0]byte)(C._gotk4_gtk4_ShortcutManagerInterface_remove_controller)
+	}
+
+}
 
 func wrapShortcutManager(obj *coreglib.Object) *ShortcutManager {
 	return &ShortcutManager{
@@ -21129,6 +22700,38 @@ func (v *StyleProvider) ConnectGTKPrivateChanged(f func()) coreglib.SignalHandle
 	return coreglib.ConnectGeneratedClosure(v, "gtk-private-changed", false, unsafe.Pointer(C._gotk4_gtk4_StyleProvider_ConnectGTKPrivateChanged), f)
 }
 
+// SymbolicPaintableOverrides contains methods that a subclass can implement
+// for the SymbolicPaintable interface. Methods left nil keep the interface's
+// default implementation.
+type SymbolicPaintableOverrides struct {
+	// SnapshotSymbolic snapshots the paintable with the given colors.
+	//
+	// If less than 5 colors are provided, GTK will pad the array with default
+	// colors.
+	//
+	// The function takes the following parameters:
+	//
+	//   - snapshot: GdkSnapshot to snapshot to.
+	//   - width to snapshot in.
+	//   - height to snapshot in.
+	//   - colors: pointer to an array of colors.
+	SnapshotSymbolic func(snapshot gdk.Snapshotter, width, height float64, colors []gdk.RGBA) // optional
+	// SnapshotWithWeight snapshots the paintable with the given colors and
+	// weight.
+	//
+	// If less than 5 colors are provided, GTK will pad the array with default
+	// colors.
+	//
+	// The function takes the following parameters:
+	//
+	//   - snapshot: GdkSnapshot to snapshot to.
+	//   - width to snapshot in.
+	//   - height to snapshot in.
+	//   - colors: pointer to an array of colors.
+	//   - weight: font weight to use (from 1 to 1000, with default 400).
+	SnapshotWithWeight func(snapshot gdk.Snapshotter, width, height float64, colors []gdk.RGBA, weight float64) // optional
+}
+
 // SymbolicPaintable: interface that supports symbolic colors in paintables.
 //
 // GdkPaintables implementing the interface will have the
@@ -21162,6 +22765,26 @@ type SymbolicPaintabler interface {
 }
 
 var _ SymbolicPaintabler = (*SymbolicPaintable)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[SymbolicPaintableOverrides](
+		GTypeSymbolicPaintable,
+		initSymbolicPaintableInterface,
+	)
+}
+
+func initSymbolicPaintableInterface(giface unsafe.Pointer, overrides SymbolicPaintableOverrides) {
+	iface := (*C.GtkSymbolicPaintableInterface)(giface)
+
+	if overrides.SnapshotSymbolic != nil {
+		iface.snapshot_symbolic = (*[0]byte)(C._gotk4_gtk4_SymbolicPaintableInterface_snapshot_symbolic)
+	}
+
+	if overrides.SnapshotWithWeight != nil {
+		iface.snapshot_with_weight = (*[0]byte)(C._gotk4_gtk4_SymbolicPaintableInterface_snapshot_with_weight)
+	}
+
+}
 
 func wrapSymbolicPaintable(obj *coreglib.Object) *SymbolicPaintable {
 	return &SymbolicPaintable{
@@ -21353,6 +22976,47 @@ func (paintable *SymbolicPaintable) snapshotWithWeight(snapshot gdk.Snapshotter,
 	runtime.KeepAlive(weight)
 }
 
+// TreeDragDestOverrides contains methods that a subclass can implement
+// for the TreeDragDest interface. Methods left nil keep the interface's
+// default implementation.
+type TreeDragDestOverrides struct {
+	// DragDataReceived asks the GtkTreeDragDest to insert a row before the path
+	// dest, deriving the contents of the row from value. If dest is outside the
+	// tree so that inserting before it is impossible, FALSE will be returned.
+	// Also, FALSE may be returned if the new row is not created for some
+	// model-specific reason. Should robustly handle a dest no longer found in
+	// the model!
+	//
+	// Deprecated: Use list models instead.
+	//
+	// The function takes the following parameters:
+	//
+	//   - dest: row to drop in front of.
+	//   - value: data to drop.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: whether a new row was created before position dest.
+	DragDataReceived func(dest *TreePath, value *coreglib.Value) bool // optional
+	// RowDropPossible determines whether a drop is possible before the given
+	// dest_path, at the same depth as dest_path. i.e., can we drop the data
+	// in value at that location. dest_path does not have to exist; the return
+	// value will almost certainly be FALSE if the parent of dest_path doesn’t
+	// exist, though.
+	//
+	// Deprecated: Use list models instead.
+	//
+	// The function takes the following parameters:
+	//
+	//   - destPath: destination row.
+	//   - value: data being dropped.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if a drop is possible before dest_path.
+	RowDropPossible func(destPath *TreePath, value *coreglib.Value) bool // optional
+}
+
 // TreeDragDest: interface for Drag-and-Drop destinations in GtkTreeView.
 //
 // Deprecated: List views use widgets to display their contents. You can use
@@ -21382,6 +23046,26 @@ type TreeDragDester interface {
 }
 
 var _ TreeDragDester = (*TreeDragDest)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[TreeDragDestOverrides](
+		GTypeTreeDragDest,
+		initTreeDragDestIface,
+	)
+}
+
+func initTreeDragDestIface(giface unsafe.Pointer, overrides TreeDragDestOverrides) {
+	iface := (*C.GtkTreeDragDestIface)(giface)
+
+	if overrides.DragDataReceived != nil {
+		iface.drag_data_received = (*[0]byte)(C._gotk4_gtk4_TreeDragDestIface_drag_data_received)
+	}
+
+	if overrides.RowDropPossible != nil {
+		iface.row_drop_possible = (*[0]byte)(C._gotk4_gtk4_TreeDragDestIface_row_drop_possible)
+	}
+
+}
 
 func wrapTreeDragDest(obj *coreglib.Object) *TreeDragDest {
 	return &TreeDragDest{
@@ -21559,6 +23243,56 @@ func (dragDest *TreeDragDest) rowDropPossible(destPath *TreePath, value *coregli
 	return _ok
 }
 
+// TreeDragSourceOverrides contains methods that a subclass can implement
+// for the TreeDragSource interface. Methods left nil keep the interface's
+// default implementation.
+type TreeDragSourceOverrides struct {
+	// DragDataDelete asks the GtkTreeDragSource to delete the row at path,
+	// because it was moved somewhere else via drag-and-drop. Returns FALSE
+	// if the deletion fails because path no longer exists, or for some
+	// model-specific reason. Should robustly handle a path no longer found in
+	// the model!
+	//
+	// Deprecated: Use list models instead.
+	//
+	// The function takes the following parameters:
+	//
+	//   - path: row that was being dragged.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if the row was successfully deleted.
+	DragDataDelete func(path *TreePath) bool // optional
+	// DragDataGet asks the GtkTreeDragSource to return a GdkContentProvider
+	// representing the row at path. Should robustly handle a path no longer
+	// found in the model!
+	//
+	// Deprecated: Use list models instead.
+	//
+	// The function takes the following parameters:
+	//
+	//   - path: row that was dragged.
+	//
+	// The function returns the following values:
+	//
+	//   - contentProvider (optional): GdkContentProvider for the given path.
+	DragDataGet func(path *TreePath) *gdk.ContentProvider // optional
+	// RowDraggable asks the GtkTreeDragSource whether a particular row can be
+	// used as the source of a DND operation. If the source doesn’t implement
+	// this interface, the row is assumed draggable.
+	//
+	// Deprecated: Use list models instead.
+	//
+	// The function takes the following parameters:
+	//
+	//   - path: row on which user is initiating a drag.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if the row can be dragged.
+	RowDraggable func(path *TreePath) bool // optional
+}
+
 // TreeDragSource: interface for Drag-and-Drop destinations in GtkTreeView.
 //
 // Deprecated: List views use widgets to display their contents. You can use
@@ -21591,6 +23325,30 @@ type TreeDragSourcer interface {
 }
 
 var _ TreeDragSourcer = (*TreeDragSource)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[TreeDragSourceOverrides](
+		GTypeTreeDragSource,
+		initTreeDragSourceIface,
+	)
+}
+
+func initTreeDragSourceIface(giface unsafe.Pointer, overrides TreeDragSourceOverrides) {
+	iface := (*C.GtkTreeDragSourceIface)(giface)
+
+	if overrides.DragDataDelete != nil {
+		iface.drag_data_delete = (*[0]byte)(C._gotk4_gtk4_TreeDragSourceIface_drag_data_delete)
+	}
+
+	if overrides.DragDataGet != nil {
+		iface.drag_data_get = (*[0]byte)(C._gotk4_gtk4_TreeDragSourceIface_drag_data_get)
+	}
+
+	if overrides.RowDraggable != nil {
+		iface.row_draggable = (*[0]byte)(C._gotk4_gtk4_TreeDragSourceIface_row_draggable)
+	}
+
+}
 
 func wrapTreeDragSource(obj *coreglib.Object) *TreeDragSource {
 	return &TreeDragSource{
@@ -21825,6 +23583,299 @@ func (dragSource *TreeDragSource) rowDraggable(path *TreePath) bool {
 	}
 
 	return _ok
+}
+
+// TreeModelOverrides contains methods that a subclass can implement
+// for the TreeModel interface. Methods left nil keep the interface's
+// default implementation.
+type TreeModelOverrides struct {
+	// ColumnType returns the type of the column.
+	//
+	// Deprecated: since version 4.10.
+	//
+	// The function takes the following parameters:
+	//
+	//   - index_: column index.
+	//
+	// The function returns the following values:
+	//
+	//   - gType: type of the column.
+	ColumnType func(index_ int) coreglib.Type // optional
+	// Flags returns a set of flags supported by this interface.
+	//
+	// The flags are a bitwise combination of GtkTreeModelFlags. The flags
+	// supported should not change during the lifetime of the tree_model.
+	//
+	// Deprecated: since version 4.10.
+	//
+	// The function returns the following values:
+	//
+	//   - treeModelFlags flags supported by this interface.
+	Flags func() TreeModelFlags // optional
+	// Iter sets iter to a valid iterator pointing to path.
+	//
+	// If path does not exist, iter is set to an invalid iterator and FALSE is
+	// returned.
+	//
+	// Deprecated: since version 4.10.
+	//
+	// The function takes the following parameters:
+	//
+	//   - path: GtkTreePath.
+	//
+	// The function returns the following values:
+	//
+	//   - iter: uninitialized GtkTreeIter.
+	//   - ok: TRUE, if iter was set.
+	Iter func(path *TreePath) (*TreeIter, bool) // optional
+	// NColumns returns the number of columns supported by tree_model.
+	//
+	// Deprecated: since version 4.10.
+	//
+	// The function returns the following values:
+	//
+	//   - gint: number of columns.
+	NColumns func() int // optional
+	// Path returns a newly-created GtkTreePath referenced by iter.
+	//
+	// This path should be freed with gtk_tree_path_free().
+	//
+	// Deprecated: since version 4.10.
+	//
+	// The function takes the following parameters:
+	//
+	//   - iter: GtkTreeIter.
+	//
+	// The function returns the following values:
+	//
+	//   - treePath: newly-created GtkTreePath.
+	Path func(iter *TreeIter) *TreePath // optional
+	// Value initializes and sets value to that at column.
+	//
+	// When done with value, g_value_unset() needs to be called to free any
+	// allocated memory.
+	//
+	// Deprecated: since version 4.10.
+	//
+	// The function takes the following parameters:
+	//
+	//   - iter: GtkTreeIter.
+	//   - column to lookup the value at.
+	//
+	// The function returns the following values:
+	//
+	//   - value: empty GValue to set.
+	Value func(iter *TreeIter, column int) coreglib.Value // optional
+	// IterChildren sets iter to point to the first child of parent.
+	//
+	// If parent has no children, FALSE is returned and iter is set to be
+	// invalid. parent will remain a valid node after this function has been
+	// called.
+	//
+	// If parent is NULL returns the first node, equivalent to
+	// gtk_tree_model_get_iter_first (tree_model, iter);
+	//
+	// Deprecated: since version 4.10.
+	//
+	// The function takes the following parameters:
+	//
+	//   - parent (optional): GtkTreeIter.
+	//
+	// The function returns the following values:
+	//
+	//   - iter: new GtkTreeIter to be set to the child.
+	//   - ok: TRUE, if iter has been set to the first child.
+	IterChildren func(parent *TreeIter) (*TreeIter, bool) // optional
+	// IterHasChild returns TRUE if iter has children, FALSE otherwise.
+	//
+	// Deprecated: since version 4.10.
+	//
+	// The function takes the following parameters:
+	//
+	//   - iter: GtkTreeIter to test for children.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if iter has children.
+	IterHasChild func(iter *TreeIter) bool // optional
+	// IterNChildren returns the number of children that iter has.
+	//
+	// As a special case, if iter is NULL, then the number of toplevel nodes is
+	// returned.
+	//
+	// Deprecated: since version 4.10.
+	//
+	// The function takes the following parameters:
+	//
+	//   - iter (optional): GtkTreeIter.
+	//
+	// The function returns the following values:
+	//
+	//   - gint: number of children of iter.
+	IterNChildren func(iter *TreeIter) int // optional
+	// IterNext sets iter to point to the node following it at the current
+	// level.
+	//
+	// If there is no next iter, FALSE is returned and iter is set to be
+	// invalid.
+	//
+	// Deprecated: since version 4.10.
+	//
+	// The function takes the following parameters:
+	//
+	//   - iter: GtkTreeIter.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if iter has been changed to the next node.
+	IterNext func(iter *TreeIter) bool // optional
+	// IterNthChild sets iter to be the child of parent, using the given index.
+	//
+	// The first index is 0. If n is too big, or parent has no children, iter
+	// is set to an invalid iterator and FALSE is returned. parent will remain
+	// a valid node after this function has been called. As a special case,
+	// if parent is NULL, then the n-th root node is set.
+	//
+	// Deprecated: since version 4.10.
+	//
+	// The function takes the following parameters:
+	//
+	//   - parent (optional): GtkTreeIter to get the child from.
+	//   - n: index of the desired child.
+	//
+	// The function returns the following values:
+	//
+	//   - iter: GtkTreeIter to set to the nth child.
+	//   - ok: TRUE, if parent has an n-th child.
+	IterNthChild func(parent *TreeIter, n int) (*TreeIter, bool) // optional
+	// IterParent sets iter to be the parent of child.
+	//
+	// If child is at the toplevel, and doesn’t have a parent, then iter is set
+	// to an invalid iterator and FALSE is returned. child will remain a valid
+	// node after this function has been called.
+	//
+	// iter will be initialized before the lookup is performed, so child and
+	// iter cannot point to the same memory location.
+	//
+	// Deprecated: since version 4.10.
+	//
+	// The function takes the following parameters:
+	//
+	//   - child: GtkTreeIter.
+	//
+	// The function returns the following values:
+	//
+	//   - iter: new GtkTreeIter to set to the parent.
+	//   - ok: TRUE, if iter is set to the parent of child.
+	IterParent func(child *TreeIter) (*TreeIter, bool) // optional
+	// IterPrevious sets iter to point to the previous node at the current
+	// level.
+	//
+	// If there is no previous iter, FALSE is returned and iter is set to be
+	// invalid.
+	//
+	// Deprecated: since version 4.10.
+	//
+	// The function takes the following parameters:
+	//
+	//   - iter: GtkTreeIter.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE if iter has been changed to the previous node.
+	IterPrevious func(iter *TreeIter) bool // optional
+	// RefNode lets the tree ref the node.
+	//
+	// This is an optional method for models to implement. To be more specific,
+	// models may ignore this call as it exists primarily for performance
+	// reasons.
+	//
+	// This function is primarily meant as a way for views to let caching
+	// models know when nodes are being displayed (and hence, whether or not to
+	// cache that node). Being displayed means a node is in an expanded branch,
+	// regardless of whether the node is currently visible in the viewport.
+	// For example, a file-system based model would not want to keep the entire
+	// file-hierarchy in memory, just the sections that are currently being
+	// displayed by every current view.
+	//
+	// A model should be expected to be able to get an iter independent of its
+	// reffed state.
+	//
+	// Deprecated: since version 4.10.
+	//
+	// The function takes the following parameters:
+	//
+	//   - iter: GtkTreeIter.
+	RefNode func(iter *TreeIter) // optional
+	// RowChanged emits the ::row-changed signal on tree_model.
+	//
+	// See gtk.TreeModel::row-changed.
+	//
+	// Deprecated: since version 4.10.
+	//
+	// The function takes the following parameters:
+	//
+	//   - path: GtkTreePath pointing to the changed row.
+	//   - iter: valid GtkTreeIter pointing to the changed row.
+	RowChanged func(path *TreePath, iter *TreeIter) // optional
+	// RowDeleted emits the ::row-deleted signal on tree_model.
+	//
+	// See gtk.TreeModel::row-deleted.
+	//
+	// This should be called by models after a row has been removed.
+	// The location pointed to by path should be the location that the row
+	// previously was at. It may not be a valid location anymore.
+	//
+	// Nodes that are deleted are not unreffed, this means that any outstanding
+	// references on the deleted node should not be released.
+	//
+	// Deprecated: since version 4.10.
+	//
+	// The function takes the following parameters:
+	//
+	//   - path: GtkTreePath pointing to the previous location of the deleted
+	//     row.
+	RowDeleted func(path *TreePath) // optional
+	// RowHasChildToggled emits the ::row-has-child-toggled signal on
+	// tree_model.
+	//
+	// See gtk.TreeModel::row-has-child-toggled.
+	//
+	// This should be called by models after the child state of a node changes.
+	//
+	// Deprecated: since version 4.10.
+	//
+	// The function takes the following parameters:
+	//
+	//   - path: GtkTreePath pointing to the changed row.
+	//   - iter: valid GtkTreeIter pointing to the changed row.
+	RowHasChildToggled func(path *TreePath, iter *TreeIter) // optional
+	// RowInserted emits the ::row-inserted signal on tree_model.
+	//
+	// See gtk.TreeModel::row-inserted.
+	//
+	// Deprecated: since version 4.10.
+	//
+	// The function takes the following parameters:
+	//
+	//   - path: GtkTreePath pointing to the inserted row.
+	//   - iter: valid GtkTreeIter pointing to the inserted row.
+	RowInserted func(path *TreePath, iter *TreeIter) // optional
+	// UnrefNode lets the tree unref the node.
+	//
+	// This is an optional method for models to implement. To be more
+	// specific, models may ignore this call as it exists primarily for
+	// performance reasons. For more information on what this means, see
+	// gtk_tree_model_ref_node().
+	//
+	// Please note that nodes that are deleted are not unreffed.
+	//
+	// Deprecated: since version 4.10.
+	//
+	// The function takes the following parameters:
+	//
+	//   - iter: GtkTreeIter.
+	UnrefNode func(iter *TreeIter) // optional
 }
 
 // TreeModel: tree interface used by GtkTreeView
@@ -22096,6 +24147,94 @@ type TreeModeller interface {
 }
 
 var _ TreeModeller = (*TreeModel)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[TreeModelOverrides](
+		GTypeTreeModel,
+		initTreeModelIface,
+	)
+}
+
+func initTreeModelIface(giface unsafe.Pointer, overrides TreeModelOverrides) {
+	iface := (*C.GtkTreeModelIface)(giface)
+
+	if overrides.ColumnType != nil {
+		iface.get_column_type = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_get_column_type)
+	}
+
+	if overrides.Flags != nil {
+		iface.get_flags = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_get_flags)
+	}
+
+	if overrides.Iter != nil {
+		iface.get_iter = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_get_iter)
+	}
+
+	if overrides.NColumns != nil {
+		iface.get_n_columns = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_get_n_columns)
+	}
+
+	if overrides.Path != nil {
+		iface.get_path = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_get_path)
+	}
+
+	if overrides.Value != nil {
+		iface.get_value = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_get_value)
+	}
+
+	if overrides.IterChildren != nil {
+		iface.iter_children = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_iter_children)
+	}
+
+	if overrides.IterHasChild != nil {
+		iface.iter_has_child = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_iter_has_child)
+	}
+
+	if overrides.IterNChildren != nil {
+		iface.iter_n_children = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_iter_n_children)
+	}
+
+	if overrides.IterNext != nil {
+		iface.iter_next = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_iter_next)
+	}
+
+	if overrides.IterNthChild != nil {
+		iface.iter_nth_child = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_iter_nth_child)
+	}
+
+	if overrides.IterParent != nil {
+		iface.iter_parent = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_iter_parent)
+	}
+
+	if overrides.IterPrevious != nil {
+		iface.iter_previous = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_iter_previous)
+	}
+
+	if overrides.RefNode != nil {
+		iface.ref_node = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_ref_node)
+	}
+
+	if overrides.RowChanged != nil {
+		iface.row_changed = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_row_changed)
+	}
+
+	if overrides.RowDeleted != nil {
+		iface.row_deleted = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_row_deleted)
+	}
+
+	if overrides.RowHasChildToggled != nil {
+		iface.row_has_child_toggled = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_row_has_child_toggled)
+	}
+
+	if overrides.RowInserted != nil {
+		iface.row_inserted = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_row_inserted)
+	}
+
+	if overrides.UnrefNode != nil {
+		iface.unref_node = (*[0]byte)(C._gotk4_gtk4_TreeModelIface_unref_node)
+	}
+
+}
 
 func wrapTreeModel(obj *coreglib.Object) *TreeModel {
 	return &TreeModel{
@@ -23670,6 +25809,58 @@ func (treeModel *TreeModel) unrefNode(iter *TreeIter) {
 	runtime.KeepAlive(iter)
 }
 
+// TreeSortableOverrides contains methods that a subclass can implement
+// for the TreeSortable interface. Methods left nil keep the interface's
+// default implementation.
+type TreeSortableOverrides struct {
+	// SortColumnID fills in sort_column_id and order with the
+	// current sort column and the order. It returns TRUE unless the
+	// sort_column_id is GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID or
+	// GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID.
+	//
+	// Deprecated: since version 4.10.
+	//
+	// The function returns the following values:
+	//
+	//   - sortColumnId: sort column id to be filled in.
+	//   - order: GtkSortType to be filled in.
+	//   - ok: TRUE if the sort column is not one of the special sort column
+	//     ids.
+	SortColumnID func() (int, SortType, bool) // optional
+	// HasDefaultSortFunc returns TRUE if the model has a default sort function.
+	// This is used primarily by GtkTreeViewColumns in order to determine if a
+	// model can go back to the default state, or not.
+	//
+	// Deprecated: since version 4.10.
+	//
+	// The function returns the following values:
+	//
+	//   - ok: TRUE, if the model has a default sort function.
+	HasDefaultSortFunc func() bool // optional
+	// SetSortColumnID sets the current sort column to be sort_column_id.
+	// The sortable will resort itself to reflect this change, after emitting a
+	// GtkTreeSortable::sort-column-changed signal. sort_column_id may either be
+	// a regular column id, or one of the following special values:
+	//
+	// - GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID: the default sort function
+	// will be used, if it is set
+	//
+	// - GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID: no sorting will occur
+	//
+	// Deprecated: since version 4.10.
+	//
+	// The function takes the following parameters:
+	//
+	//   - sortColumnId: sort column id to set.
+	//   - order: sort order of the column.
+	SetSortColumnID func(sortColumnId int, order SortType) // optional
+	// SortColumnChanged emits a GtkTreeSortable::sort-column-changed signal on
+	// sortable.
+	//
+	// Deprecated: since version 4.10.
+	SortColumnChanged func() // optional
+}
+
 // TreeSortable: interface for sortable models used by GtkTreeView
 //
 // GtkTreeSortable is an interface to be implemented by tree models which
@@ -23715,6 +25906,34 @@ type TreeSortabler interface {
 }
 
 var _ TreeSortabler = (*TreeSortable)(nil)
+
+func init() {
+	coreglib.RegisterInterfaceInfo[TreeSortableOverrides](
+		GTypeTreeSortable,
+		initTreeSortableIface,
+	)
+}
+
+func initTreeSortableIface(giface unsafe.Pointer, overrides TreeSortableOverrides) {
+	iface := (*C.GtkTreeSortableIface)(giface)
+
+	if overrides.SortColumnID != nil {
+		iface.get_sort_column_id = (*[0]byte)(C._gotk4_gtk4_TreeSortableIface_get_sort_column_id)
+	}
+
+	if overrides.HasDefaultSortFunc != nil {
+		iface.has_default_sort_func = (*[0]byte)(C._gotk4_gtk4_TreeSortableIface_has_default_sort_func)
+	}
+
+	if overrides.SetSortColumnID != nil {
+		iface.set_sort_column_id = (*[0]byte)(C._gotk4_gtk4_TreeSortableIface_set_sort_column_id)
+	}
+
+	if overrides.SortColumnChanged != nil {
+		iface.sort_column_changed = (*[0]byte)(C._gotk4_gtk4_TreeSortableIface_sort_column_changed)
+	}
+
+}
 
 func wrapTreeSortable(obj *coreglib.Object) *TreeSortable {
 	return &TreeSortable{

@@ -4,9 +4,21 @@ const gchar *gotk4_object_type_name(gpointer obj) {
   return G_OBJECT_TYPE_NAME(obj);
 };
 
+static __thread gpointer suppressed_object = NULL;
+
 static void gotk4_intern_toggle_notify(gpointer data, GObject *obj,
                                        gboolean is_last_ref) {
+  if (suppressed_object == (gpointer)obj && is_last_ref) {
+    return;
+  }
   goToggleNotify((guintptr)data, obj, is_last_ref);
+}
+
+void gotk4_intern_unref_suppressed(gpointer obj) {
+  gpointer prev = suppressed_object;
+  suppressed_object = obj;
+  g_object_unref(G_OBJECT(obj));
+  suppressed_object = prev;
 }
 
 void gotk4_intern_add_toggle_ref(gpointer obj, guintptr token) {
@@ -19,8 +31,6 @@ void gotk4_intern_remove_toggle_ref(gpointer obj, guintptr token) {
   // callbacks, so the Go intern entry is kept until this call returns.
   g_object_remove_toggle_ref(G_OBJECT(obj), gotk4_intern_toggle_notify,
                              (gpointer)token);
-
-  goFinishRemovingToggleRef(token);
 }
 
 static gboolean remove_toggle_ref_idle(gpointer data) {

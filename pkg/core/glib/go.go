@@ -23,6 +23,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/core/gbox"
+	"github.com/diamondburned/gotk4/pkg/core/intern"
 )
 
 func init() {
@@ -61,12 +62,11 @@ type ObjectOverrides struct {
 }
 
 func initObjectClass(gclass unsafe.Pointer, overrides ObjectOverrides, initFunc func(*struct{})) {
-	// Install our GObject methods.
 	gobjectClass := (*C.GObjectClass)(gclass)
-	gobjectClass.dispose = (*[0]byte)(C._gotk4_gobject_dispose)
-	gobjectClass.get_property = (*[0]byte)(C._gotk4_gobject_get_property)
-	gobjectClass.set_property = (*[0]byte)(C._gotk4_gobject_set_property)
-	gobjectClass.constructed = (*[0]byte)(C._gotk4_gobject_constructed)
+	C._gotk4_gobject_install_class_methods(gobjectClass)
+	if overrides.Constructed != nil {
+		C._gotk4_gobject_hook_constructed(gobjectClass)
+	}
 }
 
 // RegisteredSubclass is a type that described a registered Go subclass type.
@@ -248,7 +248,7 @@ func (r *RegisteredSubclass[T]) NewWithProperties(properties map[string]any) T {
 	)
 
 	if C.g_type_is_a(C.GType(r.gType), C.g_initially_unowned_get_type()) == C.FALSE {
-		C.g_object_unref(C.gpointer(cval))
+		intern.UnrefSuppressed(unsafe.Pointer(cval))
 	}
 
 	// So we created an instance. We have the instance in private. We can just
@@ -903,8 +903,6 @@ func _gotk4_gobject_dispose(obj *C.GObject) {
 		}
 	}
 
-	C._gotk4_gobject_chainup_dispose(obj)
-
 	if private.instanceID != nil {
 		gbox.Delete(uintptr(private.instanceID))
 		private.instanceID = nil
@@ -913,8 +911,6 @@ func _gotk4_gobject_dispose(obj *C.GObject) {
 
 //export _gotk4_gobject_constructed
 func _gotk4_gobject_constructed(obj *C.GObject) {
-	C._gotk4_gobject_chainup_constructed(obj)
-
 	private := privateFromInstance(unsafe.Pointer(obj))
 	if inst := private.instance(); inst != nil {
 		if instance, ok := inst.(Objector); ok {

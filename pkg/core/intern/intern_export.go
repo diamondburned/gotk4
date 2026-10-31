@@ -60,15 +60,6 @@ func toggleNotify(token uintptr, gobject unsafe.Pointer, isLast bool) {
 
 }
 
-// finishRemovingToggleRef is called after the toggle reference removal routine
-// has returned. It removes the GObject from the global maps. The toggle ref
-// was the only reference the box owned, so no additional unref is needed.
-//
-//export goFinishRemovingToggleRef
-func goFinishRemovingToggleRef(token C.guintptr) {
-	finishCleanup(uintptr(token))
-}
-
 //export goRemoveQueuedToggleRef
 func goRemoveQueuedToggleRef(token C.guintptr) {
 	beginQueuedCleanup(uintptr(token))

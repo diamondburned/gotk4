@@ -210,14 +210,35 @@ func Get(gobject unsafe.Pointer, take bool) *Box {
 	}
 	C.gotk4_intern_add_toggle_ref(C.gpointer(gobject), C.guintptr(e.token))
 	e.phase = entryActive
+	if !take {
+		makeWeak(e)
+	}
 	shared.mu.Unlock()
 
 	if C.g_object_is_floating(C.gpointer(gobject)) != C.FALSE {
 		C.g_object_ref_sink(C.gpointer(gobject))
 		C.g_object_unref(C.gpointer(gobject))
 	}
-	consumeTransferredRef(gobject, take)
+	if !take {
+		C.gotk4_intern_unref_suppressed(C.gpointer(gobject))
+	}
 	return box
+}
+
+// UnrefSuppressed unreferences gobject while suppressing creation-time toggle
+// notifications, converting the entry to weak directly in Go.
+func UnrefSuppressed(gobject unsafe.Pointer) {
+	if gobject == nil {
+		return
+	}
+	shared.mu.Lock()
+	e := shared.byObject[gobject]
+	if e != nil && e.phase == entryActive {
+		makeWeak(e)
+	}
+	shared.mu.Unlock()
+
+	C.gotk4_intern_unref_suppressed(C.gpointer(gobject))
 }
 
 // Free explicitly retires a Box and its exact toggle generation. It is

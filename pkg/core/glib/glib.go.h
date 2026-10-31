@@ -109,7 +109,14 @@ static void init_i18n(const char *domain, const char *dir) {
 
 static const char *localize(const char *string) { return _(string); }
 
-static inline void _gotk4_gobject_chainup_dispose(GObject *object) {
+extern void _gotk4_gobject_dispose(GObject *);
+extern void _gotk4_gobject_constructed(GObject *);
+extern void _gotk4_gobject_get_property(GObject *, guint, GValue *, GParamSpec *);
+extern void _gotk4_gobject_set_property(GObject *, guint, GValue *, GParamSpec *);
+
+static inline void _gotk4_gobject_dispose_trampoline(GObject *object) {
+  _gotk4_gobject_dispose(object);
+
   GObjectClass *parent_class =
       G_OBJECT_CLASS(g_type_class_peek_parent(G_OBJECT_GET_CLASS(object)));
   if (parent_class && parent_class->dispose) {
@@ -117,12 +124,24 @@ static inline void _gotk4_gobject_chainup_dispose(GObject *object) {
   }
 }
 
-static inline void _gotk4_gobject_chainup_constructed(GObject *object) {
+static inline void _gotk4_gobject_constructed_trampoline(GObject *object) {
   GObjectClass *parent_class =
       G_OBJECT_CLASS(g_type_class_peek_parent(G_OBJECT_GET_CLASS(object)));
   if (parent_class && parent_class->constructed) {
     parent_class->constructed(object);
   }
+
+  _gotk4_gobject_constructed(object);
+}
+
+static inline void _gotk4_gobject_install_class_methods(GObjectClass *klass) {
+  klass->dispose = _gotk4_gobject_dispose_trampoline;
+  klass->get_property = _gotk4_gobject_get_property;
+  klass->set_property = (void (*)(GObject *, guint, const GValue *, GParamSpec *))_gotk4_gobject_set_property;
+}
+
+static inline void _gotk4_gobject_hook_constructed(GObjectClass *klass) {
+  klass->constructed = _gotk4_gobject_constructed_trampoline;
 }
 
 #endif

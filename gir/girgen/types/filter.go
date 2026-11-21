@@ -143,27 +143,42 @@ func PreserveGetName(girType string) Preprocessor {
 	})
 }
 
-// RenameEnumMembers renames all members of the matched enums. It is primarily
+// RenameEnumMembers renames the c-identifier of members of the matched enum or bitfield. It is primarily
 // used to avoid collisions.
 func RenameEnumMembers(enum, regex, replace string) Preprocessor {
 	girTypeMustBeVersioned(enum)
 	re := regexp.MustCompile(regex)
+	return MapMembers(enum, func(member gir.Member) gir.Member {
+		parts := strings.SplitN(member.CIdentifier, "_", 2)
+		parts[1] = re.ReplaceAllString(parts[1], replace)
+		member.CIdentifier = parts[0] + "_" + parts[1]
+
+		return member
+	})
+}
+
+// MapMembers allows you to freely change any property of the members of the given enum or bitfield type.
+// it can be used to fix faulty girs, but also to change the behavior of the generator.
+func MapMembers(enumOrBitfieldType string, fn func(member gir.Member) gir.Member) Preprocessor {
+	girTypeMustBeVersioned(enumOrBitfieldType)
 	return PreprocessorFunc(func(repos gir.Repositories) {
-		result := repos.FindFullType(enum)
+		result := repos.FindFullType(enumOrBitfieldType)
 		if result == nil {
-			log.Printf("GIR enum %q not found", enum)
+			log.Panicf("GIR enum or bitfield %q not found", enumOrBitfieldType)
 			return
 		}
 
-		enum, ok := result.Type.(*gir.Enum)
-		if !ok {
-			log.Panicf("GIR type %T is not enum", result.Type)
-		}
-
-		for i, member := range enum.Members {
-			parts := strings.SplitN(member.CIdentifier, "_", 2)
-			parts[1] = re.ReplaceAllString(parts[1], replace)
-			enum.Members[i].CIdentifier = parts[0] + "_" + parts[1]
+		switch v := result.Type.(type) {
+		case *gir.Enum:
+			for i, member := range v.Members {
+				v.Members[i] = fn(member)
+			}
+		case *gir.Bitfield:
+			for i, member := range v.Members {
+				v.Members[i] = fn(member)
+			}
+		default:
+			log.Panicf("GIR type %T is not enum or bitfield", result.Type)
 		}
 	})
 }

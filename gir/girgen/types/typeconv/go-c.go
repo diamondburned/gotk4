@@ -476,7 +476,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 
 		value.header.NeedsExternGLib()
 		value.p.Linef(
-			"%s = (*C.GClosure)(coreglib.NewClosure(coreglib.InternObject(%s), %s))",
+			"%s = (*C.GClosure)(coreglib.NewClosure(coreglib.BaseObject(%s), %s))",
 			value.Out.Set, instance.In.Name, value.In.Name,
 		)
 
@@ -602,7 +602,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 		value.header.Import("unsafe")
 		value.header.NeedsExternGLib()
 		value.p.Linef(
-			"%s = %s(unsafe.Pointer(coreglib.InternObject(%s).Native()))",
+			"%s = %s(unsafe.Pointer(coreglib.BaseObject(%s).Native()))",
 			value.Out.Set, value.OutCast(1), value.InNamePtrPubl(1),
 		)
 
@@ -610,7 +610,7 @@ func (conv *Converter) gocConverter(value *ValueConverted) bool {
 			// Caller is taking ownership, which means it will steal our
 			// reference. Ensure that we take our own.
 			value.p.Linef(
-				"C.g_object_ref(C.gpointer(coreglib.InternObject(%s).Native()))",
+				"C.g_object_ref(C.gpointer(coreglib.BaseObject(%s).Native()))",
 				value.InNamePtrPubl(1),
 			)
 		}

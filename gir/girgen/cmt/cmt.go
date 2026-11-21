@@ -56,11 +56,13 @@ type ParamDoc struct {
 // fields should rarely be used, because they're too magical. All fields inside
 // InfoFields are optional.
 type InfoFields struct {
-	Name       *string
-	Attrs      *gir.InfoAttrs
-	Elements   *gir.InfoElements
-	ParamDocs  []ParamDoc
-	ReturnDocs []ParamDoc
+	Name        *string
+	CType       *string
+	CIdentifier *string
+	Attrs       *gir.InfoAttrs
+	Elements    *gir.InfoElements
+	ParamDocs   []ParamDoc
+	ReturnDocs  []ParamDoc
 }
 
 func getField(value reflect.Value, field string) interface{} {
@@ -93,6 +95,15 @@ func GetInfoFields(v interface{}) InfoFields {
 	var inf InfoFields
 
 	inf.Name, _ = getField(value, "Name").(*string)
+	inf.CType, _ = getField(value, "CType").(*string)             // for types
+	inf.CIdentifier, _ = getField(value, "CIdentifier").(*string) // for constants
+	if inf.CIdentifier == nil && inf.CType == nil {
+		attrs, _ := getField(value, "CallableAttrs").(*gir.CallableAttrs) // for methods
+
+		if attrs != nil {
+			inf.CIdentifier = &attrs.CIdentifier
+		}
+	}
 	inf.Attrs, _ = getField(value, "InfoAttrs").(*gir.InfoAttrs)
 	inf.Elements, _ = getField(value, "InfoElements").(*gir.InfoElements)
 	inf.ParamDocs, _ = getField(value, "ParamDocs").([]ParamDoc)
@@ -213,10 +224,19 @@ func goDoc(v interface{}, indentLvl int, opts []Option) string {
 
 	var self string
 	var orig string
+	var cIdentifier string
 
 	if inf.Name != nil {
 		orig = *inf.Name
 		self = strcases.Go(orig)
+	}
+
+	if inf.CType != nil {
+		cIdentifier = *inf.CType
+	}
+
+	if inf.CIdentifier != nil {
+		cIdentifier = *inf.CIdentifier
 	}
 
 	var docBuilder strings.Builder
@@ -255,7 +275,7 @@ func goDoc(v interface{}, indentLvl int, opts []Option) string {
 
 	synopsize := searchOptsBool(opts, synopsize{})
 
-	docStr := FixGrammar(self, docBuilder.String(), append(opts, originalTypeName(orig))...)
+	docStr := fixGrammar(self, cIdentifier, docBuilder.String(), append(opts, originalTypeName(orig))...)
 	if synopsize && docStr == "" {
 		return ""
 	}
@@ -341,7 +361,7 @@ func writeParamDocs(tail *strings.Builder, label string, params []ParamDoc) {
 
 		var doc string
 		if param.InfoElements.Doc != nil {
-			doc = FixGrammar(name, param.InfoElements.Doc.String, originalTypeName(param.Name))
+			doc = fixGrammar(name, "", param.InfoElements.Doc.String, originalTypeName(param.Name))
 			// Insert a dash space into the lines.
 			doc = transformLines(doc, func(i, _ int, line string) string {
 				if i == 0 {
@@ -391,11 +411,15 @@ func trimFirstWord(paragraph string) string {
 	return parts[1]
 }
 
-// FixGrammar takes a comment and fixes its grammar by adding the [self] name
+// fixGrammar takes a comment and fixes its grammar by adding the [self] name
 // where appropriate to make it more idiomatic.
-func FixGrammar(self, cmt string, opts ...Option) string {
+func fixGrammar(self, cIdentifier, cmt string, opts ...Option) string {
 	if cmt == "" {
 		return ""
+	}
+
+	if cIdentifier != "" {
+		cIdentifier = " (" + cIdentifier + ")"
 	}
 
 	cmt = html.UnescapeString(cmt)
@@ -422,20 +446,20 @@ func FixGrammar(self, cmt string, opts ...Option) string {
 		switch {
 		case strings.EqualFold(firstWord, "is"), strings.EqualFold(firstWord, "will"):
 			// Turn "Will frob the fnord" into "{name} will frob the fnord".
-			cmt = self + " " + lowerFirstLetter(cmt)
+			cmt = self + cIdentifier + " " + lowerFirstLetter(cmt)
 		case strings.EqualFold(firstWord, "emitted"):
 			// Turn "emitted by Emitter" into "{name} is emitted by Emitter".
-			cmt = self + " is " + lowerFirstLetter(cmt)
+			cmt = self + cIdentifier + " is " + lowerFirstLetter(cmt)
 		case typeNamed, strings.HasPrefix(cmt, "#") && nthWord(cmt, 1) != "":
 			// Turn "#CName does stuff" into "GoName does stuff"
-			cmt = self + " " + trimFirstWord(cmt)
+			cmt = self + cIdentifier + " " + trimFirstWord(cmt)
 		case wordIsSimplePresent(firstWord):
 			// Turn "Frobs the fnord" into "{name} frobs the fnord".
-			cmt = self + " " + lowerFirstLetter(cmt)
+			cmt = self + cIdentifier + " " + lowerFirstLetter(cmt)
 		default:
 			// Trim the word "this" away to make the sentence gramatically
 			// correct.
-			cmt = self + ": " + lowerFirstLetter(strings.TrimPrefix(cmt, "this "))
+			cmt = self + cIdentifier + ": " + lowerFirstLetter(strings.TrimPrefix(cmt, "this "))
 		}
 	}
 

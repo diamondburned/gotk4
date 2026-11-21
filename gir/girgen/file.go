@@ -216,6 +216,12 @@ func (f *GoFileGenerator) Generate() ([]byte, error) {
 			fpen.Words("// #cgo CFLAGS: -Wno-deprecated-declarations")
 		}
 
+		if defines := f.CDefines(); len(defines) > 0 {
+			for _, macro := range defines {
+				fpen.Linef("// #define %s", macro)
+			}
+		}
+
 		fpen.Words("// #include <stdlib.h>")
 		if incls := f.CIncludes(); len(incls) > 0 {
 			for _, incl := range incls {
@@ -315,6 +321,12 @@ func (f *GoFileGenerator) Pkgconfig() []string {
 // includes.
 func (f *GoFileGenerator) CIncludes() []string {
 	return namespaceCIncludes(f.current, &f.header)
+}
+
+// CIncludes returns this file's sorted C includes, including the repository's C
+// includes.
+func (f *GoFileGenerator) CDefines() []string {
+	return f.header.SortedCDefines()
 }
 
 func namespaceCIncludes(n *gir.NamespaceFindResult, h *file.Header) []string {

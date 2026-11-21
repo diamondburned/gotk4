@@ -54,6 +54,7 @@ type Header struct {
 	Marshalers     []Marshaler
 	Imports        map[string]string
 	CIncludes      map[string]struct{}
+	Defines        map[string]struct{}
 	Packages       map[string]struct{} // for pkg-config
 	Callbacks      map[string]struct{} // used for C blocks in general
 	CallbackDelete bool
@@ -271,6 +272,30 @@ func (h *Header) SortedCIncludes() []string {
 
 	sort.Strings(includes)
 	return includes
+}
+
+// DefineC defines a macro using #define
+func (h *Header) DefineC(macro string) {
+	if h.stop {
+		return
+	}
+
+	if h.Defines == nil {
+		h.Defines = map[string]struct{}{}
+	}
+
+	h.Defines[macro] = struct{}{}
+}
+
+// SortedCDefines returns the list of C defines sorted.
+func (h *Header) SortedCDefines() []string {
+	defines := make([]string, 0, len(h.Defines))
+	for macro := range h.Defines {
+		defines = append(defines, macro)
+	}
+
+	sort.Strings(defines)
+	return defines
 }
 
 // NeedsGLibObject adds the glib-object.h include and the glib-2.0 package.

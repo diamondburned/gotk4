@@ -1,6 +1,9 @@
 package glib_test
 
 import (
+	"bytes"
+	"log"
+	"strings"
 	"testing"
 	"unsafe"
 
@@ -71,4 +74,43 @@ func TestDestroyDisconnectsSignalClosures(t *testing.T) {
 
 	leaktest.Release(held)
 	leaktest.AssertFreed(t, tracked, "destroy-disconnects-signal")
+}
+
+// TestGCCleanupDisconnectsSignalClosures verifies that GC-queued toggle-ref
+// teardown disconnects both generated and dynamic signal closures before
+// dropping the final ref and entering C dispose, preventing "cannot be
+// resurrected" warnings when disposal emits signals like "destroy".
+func TestGCCleanupDisconnectsSignalClosures(t *testing.T) {
+	var logBuf bytes.Buffer
+	prevOut := log.Writer()
+	log.SetOutput(&logBuf)
+	defer log.SetOutput(prevOut)
+
+	var called int
+	var tracked *leaktest.TrackedObject
+
+	func() {
+		btn := gtk.NewButton()
+		obj := glib.BaseObject(btn)
+		tracked = leaktest.Track(unsafe.Pointer(obj.Native()))
+
+		// Connect and manually disconnect one handler to verify HandlerDisconnect
+		// untracks cleanly alongside remaining active handlers.
+		id := btn.ConnectDestroy(func() { called++ })
+		obj.HandlerDisconnect(id)
+
+		btn.ConnectDestroy(func() { called++ })
+		obj.Connect("destroy", func() { called++ })
+		obj.NotifyProperty("parent", func() { called++ })
+	}()
+
+	leaktest.AssertFreed(t, tracked, "gc-cleanup-disconnects-signals")
+
+	if called != 0 {
+		t.Fatalf("GC-disposed signal closure was called %d times", called)
+	}
+	logs := logBuf.String()
+	if strings.Contains(logs, "cannot be resurrected") || strings.Contains(logs, "missing closure") {
+		t.Fatalf("unexpected closure resurrection warning during GC teardown:\n%s", logs)
+	}
 }

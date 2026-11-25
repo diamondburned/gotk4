@@ -50,3 +50,9 @@ void gotk4_intern_disconnect_closure(gpointer obj, GClosure *closure) {
   g_signal_handlers_disconnect_matched(obj, G_SIGNAL_MATCH_CLOSURE, 0, 0,
                                         closure, NULL, NULL);
 }
+
+void gotk4_intern_disconnect_signal_handler(gpointer obj, gulong handler_id) {
+  if (handler_id != 0 && g_signal_handler_is_connected(obj, handler_id)) {
+    g_signal_handler_disconnect(obj, handler_id);
+  }
+}

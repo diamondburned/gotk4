@@ -125,3 +125,74 @@ func TestConcurrentExpiredWeakLookup(t *testing.T) {
 	leaktest.Release(held)
 	leaktest.ForceGC()
 }
+
+func TestSignalHandlerTrackingStates(t *testing.T) {
+	var nilBox *Box
+	nilBox.TrackSignalHandler(1)
+	nilBox.UntrackSignalHandler(1)
+
+	p := leaktest.NewGObject()
+	box := Get(p, true)
+	if box == nil {
+		t.Fatal("Get returned nil")
+	}
+
+	// Handler ID 0 is GLib's invalid-handler sentinel and must be ignored.
+	box.TrackSignalHandler(0)
+	box.UntrackSignalHandler(0)
+
+	shared.mu.Lock()
+	e := shared.byToken[box.token]
+	if e == nil || len(e.signalHandlers) != 0 {
+		shared.mu.Unlock()
+		t.Fatalf("expected empty signalHandlers for ID 0, got %v", e)
+	}
+	shared.mu.Unlock()
+
+	box.TrackSignalHandler(42)
+	box.TrackSignalHandler(99)
+
+	shared.mu.Lock()
+	if _, ok := e.signalHandlers[42]; !ok {
+		shared.mu.Unlock()
+		t.Fatal("handler 42 was not tracked")
+	}
+	if _, ok := e.signalHandlers[99]; !ok {
+		shared.mu.Unlock()
+		t.Fatal("handler 99 was not tracked")
+	}
+	shared.mu.Unlock()
+
+	box.UntrackSignalHandler(42)
+	shared.mu.Lock()
+	if _, ok := e.signalHandlers[42]; ok {
+		shared.mu.Unlock()
+		t.Fatal("handler 42 was not untracked")
+	}
+	if _, ok := e.signalHandlers[99]; !ok {
+		shared.mu.Unlock()
+		t.Fatal("handler 99 should remain tracked")
+	}
+	shared.mu.Unlock()
+
+	Free(box)
+
+	shared.mu.Lock()
+	if e.signalHandlers != nil {
+		shared.mu.Unlock()
+		t.Fatal("expected Free to clear signalHandlers")
+	}
+	shared.mu.Unlock()
+
+	// Tracking against a retired Box must be ignored.
+	box.TrackSignalHandler(123)
+	shared.mu.Lock()
+	if shared.byToken[box.token] != nil {
+		shared.mu.Unlock()
+		t.Fatal("retired token still present in shared.byToken")
+	}
+	shared.mu.Unlock()
+
+	leaktest.Release(p)
+	leaktest.ForceGC()
+}

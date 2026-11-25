@@ -1,7 +1,11 @@
 package intern_test
 
 import (
+	"bytes"
+	"log"
 	"os"
+	"runtime"
+	"strings"
 	"sync"
 	"testing"
 	"unsafe"
@@ -165,5 +169,102 @@ func TestApplicationWindowLifecycle(t *testing.T) {
 	if leakedWindows > 0 {
 		t.Errorf("LEAK: %d/%d windows not freed",
 			leakedWindows, len(windowTrackers))
+	}
+}
+
+func TestQueuedCleanupDisconnectsDestroySignals(t *testing.T) {
+	var logBuf bytes.Buffer
+	prevOut := log.Writer()
+	log.SetOutput(&logBuf)
+	defer log.SetOutput(prevOut)
+
+	var destroyCalled int
+	var connectCalled int
+	var selfRefCalled int
+
+	var tracked *leaktest.TrackedObject
+	var trackedSelf *leaktest.TrackedObject
+	func() {
+		btn := gtk.NewButton()
+		obj := glib.BaseObject(btn)
+		tracked = leaktest.Track(unsafe.Pointer(obj.Native()))
+
+		btn.ConnectDestroy(func() {
+			destroyCalled++
+		})
+		obj.Connect("destroy", func() {
+			connectCalled++
+		})
+
+		btnSelf := gtk.NewButton()
+		trackedSelf = leaktest.Track(unsafe.Pointer(glib.BaseObject(btnSelf).Native()))
+		btnSelf.ConnectDestroy(func() {
+			_ = btnSelf
+			selfRefCalled++
+		})
+	}()
+
+	leaktest.AssertFreed(t, tracked, "queued-cleanup-destroy-signals")
+	leaktest.AssertFreed(t, trackedSelf, "queued-cleanup-self-destroy-signal")
+
+	if destroyCalled != 0 || connectCalled != 0 || selfRefCalled != 0 {
+		t.Fatalf("destroy signals fired during GC teardown: generated=%d dynamic=%d self=%d",
+			destroyCalled, connectCalled, selfRefCalled)
+	}
+	logs := logBuf.String()
+	if strings.Contains(logs, "cannot be resurrected") || strings.Contains(logs, "missing closure") {
+		t.Fatalf("unexpected closure resurrection warning during GC teardown:\n%s", logs)
+	}
+}
+
+func TestExpiredWeakReplacedBoxDisconnectsPriorSignal(t *testing.T) {
+	var logBuf bytes.Buffer
+	prevOut := log.Writer()
+	log.SetOutput(&logBuf)
+	defer log.SetOutput(prevOut)
+
+	releaseFinalizers := blockFinalizers(t)
+	defer func() { releaseFinalizers() }()
+
+	var p unsafe.Pointer
+	var tracked *leaktest.TrackedObject
+	var destroyCalled int
+
+	func() {
+		btn := gtk.NewButton()
+		p = unsafe.Pointer(glib.BaseObject(btn).Native())
+		tracked = leaktest.Track(p)
+		btn.ConnectDestroy(func() {
+			destroyCalled++
+		})
+		runtime.KeepAlive(btn)
+	}()
+
+	for i := 0; i < 20 && intern.TryGet(p) != nil; i++ {
+		runtime.GC()
+	}
+	if intern.TryGet(p) != nil {
+		t.Fatal("box weak pointer did not expire")
+	}
+
+	held := leaktest.Hold(p)
+	obj := glib.Take(held)
+	if obj == nil {
+		t.Fatal("Take after weak expiration returned nil")
+	}
+	runtime.KeepAlive(obj)
+	obj = nil
+	leaktest.Release(held)
+
+	releaseFinalizers()
+	releaseFinalizers = func() {}
+	leaktest.AssertFreed(t, tracked, "expired-weak-replaced-box-signal")
+
+	if destroyCalled != 0 {
+		t.Fatalf("stale destroy callback fired %d times", destroyCalled)
+	}
+	logs := logBuf.String()
+	if strings.Contains(logs, "cannot be resurrected") || strings.Contains(logs, "missing closure") {
+		t.Fatalf("unexpected closure warning after box replacement:\n%s", logs)
 	}
 }

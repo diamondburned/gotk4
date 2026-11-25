@@ -527,6 +527,9 @@ func ConnectGeneratedClosure(
 	defer C.free(unsafe.Pointer(csignal))
 
 	id := C.g_signal_connect_closure(C.gpointer(v.native()), csignal, gclosure, gbool(after))
+	if id != 0 {
+		v.box.TrackSignalHandler(uint64(id))
+	}
 
 	runtime.KeepAlive(obj)
 	return SignalHandle(id)
@@ -991,6 +994,9 @@ func (v *Object) HandlerUnblock(handle SignalHandle) {
 func (v *Object) HandlerDisconnect(handle SignalHandle) {
 	// Ensure that Gtk will not use the closure beforehand.
 	C.g_signal_handler_disconnect(C.gpointer(v.Native()), C.gulong(handle))
+	if v.box != nil {
+		v.box.UntrackSignalHandler(uint64(handle))
+	}
 	runtime.KeepAlive(v)
 }
 

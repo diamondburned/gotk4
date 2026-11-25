@@ -84,6 +84,7 @@ type entry struct {
 	weak           weak.Pointer[Box]
 	generation     uint64
 	finalizerArmed bool
+	signalHandlers map[uint64]struct{}
 }
 
 var shared = struct {
@@ -134,6 +135,36 @@ func (b *Box) Closures() *closure.Registry {
 		return reg
 	}
 	return b.closures.Load()
+}
+
+// TrackSignalHandler records a GLib signal handler ID on the interned entry
+// so GC-queued cleanup can disconnect it before removing the toggle ref.
+func (b *Box) TrackSignalHandler(handlerID uint64) {
+	if b == nil || handlerID == 0 {
+		return
+	}
+	shared.mu.Lock()
+	e := shared.byToken[b.token]
+	if e != nil && e.generation == b.generation && e.phase != entryRemoving {
+		if e.signalHandlers == nil {
+			e.signalHandlers = make(map[uint64]struct{})
+		}
+		e.signalHandlers[handlerID] = struct{}{}
+	}
+	shared.mu.Unlock()
+}
+
+// UntrackSignalHandler removes a previously recorded GLib signal handler ID.
+func (b *Box) UntrackSignalHandler(handlerID uint64) {
+	if b == nil || handlerID == 0 {
+		return
+	}
+	shared.mu.Lock()
+	e := shared.byToken[b.token]
+	if e != nil && e.generation == b.generation && e.signalHandlers != nil {
+		delete(e.signalHandlers, handlerID)
+	}
+	shared.mu.Unlock()
 }
 
 func consumeTransferredRef(gobject unsafe.Pointer, take bool) {
@@ -261,10 +292,13 @@ func Free(box *Box) {
 		e.box = nil
 	}
 	e.weak = weak.Pointer[Box]{}
+	handlers := e.signalHandlers
+	e.signalHandlers = nil
 	runtime.SetFinalizer(box.dummy, nil)
 	shared.mu.Unlock()
 
 	disconnectClosures(box, box.gobject)
+	disconnectSignalHandlers(box.gobject, handlers)
 	C.gotk4_intern_remove_toggle_ref(C.gpointer(box.gobject), C.guintptr(box.token))
 	finishCleanup(box.token)
 }
@@ -303,8 +337,11 @@ func beginQueuedCleanup(token uintptr) {
 	}
 	e.phase = entryRemoving
 	obj := e.object
+	handlers := e.signalHandlers
+	e.signalHandlers = nil
 	shared.mu.Unlock()
 
+	disconnectSignalHandlers(obj, handlers)
 	C.gotk4_intern_remove_toggle_ref(C.gpointer(obj), C.guintptr(token))
 	finishCleanup(token)
 }
@@ -337,6 +374,12 @@ func disconnectClosures(box *Box, gobject unsafe.Pointer) {
 			reg.Delete(gclosure)
 			return true
 		})
+	}
+}
+
+func disconnectSignalHandlers(gobject unsafe.Pointer, handlers map[uint64]struct{}) {
+	for id := range handlers {
+		C.gotk4_intern_disconnect_signal_handler(C.gpointer(gobject), C.gulong(id))
 	}
 }
 

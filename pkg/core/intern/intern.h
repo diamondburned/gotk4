@@ -8,3 +8,4 @@ void gotk4_intern_remove_toggle_ref(gpointer obj, guintptr token);
 void gotk4_intern_unref_suppressed(gpointer obj);
 void gotk4_intern_queue_remove_toggle_ref(guintptr token);
 void gotk4_intern_disconnect_closure(gpointer obj, GClosure *closure);
+void gotk4_intern_disconnect_signal_handler(gpointer obj, gulong handler_id);

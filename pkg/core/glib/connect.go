@@ -41,6 +41,9 @@ func (v *Object) connectClosure(after bool, detailedSignal string, f interface{}
 
 	gclosure := closureNew(v, fs, true)
 	c := C.g_signal_connect_closure(C.gpointer(v.Native()), (*C.gchar)(cstr), gclosure, gbool(after))
+	if c != 0 {
+		v.box.TrackSignalHandler(uint64(c))
+	}
 
 	runtime.KeepAlive(v)
 

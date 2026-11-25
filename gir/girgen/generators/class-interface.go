@@ -5,7 +5,6 @@ import (
 	"github.com/diamondburned/gotk4/gir/girgen/file"
 	"github.com/diamondburned/gotk4/gir/girgen/gotmpl"
 	"github.com/diamondburned/gotk4/gir/girgen/strcases"
-	"github.com/diamondburned/gotk4/gir/girgen/types"
 
 	ifacegen "github.com/diamondburned/gotk4/gir/girgen/generators/iface"
 )
@@ -35,23 +34,12 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 	{{ if .IsClass }}
 	func default{{ .StructName }}Overrides(v *{{ .StructName }}) {{ .StructName }}Overrides {
 		{{- if .GLibTypeStruct.VirtualMethods }}
-		{{- if .IsRuntimeLinkMode }}
-			{{- ImportCore . "girepository" -}}
-			classt := girepository.MustFind({{ Quote .Root.Namespace.Name }}, {{ Quote .GLibTypeStruct.Record.Name }})
-			var pclass unsafe.Pointer
-			if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
-				if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GType{{ .StructName }})) != C.FALSE {
-					pclass = parentClass
-				}
+		var pclass *C.{{ .GLibTypeStruct.CType }}
+		if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
+			if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GType{{ .StructName }})) != C.FALSE {
+				pclass = (*C.{{ .GLibTypeStruct.CType }})(parentClass)
 			}
-		{{- else }}
-			var pclass *C.{{ .GLibTypeStruct.CType }}
-			if parentClass := coreglib.PeekParentClass(v); parentClass != nil {
-				if C.g_type_check_class_is_a((*C.GTypeClass)(parentClass), C.GType(GType{{ .StructName }})) != C.FALSE {
-					pclass = (*C.{{ .GLibTypeStruct.CType }})(parentClass)
-				}
-			}
-		{{- end }}
+		}
 		{{- end }}
 
 		overrides := {{ .StructName }}Overrides{
@@ -66,21 +54,11 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 
 		{{- if .GLibTypeStruct.VirtualMethods }}
 		if pclass != nil {
-			{{- if .IsRuntimeLinkMode }}
-			{{ range .GLibTypeStruct.VirtualMethods }}
-			{{ if $.IsInSameFile . -}}
-			if *(*unsafe.Pointer)(unsafe.Add(pclass, classt.StructFieldOffset({{ Quote .FieldName }}))) != nil {
-				overrides.{{ .Go.Name }} = v.{{ UnexportPascal .Go.Name }}
-			}
-			{{- end }}
-			{{- end }}
-			{{- else }}
 			{{ range .GLibTypeStruct.VirtualMethods }}
 			{{ if $.IsInSameFile . -}}
 			if pclass.{{ CGoField .FieldName }} != nil {
 				overrides.{{ .Go.Name }} = v.{{ UnexportPascal .Go.Name }}
 			}
-			{{- end }}
 			{{- end }}
 			{{- end }}
 		}
@@ -181,25 +159,12 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 
 	func init{{ .GLibTypeStruct.Name }}(gclass unsafe.Pointer, overrides {{ .StructName }}Overrides, classInitFunc func(*{{ .GLibTypeStruct.Name }})) {
 		{{- if .GLibTypeStruct.VirtualMethods }}
-		{{- if .IsRuntimeLinkMode }}
-			{{- ImportCore . "girepository" -}}
-			classt := girepository.MustFind({{ Quote .Root.Namespace.Name }}, {{ Quote .GLibTypeStruct.Record.Name }})
-			pclass := unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GType{{ .StructName }})))
-
-			{{ range .GLibTypeStruct.VirtualMethods }}
-			if overrides.{{ .Go.Name }} != nil {
-				o := classt.StructFieldOffset({{ Quote .FieldName }})
-				*(*unsafe.Pointer)(unsafe.Add(unsafe.Pointer(pclass), o)) = unsafe.Pointer(C.{{ .C.Name }})
-			}
-			{{ end -}}
-		{{- else }}
-			pclass := (*C.{{ .GLibTypeStruct.CType }})(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GType{{ .StructName }}))))
-			{{ range .GLibTypeStruct.VirtualMethods }}
-			if overrides.{{ .Go.Name }} != nil {
-				pclass.{{ CGoField .FieldName }} = (*[0]byte)(C.{{ .C.Name }})
-			}
-			{{ end }}
-		{{ end -}}
+		pclass := (*C.{{ .GLibTypeStruct.CType }})(unsafe.Pointer(C.g_type_check_class_cast((*C.GTypeClass)(gclass), C.GType(GType{{ .StructName }}))))
+		{{ range .GLibTypeStruct.VirtualMethods }}
+		if overrides.{{ .Go.Name }} != nil {
+			pclass.{{ CGoField .FieldName }} = (*[0]byte)(C.{{ .C.Name }})
+		}
+		{{ end }}
 		{{ end -}}
 
 		if classInitFunc != nil {
@@ -219,23 +184,12 @@ var classInterfaceTmpl = gotmpl.NewGoTemplate(`
 
 	func init{{ .GLibTypeStruct.Name }}(giface unsafe.Pointer, overrides {{ .StructName }}Overrides) {
 		{{- if .GLibTypeStruct.VirtualMethods }}
-		{{- if .IsRuntimeLinkMode }}
-			{{- ImportCore . "girepository" -}}
-			ifacet := girepository.MustFind({{ Quote .Root.Namespace.Name }}, {{ Quote .GLibTypeStruct.Record.Name }})
-			{{ range .GLibTypeStruct.VirtualMethods }}
-			if overrides.{{ .Go.Name }} != nil {
-				o := ifacet.StructFieldOffset({{ Quote .FieldName }})
-				*(*unsafe.Pointer)(unsafe.Add(giface, o)) = unsafe.Pointer(C.{{ .C.Name }})
-			}
-			{{ end -}}
-		{{- else }}
-			iface := (*C.{{ .GLibTypeStruct.CType }})(giface)
-			{{ range .GLibTypeStruct.VirtualMethods }}
-			if overrides.{{ .Go.Name }} != nil {
-				iface.{{ CGoField .FieldName }} = (*[0]byte)(C.{{ .C.Name }})
-			}
-			{{ end }}
-		{{- end }}
+		iface := (*C.{{ .GLibTypeStruct.CType }})(giface)
+		{{ range .GLibTypeStruct.VirtualMethods }}
+		if overrides.{{ .Go.Name }} != nil {
+			iface.{{ CGoField .FieldName }} = (*[0]byte)(C.{{ .C.Name }})
+		}
+		{{ end }}
 		{{- end }}
 	}
 	{{ end }}
@@ -327,8 +281,6 @@ type ifacegenData struct {
 	*ifacegen.Generator
 	ImplInterfaces []string
 	HasMarshaler   bool
-
-	gen FileGeneratorWriter
 }
 
 func (d ifacegenData) Recv() string {
@@ -336,10 +288,6 @@ func (d ifacegenData) Recv() string {
 		return d.Methods[0].Recv
 	}
 	return "v"
-}
-
-func (d ifacegenData) IsRuntimeLinkMode() bool {
-	return d.gen.LinkMode() == types.RuntimeLinkMode
 }
 
 func generateInterfaceGenerator(gen FileGeneratorWriter, igen *ifacegen.Generator) {
@@ -352,18 +300,10 @@ func generateInterfaceGenerator(gen FileGeneratorWriter, igen *ifacegen.Generato
 		parent.Resolved.ImportImpl(gen, writer.Header())
 	}
 
-	// These conditions should follow what's in the template.
-	if igen.GLibTypeStruct != nil {
-		if gen.LinkMode() == types.RuntimeLinkMode && len(igen.GLibTypeStruct.VirtualMethods) > 0 {
-			writer.Header().ImportCore("girepository")
-		}
-	}
-
 	data := ifacegenData{
 		Generator:      igen,
 		ImplInterfaces: igen.ImplInterfaces(),
 		HasMarshaler:   false,
-		gen:            gen,
 	}
 
 	if gtype, ok := GenerateGType(gen, igen.Name, igen.GLibGetType); ok {

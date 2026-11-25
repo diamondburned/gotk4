@@ -17,14 +17,12 @@ var (
 	Output  string
 	Verbose bool
 	ListPkg bool
-	CgoLink bool
 )
 
 func init() {
 	flag.StringVar(&Output, "o", "", "output directory to mkdir in")
 	flag.BoolVar(&Verbose, "v", Verbose, "log verbosely (debug mode)")
 	flag.BoolVar(&ListPkg, "l", ListPkg, "only list packages and exit")
-	flag.BoolVar(&CgoLink, "cgo-link", CgoLink, "generate everything to link using cgo instead of girepository")
 }
 
 // ParseFlag calls flag.Parse() and initializes external global options.
@@ -110,10 +108,6 @@ type Data struct {
 	Filters []types.FilterMatcher
 	// ProcessConverters is a list of things that can override a type converter.
 	ProcessConverters []typeconv.ConversionProcessor
-	// DynamicLinkNamespaces lists namespaces that should be generated directly
-	// using Cgo. It includes important core packages as well as packages that
-	// are small but performance-sensitive.
-	DynamicLinkNamespaces []string
 	// SingleFile, if true, will make all NamespaceGenerators generate a single
 	// output file per package instead of correlating it to the source file.
 	SingleFile bool
@@ -133,13 +127,11 @@ func Overlay(data ...Data) Data {
 		last.Preprocessors = slices.Concat(datum.Preprocessors, last.Preprocessors)
 		last.Filters = slices.Concat(datum.Filters, last.Filters)
 		last.ProcessConverters = slices.Concat(datum.ProcessConverters, last.ProcessConverters)
-		last.DynamicLinkNamespaces = slices.Concat(datum.DynamicLinkNamespaces, last.DynamicLinkNamespaces)
 	}
 
 	last.KnownPackages = slices.CompactFunc(last.KnownPackages, func(a, b Package) bool {
 		return a.Name == b.Name && slices.Equal(a.Namespaces, b.Namespaces)
 	})
-	last.DynamicLinkNamespaces = slices.Compact(last.DynamicLinkNamespaces)
 
 	return last
 }
@@ -179,10 +171,6 @@ func Generate(repos gir.Repositories, data Data) {
 	gen.AddPostprocessors(data.Postprocessors)
 	gen.AddFilters(data.Filters)
 	gen.AddProcessConverters(data.ProcessConverters)
-
-	if !CgoLink {
-		gen.DynamicLinkNamespaces(data.DynamicLinkNamespaces)
-	}
 
 	if err := CleanDirectory(Output, data.PkgExceptions); err != nil {
 		log.Fatalln("failed to clean output directory:", err)

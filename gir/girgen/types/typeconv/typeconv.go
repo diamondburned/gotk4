@@ -19,9 +19,6 @@ type Converter struct {
 	Parent   *gir.TypeFindResult
 	Results  []ValueConverted
 	Callback bool
-	// MustCast, if true, will force the converter to generate code that
-	// force-casts InName and OutName to the right type.
-	MustCast bool
 
 	fgen   types.FileGenerator
 	logger logger.LineLogger
@@ -345,10 +342,6 @@ func (conv *Converter) convertTypeExisting(
 
 	result.Resolved.ImportImpl(conv.fgen, &of.header)
 	return &result
-}
-
-func (conv *Converter) isRuntimeLinking() bool {
-	return conv.fgen.LinkMode() == types.RuntimeLinkMode
 }
 
 // param returns the unconverted value.

@@ -6,34 +6,7 @@ import (
 	"unicode"
 
 	"github.com/diamondburned/gotk4/gir"
-	"github.com/diamondburned/gotk4/gir/girgen/pen"
 	"github.com/diamondburned/gotk4/gir/girgen/strcases"
-)
-
-// LinkMode describes the mode that determines how the generator generates
-// code to be linked. See the possible constants for more information.
-type LinkMode uint8
-
-const (
-	// RuntimeLinkMode is the new generation mode. It generates Go code that
-	// uses the girepository library to link the library at runtime instead of
-	// compile-time.
-	//
-	// Since all generated calls are actually Go function calls and not C
-	// function calls, compile times are far better than when using
-	// DynamicLinkMode, but runtime performance may be slightly lower and more
-	// memory-intensive.
-	//
-	// Use RuntimeLinkMode for large packages, such as GTK; use DynamicLinkMode
-	// for small and important packages, such as the core glib/v2 package.
-	RuntimeLinkMode LinkMode = iota
-	// DynamicLinkMode is the old generation mode. It generates Cgo code that
-	// contains compile-time link flags to dynamically link libraries to the
-	// output binary.
-	//
-	// This mode forces the use of cmd/cgo on every call during compilation,
-	// making it very slow. Only use this on core packages such as glib.
-	DynamicLinkMode
 )
 
 // GoAnyType generates the Go type signature for the AnyType union. An empty
@@ -127,8 +100,6 @@ func RecordPrintFree(gen FileGenerator, parent *gir.TypeFindResult, value string
 // unref. If method is nil, then a C.free call is generated. Value is assumed to
 // be an unsafe.Pointer.
 //
-// The caller must import girepository.Argument manually.
-//
 // Deprecated: Use RecordPrintFree.
 func RecordPrintFreeMethod(gen FileGenerator, parent *gir.TypeFindResult, value string) string {
 	rec := parent.Type.(*gir.Record)
@@ -138,39 +109,20 @@ func RecordPrintFreeMethod(gen FileGenerator, parent *gir.TypeFindResult, value 
 		return fmt.Sprintf("C.free(%s)", value)
 	}
 
-	// TODO: refactor thoughts: should typeconv and girgen/callable be combined?
-	// typeconv has to generate function calling code in some cases for freeing,
-	// and we have various different ways of doing that scattered throughout the
-	// program. It would be far better to have 1 place of doing them all.
-
-	switch gen.LinkMode() {
-	case RuntimeLinkMode:
-		p := pen.NewBlock()
-		p.Linef("var args [1]girepository.Argument")
-		p.Linef("*(*unsafe.Pointer)(unsafe.Pointer(&args[0])) = unsafe.Pointer(%s)", value)
-		p.Linef("girepository.MustFind(%q, %q).InvokeRecordMethod(%q, args[:], nil)",
-			parent.Namespace.Name, rec.Name, "free")
-		return p.String()
-	case DynamicLinkMode:
-		return fmt.Sprintf(
-			"C.%s((%s)(%s))",
-			free.CIdentifier,
-			AnyTypeCGo(free.Parameters.InstanceParameter.AnyType),
-			value)
-	default:
-		panic("unreachable")
-	}
+	return fmt.Sprintf(
+		"C.%s((%s)(%s))",
+		free.CIdentifier,
+		AnyTypeCGo(free.Parameters.InstanceParameter.AnyType),
+		value)
 }
 
 // RecordHasUnref returns the unref method if it has one.
 func RecordHasUnref(record *gir.Record) *gir.Method {
-	// TODO: runtime link mode support
 	return FindMethodName(record.Methods, "unref")
 }
 
 // RecordHasRef returns the ref method if it has one.
 func RecordHasRef(record *gir.Record) *gir.Method {
-	// TODO: runtime link mode support
 	return FindMethodName(record.Methods, "ref")
 }
 
@@ -389,69 +341,6 @@ func AnyTypeIsPtr(any gir.AnyType) bool {
 	return strings.Contains(AnyTypeC(any), "*")
 }
 
-// AnyTypeCPrimitive converts AnyType to a C primitive type.
-func AnyTypeCPrimitive(gen FileGenerator, any gir.AnyType) string {
-	switch {
-	case any.Array != nil:
-		innerType := AnyTypeCPrimitive(gen, gir.AnyType{Type: any.Array.Type})
-		if any.Array.FixedSize > 0 {
-			return fmt.Sprintf("%s[%d]", innerType, any.Array.FixedSize)
-		}
-		return innerType + "*"
-	case any.Type != nil:
-		cType := AnyTypeC(any)
-
-		if CountPtr(cType) == 0 && GIRIsPrimitive(cType) {
-			return cType
-		}
-
-		resolved := Resolve(gen, *any.Type)
-		if resolved != nil {
-			if prim := resolved.AsDynamicLinkedCType(gen); prim != "" {
-				return prim
-			}
-		}
-
-		if prim := CTypeToPrimitive(cType); prim != "" {
-			return prim
-		}
-	}
-
-	return ""
-}
-
-// AnyTypeCGoPrimitive converts AnyType to a CGo primitive type.
-func AnyTypeCGoPrimitive(gen FileGenerator, any gir.AnyType) string {
-	return CGoTypeFromC(AnyTypeCPrimitive(gen, any))
-}
-
-// CTypeToPrimitive converts a C type to the primitive type.
-func CTypeToPrimitive(cType string) string {
-	// Keep this in sync with valueconverted.go's isRuntimeLinking check inside
-	// resolveType. We probably can't make the C callback header generator use
-	// the type converter, so we'll have to keep them in sync.
-
-	switch cType {
-	case "gpointer", "gconstpointer":
-		return "gpointer"
-	}
-
-	if CountPtr(cType) > 0 {
-		baseCType := CleanCType(cType, true)
-		if GIRIsPrimitive(baseCType) {
-			return MoveCPtr(cType, baseCType)
-		} else {
-			return MoveCPtr(cType, "void")
-		}
-	}
-
-	if GIRIsPrimitive(cType) {
-		return cType
-	}
-
-	return ""
-}
-
 // girCTypes maps some primitive GIR types to C types, because people who write
 // GIR generators are lazy fucks who can't be bothered to fill in the right
 // information.
@@ -547,13 +436,6 @@ func GIRPrimitiveGo(typ string) string {
 		return GIRPrimitiveGo("g" + typ) // maybe?
 	}
 	return ""
-}
-
-// GIRIsPrimitive returns true if the Go primitive type of the GIR type is valid
-// and is not a string.
-func GIRIsPrimitive(typ string) bool {
-	t := GIRPrimitiveGo(typ)
-	return t != "" && t != "string"
 }
 
 // FindParameter finds a parameter.

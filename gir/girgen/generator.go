@@ -38,10 +38,6 @@ func init() {
 	}
 }
 
-// DefaultLinkMode is the default link mode to be used for all constructed
-// Generators.
-var DefaultLinkMode = types.DynamicLinkMode // types.RuntimeLinkMode
-
 // Generator is a big generator that manages multiple repositories.
 type Generator struct {
 	Logger *log.Logger
@@ -49,9 +45,6 @@ type Generator struct {
 
 	repos   gir.Repositories
 	modPath types.ModulePathFunc
-
-	modes       map[string]types.LinkMode
-	defaultMode types.LinkMode
 
 	postmap   map[string][]Postprocessor
 	filters   []types.FilterMatcher
@@ -68,15 +61,10 @@ func NewGeneratorOpts(repos gir.Repositories, modPath types.ModulePathFunc, opts
 	return &Generator{
 		Opts: opts,
 
-		repos: repos,
-		modes: map[string]types.LinkMode{
-			"GLib-2":    types.DynamicLinkMode,
-			"GObject-2": types.DynamicLinkMode,
-		},
-		defaultMode: DefaultLinkMode,
-		modPath:     modPath,
-		postmap:     make(map[string][]Postprocessor),
-		filters:     append([]types.FilterMatcher(nil), types.BuiltinHandledTypes...),
+		repos:   repos,
+		modPath: modPath,
+		postmap: make(map[string][]Postprocessor),
+		filters: append([]types.FilterMatcher(nil), types.BuiltinHandledTypes...),
 	}
 }
 
@@ -122,40 +110,6 @@ func (g *Generator) ModPath(n *gir.Namespace) string { return g.modPath(n) }
 // Repositories returns the generator's repositories.
 func (g *Generator) Repositories() gir.Repositories { return g.repos }
 
-// SetDefaultLinkMode sets the default link mode.
-func (g *Generator) SetDefaultLinkMode(linkMode types.LinkMode) {
-	g.defaultMode = linkMode
-}
-
-// DynamicLinkNamespaces overrides the default link mode for the given
-// namespaces to be DynamicLinkMode. If an unknown versioned namespace is given,
-// then the function panics.
-func (g *Generator) DynamicLinkNamespaces(versionedNamespaces []string) {
-	if g.modes == nil {
-		g.modes = make(map[string]types.LinkMode)
-	}
-
-	for _, versioned := range versionedNamespaces {
-		// Assert that this is a known namespace.
-		if g.repos.FindNamespace(versioned) == nil {
-			log.Panicln("unknown namespace", versioned)
-		}
-		g.modes[versioned] = types.DynamicLinkMode
-	}
-}
-
-// NamespaceLinkMode returns the link mode for the given namespace.
-func (g *Generator) NamespaceLinkMode(namespace *gir.Namespace) types.LinkMode {
-	versioned := gir.VersionedNamespace(namespace)
-
-	mode := g.defaultMode
-	if override, ok := g.modes[versioned]; ok {
-		mode = override
-	}
-
-	return mode
-}
-
 // UseNamespace creates a new namespace generator using the given namespace.
 func (g *Generator) UseNamespace(namespace, version string) *NamespaceGenerator {
 	versioned := gir.VersionedName(namespace, version)
@@ -166,11 +120,6 @@ func (g *Generator) UseNamespace(namespace, version string) *NamespaceGenerator 
 	}
 
 	nsgen := NewNamespaceGenerator(g, res)
-	nsgen.SetLinkMode(g.defaultMode)
-
-	if mode, ok := g.modes[versioned]; ok {
-		nsgen.SetLinkMode(mode)
-	}
 
 	if pps, ok := g.postmap[versioned]; ok {
 		nsgen.AddPostprocessors(pps)

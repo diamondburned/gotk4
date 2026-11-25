@@ -60,17 +60,11 @@ func (f *CFileGenerator) IsEmpty() bool {
 
 // Generate implements FileGenerator.
 func (f *CFileGenerator) Generate() ([]byte, error) {
-	switch f.LinkMode() {
-	case types.DynamicLinkMode:
-		f.pen.Words("#include <stdlib.h>")
-		if incls := f.CIncludes(); len(incls) > 0 {
-			for _, incl := range incls {
-				f.pen.Linef("#include <%s>", incl)
-			}
+	f.pen.Words("#include <stdlib.h>")
+	if incls := f.CIncludes(); len(incls) > 0 {
+		for _, incl := range incls {
+			f.pen.Linef("#include <%s>", incl)
 		}
-	case types.RuntimeLinkMode:
-		f.pen.Words("#include <stdlib.h>")
-		f.pen.Words("#include <glib.h>")
 	}
 
 	if len(f.header.Callbacks) > 0 {
@@ -152,10 +146,6 @@ func (f *GoFileGenerator) Generate() ([]byte, error) {
 		f.header.NeedsExternGLib()
 	}
 
-	if f.LinkMode() == types.RuntimeLinkMode {
-		f.header.ImportCore("girepository")
-	}
-
 	if f.header.CallbackDelete {
 		// C headers are per-file.
 		f.header.AddCallbackHeader("extern void callbackDelete(gpointer);")
@@ -209,24 +199,16 @@ func (f *GoFileGenerator) Generate() ([]byte, error) {
 		fpen.EmptyLine()
 	}
 
-	switch f.LinkMode() {
-	case types.DynamicLinkMode:
-		if f.isRoot {
-			fpen.Words("// #cgo pkg-config:", f.Pkgconfig())
-			fpen.Words("// #cgo CFLAGS: -Wno-deprecated-declarations")
-		}
+	if f.isRoot {
+		fpen.Words("// #cgo pkg-config:", f.Pkgconfig())
+		fpen.Words("// #cgo CFLAGS: -Wno-deprecated-declarations")
+	}
 
-		fpen.Words("// #include <stdlib.h>")
-		if incls := f.CIncludes(); len(incls) > 0 {
-			for _, incl := range incls {
-				fpen.Linef("// #include <%s>", incl)
-			}
+	fpen.Words("// #include <stdlib.h>")
+	if incls := f.CIncludes(); len(incls) > 0 {
+		for _, incl := range incls {
+			fpen.Linef("// #include <%s>", incl)
 		}
-	case types.RuntimeLinkMode:
-		fpen.Words("// #cgo pkg-config: gobject-2.0")
-		fpen.Words("// #include <stdlib.h>")
-		fpen.Words("// #include <glib.h>")
-		fpen.Words("// #include <glib-object.h>")
 	}
 
 	if len(f.header.Callbacks) > 0 {
@@ -254,15 +236,6 @@ func (f *GoFileGenerator) Generate() ([]byte, error) {
 		}
 		fpen.Linef("  })")
 		fpen.Linef("}")
-		fpen.EmptyLine()
-	}
-
-	if f.isRoot && f.LinkMode() == types.RuntimeLinkMode {
-		namespace := f.Namespace().Namespace
-
-		fpen.Words("func init() {")
-		fpen.Linef("  girepository.Require(%q, %q, girepository.LoadFlagLazy)", namespace.Name, namespace.Version)
-		fpen.Words("}")
 		fpen.EmptyLine()
 	}
 

@@ -398,10 +398,6 @@ func (typ *Resolved) IsContainerBuiltin() bool {
 	return false
 }
 
-func (typ *Resolved) DynamicLinked(gen FileGenerator) bool {
-	return typ.Builtin != nil || (typ.Extern != nil && gen.NamespaceLinkMode(typ.Extern.Namespace) == DynamicLinkMode)
-}
-
 // CanCast returns true if the resolved type is a builtin type that can be
 // directly casted to an equivalent C type OR a record..
 func (typ *Resolved) CanCast(gen FileGenerator) bool {
@@ -702,44 +698,6 @@ func (typ *Resolved) CGoType() string {
 	return CGoTypeFromC(typ.CType)
 }
 
-// AsDynamicLinkedCType is a variant of AsPrimitiveCType that returns the
-// original C type if it's from a dynamically linked package.
-func (typ *Resolved) AsDynamicLinkedCType(gen FileGenerator) string {
-	if typ == nil {
-		return ""
-	}
-	if typ.DynamicLinked(gen) {
-		return typ.CType
-	}
-	return typ.AsPrimitiveCType(gen)
-}
-
-// AsPrimitiveCType resolves Resolved's CType to a primitive type if possible.
-// This is different to IsPrimitive in that all types are coerced into primitive
-// types such as gpointer, and types that cannot be coerced will return an empty
-// string.
-func (typ *Resolved) AsPrimitiveCType(gen FileGenerator) string {
-	if typ == nil {
-		return ""
-	}
-
-	typ = typ.Underlying()
-
-	if typ.Extern != nil && typ.Ptr == 0 {
-		switch typ.Extern.Type.(type) {
-		case *gir.Record, *gir.Alias:
-			// Unknown whether or not we have pointers.
-		default:
-			if typ.HasPointer(nil) {
-				return "gpointer"
-			}
-		}
-	}
-
-	prim := CTypeToPrimitive(typ.CType)
-	return prim
-}
-
 // UnsupportedCTypes is the list of unsupported C types, either because it is
 // not yet supported or will never be supported due to redundancy or else.
 var UnsupportedCTypes = []string{
@@ -990,38 +948,12 @@ func resolveCopyType(gen FileGenerator, typ *gir.Type, array *gir.Array) *gir.Ty
 	return &cpy
 }
 
-// ResolveAnyTypeC resolves any type to its C type. If link mode is runtime,
-// then a primitive is returned.
+// ResolveAnyTypeC resolves any type to its C type.
 func ResolveAnyTypeC(gen FileGenerator, any gir.AnyType) string {
-	switch gen.LinkMode() {
-	case DynamicLinkMode:
-		any = ResolveAnyType(gen, any)
-		return AnyTypeC(any)
-	case RuntimeLinkMode:
-		any = ResolveAnyType(gen, any)
-		if prim := AnyTypeCPrimitive(gen, any); prim != "" {
-			return prim
-		}
-		return ""
-	default:
-		panic("unreachable")
-	}
+	return AnyTypeC(ResolveAnyType(gen, any))
 }
 
-// ResolveAnyTypeCGo resolves any type to its Cgo type. If link mode is runtime,
-// then a primitive is returned.
+// ResolveAnyTypeCGo resolves any type to its Cgo type.
 func ResolveAnyTypeCGo(gen FileGenerator, any gir.AnyType) string {
-	switch gen.LinkMode() {
-	case DynamicLinkMode:
-		any = ResolveAnyType(gen, any)
-		return AnyTypeCGo(any)
-	case RuntimeLinkMode:
-		any = ResolveAnyType(gen, any)
-		if prim := AnyTypeCGoPrimitive(gen, any); prim != "" {
-			return prim
-		}
-		return ""
-	default:
-		panic("unreachable")
-	}
+	return AnyTypeCGo(ResolveAnyType(gen, any))
 }

@@ -242,35 +242,6 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 		// }
 	}
 
-	if value.conv.isRuntimeLinking() {
-		// Keep this in sync with AnyTypeCPrimitive.
-
-		// Runtime-linking means we do not have access to any of the actual C
-		// types, since we intentionally don't want to import them.
-		// Instead, we must mask those types into primitive GLib types.
-		if ptr := types.CountPtr(cgoType); ptr > 0 {
-			// Check on the C type, NOT the Cgo type.
-			if !types.GIRIsPrimitive(types.CleanCType(cType, true)) {
-				// Is the type that we're checking within a dynamically linked
-				// package? If yes, then we can just directly use it. If not,
-				// then we need this.
-				if !value.Resolved.DynamicLinked(conv.fgen) {
-					// Using gpointer doesn't quite work right here, so we just
-					// use C.void.
-					cgoType = types.MovePtr(cgoType, "C.void")
-				}
-			}
-		} else if types.GIRIsPrimitive(cType) {
-			// cgoType OK as it is.
-		} else if prim := value.Resolved.AsDynamicLinkedCType(conv.fgen); prim != "" {
-			// cgoType = types.MovePtr(cgoType, types.CGoTypeFromC(prim))
-			cgoType = types.CGoTypeFromC(prim) // function already uses MovePtr
-		} else {
-			value.Logln(logger.Debug, "cType", cType, "is not primitive")
-			return false
-		}
-	}
-
 	switch value.Resolved.GType {
 	case "GLib.HashTable":
 		if value.Resolved.Ptr != 1 {
@@ -329,19 +300,6 @@ func (value *ValueConverted) resolveType(conv *Converter) bool {
 			value.In.Call = "&" + value.In.Call
 		case ConvertGoToC:
 			value.Out.Set = "*" + value.Out.Set
-		}
-	}
-
-	if conv.MustCast {
-		value.header.Import("unsafe")
-
-		switch value.Direction {
-		case ConvertGoToC:
-			// Output C is of type girepository.Argument.
-			value.Out.Set = fmt.Sprintf("*(*%s)(unsafe.Pointer(&%s))", value.Out.Type, value.Out.Set)
-		case ConvertCToGo:
-			// Return C is of type girepository.Argument.
-			value.In.Name = fmt.Sprintf("*(*%s)(unsafe.Pointer(&%s))", value.In.Type, value.In.Name)
 		}
 	}
 

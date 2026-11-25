@@ -3,7 +3,6 @@ package generators
 import (
 	"fmt"
 	"strings"
-	"text/tabwriter"
 
 	"github.com/diamondburned/gotk4/gir"
 	"github.com/diamondburned/gotk4/gir/girgen/file"
@@ -332,10 +331,6 @@ func (rg *RecordGenerator) getters() {
 			willDoConstructor = false
 			continue
 		}
-		// We can't generate bitfield accesses if we're in runtime mode.
-		if field.Bits > 0 && rg.gen.LinkMode() == types.RuntimeLinkMode {
-			continue
-		}
 
 		// Check type for constructor.
 		if willDoConstructor {
@@ -369,7 +364,6 @@ func (rg *RecordGenerator) getters() {
 	}
 
 	converter := typeconv.NewConverter(rg.gen, &rg.typ, values)
-	converter.MustCast = rg.gen.LinkMode() == types.RuntimeLinkMode
 	converter.UseLogger(rg)
 
 	for i := range values {
@@ -391,23 +385,7 @@ func (rg *RecordGenerator) getters() {
 		file.ApplyHeader(rg, converted)
 
 		b := pen.NewBlock()
-
-		// TODO(diamond): in the future, it might be worth considering the
-		// possibility of generating Go versions of some C structs based on the
-		// GIR schema to avoid having to use StructFieldOffset.
-		//
-		// This way, we can just set by doing (*GoT)(cValue).FieldName. Some
-		// hacks around the type converter may be needed to know the equivalent
-		// Go type.
-
-		// Runtime-link mode assumes a hard-coded valptr name.
-		if rg.gen.LinkMode() == types.RuntimeLinkMode {
-			rg.hdr.ImportCore("girepository")
-			b.Linef("offset := girepository.MustFind(%q, %q).StructFieldOffset(%q)", rg.typ.Namespace.Name, rg.typ.Name(), fields[i])
-			b.Linef("valptr := (*uintptr)(unsafe.Add(%s.native, offset))", recv)
-		} else {
-			b.Linef("valptr := &%s.native.%s", recv, strcases.CGoField(fields[i]))
-		}
+		b.Linef("valptr := &%s.native.%s", recv, strcases.CGoField(fields[i]))
 
 		switch converted.Direction {
 		case typeconv.ConvertCToGo: // getter
@@ -526,48 +504,10 @@ func ignoreField(field gir.Field) bool {
 }
 
 func (rg *RecordGenerator) CGoPtrType() string {
-	switch rg.gen.LinkMode() {
-	case types.DynamicLinkMode:
-		return "*C." + rg.Record.CType
-	case types.RuntimeLinkMode:
-		return "unsafe.Pointer"
-	default:
-		panic("unreachable")
-	}
+	return "*C." + rg.Record.CType
 }
 
 func (rg *RecordGenerator) Logln(lvl logger.Level, v ...interface{}) {
 	p := fmt.Sprintf("record %s (C.%s):", rg.GoName, rg.Record.CType)
 	rg.gen.Logln(lvl, logger.Prefix(v, p)...)
-}
-
-// GenerateCPrimitiveRecord generates C struct code with primitive C types.
-func GenerateCPrimitiveRecord(gen types.FileGenerator, rec *gir.Record) string {
-	var b strings.Builder
-
-	w := tabwriter.NewWriter(&b, 0, 4, 1, ' ', 0)
-
-	for i, field := range rec.Fields {
-		if i != 0 {
-			fmt.Fprintln(w)
-		}
-
-		if field.Callback != nil {
-			// Any pointer works.
-			fmt.Fprintf(w, "    void*\t%s;", field.Name)
-			continue
-		}
-
-		fmt.Fprint(w, "    ", types.AnyTypeCPrimitive(gen, field.AnyType), "\t", field.Name)
-		if field.Bits > 0 {
-			fmt.Fprint(w, "\t : ", field.Bits)
-		}
-		fmt.Fprint(w, ";")
-	}
-
-	if err := w.Flush(); err != nil {
-		panic("cannot flush tabwriter: " + err.Error())
-	}
-
-	return fmt.Sprintf("struct %s {\n%s\n};", rec.Name, b.String())
 }

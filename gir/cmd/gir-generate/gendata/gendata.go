@@ -23,19 +23,18 @@ const Module = "github.com/diamondburned/gotk4/pkg"
 // This stays ugly just because it's the main gotk4 package with exposed
 // gendata. Don't actually do this; just make a global genmain.Data instead.
 var Main = genmain.Data{
-	Module:                Module,
-	Packages:              Packages,
-	ImportOverrides:       ImportOverrides,
-	PkgExceptions:         PkgExceptions,
-	GenerateExceptions:    GenerateExceptions,
-	PkgGenerated:          PkgGenerated,
-	Preprocessors:         Preprocessors,
-	Postprocessors:        Postprocessors,
-	ExtraGoContents:       ExtraGoContents,
-	Filters:               Filters,
-	ProcessConverters:     ConversionProcessors,
-	DynamicLinkNamespaces: DynamicLinkNamespaces,
-	SingleFile:            true,
+	Module:             Module,
+	Packages:           Packages,
+	ImportOverrides:    ImportOverrides,
+	PkgExceptions:      PkgExceptions,
+	GenerateExceptions: GenerateExceptions,
+	PkgGenerated:       PkgGenerated,
+	Preprocessors:      Preprocessors,
+	Postprocessors:     Postprocessors,
+	ExtraGoContents:    ExtraGoContents,
+	Filters:            Filters,
+	ProcessConverters:  ConversionProcessors,
+	SingleFile:         true,
 }
 
 // PkgExceptions contains a list of file names that won't be deleted off of
@@ -100,16 +99,6 @@ var Packages = []genmain.Package{
 	}},
 	{Name: "gtk4"},     // includes Gdk
 	{Name: "gtk+-3.0"}, // includes Gdk
-}
-
-// DynamicLinkNamespaces lists namespaces that should be generated directly
-// using Cgo. It includes important core packages as well as packages that are
-// small but performance-sensitive.
-var DynamicLinkNamespaces = []string{
-	"GLib-2",
-	"GObject-2",
-	"Graphene-1",
-	"GdkPixbuf-2",
 }
 
 // Preprocessors defines a list of preprocessors that the main generator will

@@ -1,8 +1,6 @@
 package generators
 
 import (
-	"fmt"
-
 	"github.com/diamondburned/gotk4/gir/girgen/cmt"
 	"github.com/diamondburned/gotk4/gir/girgen/file"
 	"github.com/diamondburned/gotk4/gir/girgen/pen"
@@ -82,20 +80,6 @@ func GenerateGType(gen FileGeneratorWriter, name, glibGetType string) (Generated
 		return gtype, false
 	}
 
-	switch gen.LinkMode() {
-	case types.DynamicLinkMode:
-		gtype.GetType = glibGetType
-
-	case types.RuntimeLinkMode:
-		gtype.Header.ImportCore("girepository")
-		gtype.GetType = fmt.Sprintf(
-			`girepository.MustFind(%q, %q).RegisteredGType()`,
-			gen.Namespace().Namespace.Name, name,
-		)
-
-	default:
-		panic("unreachable")
-	}
-
+	gtype.GetType = glibGetType
 	return gtype, true
 }

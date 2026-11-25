@@ -34,7 +34,6 @@ type NamespaceGenerator struct {
 		c *CFileGenerator
 	}
 	canResolve map[string]bool
-	genMode    types.LinkMode
 }
 
 var (
@@ -127,15 +126,6 @@ func (n *NamespaceGenerator) CanGenerate(r *types.Resolved) bool {
 	n.canResolve[publType] = canResolve
 
 	return canResolve
-}
-
-// LinkMode implements FileGenerator.
-func (n *NamespaceGenerator) LinkMode() types.LinkMode { return n.genMode }
-
-// SetLinkMode sets the link mode for the current namespace and all its files.
-// The default is RuntimeLinkMode.
-func (n *NamespaceGenerator) SetLinkMode(mode types.LinkMode) {
-	n.genMode = mode
 }
 
 // Pkgconfig returns the current repository's pkg-config names.
